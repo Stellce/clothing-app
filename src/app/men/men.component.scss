@@ -1,0 +1,125 @@
+@import '../../styles';
+
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+}
+
+.mat-drawer-container{
+  background: #1c1c1c;
+}
+
+.filter-centered-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-content: space-around;
+}
+
+form {
+  width: 90%;
+}
+
+.filter {
+  background: $background-secondary;
+  border-radius: 0 10px 10px 0;
+  width: 90%;
+  .logo {
+    margin: 0 10px;
+  }
+  .price-box {
+    margin-top: 10px;
+  }
+  .sizes span {
+    display: inline-flex;
+    border-radius: 50px;
+    width: 28px;
+    aspect-ratio: 1/1;
+    justify-content: center;
+    align-items: center;
+    background: none;
+  }
+}
+
+.filter-bubble {
+  background: $filter-bubble;
+  border-radius: 50px;
+  height: 40px;
+  width: 40px;
+  position: fixed;
+  top: 1vh;
+  left: 1vw;
+  svg {
+    width: 70%;
+    height: 70%;
+    position: relative;
+    left: 15%;
+    top: 20%;
+  }
+}
+
+.cloth-flex {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-around;
+  align-content: space-around;
+  margin: auto;
+  width: 90vw;
+}
+
+.card{
+  display: flex;
+  flex-direction: column;
+  color: $text-color;
+  background: $dark-theme-background;
+  overflow: hidden;
+  img {
+    width: 100%;
+    border-radius: 4px;
+    object-fit: cover;
+    //object-position: 50% -30px;
+  }
+}
+.card-bottom {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0;
+}
+
+
+
+footer {
+  height: 500px;
+}
+
+@media only screen and (max-width: 960px) {
+  .cloth-flex {
+    margin: 0;
+    width: 100%;
+  }
+  .card {
+    width: 33vw;
+  }
+  .card img {
+    width: 33vw;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .card {
+    width: 49vw;
+    overflow: hidden;
+  }
+  .card-bottom {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .card img {
+    width: 49vw;
+  }
+}

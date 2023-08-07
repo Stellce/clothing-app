@@ -1,3 +1,14 @@
+@import '../../styles.scss';
+
+mat-toolbar-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 1600px;
+  margin: auto;
+  background: $dark-theme-background;
+}
 ul {
   display: flex;
   flex-direction: row;
@@ -7,8 +18,16 @@ ul {
   list-style: none;
   padding: 0;
   margin: 0;
+  width: 80%;
 }
+li {
+  text-decoration: none;
+}
+
 a {
   text-decoration: none;
+  color: #d9d9d9;
+  font-weight: 100;
+  font-size: 12px;
 }
 
