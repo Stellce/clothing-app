@@ -1,11 +1,11 @@
 export interface FilterModel {
   priceFrom?: any;
   priceTo?: any;
-  size?: string[];
-  sortBy?: string;
-  type?: string
-  color?: string[];
-  manufacturer?: string[];
+  sizes?: string[];
+  sortBy?: string[];
+  types?: string[]
+  colors?: string[];
+  brands?: string[];
   material?: string[];
   rate?: string[];
 }

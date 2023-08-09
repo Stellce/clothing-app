@@ -13,13 +13,16 @@ export class MenComponent {
 
   constructor(private appService: AppService) {}
 
-  filters = {
+  filters: FilterModel = {
     sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
-
+    sortBy: ['popularity', 'price from lowest', 'price from highest', 'newest'],
+    types: ['type1', 'type2', 'type3'],
+    brands: ['Adidas', 'Puma', 'Nike']
   }
 
-  filtersSelected: {sizes: string[]} = {
-    sizes: []
+  filtersSelected: {sizes: string[], brands: string[]} = {
+    sizes: [],
+    brands: []
   }
 
   item: ItemModel =
@@ -39,20 +42,37 @@ export class MenComponent {
   items: ItemModel[] = Array(6).fill(this.item);
 
   onSubmitForm(form: NgForm) {
-    const filter: FilterModel = {
+    let filter: FilterModel = {
       priceFrom: form.value.priceFrom,
-      priceTo: form.value.priceTo
+      priceTo: form.value.priceTo,
+      sortBy: form.value.sortBy,
+      types: form.value.types,
+      ...this.filtersSelected
     }
-    console.log(form.value);
+    this.appService.getAll(filter);
+    console.log(filter);
+  }
+
+  test(event: any) {
+    console.log(event);
   }
 
   changeFilter(filterType: string, filter: string) {
-    const sizeIndex = this.filtersSelected.sizes.indexOf(filter);
-    if ( sizeIndex < 0) {
-      this.filtersSelected.sizes.push(filter);
-    } else {
-      this.filtersSelected.sizes.splice(sizeIndex, 1);
+    if (filterType === 'size') {
+      const sizeIndex = this.filtersSelected.sizes.indexOf(filter);
+      if ( sizeIndex < 0) {
+        this.filtersSelected.sizes.push(filter);
+      } else {
+        this.filtersSelected.sizes.splice(sizeIndex, 1);
+      }
+    } else if (filterType === 'brand') {
+      const brandIndex = this.filtersSelected.brands.indexOf(filter);
+      if (brandIndex < 0) {
+        this.filtersSelected.brands.push(filter);
+      } else {
+        this.filtersSelected.brands.splice(brandIndex, 1);
+      }
     }
-    // console.log(this.filtersSelected.sizes);
+    console.log(this.filtersSelected);
   }
 }
