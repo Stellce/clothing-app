@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
-import { MenComponent } from './men/men.component';
+import { ListItemsComponent } from './list-items/list-items.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatButtonModule} from "@angular/material/button";
@@ -22,12 +22,18 @@ import {MatSelectModule} from "@angular/material/select";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatPaginatorModule} from "@angular/material/paginator";
+import { ItemComponent } from './item/item.component';
+import { CategoriesComponent } from './categories/categories.component';
+import { FilterComponent } from './filter/filter.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    MenComponent
+    ListItemsComponent,
+    ItemComponent,
+    CategoriesComponent,
+    FilterComponent
   ],
   imports: [
     BrowserModule,

@@ -3,7 +3,7 @@ export interface ItemModel {
   name: string,
   price: number,
   wlist: boolean,
-  photos: String[],
+  photos: string[],
   brand: string,
   rating: number,
   all_colors: boolean,

@@ -1,0 +1,52 @@
+.categories-list {
+  display: grid;
+  //flex-direction: row;
+  grid: 1fr 1fr 1fr/1fr 1fr 1fr;
+}
+
+.category {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: #d9d9d9;
+  //aspect-ratio: 1/1;
+
+  background: #313131;
+  padding: 10px;
+  border-radius: 1rem;
+}
+
+img {
+  width: 100px;
+  //height: 100px;
+  aspect-ratio: 1/1;
+}
+
+.black-box {
+  background: black;
+  height: 100%;
+  width: 100%;
+  opacity: 0.1;
+}
+
+a {
+  text-align: center;
+}
+
+.child-genders {
+  display: grid;
+  grid: 1fr 1fr/1fr 1fr;
+  max-width: 1000px;
+}
+.child-gender {
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: #343434;
+  aspect-ratio: 1/1;
+
+  background: #790000;
+  padding: 10px;
+  border-radius: 1rem;
+}

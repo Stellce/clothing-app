@@ -1,18 +1,15 @@
 import { Component } from '@angular/core';
+import {FilterModel} from "../filter.model";
 import {ItemModel} from "../item.model";
 import {NgForm} from "@angular/forms";
-import {FilterModel} from "../filter.model";
 import {AppService} from "../app.service";
 
 @Component({
-  selector: 'app-men',
-  templateUrl: './men.component.html',
-  styleUrls: ['./men.component.scss']
+  selector: 'app-filter',
+  templateUrl: './filter.component.html',
+  styleUrls: ['./filter.component.scss']
 })
-export class MenComponent {
-
-  constructor(private appService: AppService) {}
-
+export class FilterComponent {
   filters: FilterModel = {
     sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
     sortBy: ['popularity', 'price from lowest', 'price from highest', 'newest'],
@@ -24,22 +21,7 @@ export class MenComponent {
     sizes: [],
     brands: []
   }
-
-  item: ItemModel =
-    {
-      id: 450945,
-      name: "Adidas Gazelle",
-      price: 20,
-      wlist: true,
-      photos: ["assets/nizza-platform-shoes.avif"],
-      brand: "Adidas",
-      rating: 4.0,
-      all_colors: true,
-      discount: 0,
-      new: false,
-      popular: true
-    }
-  items: ItemModel[] = Array(6).fill(this.item);
+    constructor(private appService: AppService) {}
 
   onSubmitForm(form: NgForm) {
     let filter: FilterModel = {
@@ -51,6 +33,7 @@ export class MenComponent {
     }
     this.appService.getAll(filter);
     console.log(filter);
+    this.appService.getAll();
   }
 
   test(event: any) {
