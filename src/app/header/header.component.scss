@@ -12,6 +12,8 @@ mat-toolbar-row {
 .gender-select {
   width: 70dvw;
   max-width: 1000px;
+  display: flex;
+  justify-content: center;
 }
 ul {
   display: flex;

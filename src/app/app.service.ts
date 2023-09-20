@@ -8,10 +8,9 @@ import {Subject} from "rxjs";
   providedIn: 'root'
 })
 export class AppService {
-
-  itemsSub = new Subject<ItemModel[]>;
-
+  items = new Subject<ItemModel[]>;
   constructor(private http: HttpClient) {}
+
 
   getAll(filter?: FilterModel) {
     const response = [150, [
@@ -31,8 +30,8 @@ export class AppService {
           new: false,
           popular: true
         }
-    let items: ItemModel[] = Array(6).fill(item);
+    let items: ItemModel[] = Array(20).fill(item);
     console.log(items);
-    this.itemsSub.next(items);
+    this.items.next(items);
   }
 }
