@@ -38,8 +38,8 @@ export class AppService {
   }
 
   getItems(gender: 'male' | 'female' | 'children', categoryId: number) {
-    console.log("Gender/categoryId");
-    console.log(gender, categoryId);
+    // console.log("Gender/categoryId");
+    // console.log(gender, categoryId);
 
     return this.getItemsFaked();
 

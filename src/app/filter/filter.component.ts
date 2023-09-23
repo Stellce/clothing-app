@@ -9,12 +9,30 @@ import {AppService} from "../app.service";
   styleUrls: ['./filter.component.scss']
 })
 export class FilterComponent {
-  filters: FilterModel = {
+  filters = {
     sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
-    sortBy: ['popularity', 'price from lowest', 'price from highest', 'newest'],
-    types: ['type1', 'type2', 'type3'],
+    colors: ['red', 'green', 'blue', 'pink', 'purple'],
+    sort: [
+      {
+        name: 'popularity',
+        value: 'popularity'
+      },
+      {
+        name: 'price from lowest',
+        value: 'price_asc'
+      },
+      {
+        name: 'price from highest',
+        value: 'price_desc'
+      },
+      {
+        name: 'new',
+        value: 'newest'
+      }
+    ],
+    subcategories: ['JEANS', 'JOGGERS', 'SPORT', 'SANDALS', 'SNEAKERS', 'BOOTS'],
     brands: ['Adidas', 'Puma', 'Nike']
-  }
+  };
 
   filtersSelected: {sizes: string[], brands: string[]} = {
     sizes: [],
@@ -22,17 +40,15 @@ export class FilterComponent {
   }
     constructor(private appService: AppService) {}
 
-  onSubmitForm(form: NgForm) {
+  onSubmitFilter(form: NgForm) {
     let filter: FilterModel = {
       priceFrom: form.value.priceFrom,
       priceTo: form.value.priceTo,
       sortBy: form.value.sortBy,
-      types: form.value.types,
       ...this.filtersSelected
     }
     this.appService.getItemsFaked(filter);
-    // console.log(filter);
-    this.appService.getItemsFaked();
+    console.log(filter);
   }
 
   changeFilter(filterType: string, filter: string) {

@@ -1,4 +1,5 @@
 export interface FilterModel {
+  ageGroup?: string,
   priceFrom?: any;
   priceTo?: any;
   sizes?: string[];
@@ -8,4 +9,5 @@ export interface FilterModel {
   brands?: string[];
   material?: string[];
   rate?: string[];
+  subcategory?: string
 }

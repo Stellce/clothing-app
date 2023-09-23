@@ -1,9 +1,13 @@
 @import '../../styles';
-input {
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
-  -moz-appearance: textfield;
 }
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+}
+
 .filter-centered-container {
   display: flex;
   justify-content: space-around;
@@ -26,20 +30,25 @@ form {
   }
   .price-box {
     margin-top: 10px;
+    mat-form-field {
+      width: 45%;
+    }
+    .price-inputs {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
   }
   .selected-filters span {
     display: block;
     margin: 15px 0 10px 0;
   }
-  //.sizes span {
-  //  display: inline-flex;
-  //  border-radius: 50px;
-  //  width: 28px;
-  //  aspect-ratio: 1/1;
-  //  justify-content: center;
-  //  align-items: center;
-  //  background: none;
-  //}
+  .size-box {
+    margin: 15px;
+    span {
+      margin: 10px 0;
+    }
+  }
   mat-divider {
     margin: 5px 0;
   }
@@ -50,8 +59,13 @@ form {
     display: flex;
     flex-direction: column;
   }
-  [type='submit'] {
+  mat-expansion-panel {
+    margin: 20px 0;
+  }
+  #filterButton {
     width: 100% !important;
+    height: 5dvh;
+    margin: 20px 0;
   }
 }
 
