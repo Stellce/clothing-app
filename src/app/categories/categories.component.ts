@@ -1,4 +1,4 @@
-import {AfterContentChecked, Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 
 @Component({
@@ -8,12 +8,22 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class CategoriesComponent implements OnInit{
   categories = [
-    {name: 'shirts', src: false},
-    {name: 'trousers', src: ''},
-    {name: 'boots', src: ''}
+    'T_SHIRTS',
+    'SHIRTS',
+    'TROUSERS',
+    'SHORTS',
+    'HOODIES_AND_SWEATSHIRTS',
+    'SWEATERS',
+    'COATS',
+    'JACKETS',
+    'SHOES',
+    'UNDERWEAR',
+    'SOCKS'
   ]
-  gender: string | undefined;
+  // gender: string | undefined;
   childGenders: string[] = ['boys', 'girls']
+  // gender: 'male' | 'female' | 'children';
+  gender: string;
 
   constructor(private activatedRoute: ActivatedRoute) {}
 
@@ -21,7 +31,6 @@ export class CategoriesComponent implements OnInit{
     this.activatedRoute.url.subscribe(url => {
       this.gender = url[0].path;
     })
-    console.log(this.gender);
+    // console.log(this.gender);
   }
-
 }

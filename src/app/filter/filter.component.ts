@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import {FilterModel} from "../filter.model";
-import {ItemModel} from "../item.model";
 import {NgForm} from "@angular/forms";
 import {AppService} from "../app.service";
 
@@ -31,13 +30,9 @@ export class FilterComponent {
       types: form.value.types,
       ...this.filtersSelected
     }
-    this.appService.getAll(filter);
-    console.log(filter);
-    this.appService.getAll();
-  }
-
-  test(event: any) {
-    console.log(event);
+    this.appService.getItemsFaked(filter);
+    // console.log(filter);
+    this.appService.getItemsFaked();
   }
 
   changeFilter(filterType: string, filter: string) {
@@ -56,6 +51,6 @@ export class FilterComponent {
         this.filtersSelected.brands.splice(brandIndex, 1);
       }
     }
-    console.log(this.filtersSelected);
+    // console.log(this.filtersSelected);
   }
 }

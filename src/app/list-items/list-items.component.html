@@ -11,7 +11,10 @@
       </div>
     </div>
   </div>
-  <mat-paginator [pageSize]="this.items.length"  ></mat-paginator>
+  <mat-paginator
+    [pageSize]="10"
+    [length]="this.items.length"
+    (page)="handlePageEvent($event)"></mat-paginator>
   <footer>
   </footer>
 </mat-drawer-container>

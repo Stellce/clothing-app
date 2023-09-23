@@ -1,22 +1,25 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {FilterModel} from "./filter.model";
 import {ItemModel} from "./item.model";
 import {Subject} from "rxjs";
+import {ResponseModel} from "./response.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppService {
-  items = new Subject<ItemModel[]>;
+  itemsUpdated = new Subject<ItemModel[]>;
+  items: ItemModel[];
+
   constructor(private http: HttpClient) {}
 
 
-  getAll(filter?: FilterModel) {
+  getItemsFaked(filter?: FilterModel) {
     const response = [150, [
       '5543', 'Name', '4553', 'true', 'photos', 'brand'
     ]]
-    let item: ItemModel =
+    let item =
         {
           id: 450945,
           name: "Adidas Gazelle",
@@ -31,7 +34,22 @@ export class AppService {
           popular: true
         }
     let items: ItemModel[] = Array(20).fill(item);
-    console.log(items);
-    this.items.next(items);
+    this.itemsUpdated.next(items);
   }
+
+  getItems(gender: 'male' | 'female' | 'children', categoryId: number) {
+    console.log("Gender/categoryId");
+    console.log(gender, categoryId);
+
+    return this.getItemsFaked();
+
+    // this.http.get<ResponseModel>(`localhost:8000/items/gender/${this.gender}/category/${this.categoryId}`).subscribe( data => {
+    //   this.items = [...data.content];
+    //   this.itemsUpdated.next([...data.content]);
+    //   // console.log(data)
+    // })
+
+    // list-item checks gender and category, maybe filter, sends req to service, receives data
+  }
+
 }

@@ -1,15 +1,15 @@
 <div class="child-genders" *ngIf="gender === 'children'; else categoriesList">
   <div class="child-gender" *ngFor="let cGender of childGenders" [ngStyle]="{background: cGender === 'boys' ? 'turquoise' : 'pink'}">
     {{cGender | uppercase}}
-    <a *ngFor="let category of categories" [routerLink]="[cGender, category.name]" class="category">{{category.name | uppercase}}</a>
+    <a *ngFor="let category of categories" [routerLink]="[cGender, category]" class="category">{{category | uppercase}}</a>
   </div>
 </div>
 <ng-template #categoriesList>
   <div class="categories-list">
-    <a class="category" *ngFor="let category of categories" [routerLink]="category.name" [ngStyle]="{background: this.gender === 'men' ? 'blue' : this.gender === 'women' ? 'red' : 'green'}">
-      <img [src]="category.src" *ngIf="category.src; else blackbox" alt="category image">
+    <a class="category" *ngFor="let category of categories" [routerLink]="category" [ngStyle]="{background: this.gender === 'men' ? 'blue' : this.gender === 'women' ? 'red' : 'green'}">
+<!--      <img [src]="category.src" *ngIf="category.src; else blackbox" alt="category image">-->
       <ng-template #blackbox><div class="black-box"></div></ng-template>
-      {{category.name | uppercase}}
+      {{category | uppercase}}
     </a>
   </div>
 </ng-template>
