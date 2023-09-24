@@ -16,24 +16,27 @@ export class AppService {
 
   constructor(private http: HttpClient) {}
 
-  getItems(gender: 'male' | 'female' | 'children', categoryId: number) {
-    this.http.get<ResponseModel>(`http://localhost:8765/items/gender/${gender}/category/${categoryId}`).subscribe( data => {
+  getItems() {
+    this.http.get<ResponseModel>(`http://localhost:8765/items/gender/${this.gender}/category/${this.categoryId}`).subscribe( data => {
       this.items = [...data.content];
       this.itemsUpdated.next([...data.content]);
       console.log(data)
     })
   }
 
-  getItemsByFilter(gender: 'male' | 'female' | 'children', categoryId: number, filter: FilterModel) {
+  getItemsByFilter(filter: FilterModel) {
     let filterParams = new HttpParams();
     for (let [param, value] of Object.entries(filter)) {
+      if (!value || value.length === 0) continue;
       if (Array.isArray(value)) value = value.join(',');
+      console.log(param, value)
       filterParams = filterParams.append(param, value);
     }
+    console.log(filterParams)
 
     this.http
       .get<ResponseModel>(
-        `http://localhost:8765/items/gender/${gender}/category/${categoryId}`,
+        `http://localhost:8765/items/gender/${this.gender}/category/${this.categoryId}`,
         {
           params: filterParams
         }

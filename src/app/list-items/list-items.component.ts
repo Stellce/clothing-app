@@ -13,7 +13,7 @@ import {ActivatedRoute} from "@angular/router";
 export class ListItemsComponent implements OnInit, OnDestroy{
   items: ItemModel[] = [];
   itemsSub: Subscription;
-  gender: 'male' | 'female' | 'children';
+  gender: string;
   categories: string[] = [
     'T_SHIRTS',
     'SHIRTS',
@@ -27,7 +27,7 @@ export class ListItemsComponent implements OnInit, OnDestroy{
     'UNDERWEAR',
     'SOCKS'
   ]
-  categoryId: number;
+  category: string
   constructor(
     private appService: AppService,
     private activatedRoute: ActivatedRoute
@@ -37,19 +37,19 @@ export class ListItemsComponent implements OnInit, OnDestroy{
   ngOnInit() {
     let url = this.activatedRoute.snapshot.url;
 
-    this.gender =
+    this.appService.gender =
       url[0].path === 'men' ? 'male' :
         url[0].path === 'women' ? 'female' : 'children';
-    this.categoryId = this.categories.indexOf(url[1].path) + 1;
+    this.appService.categoryId = this.categories.indexOf(url[1].path) + 1;
 
-    this.appService.gender = this.gender;
-    this.appService.categoryId = this.categoryId;
+    this.gender = url[0].path;
+    this.category = url[1].path;
 
     this.itemsSub = this.appService.itemsUpdated
       .subscribe((items: ItemModel[]) => {
         this.items = items;
       })
-    this.appService.getItems(this.gender, this.categoryId);
+    this.appService.getItems();
   }
 
   handlePageEvent(e: PageEvent) {

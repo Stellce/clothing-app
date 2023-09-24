@@ -47,7 +47,7 @@ export class FilterComponent {
       sortBy: form.value.sortBy,
       ...this.filtersSelected
     }
-    this.appService.getItemsByFilter(this.appService.gender, this.appService.categoryId, filter);
+    this.appService.getItemsByFilter(filter);
     console.log(filter);
   }
 
