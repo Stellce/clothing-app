@@ -28,20 +28,27 @@ export class ListItemsComponent implements OnInit, OnDestroy{
     'SOCKS'
   ]
   categoryId: number;
-  constructor(private appService: AppService, private activatedRoute: ActivatedRoute) {}
+  constructor(
+    private appService: AppService,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
 
   ngOnInit() {
     let url = this.activatedRoute.snapshot.url;
-    console.log(url)
+
     this.gender =
       url[0].path === 'men' ? 'male' :
         url[0].path === 'women' ? 'female' : 'children';
     this.categoryId = this.categories.indexOf(url[1].path) + 1;
 
-    this.itemsSub = this.appService.itemsUpdated.subscribe((items: ItemModel[]) => {
+    this.appService.gender = this.gender;
+    this.appService.categoryId = this.categoryId;
+
+    this.itemsSub = this.appService.itemsUpdated
+      .subscribe((items: ItemModel[]) => {
         this.items = items;
-    })
+      })
     this.appService.getItems(this.gender, this.categoryId);
   }
 

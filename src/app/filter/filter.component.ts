@@ -47,7 +47,7 @@ export class FilterComponent {
       sortBy: form.value.sortBy,
       ...this.filtersSelected
     }
-    this.appService.getItemsFaked(filter);
+    this.appService.getItemsByFilter(this.appService.gender, this.appService.categoryId, filter);
     console.log(filter);
   }
 

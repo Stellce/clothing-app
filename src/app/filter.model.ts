@@ -9,5 +9,5 @@ export interface FilterModel {
   brands?: string[];
   material?: string[];
   rate?: string[];
-  subcategory?: string
+  subcategory?: string;
 }

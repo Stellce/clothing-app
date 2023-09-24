@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {FilterModel} from "./filter.model";
 import {ItemModel} from "./item.model";
 import {Subject} from "rxjs";
@@ -11,45 +11,37 @@ import {ResponseModel} from "./response.model";
 export class AppService {
   itemsUpdated = new Subject<ItemModel[]>;
   items: ItemModel[];
+  categoryId: number;
+  gender: 'male' | 'female' | 'children';
 
   constructor(private http: HttpClient) {}
 
-
-  getItemsFaked(filter?: FilterModel) {
-    const response = [150, [
-      '5543', 'Name', '4553', 'true', 'photos', 'brand'
-    ]]
-    let item =
-        {
-          id: 450945,
-          name: "Adidas Gazelle",
-          price: 20,
-          wlist: true,
-          photos: ["assets/nizza-platform-shoes.avif"],
-          brand: "Adidas",
-          rating: 4.0,
-          all_colors: true,
-          discount: 0,
-          new: false,
-          popular: true
-        }
-    let items: ItemModel[] = Array(20).fill(item);
-    this.itemsUpdated.next(items);
+  getItems(gender: 'male' | 'female' | 'children', categoryId: number) {
+    this.http.get<ResponseModel>(`http://localhost:8765/items/gender/${gender}/category/${categoryId}`).subscribe( data => {
+      this.items = [...data.content];
+      this.itemsUpdated.next([...data.content]);
+      console.log(data)
+    })
   }
 
-  getItems(gender: 'male' | 'female' | 'children', categoryId: number) {
-    // console.log("Gender/categoryId");
-    // console.log(gender, categoryId);
+  getItemsByFilter(gender: 'male' | 'female' | 'children', categoryId: number, filter: FilterModel) {
+    let filterParams = new HttpParams();
+    for (let [param, value] of Object.entries(filter)) {
+      if (Array.isArray(value)) value = value.join(',');
+      filterParams = filterParams.append(param, value);
+    }
 
-    return this.getItemsFaked();
-
-    // this.http.get<ResponseModel>(`localhost:8000/items/gender/${this.gender}/category/${this.categoryId}`).subscribe( data => {
-    //   this.items = [...data.content];
-    //   this.itemsUpdated.next([...data.content]);
-    //   // console.log(data)
-    // })
-
-    // list-item checks gender and category, maybe filter, sends req to service, receives data
+    this.http
+      .get<ResponseModel>(
+        `http://localhost:8765/items/gender/${gender}/category/${categoryId}`,
+        {
+          params: filterParams
+        }
+      ).subscribe( data => {
+      this.items = [...data.content];
+      this.itemsUpdated.next([...data.content]);
+      console.log(data)
+    })
   }
 
 }
