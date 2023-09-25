@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
-import {FilterModel} from "./filter.model";
+import {FilterModel, FilterReady} from "./filter.model";
 import {ItemModel} from "./item.model";
 import {Subject} from "rxjs";
 import {ResponseModel} from "./response.model";
@@ -25,11 +25,23 @@ export class AppService {
   }
 
   getItemsByFilter(filter: FilterModel) {
+    let filterReady: FilterReady = {
+      sort: filter.sortBy || undefined,
+      priceRange: [filter.priceFrom, filter.priceTo].join(",") || undefined,
+      sizes: filter.sizes || undefined,
+      colors: filter.colors || undefined,
+      brands: filter.brands || undefined,
+      season: filter.season || undefined,
+      materials: filter.materials || undefined,
+      rating: filter.rating || undefined
+    }
+    console.log(filterReady)
+
+
     let filterParams = new HttpParams();
-    for (let [param, value] of Object.entries(filter)) {
+    for (let [param, value] of Object.entries(filterReady)) {
       if (!value || value.length === 0) continue;
       if (Array.isArray(value)) value = value.join(',');
-      console.log(param, value)
       filterParams = filterParams.append(param, value);
     }
     console.log(filterParams)

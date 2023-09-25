@@ -4,7 +4,31 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0;
 }
 
-.breadcrumb{
+.filter {
+  background: $background-secondary;
+  border-radius: 0 10px 10px 0;
+  width: 90%;
+}
+
+.filter-bubble {
+  z-index: 999;
+  background: $filter-bubble;
+  border-radius: 50px;
+  height: 40px;
+  width: 40px;
+  position: fixed;
+  top: 1dvh;
+  left: 1dvw;
+  svg {
+    width: 70%;
+    height: 70%;
+    position: relative;
+    left: 15%;
+    top: 20%;
+  }
+}
+
+.breadcrumb > *{
   text-decoration: none;
   color: white;
 }

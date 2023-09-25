@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {FilterModel} from "../filter.model";
 import {NgForm} from "@angular/forms";
 import {AppService} from "../app.service";
@@ -38,6 +38,7 @@ export class FilterComponent {
     sizes: [],
     brands: []
   }
+  @Output() closeDrawer = new EventEmitter<void>();
     constructor(private appService: AppService) {}
 
   onSubmitFilter(form: NgForm) {
@@ -68,5 +69,9 @@ export class FilterComponent {
       }
     }
     // console.log(this.filtersSelected);
+  }
+
+  onCloseDrawer() {
+    this.closeDrawer.emit();
   }
 }

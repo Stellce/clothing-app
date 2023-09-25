@@ -21,67 +21,47 @@ form {
   width: 90%;
 }
 
-.filter {
-  background: $background-secondary;
-  border-radius: 0 10px 10px 0;
-  width: 90%;
-  .logo {
-    margin: 0 10px;
-  }
-  .price-box {
-    margin-top: 10px;
-    mat-form-field {
-      width: 45%;
-    }
-    .price-inputs {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-    }
-  }
-  .selected-filters span {
-    display: block;
-    margin: 15px 0 10px 0;
-  }
-  .size-box {
-    margin: 15px;
-    span {
-      margin: 10px 0;
-    }
-  }
-  mat-divider {
-    margin: 5px 0;
-  }
+.logo {
+  margin: 0 10px;
+}
+.price-box {
+  margin-top: 10px;
   mat-form-field {
-    margin-top: 20px;
+    width: 45%;
   }
-  section {
+  .price-inputs {
     display: flex;
-    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
   }
-  mat-expansion-panel {
-    margin: 20px 0;
+}
+.selected-filters span {
+  display: block;
+  margin: 15px 0 10px 0;
+}
+.size-box {
+  margin: 15px;
+  span {
+    margin: 10px 0;
   }
-  #filterButton {
-    width: 100% !important;
-    height: 5dvh;
-    margin: 20px 0;
-  }
+}
+mat-divider {
+  margin: 5px 0;
+}
+mat-form-field {
+  margin-top: 20px;
+}
+section {
+  display: flex;
+  flex-direction: column;
+}
+mat-expansion-panel {
+  margin: 20px 0;
+}
+#filterButton {
+  width: 100% !important;
+  height: 5dvh;
+  margin: 20px 0;
 }
 
-.filter-bubble {
-  background: $filter-bubble;
-  border-radius: 50px;
-  height: 40px;
-  width: 40px;
-  position: fixed;
-  top: 1vh;
-  left: 1vw;
-  svg {
-    width: 70%;
-    height: 70%;
-    position: relative;
-    left: 15%;
-    top: 20%;
-  }
-}
+
