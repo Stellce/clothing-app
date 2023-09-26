@@ -5,19 +5,18 @@
 </div>
 <mat-drawer-container>
   <mat-drawer class="filter" #drawer mode="over">
-  <app-filter (closeDrawer)="drawer.close()"></app-filter>
+    <app-filter (closeDrawer)="drawer.close()"></app-filter>
   </mat-drawer>
 
-  <div class="breadcrumb">
-    <a [routerLink]="['/']">Main page</a>/<a [routerLink]="['/' + this.gender]">{{this.gender}}</a>/{{this.category}}
-  </div>
+  <app-breadcrumb></app-breadcrumb>
+
   <div class="cloth-grid">
     <div class="card" *ngFor="let item of items">
       <img [src]="'data:image/png;base64,' + item.images[0]" [alt]=item.name />
 <!--      <div class="image"></div>-->
       <div class="card-bottom">
         <span>{{item.name}}</span>
-        <div class="price">{{item.price}}</div>
+        <div class="price">{{item.priceAfterDiscount}}</div>
       </div>
     </div>
   </div>

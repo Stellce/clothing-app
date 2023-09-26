@@ -1,0 +1,13 @@
+<div class="breadcrumb">
+  <div class="breadcrumb-link">
+    <a [routerLink]="['/']">Main page</a>
+  </div>
+  <span>/</span>
+  <div *ngFor="let u of this.url; let i = index"  class="breadcrumb-links">
+    <div class="breadcrumb-link">
+      <a *ngIf="i !== this.url.length - 1" [routerLink]="[generateLink(i)]">{{u.path}}</a>
+    </div>
+    <span *ngIf="i === this.url.length - 1">{{u.path}}</span>
+    <span *ngIf="i !== this.url.length - 1">/</span>
+  </div>
+</div>

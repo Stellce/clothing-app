@@ -20,9 +20,7 @@ export class CategoriesComponent implements OnInit{
     'UNDERWEAR',
     'SOCKS'
   ]
-  // gender: string | undefined;
   childGenders: string[] = ['boys', 'girls']
-  // gender: 'male' | 'female' | 'children';
   gender: string;
 
   constructor(private activatedRoute: ActivatedRoute) {}

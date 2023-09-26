@@ -1,0 +1,19 @@
+.breadcrumb-links > *{
+  display: inline;
+}
+
+.breadcrumb-links {
+  display: inline;
+}
+.breadcrumb-link {
+  display: inline;
+}
+
+.breadcrumb-link a{
+  text-decoration: none;
+  color: white;
+}
+
+.breadcrumb-link :hover{
+  color: #19ccb2;
+}

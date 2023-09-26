@@ -28,7 +28,7 @@ export class AppService {
   getItemsByFilter(filter: FilterModel) {
     let filterReady: FilterReady = {
       sort: filter.sortBy,
-      priceRange: [filter.priceFrom, filter.priceTo].join(","),
+      priceRange: (filter.priceFrom || filter.priceTo) ? [filter.priceFrom, filter.priceTo].join(",") : undefined,
       sizes: filter.sizes,
       colors: filter.colors,
       brands: filter.brands,

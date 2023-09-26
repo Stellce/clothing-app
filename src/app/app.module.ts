@@ -16,7 +16,7 @@ import {MatSliderModule} from "@angular/material/slider";
 import {MatInputModule} from "@angular/material/input";
 import {FormsModule} from "@angular/forms";
 import {MatChipsModule} from "@angular/material/chips";
-import {HttpClient, HttpClientModule} from "@angular/common/http";
+import {HttpClientModule} from "@angular/common/http";
 import {MatDividerModule} from "@angular/material/divider";
 import {MatSelectModule} from "@angular/material/select";
 import {MatExpansionModule} from "@angular/material/expansion";
@@ -25,6 +25,7 @@ import {MatPaginatorModule} from "@angular/material/paginator";
 import { ItemComponent } from './item/item.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { FilterComponent } from './filter/filter.component';
+import { BreadcrumbComponent } from './list-items/breadcrumb/breadcrumb.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { FilterComponent } from './filter/filter.component';
     ListItemsComponent,
     ItemComponent,
     CategoriesComponent,
-    FilterComponent
+    FilterComponent,
+    BreadcrumbComponent
   ],
   imports: [
     BrowserModule,
