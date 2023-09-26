@@ -13,15 +13,37 @@ export class AppService {
   items: ItemModel[];
   categoryId: number;
   category: string;
-  gender: 'male' | 'female' | 'children';
+  gender: string;
+  backendUrl: string = 'http://localhost:8765';
+
+  categories: string[] = [
+    'T_SHIRTS',
+    'SHIRTS',
+    'TROUSERS',
+    'SHORTS',
+    'HOODIES_AND_SWEATSHIRTS',
+    'SWEATERS',
+    'COATS',
+    'JACKETS',
+    'SHOES',
+    'UNDERWEAR',
+    'SOCKS'
+  ]
 
   constructor(private http: HttpClient) {}
 
   getItems() {
-    this.http.get<ResponseModel>(`http://localhost:8765/items/gender/${this.gender}/category/${this.categoryId}`).subscribe( data => {
+    let url: string;
+    let childGender = this.gender === 'boys' ? 'male' : 'female';
+    if(this.gender === 'boys' || this.gender === 'girls') {
+      url = this.backendUrl + `/items/age-group/children/gender/${childGender}/category/${this.categoryId}`;
+    } else {
+      url = this.backendUrl + `/items/gender/${this.gender}/category/${this.categoryId}`
+    }
+    this.http.get<ResponseModel>(url).subscribe( data => {
       this.items = [...data.content];
       this.itemsUpdated.next([...data.content]);
-      console.log(data)
+      // console.log(data)
     })
   }
 
@@ -37,7 +59,6 @@ export class AppService {
       rating: filter.rating
     }
     console.log(filterReady)
-
 
     let filterParams = new HttpParams();
     for (let [param, value] of Object.entries(filterReady)) {

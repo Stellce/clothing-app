@@ -14,19 +14,7 @@ export class ListItemsComponent implements OnInit, OnDestroy{
   items: ItemModel[] = [];
   itemsSub: Subscription;
   gender: string;
-  categories: string[] = [
-    'T_SHIRTS',
-    'SHIRTS',
-    'TROUSERS',
-    'SHORTS',
-    'HOODIES_AND_SWEATSHIRTS',
-    'SWEATERS',
-    'COATS',
-    'JACKETS',
-    'SHOES',
-    'UNDERWEAR',
-    'SOCKS'
-  ]
+  categories: string[];
   category: string;
   constructor(
     private appService: AppService,
@@ -35,22 +23,33 @@ export class ListItemsComponent implements OnInit, OnDestroy{
 
 
   ngOnInit() {
+    this.categories = this.appService.categories;
+
     let url = this.activatedRoute.snapshot.url;
+    let genderPath = url[0].path
+    let categoryPath = url[1].path;
 
-    this.appService.gender =
-      url[0].path === 'men' ? 'male' :
-        url[0].path === 'women' ? 'female' : 'children';
-    this.appService.categoryId = this.categories.indexOf(url[1].path) + 1;
+    if (url[0].path === 'children') {
+      genderPath = url[1].path;
+      categoryPath = url[2].path;
+    }
 
-    this.gender = url[0].path;
-    this.category = url[1].path;
+    this.gender = genderPath;
+    this.category = categoryPath;
+    this.appService.gender = this.gender;
 
-    this.appService.category = this.category;
+    if (this.gender === 'men') {
+      this.appService.gender = 'male';
+    } else if (this.gender === 'women') {
+      this.appService.gender = 'female';
+    }
+    this.appService.category = categoryPath;
+    this.appService.categoryId = this.categories.indexOf(categoryPath) + 1;
 
     this.itemsSub = this.appService.itemsUpdated
       .subscribe((items: ItemModel[]) => {
         this.items = items;
-      })
+      });
     this.appService.getItems();
   }
 

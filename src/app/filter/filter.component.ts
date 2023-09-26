@@ -10,7 +10,7 @@ import {AppService} from "../app.service";
 })
 export class FilterComponent implements OnInit{
   filters = {
-    colors: ['red', 'green', 'blue', 'pink', 'purple'],
+    colors: ['black', 'white', 'red', 'yellow', 'green', 'blue', 'violet', 'grey', 'multi'],
     sizes: ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL'],
     sort: [
       {
@@ -39,7 +39,8 @@ export class FilterComponent implements OnInit{
   subcategoriesCloth = ['JEANS', 'JOGGERS', 'SPORT'];
   subcategoriesShoes = ['SANDALS', 'SNEAKERS', 'BOOTS'];
 
-  filtersSelected: {sizes: string[], brands: string[]} = {
+  filtersSelected: {colors: string[], sizes: string[], brands: string[]} = {
+    colors: [],
     sizes: [],
     brands: []
   }
@@ -81,6 +82,13 @@ export class FilterComponent implements OnInit{
         this.filtersSelected.brands.push(filter);
       } else {
         this.filtersSelected.brands.splice(brandIndex, 1);
+      }
+    } else if (filterType === 'colors') {
+      const colorIndex = this.filtersSelected.colors.indexOf(filter);
+      if(colorIndex < 0) {
+        this.filtersSelected.colors.push(filter);
+      } else {
+        this.filtersSelected.colors.splice(colorIndex, 1);
       }
     }
     // console.log(this.filtersSelected);

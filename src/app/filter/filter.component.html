@@ -1,82 +1,75 @@
-
-  <div class="filter-centered-container">
-    <form #filterForm="ngForm" (submit)="onSubmitFilter(filterForm)">
-      <img class="logo" src="assets/logo.svg" alt="logo" height="47" width="26"/>
-      <div class="price-box">
-        <h3><span>Price</span></h3>
-        <div class="price-inputs">
-          <mat-form-field>
-            <input
-              type="number"
-              matInput
-              name="priceFrom"
-              ngModel
-              placeholder="From">
-          </mat-form-field>
-          <span> - </span>
-          <!--        <mat-slider min="0" max="500" color="mat-accent">-->
-          <!--          <input #sliderFrom [value]="filter.priceFrom" matSliderStartThumb>-->
-          <!--          <input #sliderTo [value]="filter.priceTo" matSliderEndThumb>-->
-          <!--        </mat-slider>-->
-          <mat-form-field>
-            <input
-              type="number"
-              matInput
-              name="priceTo"
-              ngModel
-              placeholder="To">
-          </mat-form-field>
-        </div>
+<div class="filter-centered-container">
+  <form #filterForm="ngForm" (submit)="onSubmitFilter(filterForm)">
+    <img class="logo" src="assets/logo.svg" alt="logo" height="47" width="26"/>
+    <div class="price-box">
+      <h3><span>Price</span></h3>
+      <div class="price-inputs">
+        <mat-form-field>
+          <input
+            type="number"
+            matInput
+            name="priceFrom"
+            ngModel
+            placeholder="From">
+        </mat-form-field>
+        <span> - </span>
+        <mat-form-field>
+          <input
+            type="number"
+            matInput
+            name="priceTo"
+            ngModel
+            placeholder="To">
+        </mat-form-field>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="selected-filters">
+      <div class="size-box">
+        <span>Size</span>
+        <mat-chip-listbox aria-label="filter selection" multiple>
+          <mat-chip-option *ngFor="let size of filters.sizes" [value]="size" (selectionChange)="changeFilter('size', size)">
+            {{size}}
+            <!--            <button matChipRemove [attr.aria-label]="'remove' + filter">-->
+            <!--              <mat-icon>cancel</mat-icon>-->
+            <!--            </button>-->
+          </mat-chip-option>
+        </mat-chip-listbox>
       </div>
       <mat-divider></mat-divider>
-      <div class="selected-filters">
-        <div class="size-box">
-          <span>Size</span>
-          <mat-chip-listbox aria-label="filter selection" multiple>
-            <mat-chip-option *ngFor="let size of filters.sizes" [value]="size" (selectionChange)="changeFilter('size', size)">
-              {{size}}
-              <!--            <button matChipRemove [attr.aria-label]="'remove' + filter">-->
-              <!--              <mat-icon>cancel</mat-icon>-->
-              <!--            </button>-->
-            </mat-chip-option>
-          </mat-chip-listbox>
-        </div>
-        <mat-divider></mat-divider>
-        <span>Sort by</span>
-        <mat-form-field>
-          <mat-label>Sort By</mat-label>
-          <mat-select ngModel name="sortBy">
-            <mat-option *ngFor="let sort of filters.sort" [value]="sort.value">
-              {{sort.name}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-divider></mat-divider>
-        <mat-form-field>
-          <mat-label>Subcategory</mat-label>
-          <mat-select ngModel name="subcategory">
-            <mat-option *ngFor="let subcategory of filters.subcategories" [value]="subcategory">{{subcategory}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-divider></mat-divider>
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title>Brand</mat-panel-title>
-          </mat-expansion-panel-header>
-          <section>
-            <mat-checkbox *ngFor="let brand of filters.brands" (change)="changeFilter('brand', brand)">{{brand}}</mat-checkbox>
-
-            <!--              <mat-checkbox ngModel [name]="brand" *ngFor="let brand of filters.brands" [value]="brand" (change)="changeFilter('brand', brand)">{{brand}}</mat-checkbox>-->
-          </section>
-        </mat-expansion-panel>
-      </div>
-      <!--      <div class="sizes">-->
-      <!--        <span *ngFor="let size of filters.sizes" (click)="changeFilter('size', size)">{{size}}</span>-->
-      <!--      </div>-->
+      <span>Sort by</span>
+      <mat-form-field>
+        <mat-label>Sort By</mat-label>
+        <mat-select ngModel name="sortBy">
+          <mat-option *ngFor="let sort of filters.sort" [value]="sort.value">
+            {{sort.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
       <mat-divider></mat-divider>
-      <button mat-raised-button id="filterButton" type="submit" color="primary" (click)="onCloseDrawer()">Filter</button>
-    </form>
-  </div>
+      <mat-form-field>
+        <mat-label>Subcategory</mat-label>
+        <mat-select ngModel name="subcategory">
+          <mat-option *ngFor="let subcategory of filters.subcategories" [value]="subcategory">{{subcategory}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-divider></mat-divider>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Brand</mat-panel-title>
+        </mat-expansion-panel-header>
+        <section>
+          <mat-checkbox *ngFor="let brand of filters.brands" (change)="changeFilter('brand', brand)">{{brand}}</mat-checkbox>
+        </section>
+      </mat-expansion-panel>
+    </div>
+      <div class="sizes">
+        <mat-checkbox *ngFor="let color of filters.colors" (click)="changeFilter('colors', color)">{{color}}</mat-checkbox>
+      </div>
+    <mat-divider></mat-divider>
+    <button mat-raised-button id="filterButton" type="submit" color="primary" (click)="onCloseDrawer()">Filter</button>
+  </form>
+</div>
 
 
 
