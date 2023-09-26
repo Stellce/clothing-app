@@ -27,7 +27,7 @@ export class ListItemsComponent implements OnInit, OnDestroy{
     'UNDERWEAR',
     'SOCKS'
   ]
-  category: string
+  category: string;
   constructor(
     private appService: AppService,
     private activatedRoute: ActivatedRoute
@@ -44,6 +44,8 @@ export class ListItemsComponent implements OnInit, OnDestroy{
 
     this.gender = url[0].path;
     this.category = url[1].path;
+
+    this.appService.category = this.category;
 
     this.itemsSub = this.appService.itemsUpdated
       .subscribe((items: ItemModel[]) => {

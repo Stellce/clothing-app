@@ -12,6 +12,7 @@ export class AppService {
   itemsUpdated = new Subject<ItemModel[]>;
   items: ItemModel[];
   categoryId: number;
+  category: string;
   gender: 'male' | 'female' | 'children';
 
   constructor(private http: HttpClient) {}
@@ -26,14 +27,14 @@ export class AppService {
 
   getItemsByFilter(filter: FilterModel) {
     let filterReady: FilterReady = {
-      sort: filter.sortBy || undefined,
-      priceRange: [filter.priceFrom, filter.priceTo].join(",") || undefined,
-      sizes: filter.sizes || undefined,
-      colors: filter.colors || undefined,
-      brands: filter.brands || undefined,
-      season: filter.season || undefined,
-      materials: filter.materials || undefined,
-      rating: filter.rating || undefined
+      sort: filter.sortBy,
+      priceRange: [filter.priceFrom, filter.priceTo].join(","),
+      sizes: filter.sizes,
+      colors: filter.colors,
+      brands: filter.brands,
+      season: filter.season,
+      materials: filter.materials,
+      rating: filter.rating
     }
     console.log(filterReady)
 

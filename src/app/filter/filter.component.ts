@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FilterModel} from "../filter.model";
 import {NgForm} from "@angular/forms";
 import {AppService} from "../app.service";
@@ -8,10 +8,10 @@ import {AppService} from "../app.service";
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.scss']
 })
-export class FilterComponent {
+export class FilterComponent implements OnInit{
   filters = {
-    sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
     colors: ['red', 'green', 'blue', 'pink', 'purple'],
+    sizes: ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL'],
     sort: [
       {
         name: 'popularity',
@@ -30,9 +30,14 @@ export class FilterComponent {
         value: 'newest'
       }
     ],
-    subcategories: ['JEANS', 'JOGGERS', 'SPORT', 'SANDALS', 'SNEAKERS', 'BOOTS'],
+    subcategories: ['JEANS', 'JOGGERS', 'SPORT'],
     brands: ['Adidas', 'Puma', 'Nike']
   };
+
+  sizesCloth = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL'];
+  sizesShoes = ['36', '37', '38', '39', '40', '41', '42', '43', '44', '45'];
+  subcategoriesCloth = ['JEANS', 'JOGGERS', 'SPORT'];
+  subcategoriesShoes = ['SANDALS', 'SNEAKERS', 'BOOTS'];
 
   filtersSelected: {sizes: string[], brands: string[]} = {
     sizes: [],
@@ -40,6 +45,16 @@ export class FilterComponent {
   }
   @Output() closeDrawer = new EventEmitter<void>();
     constructor(private appService: AppService) {}
+
+  ngOnInit() {
+      if(this.appService.category.toUpperCase() === 'SHOES') {
+        this.filters.sizes = this.sizesShoes;
+        this.filters.subcategories = this.subcategoriesShoes;
+      } else {
+        this.filters.sizes = this.sizesCloth;
+        this.filters.subcategories = this.subcategoriesCloth;
+      }
+  }
 
   onSubmitFilter(form: NgForm) {
     let filter: FilterModel = {
