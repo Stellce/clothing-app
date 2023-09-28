@@ -10,6 +10,8 @@
 
   <app-breadcrumb></app-breadcrumb>
 
+  <mat-spinner *ngIf="items.length <= 0" style="margin: 30dvh auto"></mat-spinner>
+
   <div class="cloth-grid">
     <div class="card" *ngFor="let item of items">
       <img [src]="'data:image/png;base64,' + item.images[0]" [alt]=item.name />

@@ -31,7 +31,7 @@ export class FilterComponent implements OnInit{
       }
     ],
     subcategories: ['JEANS', 'JOGGERS', 'SPORT'],
-    brands: ['Adidas', 'Puma', 'Nike']
+    brands: [{id: 0, name: ''}]
   };
 
   sizesCloth = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL'];
@@ -48,13 +48,22 @@ export class FilterComponent implements OnInit{
     constructor(private appService: AppService) {}
 
   ngOnInit() {
-      if(this.appService.category.toUpperCase() === 'SHOES') {
-        this.filters.sizes = this.sizesShoes;
-        this.filters.subcategories = this.subcategoriesShoes;
-      } else {
-        this.filters.sizes = this.sizesCloth;
-        this.filters.subcategories = this.subcategoriesCloth;
-      }
+    if(this.appService.category.toUpperCase() === 'SHOES') {
+      this.filters.sizes = this.sizesShoes;
+      this.filters.subcategories = this.subcategoriesShoes;
+    } else {
+      this.filters.sizes = this.sizesCloth;
+      this.filters.subcategories = this.subcategoriesCloth;
+    }
+    this.appService.getBrands().subscribe(brands => {
+      this.filters.brands = brands;
+    });
+  }
+
+  getColorOfColorFilter(color: string) {
+    let rainbow = 'linear-gradient(90deg, rgba(55,4,4,1) 0%, rgba(106,10,96,1) 16%, rgba(11,11,110,1) 30%, rgba(29,155,181,1) 45%, rgba(20,143,83,1) 59%, rgba(16,143,10,1) 72%, rgba(194,219,23,1) 83%, rgba(182,97,14,1) 100%);'
+    if (color === 'multi') return rainbow;
+    return color;
   }
 
   onSubmitFilter(form: NgForm) {

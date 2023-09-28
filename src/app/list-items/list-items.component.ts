@@ -43,8 +43,8 @@ export class ListItemsComponent implements OnInit, OnDestroy{
     } else if (this.gender === 'women') {
       this.appService.gender = 'female';
     }
-    this.appService.category = categoryPath;
-    this.appService.categoryId = this.categories.indexOf(categoryPath) + 1;
+    this.appService.category = categoryPath.toUpperCase();
+    // this.appService.categoryId = this.categories.indexOf(categoryPath) + 1;
 
     this.itemsSub = this.appService.itemsUpdated
       .subscribe((items: ItemModel[]) => {

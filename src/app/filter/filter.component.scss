@@ -58,12 +58,41 @@ section {
 mat-expansion-panel {
   margin: 20px 0;
 }
+.checkboxes-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.color-filter-active {
+  background: #19ccb2;
+  border-radius: 50px;
+  width: 50px;
+  height: 50px;
+}
+
+.multi {
+  background:
+    linear-gradient(45deg,
+      rgba(55,4,4,1) 0%,
+      rgba(106,10,96,1) 16%,
+      rgba(11,11,110,1) 30%,
+      rgba(29,155,181,1) 45%,
+      rgba(20,143,83,1) 59%,
+      rgba(16,143,10,1) 72%,
+      rgba(194,219,23,1) 83%,
+      rgba(182,97,14,1) 100%);;
+}
+
+.color-filter {
+  width: 40px;
+  height: 40px;
+  border-radius: 50px;
+  margin: 5px auto;
+}
+
 #filterButton {
   width: 100% !important;
   height: 5dvh;
   margin: 20px 0;
 }
 
-.logo{
-  color: #d9d9d9;
-}

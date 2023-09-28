@@ -6,7 +6,7 @@
 </div>
 <ng-template #categoriesList>
   <div class="categories-list">
-    <a class="category" *ngFor="let category of categories" [routerLink]="category" [ngStyle]="{background: this.gender === 'men' ? 'darkblue' : this.gender === 'women' ? 'darkred' : 'green'}">
+    <a class="category" *ngFor="let category of categories" [routerLink]="category | lowercase" [ngStyle]="{background: this.gender === 'men' ? 'darkblue' : this.gender === 'women' ? 'darkred' : 'green'}">
 <!--      <img [src]="category.src" *ngIf="category.src; else blackbox" alt="category image">-->
       <ng-template #blackbox><div class="black-box"></div></ng-template>
       {{category | uppercase}}

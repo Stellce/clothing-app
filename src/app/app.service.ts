@@ -15,6 +15,7 @@ export class AppService {
   category: string;
   gender: string;
   backendUrl: string = 'http://localhost:8765';
+  brandsUpdated = new Subject<{id: number, name: string}[]>()
 
   categories: string[] = [
     'T_SHIRTS',
@@ -32,7 +33,14 @@ export class AppService {
 
   constructor(private http: HttpClient) {}
 
-  getItems() {
+  getBrands() {
+    this.http.get<{id: number, name: string}[]>(this.backendUrl + `/items/brands`).subscribe(brands => {
+      this.brandsUpdated.next(brands);
+    })
+    return this.brandsUpdated.asObservable();
+  }
+  async getItems() {
+    this.categoryId = this.categories.indexOf(this.category) + 1;
     let url: string;
     let childGender = this.gender === 'boys' ? 'male' : 'female';
     if(this.gender === 'boys' || this.gender === 'girls') {
@@ -43,6 +51,7 @@ export class AppService {
     this.http.get<ResponseModel>(url).subscribe( data => {
       this.items = [...data.content];
       this.itemsUpdated.next([...data.content]);
+      return this.items;
       // console.log(data)
     })
   }
