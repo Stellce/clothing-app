@@ -26,6 +26,9 @@ import { ItemComponent } from './item/item.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { FilterComponent } from './filter/filter.component';
 import { BreadcrumbComponent } from './list-items/breadcrumb/breadcrumb.component';
+import { OutletComponent } from './outlet/outlet.component';
+import { CheckboxComponent } from './filter/checkbox/checkbox.component';
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @NgModule({
   declarations: [
@@ -35,7 +38,9 @@ import { BreadcrumbComponent } from './list-items/breadcrumb/breadcrumb.componen
     ItemComponent,
     CategoriesComponent,
     FilterComponent,
-    BreadcrumbComponent
+    BreadcrumbComponent,
+    OutletComponent,
+    CheckboxComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +61,8 @@ import { BreadcrumbComponent } from './list-items/breadcrumb/breadcrumb.componen
     MatSelectModule,
     MatExpansionModule,
     MatCheckboxModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
