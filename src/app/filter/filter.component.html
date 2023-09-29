@@ -67,10 +67,9 @@
     <app-checkbox text="checkbox"></app-checkbox>
       <div class="colors">
 <!--          <mat-checkbox class="color-filter" *ngFor="let color of filters.colors" (click)="changeFilter('colors', color)" [ngStyle]="{borderRadius: '1rem', border: '5px solid ' + getColorOfColorFilter(color), color: color === 'white' ? 'black' : '#d9d9d9'}">{{color}}</mat-checkbox>-->
-        <div class="color-filter-active" *ngFor="let color of filters.colors" (click)="changeFilter('colors', color)">
+        <div class="color-filter-active" [ngStyle]="{background: filtersSelected.colors.includes(color) ? '#19ccb2' : 'none'}" *ngFor="let color of filters.colors" (click)="changeFilter('colors', color)">
           <div class="color-filter" [ngClass]="{multi: color === 'multi'}" [ngStyle]="{background: getColorOfColorFilter(color), color: color === 'white' ? 'black' : '#d9d9d9'}"></div>
         </div>
-        <div class="test" [ngStyle]="{background: 'linear-gradient(90deg, rgba(55,4,4,1) 0%, rgba(106,10,96,1) 16%, rgba(11,11,110,1) 30%, rgba(29,155,181,1) 45%, rgba(20,143,83,1) 59%, rgba(16,143,10,1) 72%, rgba(194,219,23,1) 83%, rgba(182,97,14,1) 100%);'}"></div>
       </div>
     <mat-divider></mat-divider>
     <button mat-raised-button id="filterButton" type="submit" color="primary" (click)="onCloseDrawer()">Filter</button>

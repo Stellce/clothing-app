@@ -68,6 +68,8 @@ mat-expansion-panel {
   border-radius: 50px;
   width: 50px;
   height: 50px;
+  display: inline-block;
+  margin: 5px;
 }
 
 .multi {
@@ -80,7 +82,7 @@ mat-expansion-panel {
       rgba(20,143,83,1) 59%,
       rgba(16,143,10,1) 72%,
       rgba(194,219,23,1) 83%,
-      rgba(182,97,14,1) 100%);;
+      rgba(182,97,14,1) 100%);
 }
 
 .color-filter {
