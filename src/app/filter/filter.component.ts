@@ -30,7 +30,7 @@ export class FilterComponent implements OnInit{
         value: 'newest'
       }
     ],
-    subcategories: ['JEANS', 'JOGGERS', 'SPORT'],
+    subcategories: [' '],
     brands: [{id: 0, name: ''}]
   };
 
@@ -48,10 +48,11 @@ export class FilterComponent implements OnInit{
     constructor(private appService: AppService) {}
 
   ngOnInit() {
-    if(this.appService.category.toUpperCase() === 'SHOES') {
+    let category = this.appService.category.toUpperCase();
+    if(category === 'SHOES') {
       this.filters.sizes = this.sizesShoes;
       this.filters.subcategories = this.subcategoriesShoes;
-    } else {
+    } else if(category === 'TROUSERS') {
       this.filters.sizes = this.sizesCloth;
       this.filters.subcategories = this.subcategoriesCloth;
     }
@@ -60,11 +61,6 @@ export class FilterComponent implements OnInit{
     });
   }
 
-  getColorOfColorFilter(color: string) {
-    let rainbow = 'linear-gradient(90deg, rgba(55,4,4,1) 0%, rgba(106,10,96,1) 16%, rgba(11,11,110,1) 30%, rgba(29,155,181,1) 45%, rgba(20,143,83,1) 59%, rgba(16,143,10,1) 72%, rgba(194,219,23,1) 83%, rgba(182,97,14,1) 100%);'
-    if (color === 'multi') return rainbow;
-    return color;
-  }
 
   onSubmitFilter(form: NgForm) {
     let filter: FilterModel = {
@@ -77,29 +73,38 @@ export class FilterComponent implements OnInit{
     console.log(filter);
   }
 
-  changeFilter(filterType: string, filter: string) {
-    if (filterType === 'size') {
-      const sizeIndex = this.filtersSelected.sizes.indexOf(filter);
-      if ( sizeIndex < 0) {
-        this.filtersSelected.sizes.push(filter);
-      } else {
-        this.filtersSelected.sizes.splice(sizeIndex, 1);
-      }
-    } else if (filterType === 'brand') {
-      const brandIndex = this.filtersSelected.brands.indexOf(filter);
-      if (brandIndex < 0) {
-        this.filtersSelected.brands.push(filter);
-      } else {
-        this.filtersSelected.brands.splice(brandIndex, 1);
-      }
-    } else if (filterType === 'colors') {
-      const colorIndex = this.filtersSelected.colors.indexOf(filter);
-      if(colorIndex < 0) {
-        this.filtersSelected.colors.push(filter);
-      } else {
-        this.filtersSelected.colors.splice(colorIndex, 1);
-      }
-    }
+  changeFilter(filterType: 'colors' | 'brands' | 'sizes', filter: string) {
+    // console.log(filter)
+    const filterIndex = this.filtersSelected[filterType].indexOf(filter);
+    const NOT_FOUND = -1;
+    filterIndex === NOT_FOUND ?
+      this.filtersSelected[filterType].push(filter) :
+      this.filtersSelected[filterType].splice(filterIndex, 1);
+    console.log(this.filtersSelected);
+    // if (filterType === 'size') {
+    //   const sizeIndex = this.filtersSelected.sizes.indexOf(filter);
+    //   if ( sizeIndex < 0) {
+    //     this.filtersSelected.sizes.push(filter);
+    //   } else {
+    //     this.filtersSelected.sizes.splice(sizeIndex, 1);
+    //   }
+    // } else if (filterType === 'brand') {
+    //   const brandIndex = this.filtersSelected.brands.indexOf(filter);
+    //   if (brandIndex < 0) {
+    //     this.filtersSelected.brands.push(filter);
+    //   } else {
+    //     this.filtersSelected.brands.splice(brandIndex, 1);
+    //   }
+    // } else if (filterType === 'colors') {
+    //   const colorIndex = this.filtersSelected.colors.indexOf(filter);
+    //   if(colorIndex < 0) {
+    //     console.log('not found');
+    //     this.filtersSelected.colors.push(filter);
+    //   } else {
+    //     console.log('found');
+    //     this.filtersSelected.colors.splice(colorIndex, 1);
+    //   }
+    // }
     // console.log(this.filtersSelected);
   }
 

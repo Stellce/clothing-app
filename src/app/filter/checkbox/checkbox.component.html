@@ -1,4 +1,4 @@
-<div class="item-bg">{{itemText}}
-  <input type="checkbox">
-  <span class="checkmark mat-checkbox-checkmark"></span>
-</div>
+<label class="item-bg">{{itemText[0].toUpperCase() + itemText.slice(1)}}
+  <input type="checkbox" [name]="inputName" [value]="inputValue">
+  <span class="checkmark" [ngClass]="darkColors.includes(bgColor.toLowerCase()) ? 'color-white' : 'color-black'" [ngStyle]="{background: getColorOfColorFilter(bgColor)}"></span>
+</label>

@@ -86,11 +86,27 @@ mat-expansion-panel {
 }
 
 .color-filter {
-  width: 40px;
-  height: 40px;
-  border-radius: 50px;
+  width: 25px;
+  height: 25px;
+  border-radius: 0.75rem;
   margin: 5px auto;
+  position: relative;
 }
+
+//.color-filter:after {
+//  position: absolute;
+//  content: "";
+//  width: 5px;
+//  height: 10px;
+//  //background: black;
+//
+//  transform: rotate(45deg);
+//  border: solid black;
+//  border-width: 0 3px 3px 0 ;
+//  left: 9px;
+//  top: 5px;
+//  //display: none;
+//}
 
 #filterButton {
   width: 100% !important;
