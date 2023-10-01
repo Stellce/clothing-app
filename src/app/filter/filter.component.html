@@ -12,7 +12,7 @@
             ngModel
             placeholder="From">
         </mat-form-field>
-        <span> - </span>
+        <span class="dash"> - </span>
         <mat-form-field>
           <input
             type="number"
@@ -22,38 +22,42 @@
             placeholder="To">
         </mat-form-field>
       </div>
-    </div>
-    <mat-divider></mat-divider>
-    <div class="selected-filters">
-      <div class="size-box">
-        <span>Size</span>
-        <mat-chip-listbox aria-label="filter selection" multiple>
-          <mat-chip-option *ngFor="let size of filters.sizes" [value]="size" (selectionChange)="changeFilter('sizes', size)">
-            {{size}}
-            <!--            <button matChipRemove [attr.aria-label]="'remove' + filter">-->
-            <!--              <mat-icon>cancel</mat-icon>-->
-            <!--            </button>-->
-          </mat-chip-option>
-        </mat-chip-listbox>
-      </div>
       <mat-divider></mat-divider>
+  </div>
+    <div class="size-box">
+      <span>Size</span>
+      <mat-chip-listbox aria-label="filter selection" multiple>
+        <mat-chip-option *ngFor="let size of filters.sizes" [value]="size" (selectionChange)="changeFilter('sizes', size)">
+          {{size}}
+          <!--            <button matChipRemove [attr.aria-label]="'remove' + filter">-->
+          <!--              <mat-icon>cancel</mat-icon>-->
+          <!--            </button>-->
+        </mat-chip-option>
+      </mat-chip-listbox>
+      <mat-divider></mat-divider>
+    </div>
+    <div class="sortBy">
       <span>Sort by</span>
       <mat-form-field>
         <mat-label>Sort By</mat-label>
         <mat-select ngModel name="sortBy">
           <mat-option *ngFor="let sort of filters.sort" [value]="sort.value">
-            {{sort.name}}
+            {{sort.name[0].toUpperCase() + sort.name.slice(1)}}
           </mat-option>
         </mat-select>
       </mat-form-field>
       <mat-divider></mat-divider>
-      <mat-form-field *ngIf="filters.subcategories">
+    </div>
+    <div class="subcategories" *ngIf="filters.subcategories[0]">
+      <mat-form-field>
         <mat-label>Subcategory</mat-label>
         <mat-select ngModel name="subcategory">
           <mat-option *ngFor="let subcategory of filters.subcategories" [value]="subcategory">{{subcategory}}</mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-divider></mat-divider>
+    <mat-divider></mat-divider>
+    </div>
+    <div class="brands">
       <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title>Brand</mat-panel-title>
@@ -62,16 +66,17 @@
           <mat-checkbox *ngFor="let brand of filters.brands" (change)="changeFilter('brands', brand.name)">{{brand.name}}</mat-checkbox>
         </div>
       </mat-expansion-panel>
+      <mat-divider></mat-divider>
     </div>
-    <mat-divider></mat-divider>
-      <div class="colors">
-        <!--          <mat-checkbox class="color-filter" *ngFor="let color of filters.colors" (click)="changeFilter('colors', color)" [ngStyle]="{borderRadius: '1rem', border: '5px solid ' + getColorOfColorFilter(color), color: color === 'white' ? 'black' : '#d9d9d9'}">{{color}}</mat-checkbox>-->
-        <!--        <div class="color-filter-active" [ngStyle]="{background: filtersSelected.colors.includes(color) ? '#19ccb2' : 'none'}" *ngFor="let color of filters.colors" (click)="changeFilter('colors', color)">-->
-        <!--          <div class="color-filter" [ngClass]="{multi: color === 'multi'}" [ngStyle]="{background: getColorOfColorFilter(color), color: color === 'white' ? 'black' : '#d9d9d9'}"></div>-->
-        <!--        </div>-->
-        <app-checkbox *ngFor="let colorFilter of filters.colors" [text]="colorFilter" [bgColor]="colorFilter" (change)="changeFilter('colors', colorFilter)"></app-checkbox>
-      </div>
-    <mat-divider></mat-divider>
+    <div class="colors">
+      <div class="label"><span>Colors</span></div>
+      <!--          <mat-checkbox class="color-filter" *ngFor="let color of filters.colors" (click)="changeFilter('colors', color)" [ngStyle]="{borderRadius: '1rem', border: '5px solid ' + getColorOfColorFilter(color), color: color === 'white' ? 'black' : '#d9d9d9'}">{{color}}</mat-checkbox>-->
+      <!--        <div class="color-filter-active" [ngStyle]="{background: filtersSelected.colors.includes(color) ? '#19ccb2' : 'none'}" *ngFor="let color of filters.colors" (click)="changeFilter('colors', color)">-->
+      <!--          <div class="color-filter" [ngClass]="{multi: color === 'multi'}" [ngStyle]="{background: getColorOfColorFilter(color), color: color === 'white' ? 'black' : '#d9d9d9'}"></div>-->
+      <!--        </div>-->
+      <app-checkbox *ngFor="let colorFilter of filters.colors" [text]="colorFilter" [bgColor]="colorFilter" (change)="changeFilter('colors', colorFilter)"></app-checkbox>
+      <mat-divider></mat-divider>
+    </div>
     <button mat-raised-button id="filterButton" type="submit" color="primary" (click)="onCloseDrawer()">Filter</button>
   </form>
 </div>

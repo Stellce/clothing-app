@@ -25,7 +25,9 @@ form {
   margin: 0 10px;
 }
 .price-box {
-  margin-top: 10px;
+  h3 {
+    margin-left: 2dvw;
+  }
   mat-form-field {
     width: 45%;
   }
@@ -33,6 +35,10 @@ form {
     display: flex;
     justify-content: space-around;
     align-items: center;
+    flex-direction: row;
+  }
+  .dash {
+    display: inline;
   }
 }
 .selected-filters span {
@@ -40,16 +46,31 @@ form {
   margin: 15px 0 10px 0;
 }
 .size-box {
-  margin: 15px;
+  margin-top: 10px;
   span {
-    margin: 10px 0;
+    margin: 10px;
+  }
+  mat-divider {
+    margin-top: 10px;
   }
 }
-mat-divider {
-  margin: 5px 0;
+.sortBy {
+  margin-top: 10px;
+  mat-form-field {
+    width: 100%;
+  }
+}
+.colors {
+  margin: 10px 0;
+  .label {
+    margin: 10px;
+  }
+  mat-divider {
+    margin-top: 10px;
+  }
 }
 mat-form-field {
-  margin-top: 20px;
+  margin-top: 10px;
 }
 section {
   display: flex;
@@ -63,54 +84,27 @@ mat-expansion-panel {
   flex-direction: column;
 }
 
-.color-filter-active {
-  background: #19ccb2;
-  border-radius: 50px;
-  width: 50px;
-  height: 50px;
-  display: inline-block;
-  margin: 5px;
-}
-
-.multi {
-  background:
-    linear-gradient(45deg,
-      rgba(55,4,4,1) 0%,
-      rgba(106,10,96,1) 16%,
-      rgba(11,11,110,1) 30%,
-      rgba(29,155,181,1) 45%,
-      rgba(20,143,83,1) 59%,
-      rgba(16,143,10,1) 72%,
-      rgba(194,219,23,1) 83%,
-      rgba(182,97,14,1) 100%);
-}
-
-.color-filter {
-  width: 25px;
-  height: 25px;
-  border-radius: 0.75rem;
-  margin: 5px auto;
-  position: relative;
-}
-
-//.color-filter:after {
-//  position: absolute;
-//  content: "";
-//  width: 5px;
-//  height: 10px;
-//  //background: black;
-//
-//  transform: rotate(45deg);
-//  border: solid black;
-//  border-width: 0 3px 3px 0 ;
-//  left: 9px;
-//  top: 5px;
-//  //display: none;
-//}
-
 #filterButton {
   width: 100% !important;
   height: 5dvh;
   margin: 20px 0;
 }
 
+@media only screen and (max-width: 320px) {
+  .price-box {
+    mat-form-field {
+      width: 100%;
+    }
+    .price-inputs {
+      flex-direction: column;
+    }
+    .dash {
+      display: none;
+    }
+  }
+
+  .price-box :nth-child(2) {
+    margin: 0;
+  }
+
+}

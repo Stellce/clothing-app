@@ -26,11 +26,11 @@ export class FilterComponent implements OnInit{
         value: 'price_desc'
       },
       {
-        name: 'new',
+        name: 'newest',
         value: 'newest'
       }
     ],
-    subcategories: [' '],
+    subcategories: [''],
     brands: [{id: 0, name: ''}]
   };
 
