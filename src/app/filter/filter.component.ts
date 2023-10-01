@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, ViewEncapsulation} from '@angular/core';
 import {FilterModel} from "../filter.model";
 import {NgForm} from "@angular/forms";
 import {AppService} from "../app.service";
@@ -6,7 +6,8 @@ import {AppService} from "../app.service";
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
-  styleUrls: ['./filter.component.scss']
+  styleUrls: ['./filter.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class FilterComponent implements OnInit{
   filters = {

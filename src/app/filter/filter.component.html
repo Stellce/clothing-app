@@ -2,7 +2,7 @@
   <form #filterForm="ngForm" (submit)="onSubmitFilter(filterForm)">
     <img class="logo" src="assets/logo.svg" alt="logo" height="47" width="26"/>
     <div class="price-box">
-      <h3><span>Price</span></h3>
+      <div class="label"><span>Price</span></div>
       <div class="price-inputs">
         <mat-form-field>
           <input
@@ -25,7 +25,7 @@
       <mat-divider></mat-divider>
   </div>
     <div class="size-box">
-      <span>Size</span>
+      <div class="label"><span>Size</span></div>
       <mat-chip-listbox aria-label="filter selection" multiple>
         <mat-chip-option *ngFor="let size of filters.sizes" [value]="size" (selectionChange)="changeFilter('sizes', size)">
           {{size}}
@@ -37,9 +37,9 @@
       <mat-divider></mat-divider>
     </div>
     <div class="sortBy">
-      <span>Sort by</span>
+      <div class="label"><span>Sort by</span></div>
       <mat-form-field>
-        <mat-label>Sort By</mat-label>
+        <mat-label><div class="label"><span>Sort By</span></div></mat-label>
         <mat-select ngModel name="sortBy">
           <mat-option *ngFor="let sort of filters.sort" [value]="sort.value">
             {{sort.name[0].toUpperCase() + sort.name.slice(1)}}
@@ -49,6 +49,7 @@
       <mat-divider></mat-divider>
     </div>
     <div class="subcategories" *ngIf="filters.subcategories[0]">
+      <div class="label"><span>Subcategory</span></div>
       <mat-form-field>
         <mat-label>Subcategory</mat-label>
         <mat-select ngModel name="subcategory">
@@ -60,7 +61,7 @@
     <div class="brands">
       <mat-expansion-panel>
         <mat-expansion-panel-header>
-          <mat-panel-title>Brand</mat-panel-title>
+          <mat-panel-title><div class="label"><span>Brands</span></div></mat-panel-title>
         </mat-expansion-panel-header>
         <div class="checkboxes-column">
           <mat-checkbox *ngFor="let brand of filters.brands" (change)="changeFilter('brands', brand.name)">{{brand.name}}</mat-checkbox>
@@ -68,13 +69,13 @@
       </mat-expansion-panel>
       <mat-divider></mat-divider>
     </div>
-    <div class="colors">
-      <div class="label"><span>Colors</span></div>
-      <!--          <mat-checkbox class="color-filter" *ngFor="let color of filters.colors" (click)="changeFilter('colors', color)" [ngStyle]="{borderRadius: '1rem', border: '5px solid ' + getColorOfColorFilter(color), color: color === 'white' ? 'black' : '#d9d9d9'}">{{color}}</mat-checkbox>-->
-      <!--        <div class="color-filter-active" [ngStyle]="{background: filtersSelected.colors.includes(color) ? '#19ccb2' : 'none'}" *ngFor="let color of filters.colors" (click)="changeFilter('colors', color)">-->
-      <!--          <div class="color-filter" [ngClass]="{multi: color === 'multi'}" [ngStyle]="{background: getColorOfColorFilter(color), color: color === 'white' ? 'black' : '#d9d9d9'}"></div>-->
-      <!--        </div>-->
-      <app-checkbox *ngFor="let colorFilter of filters.colors" [text]="colorFilter" [bgColor]="colorFilter" (change)="changeFilter('colors', colorFilter)"></app-checkbox>
+    <div class="colors box">
+      <mat-expansion-panel expanded="true">
+        <mat-expansion-panel-header>
+          <div class="label"><span>Colors</span></div>
+        </mat-expansion-panel-header>
+        <app-checkbox *ngFor="let colorFilter of filters.colors" [text]="colorFilter" [bgColor]="colorFilter" (change)="changeFilter('colors', colorFilter)"></app-checkbox>
+      </mat-expansion-panel>
       <mat-divider></mat-divider>
     </div>
     <button mat-raised-button id="filterButton" type="submit" color="primary" (click)="onCloseDrawer()">Filter</button>
