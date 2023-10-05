@@ -4,6 +4,7 @@ import {AppService} from "../app.service";
 import {Subscription} from "rxjs";
 import {PageEvent} from "@angular/material/paginator";
 import {ActivatedRoute} from "@angular/router";
+import {Category} from "./category.model";
 
 @Component({
   selector: 'app-list-items',
@@ -15,7 +16,7 @@ export class ListItemsComponent implements OnInit, OnDestroy{
   items: ItemModel[] = [];
   itemsSub: Subscription;
   gender: string;
-  categories: string[];
+  categories: Category[];
   category: string;
   constructor(
     private appService: AppService,

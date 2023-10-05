@@ -57,6 +57,10 @@ form {
     width: 100%;
   }
 }
+.checkboxes-column {
+  display: flex;
+  flex-direction: column;
+}
 .label {
   margin: 10px;
 }

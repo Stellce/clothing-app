@@ -4,10 +4,6 @@
   margin: 2dvw 5dvw;
 }
 
-#arrowBack {
-  color: white;
-}
-
 app-breadcrumb {
   //float: left;
   display: block;
@@ -42,6 +38,18 @@ app-breadcrumb {
   margin: 90% auto 0;
   font-size: 14px;
   z-index: 5;
+}
+
+.category span:hover + .darken {
+  background: linear-gradient(rgba(100, 100, 100,0), rgba(0, 0, 0, 250));
+  transform: scale(1.1);
+  z-index: 4;
+}
+
+.category span:hover + .category-image {
+  background: linear-gradient(rgba(100, 100, 100,0), rgba(0, 0, 0, 250));
+  transform: scale(1.1);
+  z-index: 3;
 }
 
 .darken {

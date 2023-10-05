@@ -61,6 +61,7 @@ export class FilterComponent implements OnInit{
     this.appService.brandsUpdated.subscribe(brands => {
       this.filters.brands = brands;
     });
+    this.appService.getBrands();
   }
 
 
