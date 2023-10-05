@@ -7,7 +7,8 @@ import {ActivatedRoute} from "@angular/router";
   styleUrls: ['./categories.component.scss']
 })
 export class CategoriesComponent implements OnInit{
-  categories = [
+
+  categories: string[] = [
     'T_SHIRTS',
     'SHIRTS',
     'TROUSERS',
@@ -20,6 +21,7 @@ export class CategoriesComponent implements OnInit{
     'UNDERWEAR',
     'SOCKS'
   ]
+  testPath: string = './assets/categories/men/SHIRTS.png'
   childGenders: string[] = ['boys', 'girls']
   gender: string;
 
@@ -30,5 +32,9 @@ export class CategoriesComponent implements OnInit{
       this.gender = url[0].path;
     })
     // console.log(this.gender);
+  }
+
+  getCategoryImagePath(category: string) {
+    return `assets/categories/${this.gender}/${category}.png`
   }
 }

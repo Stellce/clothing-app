@@ -13,14 +13,7 @@
   <mat-spinner *ngIf="items.length <= 0" style="margin: 30dvh auto"></mat-spinner>
 
   <div class="cloth-grid">
-    <div class="card" *ngFor="let item of items">
-      <img [src]="'data:image/png;base64,' + item.images[0]" [alt]=item.name />
-<!--      <div class="image"></div>-->
-      <div class="card-bottom">
-        <span>{{item.name}}</span>
-        <div class="price">{{item.priceAfterDiscount}}</div>
-      </div>
-    </div>
+    <app-item *ngFor="let item of items" [item]="item"></app-item>
   </div>
   <footer>
   </footer>

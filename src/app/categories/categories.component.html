@@ -1,15 +1,25 @@
-<div class="child-genders" *ngIf="gender === 'children'; else categoriesList">
-  <div class="child-gender" *ngFor="let cGender of childGenders" [ngStyle]="{background: cGender === 'boys' ? 'turquoise' : 'pink'}">
-    {{cGender | uppercase}}
-    <a *ngFor="let category of categories" [routerLink]="[cGender, category]" class="category">{{category | uppercase}}</a>
+<div class="categories">
+  <div class="breadcrumb-wrapper"><app-breadcrumb>
+    <span>&#5130;</span></app-breadcrumb>
   </div>
-</div>
-<ng-template #categoriesList>
-  <div class="categories-list">
-    <a class="category" *ngFor="let category of categories" [routerLink]="category | lowercase" [ngStyle]="{background: this.gender === 'men' ? 'darkblue' : this.gender === 'women' ? 'darkred' : 'green'}">
-<!--      <img [src]="category.src" *ngIf="category.src; else blackbox" alt="category image">-->
-      <ng-template #blackbox><div class="black-box"></div></ng-template>
-      {{category | uppercase}}
+  <div class="categories-list" *ngIf="gender !== 'children'; else childrenCategories">
+    <a class="category"
+       *ngFor="let category of categories"
+       [routerLink]="category | lowercase"
+       [ngStyle]="{background: this.gender === 'men' ? 'darkblue' : this.gender === 'women' ? 'darkred' : 'green'}"
+    >
+      <div class="darken"></div>
+      <img class="category-image" [src]="getCategoryImagePath(category)" [alt]="category">
+      <span>{{category | uppercase}}</span>
     </a>
   </div>
-</ng-template>
+  <ng-template #childrenCategories>
+    <div class="child-genders" >
+      <div class="child-gender" *ngFor="let cGender of childGenders" [ngStyle]="{background: cGender === 'boys' ? 'turquoise' : 'pink'}">
+        {{cGender | uppercase}}
+        <a *ngFor="let category of categories" [routerLink]="[cGender, category | lowercase]" class="category">{{category | uppercase}}</a>
+      </div>
+    </div>
+  </ng-template>
+
+</div>

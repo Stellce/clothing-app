@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {FilterModel, FilterReady} from "./filter.model";
 import {ItemModel} from "./item.model";
-import {Subject} from "rxjs";
+import {Subject, Subscription} from "rxjs";
 import {ResponseModel} from "./response.model";
 
 @Injectable({
@@ -16,6 +16,8 @@ export class AppService {
   gender: string;
   backendUrl: string = 'http://localhost:8765';
   brandsUpdated = new Subject<{id: number, name: string}[]>()
+
+  getItemsSub: Subscription;
 
   categories: string[] = [
     'T_SHIRTS',
@@ -39,7 +41,7 @@ export class AppService {
     })
     return this.brandsUpdated.asObservable();
   }
-  async getItems() {
+  getItems() {
     this.categoryId = this.categories.indexOf(this.category) + 1;
     let url: string;
     let childGender = this.gender === 'boys' ? 'male' : 'female';
@@ -50,9 +52,8 @@ export class AppService {
     }
     this.http.get<ResponseModel>(url).subscribe( data => {
       this.items = [...data.content];
+      console.log(data)
       this.itemsUpdated.next([...data.content]);
-      return this.items;
-      // console.log(data)
     })
   }
 

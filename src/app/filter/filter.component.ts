@@ -45,6 +45,7 @@ export class FilterComponent implements OnInit{
     sizes: [],
     brands: []
   }
+
   @Output() closeDrawer = new EventEmitter<void>();
     constructor(private appService: AppService) {}
 
@@ -57,7 +58,7 @@ export class FilterComponent implements OnInit{
       this.filters.sizes = this.sizesCloth;
       this.filters.subcategories = this.subcategoriesCloth;
     }
-    this.appService.getBrands().subscribe(brands => {
+    this.appService.brandsUpdated.subscribe(brands => {
       this.filters.brands = brands;
     });
   }

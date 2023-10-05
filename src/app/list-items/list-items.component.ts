@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {ItemModel} from "../item.model";
 import {AppService} from "../app.service";
 import {Subscription} from "rxjs";
@@ -8,7 +8,8 @@ import {ActivatedRoute} from "@angular/router";
 @Component({
   selector: 'app-list-items',
   templateUrl: './list-items.component.html',
-  styleUrls: ['./list-items.component.scss']
+  styleUrls: ['./list-items.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ListItemsComponent implements OnInit, OnDestroy{
   items: ItemModel[] = [];

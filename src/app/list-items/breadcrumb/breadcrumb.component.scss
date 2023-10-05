@@ -1,3 +1,7 @@
+.breadcrumb {
+  color: white;
+}
+
 .breadcrumb-links > *{
   display: inline;
 }
@@ -15,5 +19,8 @@
 }
 
 .breadcrumb-link :hover{
+  color: #19ccb2;
+}
+ng-content:hover {
   color: #19ccb2;
 }

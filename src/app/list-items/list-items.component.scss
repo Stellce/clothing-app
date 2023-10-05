@@ -44,32 +44,10 @@ h1, h2, h3, h4, h5, h6 {
   width: 90vw;
 }
 
-.card{
-  display: flex;
-  flex-direction: column;
-  color: $text-color;
-  background: $dark-theme-background;
-  overflow: hidden;
-  img {
-    width: 100%;
-    border-radius: 4px;
-    object-fit: cover;
-  }
-  .image {
-    width: 100%;
-    aspect-ratio: 1/1;
-    background: linear-gradient(#444444, #2c2c2c);
-    border-radius: 4px;
-    object-fit: cover;
-  }
+.mat-mdc-progress-spinner {
+  --mdc-circular-progress-active-indicator-color: blue;
 }
 
-.card-bottom {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 0;
-}
 
 footer {
   //height: 250px;

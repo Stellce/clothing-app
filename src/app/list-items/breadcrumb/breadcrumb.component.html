@@ -1,6 +1,9 @@
 <div class="breadcrumb">
   <div class="breadcrumb-link">
-    <a [routerLink]="['/']">Main page</a>
+    <a [routerLink]="['/']">
+      <ng-content></ng-content>
+      Main page
+    </a>
   </div>
   <span>/</span>
   <div *ngFor="let u of this.url; let i = index"  class="breadcrumb-links">
