@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {FilterModel, FilterReady} from "./filter.model";
 import {ItemModel} from "./item.model";
-import {Subject, Subscription} from "rxjs";
+import {Subject} from "rxjs";
 import {ResponseModel} from "./response.model";
 import {Category} from "./list-items/category.model";
 
@@ -10,16 +10,16 @@ import {Category} from "./list-items/category.model";
   providedIn: 'root'
 })
 export class AppService {
-  itemsUpdated = new Subject<ItemModel[]>;
-  items: ItemModel[];
-  categoryId: number;
-  category: string;
-  gender: string;
   backendUrl: string = 'http://localhost:8765';
-  brandsUpdated = new Subject<{id: number, name: string}[]>()
-  // categoriesUpdated = new Subject<any>();
-  getItemsSub: Subscription;
+
+  gender: string;
+  items: ItemModel[];
+  itemsUpdated = new Subject<ItemModel[]>;
+  category: string;
   categories: Category[];
+  categoryId: number;
+  brandsUpdated = new Subject<{id: number, name: string}[]>();
+  subcategoriesUpdated = new Subject<string[]>();
 
   constructor(private http: HttpClient) {}
 
@@ -34,6 +34,22 @@ export class AppService {
       )
   }
 
+  getSubcategories() {
+    this.getCategories().subscribe(categories => {
+      this.categoryId = categories.find(category => category.name === this.category)!.id;
+
+      this.http
+        .get<{id: number, name: string}[]>(
+          this.backendUrl + `/items/categories/${this.categoryId}/subcategories`
+        )
+        .subscribe(subcategories => {
+          let subcategoriesNames = subcategories.map(subcategory => subcategory.name);
+          console.log(subcategories);
+          this.subcategoriesUpdated.next(subcategoriesNames);
+        })
+    })
+  }
+
   getBrands() {
     this.http.get<{id: number, name: string}[]>(this.backendUrl + `/items/brands`).subscribe(brands => {
       this.brandsUpdated.next(brands);
@@ -41,18 +57,17 @@ export class AppService {
   }
 
   getItems() {
-    // this.categoryId = this.categories.find(category => category.name === this.category)!.id;
     this.getCategories().subscribe(categories => {
-      this.categoryId = categories.find(category => category.name === this.category)!.id;
-      console.log(this.categoryId);
-
       let url: string;
       let childGender = this.gender === 'boys' ? 'male' : 'female';
+      this.categoryId = categories.find(category => category.name === this.category)!.id;
+
       if(this.gender === 'boys' || this.gender === 'girls') {
         url = this.backendUrl + `/items/age-group/children/gender/${childGender}/category/${this.categoryId}`;
       } else {
         url = this.backendUrl + `/items/gender/${this.gender}/category/${this.categoryId}`
       }
+
       this.http.get<ResponseModel>(url).subscribe( data => {
         this.items = [...data.content];
         console.log(data)

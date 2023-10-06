@@ -29,6 +29,7 @@ import { BreadcrumbComponent } from './list-items/breadcrumb/breadcrumb.componen
 import { OutletComponent } from './outlet/outlet.component';
 import { CheckboxComponent } from './filter/checkbox/checkbox.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatTabsModule} from "@angular/material/tabs";
 
 @NgModule({
   declarations: [
@@ -42,28 +43,29 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
     OutletComponent,
     CheckboxComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatCardModule,
-    MatIconModule,
-    MatSidenavModule,
-    NgOptimizedImage,
-    MatSliderModule,
-    MatInputModule,
-    FormsModule,
-    MatChipsModule,
-    MatDividerModule,
-    MatSelectModule,
-    MatExpansionModule,
-    MatCheckboxModule,
-    MatPaginatorModule,
-    MatProgressSpinnerModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        HttpClientModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatCardModule,
+        MatIconModule,
+        MatSidenavModule,
+        NgOptimizedImage,
+        MatSliderModule,
+        MatInputModule,
+        FormsModule,
+        MatChipsModule,
+        MatDividerModule,
+        MatSelectModule,
+        MatExpansionModule,
+        MatCheckboxModule,
+        MatPaginatorModule,
+        MatProgressSpinnerModule,
+        MatTabsModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

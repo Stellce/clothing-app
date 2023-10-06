@@ -2,7 +2,6 @@ import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {ItemModel} from "../item.model";
 import {AppService} from "../app.service";
 import {Subscription} from "rxjs";
-import {PageEvent} from "@angular/material/paginator";
 import {ActivatedRoute} from "@angular/router";
 import {Category} from "./category.model";
 
@@ -13,11 +12,14 @@ import {Category} from "./category.model";
   encapsulation: ViewEncapsulation.None
 })
 export class ListItemsComponent implements OnInit, OnDestroy{
+  gender: string;
   items: ItemModel[] = [];
   itemsSub: Subscription;
-  gender: string;
   categories: Category[];
+  categoriesSub: Subscription;
   category: string;
+  subcategories: string[] = [];
+  subcategoriesSub: Subscription;
   constructor(
     private appService: AppService,
     private activatedRoute: ActivatedRoute
@@ -46,20 +48,21 @@ export class ListItemsComponent implements OnInit, OnDestroy{
       this.appService.gender = 'female';
     }
     this.appService.category = categoryPath.toUpperCase();
-    // this.appService.categoryId = this.categories.indexOf(categoryPath) + 1;
 
     this.itemsSub = this.appService.itemsUpdated
       .subscribe((items: ItemModel[]) => {
         this.items = items;
       });
+    this.subcategoriesSub = this.appService.subcategoriesUpdated.subscribe(subcategories => {
+      this.subcategories = subcategories;
+    });
     this.appService.getItems();
-  }
-
-  handlePageEvent(e: PageEvent) {
-    e.pageIndex;
+    this.appService.getSubcategories();
   }
 
   ngOnDestroy() {
     this.itemsSub.unsubscribe();
+    // this.categoriesSub.unsubscribe();
+    // this.subcategoriesSub.unsubscribe();
   }
 }

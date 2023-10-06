@@ -7,14 +7,24 @@
   <mat-drawer class="filter" #drawer mode="over">
     <app-filter (closeDrawer)="drawer.close()"></app-filter>
   </mat-drawer>
-
   <app-breadcrumb></app-breadcrumb>
-
-  <mat-spinner *ngIf="items.length <= 0" style="margin: 30dvh auto"></mat-spinner>
-
-  <div class="cloth-grid">
-    <app-item *ngFor="let item of items" [item]="item"></app-item>
-  </div>
+  <mat-tab-group>
+    <mat-tab label="subcategory 1" *ngIf="subcategories.length === 0">
+      <mat-spinner></mat-spinner>
+    </mat-tab>
+    <mat-tab label="subcategory 2" *ngIf="subcategories.length === 0">
+      <mat-spinner></mat-spinner>
+    </mat-tab>
+    <mat-tab label="subcategory 3" *ngIf="subcategories.length === 0">
+      <mat-spinner></mat-spinner>
+    </mat-tab>
+    <mat-tab *ngFor="let subcategory of subcategories" [label]="subcategory">
+      <mat-spinner *ngIf="items.length <= 0"></mat-spinner>
+      <div class="cloth-grid">
+        <app-item *ngFor="let item of items" [item]="item"></app-item>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
   <footer>
   </footer>
 </mat-drawer-container>
