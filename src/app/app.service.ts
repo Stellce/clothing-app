@@ -26,9 +26,7 @@ export class AppService {
   getCategories() {
     let genderParam = new HttpParams();
     this.gender = this.normalizeGender(this.gender);
-    console.log(this.gender)
     genderParam = genderParam.append('gender', this.gender);
-    console.log(genderParam)
     return this.http
       .get<Category[]>(
         this.backendUrl + '/items/categories',
@@ -41,6 +39,7 @@ export class AppService {
       this.brandsUpdated.next(brands);
     })
   }
+
   getItems() {
     // this.categoryId = this.categories.find(category => category.name === this.category)!.id;
     this.getCategories().subscribe(categories => {
@@ -92,7 +91,6 @@ export class AppService {
       ).subscribe( data => {
       this.items = [...data.content];
       this.itemsUpdated.next([...data.content]);
-      console.log(data)
     })
   }
 

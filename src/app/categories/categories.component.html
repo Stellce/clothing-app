@@ -1,6 +1,7 @@
 <div class="categories">
   <div class="breadcrumb-wrapper"><app-breadcrumb></app-breadcrumb>
   </div>
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
   <div class="categories-list" *ngIf="gender !== 'children'; else childrenCategories">
     <a class="category"
        *ngFor="let category of categories"
