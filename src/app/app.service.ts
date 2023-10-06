@@ -20,6 +20,8 @@ export class AppService {
   categoryId: number;
   brandsUpdated = new Subject<{id: number, name: string}[]>();
   subcategoriesUpdated = new Subject<string[]>();
+  page: number = 0;
+  pageUpdated = new Subject<number>();
 
   constructor(private http: HttpClient) {}
 
@@ -106,6 +108,31 @@ export class AppService {
       ).subscribe( data => {
       this.items = [...data.content];
       this.itemsUpdated.next([...data.content]);
+    })
+  }
+
+  updatePage(changePage: number) {
+    this.getCategories().subscribe(categories => {
+      let url: string;
+      let childGender = this.gender === 'boys' ? 'male' : 'female';
+      this.categoryId = categories.find(category => category.name === this.category)!.id;
+
+      if(this.gender === 'boys' || this.gender === 'girls') {
+        url = this.backendUrl + `/items/age-group/children/gender/${childGender}/category/${this.categoryId}`;
+      } else {
+        url = this.backendUrl + `/items/gender/${this.gender}/category/${this.categoryId}`
+      }
+
+      let pageParams = new HttpParams();
+      if(!(changePage < 0 && this.page === 0)) this.page += changePage;
+      pageParams = pageParams.append('page', this.page);
+
+      this.http.get<ResponseModel>(url, {params: pageParams}).subscribe( data => {
+        this.items = [...data.content];
+        console.log(data)
+        this.itemsUpdated.next([...data.content]);
+        this.pageUpdated.next(this.page);
+      })
     })
   }
 

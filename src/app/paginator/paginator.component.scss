@@ -1,0 +1,43 @@
+.paginator {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  align-items: center;
+  font-size: 22px;
+  width: 100%;
+}
+.arrow {
+  display: flex;
+  flex-direction: column;
+  height: 50px;
+  width: 30px;
+}
+.piece-wrapper{
+  height: 25px;
+  width: 30px;
+  position: relative;
+}
+.right-top {
+  transform: rotate(60deg);
+}
+.right-bottom {
+  transform: rotate(-60deg);
+}
+.left-top {
+  transform: rotate(120deg);
+}
+.left-bottom {
+  transform: rotate(-120deg);
+}
+.arrow-side {
+  height: 2px;
+  width: 30px;
+  background: white;
+  position: absolute;
+  left: 5%;
+  top: 40%;
+}
+
+.currentPage {
+  color: #d9d9d9;
+}

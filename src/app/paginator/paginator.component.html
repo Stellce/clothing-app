@@ -1,0 +1,21 @@
+<div class="paginator">
+  <div class="arrow" (click)="onPrevious()">
+    <div class="piece-wrapper">
+      <div class="left-top arrow-side"></div>
+    </div>
+    <div class="piece-wrapper">
+      <div class="left-bottom arrow-side"></div>
+    </div>
+  </div>
+
+  <div class="currentPage">{{page}}</div>
+
+  <div class="arrow" (click)="onNext()">
+    <div class="piece-wrapper">
+      <div class="right-top arrow-side"></div>
+    </div>
+    <div class="piece-wrapper">
+      <div class="right-bottom arrow-side"></div>
+    </div>
+  </div>
+</div>

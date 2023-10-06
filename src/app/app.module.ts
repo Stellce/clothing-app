@@ -30,6 +30,7 @@ import { OutletComponent } from './outlet/outlet.component';
 import { CheckboxComponent } from './filter/checkbox/checkbox.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatTabsModule} from "@angular/material/tabs";
+import { PaginatorComponent } from './paginator/paginator.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import {MatTabsModule} from "@angular/material/tabs";
     FilterComponent,
     BreadcrumbComponent,
     OutletComponent,
-    CheckboxComponent
+    CheckboxComponent,
+    PaginatorComponent
   ],
     imports: [
         BrowserModule,

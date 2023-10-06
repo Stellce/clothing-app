@@ -48,6 +48,12 @@ mat-spinner {
   width: 90vw;
 }
 
+app-paginator {
+  width: 75%;
+  margin: 50px auto;
+  display: flex;
+}
+
 .mat-mdc-progress-spinner {
   //--mdc-circular-progress-active-indicator-color: blue;
 }
