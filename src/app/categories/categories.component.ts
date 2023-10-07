@@ -27,16 +27,9 @@ export class CategoriesComponent implements OnInit{
         .subscribe(categories => {
           this.isLoading = false;
           this.categories = categories;
+          console.log(categories)
         });
     })
-    // this.appService.categoriesUpdated.subscribe(categories => {
-    //   this.categories = categories;
-    // })
-    // console.log(this.gender);
-  }
-
-  getCategoryImagePath(category: string) {
-    return `assets/categories/${this.gender}/${category}.png`
   }
 
   onCategorySelect(categoryId: number) {

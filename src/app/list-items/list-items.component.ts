@@ -4,6 +4,7 @@ import {AppService} from "../app.service";
 import {Subscription} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
 import {Category} from "./category.model";
+import {MatTabChangeEvent} from "@angular/material/tabs";
 
 @Component({
   selector: 'app-list-items',
@@ -58,6 +59,22 @@ export class ListItemsComponent implements OnInit, OnDestroy{
     });
     this.appService.getItems();
     this.appService.getSubcategories();
+  }
+
+  loadItems(event: MatTabChangeEvent) {
+    let subcategoryId = event.index;
+    this.appService.pageUpdated.next(0);
+    this.appService.isLastPageUpdate.next(false);
+    this.appService.page = 0;
+    if (!subcategoryId) {
+      this.appService.getItems();
+    } else {
+      this.appService.getItemsBySubcategory(subcategoryId);
+    }
+  }
+
+  log(event: MatTabChangeEvent) {
+    console.log(event);
   }
 
   ngOnDestroy() {

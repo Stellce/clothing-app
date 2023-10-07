@@ -15,7 +15,7 @@ app-breadcrumb {
 
 .categories-list {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 10px;
   width: 90%;
   justify-content: center;
@@ -121,4 +121,9 @@ a {
   background: #790000;
   padding: 10px;
   border-radius: 1rem;
+}
+@media only screen and (max-width: 690px) {
+  .categories-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }

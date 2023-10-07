@@ -22,6 +22,7 @@ export class AppService {
   subcategoriesUpdated = new Subject<string[]>();
   page: number = 0;
   pageUpdated = new Subject<number>();
+  isLastPageUpdate = new Subject<boolean>();
 
   constructor(private http: HttpClient) {}
 
@@ -47,6 +48,7 @@ export class AppService {
         .subscribe(subcategories => {
           let subcategoriesNames = subcategories.map(subcategory => subcategory.name);
           console.log(subcategories);
+          console.log(subcategoriesNames);
           this.subcategoriesUpdated.next(subcategoriesNames);
         })
     })
@@ -132,6 +134,30 @@ export class AppService {
         console.log(data)
         this.itemsUpdated.next([...data.content]);
         this.pageUpdated.next(this.page);
+        this.isLastPageUpdate.next(data.last);
+        console.log(data.last)
+      })
+    })
+  }
+
+  getItemsBySubcategory(subcategoryId: number) {
+    this.getCategories().subscribe(categories => {
+      let url: string;
+      let childGender = this.gender === 'boys' ? 'male' : 'female';
+      this.categoryId = categories.find(category => category.name === this.category)!.id;
+
+      if(this.gender === 'boys' || this.gender === 'girls') {
+        url = this.backendUrl + `/items/age-group/children/gender/${childGender}/category/${this.categoryId}`;
+      } else {
+        url = this.backendUrl + `/items/gender/${this.gender}/category/${this.categoryId}`
+      }
+
+      url += `/subcategory/${subcategoryId}`;
+
+      this.http.get<ResponseModel>(url).subscribe( data => {
+        this.items = [...data.content];
+        console.log(data)
+        this.itemsUpdated.next([...data.content]);
       })
     })
   }
