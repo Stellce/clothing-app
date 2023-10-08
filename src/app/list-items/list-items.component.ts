@@ -62,15 +62,12 @@ export class ListItemsComponent implements OnInit, OnDestroy{
   }
 
   loadItems(event: MatTabChangeEvent) {
+    this.items = <ItemModel[]>[];
     let subcategoryId = event.index;
     this.appService.pageUpdated.next(0);
     this.appService.isLastPageUpdate.next(false);
     this.appService.page = 0;
-    if (!subcategoryId) {
-      this.appService.getItems();
-    } else {
-      this.appService.getItemsBySubcategory(subcategoryId);
-    }
+    this.appService.getItemsBySubcategory(subcategoryId);
   }
 
   log(event: MatTabChangeEvent) {

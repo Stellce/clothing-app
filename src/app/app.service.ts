@@ -13,8 +13,9 @@ export class AppService {
   backendUrl: string = 'http://localhost:8765';
 
   gender: string;
-  items: ItemModel[];
+  // items: ItemModel[];
   itemsUpdated = new Subject<ItemModel[]>;
+  itemsBySubcategories: ItemModel[][] = <ItemModel[][]>[];
   category: string;
   categories: Category[];
   categoryId: number;
@@ -39,7 +40,9 @@ export class AppService {
 
   getSubcategories() {
     this.getCategories().subscribe(categories => {
-      this.categoryId = categories.find(category => category.name === this.category)!.id;
+      this.categories = categories;
+      // this.categoryId = categories.find(category => category.name === this.category)!.id;
+      this.initCategoryId();
 
       this.http
         .get<{id: number, name: string}[]>(
@@ -47,35 +50,20 @@ export class AppService {
         )
         .subscribe(subcategories => {
           let subcategoriesNames = subcategories.map(subcategory => subcategory.name);
-          console.log(subcategories);
-          console.log(subcategoriesNames);
           this.subcategoriesUpdated.next(subcategoriesNames);
         })
     })
   }
 
-  getBrands() {
-    this.http.get<{id: number, name: string}[]>(this.backendUrl + `/items/brands`).subscribe(brands => {
-      this.brandsUpdated.next(brands);
-    })
-  }
-
   getItems() {
     this.getCategories().subscribe(categories => {
-      let url: string;
-      let childGender = this.gender === 'boys' ? 'male' : 'female';
-      this.categoryId = categories.find(category => category.name === this.category)!.id;
-
-      if(this.gender === 'boys' || this.gender === 'girls') {
-        url = this.backendUrl + `/items/age-group/children/gender/${childGender}/category/${this.categoryId}`;
-      } else {
-        url = this.backendUrl + `/items/gender/${this.gender}/category/${this.categoryId}`
-      }
+      this.categories = categories;
+      this.initCategoryId();
+      let url: string = this.buildUrl();
 
       this.http.get<ResponseModel>(url).subscribe( data => {
-        this.items = [...data.content];
-        console.log(data)
         this.itemsUpdated.next([...data.content]);
+        this.itemsBySubcategories[0] = [...data.content];
       })
     })
   }
@@ -108,60 +96,70 @@ export class AppService {
           params: filterParams
         }
       ).subscribe( data => {
-      this.items = [...data.content];
       this.itemsUpdated.next([...data.content]);
     })
   }
 
   updatePage(changePage: number) {
     this.getCategories().subscribe(categories => {
-      let url: string;
-      let childGender = this.gender === 'boys' ? 'male' : 'female';
-      this.categoryId = categories.find(category => category.name === this.category)!.id;
-
-      if(this.gender === 'boys' || this.gender === 'girls') {
-        url = this.backendUrl + `/items/age-group/children/gender/${childGender}/category/${this.categoryId}`;
-      } else {
-        url = this.backendUrl + `/items/gender/${this.gender}/category/${this.categoryId}`
-      }
+      this.categories = categories;
+      this.initCategoryId();
+      let url: string = this.buildUrl();
 
       let pageParams = new HttpParams();
       if(!(changePage < 0 && this.page === 0)) this.page += changePage;
       pageParams = pageParams.append('page', this.page);
 
       this.http.get<ResponseModel>(url, {params: pageParams}).subscribe( data => {
-        this.items = [...data.content];
-        console.log(data)
+        console.log(data);
         this.itemsUpdated.next([...data.content]);
         this.pageUpdated.next(this.page);
         this.isLastPageUpdate.next(data.last);
-        console.log(data.last)
       })
     })
   }
 
   getItemsBySubcategory(subcategoryId: number) {
+    if (this.itemsBySubcategories[subcategoryId]) {
+      this.itemsUpdated.next(this.itemsBySubcategories[subcategoryId]);
+      return;
+    }
+
     this.getCategories().subscribe(categories => {
-      let url: string;
-      let childGender = this.gender === 'boys' ? 'male' : 'female';
-      this.categoryId = categories.find(category => category.name === this.category)!.id;
+      this.categories = categories;
+      this.initCategoryId();
+      let url: string = this.buildUrl();
 
-      if(this.gender === 'boys' || this.gender === 'girls') {
-        url = this.backendUrl + `/items/age-group/children/gender/${childGender}/category/${this.categoryId}`;
-      } else {
-        url = this.backendUrl + `/items/gender/${this.gender}/category/${this.categoryId}`
-      }
-
-      url += `/subcategory/${subcategoryId}`;
+      if (subcategoryId) url += `/subcategory/${subcategoryId}`;
 
       this.http.get<ResponseModel>(url).subscribe( data => {
-        this.items = [...data.content];
-        console.log(data)
+        this.itemsBySubcategories[subcategoryId] = [...data.content];
         this.itemsUpdated.next([...data.content]);
       })
     })
   }
 
+  getBrands() {
+    this.http.get<{id: number, name: string}[]>(this.backendUrl + `/items/brands`).subscribe(brands => {
+      this.brandsUpdated.next(brands);
+    })
+  }
+
+  private initCategoryId() {
+    this.categoryId = this.categories.find(category => category.name === this.category)!.id;
+  }
+
+  private buildUrl() {
+    let url;
+    let childGender = this.gender === 'boys' ? 'male' : 'female';
+
+    if(this.gender === 'boys' || this.gender === 'girls') {
+      url = this.backendUrl + `/items/age-group/children/gender/${childGender}/category/${this.categoryId}`;
+    } else {
+      url = this.backendUrl + `/items/gender/${this.gender}/category/${this.categoryId}`
+    }
+    return url;
+  }
   private normalizeGender(gender: string) {
     if (gender === 'men') return 'male';
     if (gender === 'women') return 'female';
