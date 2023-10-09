@@ -41,7 +41,7 @@ mat-spinner {
 .cloth-grid {
   display: grid;
   max-width: 1600px;
-  grid: repeat(5, 1fr)/repeat(4, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   justify-content: center;
   margin: auto;
   gap: 10px;
