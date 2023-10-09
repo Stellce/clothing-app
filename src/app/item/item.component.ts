@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {ItemModel} from "../item.model";
 
 @Component({
@@ -6,11 +6,8 @@ import {ItemModel} from "../item.model";
   templateUrl: './item.component.html',
   styleUrls: ['./item.component.scss']
 })
-export class ItemComponent implements OnInit{
+export class ItemComponent {
   @Input() item: ItemModel;
-  ngOnInit() {
-
-  }
 
   protected readonly Math = Math;
 }

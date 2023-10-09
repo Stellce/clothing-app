@@ -27,13 +27,9 @@ export class CategoriesComponent implements OnInit{
         .subscribe(categories => {
           this.isLoading = false;
           this.categories = categories;
-          console.log(categories)
+          console.log(categories);
         });
     })
-  }
-
-  onCategorySelect(categoryId: number) {
-    this.appService.categoryId = categoryId;
   }
 
 }

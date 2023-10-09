@@ -26,37 +26,23 @@ export class ListItemsComponent implements OnInit, OnDestroy{
     private activatedRoute: ActivatedRoute
   ) {}
 
-
   ngOnInit() {
-    this.categories = this.appService.categories;
-
     let url = this.activatedRoute.snapshot.url;
-    let genderPath = url[0].path
-    let categoryPath = url[1].path;
 
-    if (url[0].path === 'children') {
-      genderPath = url[1].path;
-      categoryPath = url[2].path;
-    }
-
-    this.gender = genderPath;
-    this.category = categoryPath;
-    this.appService.gender = this.gender;
-
-    if (this.gender === 'men') {
-      this.appService.gender = 'male';
-    } else if (this.gender === 'women') {
-      this.appService.gender = 'female';
-    }
-    this.appService.category = categoryPath.toUpperCase();
-
-    this.itemsSub = this.appService.itemsUpdated
-      .subscribe((items: ItemModel[]) => {
+    this.itemsSub = this.appService.itemsUpdated.subscribe((items: ItemModel[]) => {
         this.items = items;
       });
+
     this.subcategoriesSub = this.appService.subcategoriesUpdated.subscribe(subcategories => {
       this.subcategories = subcategories;
     });
+
+    this.gender = url[0].path;
+    this.appService.gender = url[0].path;
+
+    this.category = url[1].path;
+    this.appService.category = url[1].path;
+
     this.appService.getItems();
     this.appService.getSubcategories();
   }
@@ -68,10 +54,6 @@ export class ListItemsComponent implements OnInit, OnDestroy{
     this.appService.isLastPageUpdate.next(false);
     this.appService.page = 0;
     this.appService.getItemsBySubcategory(subcategoryId);
-  }
-
-  log(event: MatTabChangeEvent) {
-    console.log(event);
   }
 
   ngOnDestroy() {
