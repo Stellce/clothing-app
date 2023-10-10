@@ -8,8 +8,6 @@ const routes: Routes = [
   // {path: '', redirectTo: '', pathMatch: 'full'},
   {path: '', redirectTo: 'outlet', pathMatch: 'full'},
   {path: 'outlet', component: OutletComponent},
-  {path: 'children/:gender/', component: CategoriesComponent},
-  {path: 'children/:gender/:category', component: ListItemsComponent},
   {path: ':gender', component: CategoriesComponent},
   {path: ':gender/:category', component: ListItemsComponent}
 ];

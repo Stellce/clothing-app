@@ -130,15 +130,6 @@ export class AppService {
   }
 
   private buildUrl() {
-    let url;
-
-    if(this.gender === 'boys' || this.gender === 'girls') {
-      let childGender = this.gender === 'boys' ? 'male' : 'female';
-      url = this.backendUrl + `/items/age-group/children/gender/${childGender}/category/${this.category}`;
-    } else {
-      url = this.backendUrl + `/items/gender/${this.gender}/category/${this.category}`
-    }
-    return url;
+     return this.backendUrl + `/items/gender/${this.gender}/category/${this.category}`
   }
-
 }

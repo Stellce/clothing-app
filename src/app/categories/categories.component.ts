@@ -11,7 +11,6 @@ import {Category} from "../list-items/category.model";
 export class CategoriesComponent implements OnInit{
 
   categories: Category[];
-  childGenders: string[] = ['boys', 'girls']
   gender: string;
   isLoading: boolean;
 

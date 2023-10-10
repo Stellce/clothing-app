@@ -9,7 +9,6 @@ mat-spinner {
 }
 
 app-breadcrumb {
-  //float: left;
   display: block;
 }
 
@@ -90,11 +89,6 @@ app-breadcrumb {
   z-index: 3;
 }
 
-//.darken:hover + .category span {
-//  font-size: 22px;
-//  z-index: 5;
-//}
-
 .black-box {
   background: black;
   height: 100%;
@@ -104,24 +98,6 @@ app-breadcrumb {
 
 a {
   text-align: center;
-}
-
-.child-genders {
-  display: grid;
-  grid: 1fr 1fr/1fr 1fr;
-  max-width: 1000px;
-}
-.child-gender {
-  gap: 10px;
-  display: flex;
-  flex-direction: column;
-  text-decoration: none;
-  color: #343434;
-  aspect-ratio: 1/1;
-
-  background: #790000;
-  padding: 10px;
-  border-radius: 1rem;
 }
 @media only screen and (max-width: 690px) {
   .categories-list {
