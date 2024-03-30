@@ -1,0 +1,21 @@
+<div class="paginator">
+  <div class="arrow" (click)="onPrevious()" [ngClass]="{disabledArrow: page === 0}">
+    <div class="piece-wrapper">
+      <div class="left-top arrow-side" [ngClass]="{disabledSide: page === 0}"></div>
+    </div>
+    <div class="piece-wrapper">
+      <div class="left-bottom arrow-side" [ngClass]="{disabledSide: page === 0}"></div>
+    </div>
+  </div>
+
+  <div class="currentPage">{{page + 1}}</div>
+
+  <div class="arrow" (click)="onNext()" [ngClass]="{disabledArrow: isLastPage}">
+    <div class="piece-wrapper">
+      <div class="right-top arrow-side" [ngClass]="{disabledSide: isLastPage}"></div>
+    </div>
+    <div class="piece-wrapper">
+      <div class="right-bottom arrow-side" [ngClass]="{disabledSide: isLastPage}"></div>
+    </div>
+  </div>
+</div>

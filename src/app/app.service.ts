@@ -1,60 +1,54 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
-import {FilterModel, FilterReady} from "./filter.model";
+import {FilterModel, FilterReady} from "./list-items/filter/filter.model";
 import {ItemModel} from "./item.model";
 import {Subject} from "rxjs";
-import {ResponseModel} from "./response.model";
 import {Category} from "./list-items/category.model";
+import {environment} from "../environments/environment";
+import {ResponseItems} from "./response-items.model";
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppService {
-  backendUrl: string = 'http://localhost:8765';
-
-  gender: string;
+  backendUrl = environment.backendUrl;
+  private _gender: string;
+  private _categoryId: string;
   // items: ItemModel[];
-  itemsUpdated = new Subject<ItemModel[]>;
+  $items = new Subject<ItemModel[]>;
   itemsBySubcategories: ItemModel[][] = <ItemModel[][]>[];
   category: string;
   categories: Category[];
-  brandsUpdated = new Subject<{id: number, name: string}[]>();
-  subcategoriesUpdated = new Subject<string[]>();
+  $brands = new Subject<{id: number, name: string}[]>();
+  $subcategories = new Subject<string[]>();
   page: number = 0;
-  pageUpdated = new Subject<number>();
-  isLastPageUpdate = new Subject<boolean>();
+  $page = new Subject<number>();
+  $isLastPage = new Subject<boolean>();
 
   constructor(private http: HttpClient) {}
 
-  getCategories() {
-    let genderParam = new HttpParams();
-    genderParam = genderParam.append('gender', this.gender);
-    return this.http
-      .get<Category[]>(
-        this.backendUrl + '/items/categories',
-        {params: genderParam}
-      )
+  requestSubcategories() {
+    this.http.get<{id: number, name: string}[]>(
+      this.backendUrl + `/items/categories/${this.category}/subcategories`
+    ).subscribe(subcategories => {
+      let subcategoriesNames = subcategories.map(subcategory => subcategory.name);
+      this.$subcategories.next(subcategoriesNames);
+    })
   }
 
-  getSubcategories() {
-      this.http
-        .get<{id: number, name: string}[]>(
-          this.backendUrl + `/items/categories/${this.category}/subcategories`
-        ).subscribe(subcategories => {
-          let subcategoriesNames = subcategories.map(subcategory => subcategory.name);
-          this.subcategoriesUpdated.next(subcategoriesNames);
-        })
-  }
-
-  getItems() {
-    let url: string = this.buildUrl();
-    this.http.get<ResponseModel>(url).subscribe( data => {
-      this.itemsUpdated.next([...data.content]);
+  requestItems(gender: string, categoryId: string) {
+    this._gender = gender;
+    this._categoryId = categoryId
+    this.http.get<ResponseItems>(
+      environment.backendUrl + `/items/gender/${gender}/category/${categoryId}`
+    ).subscribe( data => {
+      this.$items.next([...data.content]);
       this.itemsBySubcategories[0] = [...data.content];
     })
   }
 
-  getItemsByFilter(filter: FilterModel) {
+  requestItemsByFilter(filter: FilterModel) {
     let filterReady: FilterReady = {
       sort: filter.sortBy,
       priceRange: (filter.priceFrom || filter.priceTo) ? [filter.priceFrom, filter.priceTo].join(",") : undefined,
@@ -65,7 +59,7 @@ export class AppService {
       materials: filter.materials,
       rating: filter.rating
     }
-    console.log(filterReady)
+    console.log(filterReady);
 
     let filterParams = new HttpParams();
     for (let [param, value] of Object.entries(filterReady)) {
@@ -73,63 +67,52 @@ export class AppService {
       if (Array.isArray(value)) value = value.join(',');
       filterParams = filterParams.append(param, value);
     }
-    console.log(filterParams)
+    console.log(filterParams);
 
     this.http
-      .get<ResponseModel>(
-        `http://localhost:8765/items/gender/${this.gender}/category/${this.category}`,
+      .get<ResponseItems>(
+        `http://localhost:8765/items/gender/${this._gender}/category/${this.category}`,
         {
           params: filterParams
         }
       ).subscribe( data => {
-      this.itemsUpdated.next([...data.content]);
+      this.$items.next([...data.content]);
     })
   }
 
-  updatePage(changePage: number) {
-    this.getCategories().subscribe(categories => {
-      this.categories = categories;
-      let url: string = this.buildUrl();
+  requestPage(pageNum: number) {
+    let url: string = environment.backendUrl + `/items/gender/${this._gender}/category/${this._categoryId}`;
 
-      let pageParams = new HttpParams();
-      if(!(changePage < 0 && this.page === 0)) this.page += changePage;
-      pageParams = pageParams.append('page', this.page);
+    let pageParams = new HttpParams();
+    if(!(pageNum < 0 && this.page === 0)) this.page += pageNum;
+    pageParams = pageParams.append('page', this.page);
 
-      this.http.get<ResponseModel>(url, {params: pageParams}).subscribe( data => {
-        console.log(data);
-        this.itemsUpdated.next([...data.content]);
-        this.pageUpdated.next(this.page);
-        this.isLastPageUpdate.next(data.last);
-      })
+    this.http.get<ResponseItems>(url, {params: pageParams}).subscribe(data => {
+      console.log(data);
+      this.$items.next([...data.content]);
+      this.$page.next(this.page);
+      this.$isLastPage.next(data.last);
     })
   }
 
-  getItemsBySubcategory(subcategoryId: number) {
-    if (this.itemsBySubcategories[subcategoryId]) {
-      this.itemsUpdated.next(this.itemsBySubcategories[subcategoryId]);
-      return;
-    }
+  requestItemsBySubcategory(subcategoryId: number) {
+    if (this.itemsBySubcategories[subcategoryId])
+      return this.$items.next(this.itemsBySubcategories[subcategoryId]);
 
-    this.getCategories().subscribe(categories => {
-      this.categories = categories;
-      let url: string = this.buildUrl();
+    let url: string = environment.backendUrl + `/items/gender/${this._gender}/category/${this._categoryId}`;
 
-      if (subcategoryId) url += `/subcategory/${subcategoryId}`;
+    if (subcategoryId) url += `/subcategory/${subcategoryId}`;
 
-      this.http.get<ResponseModel>(url).subscribe( data => {
-        this.itemsBySubcategories[subcategoryId] = [...data.content];
-        this.itemsUpdated.next([...data.content]);
-      })
+    this.http.get<ResponseItems>(url).subscribe(data => {
+      this.itemsBySubcategories[subcategoryId] = [...data.content];
+      this.$items.next([...data.content]);
     })
   }
 
-  getBrands() {
+  requestBrands() {
     this.http.get<{id: number, name: string}[]>(this.backendUrl + `/items/brands`).subscribe(brands => {
-      this.brandsUpdated.next(brands);
+      this.$brands.next(brands);
     })
   }
 
-  private buildUrl() {
-     return this.backendUrl + `/items/gender/${this.gender}/category/${this.category}`
-  }
 }

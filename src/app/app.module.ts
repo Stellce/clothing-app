@@ -22,15 +22,15 @@ import {MatSelectModule} from "@angular/material/select";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatPaginatorModule} from "@angular/material/paginator";
-import { ItemComponent } from './item/item.component';
+import { ItemComponent } from './list-items/item/item.component';
 import { CategoriesComponent } from './categories/categories.component';
-import { FilterComponent } from './filter/filter.component';
+import { FilterComponent } from './list-items/filter/filter.component';
 import { BreadcrumbComponent } from './list-items/breadcrumb/breadcrumb.component';
 import { OutletComponent } from './outlet/outlet.component';
-import { CheckboxComponent } from './filter/checkbox/checkbox.component';
+import { CheckboxComponent } from './list-items/filter/checkbox/checkbox.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatTabsModule} from "@angular/material/tabs";
-import { PaginatorComponent } from './paginator/paginator.component';
+import { PaginatorComponent } from './list-items/paginator/paginator.component';
 
 @NgModule({
   declarations: [

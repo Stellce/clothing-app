@@ -12,13 +12,9 @@ import {MatTabChangeEvent} from "@angular/material/tabs";
   styleUrls: ['./list-items.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class ListItemsComponent implements OnInit, OnDestroy{
-  gender: string;
+export class ListItemsComponent implements OnInit{
   items: ItemModel[] = [];
   itemsSub: Subscription;
-  categories: Category[];
-  categoriesSub: Subscription;
-  category: string;
   subcategories: string[] = [];
   subcategoriesSub: Subscription;
   constructor(
@@ -27,38 +23,29 @@ export class ListItemsComponent implements OnInit, OnDestroy{
   ) {}
 
   ngOnInit() {
-    let url = this.activatedRoute.snapshot.url;
 
-    this.itemsSub = this.appService.itemsUpdated.subscribe((items: ItemModel[]) => {
+    this.itemsSub = this.appService.$items.subscribe((items: ItemModel[]) => {
         this.items = items;
       });
 
-    this.subcategoriesSub = this.appService.subcategoriesUpdated.subscribe(subcategories => {
+    this.subcategoriesSub = this.appService.$subcategories.subscribe(subcategories => {
       this.subcategories = subcategories;
     });
 
-    this.gender = url[0].path;
-    this.appService.gender = url[0].path;
+    let params = this.activatedRoute.snapshot.params;
+    let gender = params['gender'];
+    let category = params['category'];
 
-    this.category = url[1].path;
-    this.appService.category = url[1].path;
-
-    this.appService.getItems();
-    this.appService.getSubcategories();
+    this.appService.requestItems(gender, category);
+    this.appService.requestSubcategories();
   }
 
   loadItems(event: MatTabChangeEvent) {
     this.items = <ItemModel[]>[];
     let subcategoryId = event.index;
-    this.appService.pageUpdated.next(0);
-    this.appService.isLastPageUpdate.next(false);
+    this.appService.$page.next(0);
+    this.appService.$isLastPage.next(false);
     this.appService.page = 0;
-    this.appService.getItemsBySubcategory(subcategoryId);
-  }
-
-  ngOnDestroy() {
-    this.itemsSub.unsubscribe();
-    // this.categoriesSub.unsubscribe();
-    // this.subcategoriesSub.unsubscribe();
+    this.appService.requestItemsBySubcategory(subcategoryId);
   }
 }

@@ -1,7 +1,8 @@
 import {Component, EventEmitter, OnInit, Output, ViewEncapsulation} from '@angular/core';
-import {FilterModel} from "../filter.model";
+import {FilterModel} from "./filter.model";
 import {NgForm} from "@angular/forms";
-import {AppService} from "../app.service";
+import {AppService} from "../../app.service";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-filter',
@@ -36,9 +37,9 @@ export class FilterComponent implements OnInit{
   };
 
   sizesCloth = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL'];
-  sizesShoes = ['36', '37', '38', '39', '40', '41', '42', '43', '44', '45'];
-  subcategoriesCloth = ['JEANS', 'JOGGERS', 'SPORT'];
-  subcategoriesShoes = ['SANDALS', 'SNEAKERS', 'BOOTS'];
+  sizesShoes: string[] = [];
+  // subcategoriesCloth = ['JEANS', 'JOGGERS', 'SPORT'];
+  // subcategoriesShoes = ['SANDALS', 'SNEAKERS', 'BOOTS'];
 
   filtersSelected: {colors: string[], sizes: string[], brands: string[]} = {
     colors: [],
@@ -47,21 +48,29 @@ export class FilterComponent implements OnInit{
   }
 
   @Output() closeDrawer = new EventEmitter<void>();
-    constructor(private appService: AppService) {}
+    constructor(
+      private appService: AppService,
+      private activatedRoute: ActivatedRoute
+    ) {}
+  private setShoeSizes() {
+      for (let i=30;i<=46;i++) {
+        this.sizesShoes.push(String(i));
+      }
+  }
 
   ngOnInit() {
-    let category = this.appService.category.toUpperCase();
-    if(category === 'SHOES') {
+    let category = this.activatedRoute.snapshot.params['category'].toUpperCase();
+    if(category === 'SHOES' || category === 'SOCKS') {
       this.filters.sizes = this.sizesShoes;
-      this.filters.subcategories = this.subcategoriesShoes;
-    } else if(category === 'TROUSERS') {
+    } else {
       this.filters.sizes = this.sizesCloth;
-      this.filters.subcategories = this.subcategoriesCloth;
     }
-    this.appService.brandsUpdated.subscribe(brands => {
+    // this.filters.subcategories = this.subcategoriesCloth;
+
+    this.appService.$brands.subscribe(brands => {
       this.filters.brands = brands;
     });
-    this.appService.getBrands();
+    this.appService.requestBrands();
   }
 
 
@@ -72,7 +81,7 @@ export class FilterComponent implements OnInit{
       sortBy: form.value.sortBy,
       ...this.filtersSelected
     }
-    this.appService.getItemsByFilter(filter);
+    this.appService.requestItemsByFilter(filter);
     console.log(filter);
   }
 

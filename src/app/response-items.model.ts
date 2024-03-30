@@ -1,6 +1,6 @@
 import {ItemModel} from "./item.model";
 
-export class ResponseModel {
+export class ResponseItems {
   content: ItemModel[];
   pageable: {
     sort: {

@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AppService} from "../app.service";
+import {AppService} from "../../app.service";
 import {Subscription} from "rxjs";
 
 @Component({
@@ -15,17 +15,17 @@ export class PaginatorComponent implements OnInit, OnDestroy{
   constructor(private appService: AppService) {}
 
   ngOnInit() {
-    this.pageSub = this.appService.pageUpdated.subscribe(page => this.page = page);
-    this.isLastPageSub = this.appService.isLastPageUpdate.subscribe(isLast => this.isLastPage = isLast);
+    this.pageSub = this.appService.$page.subscribe(page => this.page = page);
+    this.isLastPageSub = this.appService.$isLastPage.subscribe(isLast => this.isLastPage = isLast);
   }
 
   onPrevious() {
     if(this.page === 0) return;
-    this.appService.updatePage(-1);
+    this.appService.requestPage(-1);
   }
   onNext() {
     if(this.isLastPage) return;
-    this.appService.updatePage(1);
+    this.appService.requestPage(1);
   }
 
   ngOnDestroy() {

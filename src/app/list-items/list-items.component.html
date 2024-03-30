@@ -9,9 +9,11 @@
   </mat-drawer>
   <app-breadcrumb></app-breadcrumb>
   <mat-spinner *ngIf="!subcategories"></mat-spinner>
-  <mat-tab-group (selectedTabChange)="loadItems($event)" *ngIf="subcategories">
-    <mat-tab label="All">
-      <mat-spinner *ngIf="items.length <= 0 && subcategories"></mat-spinner>
+  <mat-tab-group
+    *ngIf="subcategories.length; else noSubcategories"
+    (selectedTabChange)="loadItems($event)">
+    <mat-tab [label]="subcategories.length > 0 ? 'All' : ''">
+      <mat-spinner *ngIf="items.length <= 0 && subcategories.length"></mat-spinner>
       <div class="cloth-grid">
         <app-item *ngFor="let item of items" [item]="item"></app-item>
       </div>
@@ -23,8 +25,11 @@
       </div>
     </mat-tab>
   </mat-tab-group>
-
+  <ng-template #noSubcategories>
+    <mat-spinner *ngIf="items.length <= 0 && subcategories"></mat-spinner>
+    <div class="cloth-grid">
+      <app-item *ngFor="let item of items" [item]="item"></app-item>
+    </div>
+  </ng-template>
   <app-paginator></app-paginator>
-  <footer>
-  </footer>
 </mat-drawer-container>
