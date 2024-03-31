@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {Category} from "../list-items/category.model";
-import {ItemsService} from "../list-items/item/items.service";
+import {Category} from "./category.model";
+import {CategoriesService} from "./categories.service";
 
 @Component({
   selector: 'app-categories',
@@ -15,7 +15,7 @@ export class CategoriesComponent implements OnInit{
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private itemsService: ItemsService
+    private categoriesService: CategoriesService
   ) {}
 
   ngOnInit() {
@@ -23,10 +23,17 @@ export class CategoriesComponent implements OnInit{
     this.activatedRoute.params.subscribe(params => {
       this.gender = params['gender'];
 
-      this.itemsService.requestCategories(this.gender)
+      this.categoriesService.requestCategories()
         .subscribe(categories => {
           this.isLoading = false;
           this.categories = categories;
+
+          this.categoriesService.requestCategoriesImages(this.gender)
+            .subscribe(categoriesImages => {
+              Object.entries(categoriesImages).forEach(([categoryId, image]) => {
+                categories.find(category => category.id === categoryId)!.image = image;
+              });
+            })
         });
     })
   }

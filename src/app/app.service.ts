@@ -3,7 +3,7 @@ import {HttpClient, HttpParams} from "@angular/common/http";
 import {FilterModel, FilterReady} from "./list-items/filter/filter.model";
 import {ItemModel} from "./item.model";
 import {Subject} from "rxjs";
-import {Category} from "./list-items/category.model";
+import {Category} from "./categories/category.model";
 import {environment} from "../environments/environment";
 import {ResponseItems} from "./response-items.model";
 

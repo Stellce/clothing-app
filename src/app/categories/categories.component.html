@@ -2,14 +2,15 @@
   <div class="breadcrumb-wrapper"><app-breadcrumb></app-breadcrumb>
   </div>
   <mat-spinner *ngIf="isLoading"></mat-spinner>
-  <div class="categories-list">
+  <div class="categories-list" *ngIf="categories && !isLoading">
     <a class="category"
        *ngFor="let category of categories"
        [routerLink]="category.name | lowercase"
-       [ngStyle]="{background: this.gender === 'men' ? 'darkblue' : this.gender === 'women' ? 'darkred' : 'green'}"
     >
-      <div class="darken"></div>
-      <img class="category-image" [src]="'data:image/png;base64,' + category.image" [alt]="category">
+      <ng-container *ngIf="category.image">
+        <div class="darken"></div>
+        <img class="category-image" [src]="'data:image/png;base64,' + category.image" [alt]="category">
+      </ng-container>
       <span>{{category.name | uppercase}}</span>
     </a>
   </div>

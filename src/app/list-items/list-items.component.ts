@@ -3,7 +3,7 @@ import {ItemModel} from "../item.model";
 import {AppService} from "../app.service";
 import {Subscription} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
-import {Category} from "./category.model";
+import {Category} from "../categories/category.model";
 import {MatTabChangeEvent} from "@angular/material/tabs";
 
 @Component({
