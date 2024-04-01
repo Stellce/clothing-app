@@ -12,7 +12,7 @@ export class OutletComponent implements OnInit{
   constructor(private appService: AppService) {}
 
   ngOnInit() {
-    this.appService.$items.subscribe(items => this.items = items);
+    this.appService.items$.subscribe(items => this.items = items);
     // this.appService.requestOutlet();
   }
 }

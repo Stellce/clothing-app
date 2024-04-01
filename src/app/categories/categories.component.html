@@ -5,7 +5,7 @@
   <div class="categories-list" *ngIf="categories && !isLoading">
     <a class="category"
        *ngFor="let category of categories"
-       [routerLink]="category.name | lowercase"
+       [routerLink]="category.id | lowercase"
     >
       <ng-container *ngIf="category.image">
         <div class="darken"></div>

@@ -67,7 +67,7 @@ export class FilterComponent implements OnInit{
     }
     // this.filters.subcategories = this.subcategoriesCloth;
 
-    this.appService.$brands.subscribe(brands => {
+    this.appService.brands$.subscribe(brands => {
       this.filters.brands = brands;
     });
     this.appService.requestBrands();

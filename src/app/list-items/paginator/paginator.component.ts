@@ -15,8 +15,8 @@ export class PaginatorComponent implements OnInit, OnDestroy{
   constructor(private appService: AppService) {}
 
   ngOnInit() {
-    this.pageSub = this.appService.$page.subscribe(page => this.page = page);
-    this.isLastPageSub = this.appService.$isLastPage.subscribe(isLast => this.isLastPage = isLast);
+    this.pageSub = this.appService.page$.subscribe(page => this.page = page);
+    this.isLastPageSub = this.appService.isLastPage$.subscribe(isLast => this.isLastPage = isLast);
   }
 
   onPrevious() {

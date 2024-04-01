@@ -1,10 +1,10 @@
-import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
-import {ItemModel} from "../item.model";
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {ItemModel} from "./item/item.model";
 import {AppService} from "../app.service";
 import {Subscription} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
-import {Category} from "../categories/category.model";
 import {MatTabChangeEvent} from "@angular/material/tabs";
+import {ItemsService} from "./item/items.service";
 
 @Component({
   selector: 'app-list-items',
@@ -19,16 +19,17 @@ export class ListItemsComponent implements OnInit{
   subcategoriesSub: Subscription;
   constructor(
     private appService: AppService,
+    private itemsService: ItemsService,
     private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit() {
 
-    this.itemsSub = this.appService.$items.subscribe((items: ItemModel[]) => {
+    this.itemsSub = this.appService.items$.subscribe((items: ItemModel[]) => {
         this.items = items;
       });
 
-    this.subcategoriesSub = this.appService.$subcategories.subscribe(subcategories => {
+    this.subcategoriesSub = this.appService.subcategories$.subscribe(subcategories => {
       this.subcategories = subcategories;
     });
 
@@ -37,14 +38,16 @@ export class ListItemsComponent implements OnInit{
     let category = params['category'];
 
     this.appService.requestItems(gender, category);
-    this.appService.requestSubcategories();
+    this.itemsService.requestSubcategories(category).subscribe(subcategories => {
+      console.log(subcategories)
+    });
   }
 
   loadItems(event: MatTabChangeEvent) {
     this.items = <ItemModel[]>[];
     let subcategoryId = event.index;
-    this.appService.$page.next(0);
-    this.appService.$isLastPage.next(false);
+    this.appService.page$.next(0);
+    this.appService.isLastPage$.next(false);
     this.appService.page = 0;
     this.appService.requestItemsBySubcategory(subcategoryId);
   }
