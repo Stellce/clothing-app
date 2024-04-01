@@ -1,7 +1,7 @@
-import {ItemModel} from "./item.model";
+import {Item} from "./item.model";
 
 export class ResponseItems {
-  content: ItemModel[];
+  content: Item[];
   pageable: {
     sort: {
       empty: boolean;
@@ -14,7 +14,7 @@ export class ResponseItems {
     unpaged: boolean;
     paged: boolean;
   };
-  last: false;
+  last: boolean;
   totalElements: number;
   totalPages: number;
   size: number;

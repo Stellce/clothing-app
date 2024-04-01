@@ -1,14 +1,14 @@
-export interface ItemModel {
-  id: number;
+export interface Item {
+  id: string;
   name: string;
   price: number;
   discount: number;
   priceAfterDiscount: number;
-  images: string[];
   brand: string;
   rating: number;
-  colors: string[];
+  color: string[];
   isOnWishList: boolean;
   isNew: boolean;
   isPopular: boolean;
+  images: string[];
 }

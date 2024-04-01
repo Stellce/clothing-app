@@ -3,6 +3,7 @@ import {FilterModel} from "./filter.model";
 import {NgForm} from "@angular/forms";
 import {AppService} from "../../app.service";
 import {ActivatedRoute} from "@angular/router";
+import {CategoriesService} from "../../categories/categories.service";
 
 @Component({
   selector: 'app-filter',
@@ -38,8 +39,6 @@ export class FilterComponent implements OnInit{
 
   sizesCloth = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL'];
   sizesShoes: string[] = [];
-  // subcategoriesCloth = ['JEANS', 'JOGGERS', 'SPORT'];
-  // subcategoriesShoes = ['SANDALS', 'SNEAKERS', 'BOOTS'];
 
   filtersSelected: {colors: string[], sizes: string[], brands: string[]} = {
     colors: [],
@@ -50,7 +49,8 @@ export class FilterComponent implements OnInit{
   @Output() closeDrawer = new EventEmitter<void>();
     constructor(
       private appService: AppService,
-      private activatedRoute: ActivatedRoute
+      private activatedRoute: ActivatedRoute,
+      private categoriesService: CategoriesService
     ) {}
   private setShoeSizes() {
       for (let i=30;i<=46;i++) {
@@ -59,20 +59,24 @@ export class FilterComponent implements OnInit{
   }
 
   ngOnInit() {
-    let category = this.activatedRoute.snapshot.params['category'].toUpperCase();
-    if(category === 'SHOES' || category === 'SOCKS') {
-      this.filters.sizes = this.sizesShoes;
-    } else {
-      this.filters.sizes = this.sizesCloth;
-    }
-    // this.filters.subcategories = this.subcategoriesCloth;
-
-    this.appService.brands$.subscribe(brands => {
-      this.filters.brands = brands;
+    let categoryId = this.activatedRoute.snapshot.params['categoryId'];
+    this.categoriesService.requestCategories().subscribe(categories => {
+      let categoryName = categories
+        .find(c => c.id === categoryId)?.name.toUpperCase();
+      if(categoryName === 'SHOES' || categoryName === 'SOCKS') {
+        this.setShoeSizes();
+        this.filters.sizes = this.sizesShoes;
+      } else {
+        this.filters.sizes = this.sizesCloth;
+      }
+    })
+    this.appService.requestSubcategories().subscribe(subcategories => {
+      this.filters.subcategories = subcategories;
+    })
+    this.appService.requestBrands().subscribe(brands => {
+      this.filters.brands = brands
     });
-    this.appService.requestBrands();
   }
-
 
   onSubmitFilter(form: NgForm) {
     let filter: FilterModel = {

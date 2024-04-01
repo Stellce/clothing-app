@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {ItemModel} from "./item/item.model";
+import {Item} from "./item/item.model";
 import {AppService} from "../app.service";
 import {Subscription} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
@@ -13,7 +13,7 @@ import {ItemsService} from "./item/items.service";
   encapsulation: ViewEncapsulation.None
 })
 export class ListItemsComponent implements OnInit{
-  items: ItemModel[] = [];
+  items: Item[] = [];
   itemsSub: Subscription;
   subcategories: string[] = [];
   subcategoriesSub: Subscription;
@@ -24,27 +24,37 @@ export class ListItemsComponent implements OnInit{
   ) {}
 
   ngOnInit() {
-
-    this.itemsSub = this.appService.items$.subscribe((items: ItemModel[]) => {
+    this.appService.items$.subscribe((items: Item[]) => {
         this.items = items;
-      });
+    });
 
-    this.subcategoriesSub = this.appService.subcategories$.subscribe(subcategories => {
+    this.appService.subcategories$.subscribe(subcategories => {
       this.subcategories = subcategories;
     });
 
     let params = this.activatedRoute.snapshot.params;
     let gender = params['gender'];
-    let category = params['category'];
+    let categoryId = params['categoryId'];
 
-    this.appService.requestItems(gender, category);
-    this.itemsService.requestSubcategories(category).subscribe(subcategories => {
+    this.appService.requestItems(gender, categoryId).subscribe(items => {
+      this.items = items;
+      this.items.forEach(item => {
+        this.appService.requestItemImages(item.id).subscribe(images => {
+          // console.log(itemImages)
+          let newItem: Item | undefined = this.items.find(i => i.id === item.id);
+          if(newItem)
+            newItem.images = images.map(i => i.image);
+          console.log(newItem)
+        });
+      })
+    });
+    this.itemsService.requestSubcategories(categoryId).subscribe(subcategories => {
       console.log(subcategories)
     });
   }
 
   loadItems(event: MatTabChangeEvent) {
-    this.items = <ItemModel[]>[];
+    this.items = <Item[]>[];
     let subcategoryId = event.index;
     this.appService.page$.next(0);
     this.appService.isLastPage$.next(false);

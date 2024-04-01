@@ -6,29 +6,10 @@
     </a>
   </div>
   <span>/</span>
-
-<!--  <div *ngFor="let u of url; let i = index" class="breadcrumb-links">-->
-<!--    <div class="breadcrumb-link">-->
-<!--      <a *ngIf="i !== url.length - 1" [routerLink]="[generateLink(i)]">{{u.path}}</a>-->
-<!--    </div>-->
-<!--    <span *ngIf="i === url.length - 1">{{u.path}}</span>-->
-<!--    <span *ngIf="i !== url.length - 1">/</span>-->
-<!--  </div>-->
-
-
-
-<!--  <div *ngFor="let u of params; let i = index" class="breadcrumb-links">-->
-<!--    <div class="breadcrumb-link">-->
-<!--      <a *ngIf="i !== params.length - 1" [routerLink]="[generateByParams()]">{{u.path}}</a>-->
-<!--    </div>-->
-<!--    <span *ngIf="i === params.length - 1">{{u.path}}</span>-->
-<!--    <span *ngIf="i !== params.length - 1">/</span>-->
-<!--  </div>-->
-
   <ng-container *ngIf="!params.categoryId || (params.categoryId && link[1]?.path) ">
     <div *ngFor="let l of link; let i = index" class="breadcrumb-links">
       <div class="breadcrumb-link">
-        <a *ngIf="i !== link.length - 1" [routerLink]="['/', l.path]" (click)="test(l.path)">{{l.name}}</a>
+        <a *ngIf="i !== link.length - 1" [routerLink]="['/', l.path]">{{l.name}}</a>
       </div>
       <span *ngIf="i === link.length - 1">{{l.name}}</span>
       <span *ngIf="i !== link.length - 1">/</span>

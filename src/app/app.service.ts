@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {FilterModel, FilterReady} from "./list-items/filter/filter.model";
-import {ItemModel} from "./list-items/item/item.model";
-import {Subject} from "rxjs";
+import {Item} from "./list-items/item/item.model";
+import {of, Subject, switchMap, take} from "rxjs";
 import {Category} from "./categories/category.model";
 import {environment} from "../environments/environment";
 import {ResponseItems} from "./list-items/item/response-items.model";
@@ -15,12 +15,8 @@ export class AppService {
   backendUrl = environment.backendUrl;
   private _gender: string;
   private _categoryId: string;
-  // items: ItemModel[];
-  items$ = new Subject<ItemModel[]>;
-  itemsBySubcategories: ItemModel[][] = <ItemModel[][]>[];
-  category: string;
-  categories: Category[];
-  brands$ = new Subject<{id: number, name: string}[]>();
+  items$ = new Subject<Item[]>;
+  itemsBySubcategories: Item[][] = <Item[][]>[];
   subcategories$ = new Subject<string[]>();
   page: number = 0;
   page$ = new Subject<number>();
@@ -29,23 +25,35 @@ export class AppService {
   constructor(private http: HttpClient) {}
 
   requestSubcategories() {
-    this.http.get<{id: number, name: string}[]>(
-      this.backendUrl + `/items/categories/${this.category}/subcategories`
-    ).subscribe(subcategories => {
+    return this.http.get<{id: number, name: string}[]>(
+      this.backendUrl + `/catalog/categories/${this._categoryId}/subcategories`
+    ).pipe(take(1), switchMap(subcategories => {
       let subcategoriesNames = subcategories.map(subcategory => subcategory.name);
-      this.subcategories$.next(subcategoriesNames);
-    })
+      return of(subcategoriesNames);
+    }))
   }
 
   requestItems(gender: string, categoryId: string) {
     this._gender = gender;
-    this._categoryId = categoryId
-    this.http.get<ResponseItems>(
-      environment.backendUrl + `/items/gender/${gender}/category/${categoryId}`
-    ).subscribe( data => {
-      this.items$.next([...data.content]);
-      this.itemsBySubcategories[0] = [...data.content];
-    })
+    this._categoryId = categoryId;
+
+    let params = new HttpParams()
+      .append('gender', gender.toUpperCase())
+      .append('categoryId', categoryId)
+      .append('pageSize', 24);
+    console.log(params)
+    return this.http.get<ResponseItems>(
+      environment.backendUrl + `/catalog/items`,
+      {params: params}
+    ).pipe(take(1), switchMap(resItems => {
+      return of(resItems.content);
+    }))
+  }
+
+  requestItemImages(itemId: string) {
+    return this.http.get<{imageId: string, image: string}[]>(
+      environment.backendUrl + `/catalog/items/${itemId}/images`
+    );
   }
 
   requestItemsByFilter(filter: FilterModel) {
@@ -71,7 +79,7 @@ export class AppService {
 
     this.http
       .get<ResponseItems>(
-        `http://localhost:8765/items/gender/${this._gender}/category/${this.category}`,
+        `http://localhost:8765/items/gender/${this._gender}/category/${this._categoryId}`,
         {
           params: filterParams
         }
@@ -110,9 +118,9 @@ export class AppService {
   }
 
   requestBrands() {
-    this.http.get<{id: number, name: string}[]>(this.backendUrl + `/items/brands`).subscribe(brands => {
-      this.brands$.next(brands);
-    })
+    return this.http.get<{id: number, name: string}[]>(
+      environment.backendUrl + `/catalog/brands`
+    )
   }
 
 }
