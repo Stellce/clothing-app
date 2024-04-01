@@ -33,7 +33,7 @@ export class AppService {
     }))
   }
 
-  requestItems(gender: string, categoryId: string) {
+  requestItems(gender: string, categoryId: string, subcategoryId?: string) {
     this._gender = gender;
     this._categoryId = categoryId;
 
@@ -41,6 +41,7 @@ export class AppService {
       .append('gender', gender.toUpperCase())
       .append('categoryId', categoryId)
       .append('pageSize', 24);
+    if(subcategoryId) params = params.append('subcategoryId', subcategoryId);
     console.log(params)
     return this.http.get<ResponseItems>(
       environment.backendUrl + `/catalog/items`,
@@ -103,24 +104,17 @@ export class AppService {
     })
   }
 
-  requestItemsBySubcategory(subcategoryId: number) {
-    if (this.itemsBySubcategories[subcategoryId])
-      return this.items$.next(this.itemsBySubcategories[subcategoryId]);
+  // requestItemsBySubcategory(subcategoryId: string) {
+  //   let url: string = environment.backendUrl + `/catalog/items`;
+  //
+  //   if (subcategoryId) url += `/subcategory/${subcategoryId}`;
+  //
+  //   this.http.get<ResponseItems>(url).subscribe(data => {
+  //     this.itemsBySubcategories[subcategoryId] = [...data.content];
+  //     this.items$.next([...data.content]);
+  //   })
+  // }
 
-    let url: string = environment.backendUrl + `/items/gender/${this._gender}/category/${this._categoryId}`;
 
-    if (subcategoryId) url += `/subcategory/${subcategoryId}`;
-
-    this.http.get<ResponseItems>(url).subscribe(data => {
-      this.itemsBySubcategories[subcategoryId] = [...data.content];
-      this.items$.next([...data.content]);
-    })
-  }
-
-  requestBrands() {
-    return this.http.get<{id: number, name: string}[]>(
-      environment.backendUrl + `/catalog/brands`
-    )
-  }
 
 }

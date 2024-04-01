@@ -15,8 +15,10 @@ import {ItemsService} from "./item/items.service";
 export class ListItemsComponent implements OnInit{
   items: Item[] = [];
   itemsSub: Subscription;
-  subcategories: string[] = [];
+  subcategories: { id: string; name: string }[] = [];
   subcategoriesSub: Subscription;
+  gender: string;
+  categoryId: string;
   constructor(
     private appService: AppService,
     private itemsService: ItemsService,
@@ -28,37 +30,43 @@ export class ListItemsComponent implements OnInit{
         this.items = items;
     });
 
-    this.appService.subcategories$.subscribe(subcategories => {
-      this.subcategories = subcategories;
-    });
-
     let params = this.activatedRoute.snapshot.params;
-    let gender = params['gender'];
-    let categoryId = params['categoryId'];
+    this.gender = params['gender'];
+    this.categoryId = params['categoryId'];
 
-    this.appService.requestItems(gender, categoryId).subscribe(items => {
+    this.appService.requestItems(this.gender, this.categoryId).subscribe(items => {
       this.items = items;
-      this.items.forEach(item => {
-        this.appService.requestItemImages(item.id).subscribe(images => {
-          // console.log(itemImages)
-          let newItem: Item | undefined = this.items.find(i => i.id === item.id);
-          if(newItem)
-            newItem.images = images.map(i => i.image);
-          console.log(newItem)
-        });
-      })
+      this.requestItemsImages();
     });
-    this.itemsService.requestSubcategories(categoryId).subscribe(subcategories => {
-      console.log(subcategories)
+    this.itemsService.requestSubcategories(this.categoryId).subscribe(subcategories => {
+      this.subcategories = subcategories;
     });
   }
 
-  loadItems(event: MatTabChangeEvent) {
+  loadItemsBySubcategory(event: MatTabChangeEvent) {
     this.items = <Item[]>[];
-    let subcategoryId = event.index;
+    console.log(event)
+    let subcategory = this.subcategories
+      .find(subcategory =>
+        subcategory.name.toLowerCase() === event.tab.textLabel.toLowerCase()
+      );
+    if(!subcategory) return;
     this.appService.page$.next(0);
     this.appService.isLastPage$.next(false);
     this.appService.page = 0;
-    this.appService.requestItemsBySubcategory(subcategoryId);
+    this.appService.requestItems(this.gender, this.categoryId, subcategory.id).subscribe(items => {
+      this.items = items;
+      this.requestItemsImages();
+    });
+  }
+
+  private requestItemsImages() {
+    this.items.forEach(item => {
+      this.appService.requestItemImages(item.id).subscribe(images => {
+        let newItem: Item | undefined = this.items.find(i => i.id === item.id);
+        if(newItem)
+          newItem.images = images.map(i => i.image);
+      });
+    })
   }
 }

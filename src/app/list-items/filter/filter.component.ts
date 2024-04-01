@@ -4,6 +4,7 @@ import {NgForm} from "@angular/forms";
 import {AppService} from "../../app.service";
 import {ActivatedRoute} from "@angular/router";
 import {CategoriesService} from "../../categories/categories.service";
+import {ItemsService} from "../item/items.service";
 
 @Component({
   selector: 'app-filter',
@@ -33,7 +34,6 @@ export class FilterComponent implements OnInit{
         value: 'newest'
       }
     ],
-    subcategories: [''],
     brands: [{id: 0, name: ''}]
   };
 
@@ -48,7 +48,7 @@ export class FilterComponent implements OnInit{
 
   @Output() closeDrawer = new EventEmitter<void>();
     constructor(
-      private appService: AppService,
+      private itemsService: ItemsService,
       private activatedRoute: ActivatedRoute,
       private categoriesService: CategoriesService
     ) {}
@@ -70,10 +70,7 @@ export class FilterComponent implements OnInit{
         this.filters.sizes = this.sizesCloth;
       }
     })
-    this.appService.requestSubcategories().subscribe(subcategories => {
-      this.filters.subcategories = subcategories;
-    })
-    this.appService.requestBrands().subscribe(brands => {
+    this.itemsService.requestBrands().subscribe(brands => {
       this.filters.brands = brands
     });
   }
@@ -85,7 +82,7 @@ export class FilterComponent implements OnInit{
       sortBy: form.value.sortBy,
       ...this.filtersSelected
     }
-    this.appService.requestItemsByFilter(filter);
+    this.itemsService.requestItemsByFilter(filter);
     console.log(filter);
   }
 
