@@ -1,6 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AppService} from "../../app.service";
-import {Subscription} from "rxjs";
+import {Component} from '@angular/core';
 import {ItemsService} from "../item/items.service";
 import {ItemsPage} from "../item/response-items.model";
 
@@ -13,7 +11,6 @@ export class PaginatorComponent {
   page: ItemsPage = {number: 0} as ItemsPage;
 
   constructor(private itemsService: ItemsService) {}
-
 
   onChangePage(changePage: number) {
     let pageNumber = this.page.number + changePage;

@@ -1,7 +1,6 @@
 import {Component, EventEmitter, OnInit, Output, ViewEncapsulation} from '@angular/core';
-import {FilterModel} from "./filter.model";
+import {Filter} from "./filter.model";
 import {NgForm} from "@angular/forms";
-import {AppService} from "../../app.service";
 import {ActivatedRoute} from "@angular/router";
 import {CategoriesService} from "../../categories/categories.service";
 import {ItemsService} from "../item/items.service";
@@ -37,13 +36,13 @@ export class FilterComponent implements OnInit{
     brands: [{id: 0, name: ''}]
   };
 
-  sizesCloth = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL'];
+  sizesClothes = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL'];
   sizesShoes: string[] = [];
 
   filtersSelected: {colors: string[], sizes: string[], brands: string[]} = {
-    colors: [],
     sizes: [],
-    brands: []
+    brands: [],
+    colors: []
   }
 
   @Output() closeDrawer = new EventEmitter<void>();
@@ -67,7 +66,7 @@ export class FilterComponent implements OnInit{
         this.setShoeSizes();
         this.filters.sizes = this.sizesShoes;
       } else {
-        this.filters.sizes = this.sizesCloth;
+        this.filters.sizes = this.sizesClothes;
       }
     })
     this.itemsService.requestBrands().subscribe(brands => {
@@ -76,49 +75,26 @@ export class FilterComponent implements OnInit{
   }
 
   onSubmitFilter(form: NgForm) {
-    let filter: FilterModel = {
-      priceFrom: form.value.priceFrom,
-      priceTo: form.value.priceTo,
+    console.log(form)
+    let filter: Filter = {
+      priceRange: form.value['priceTo'] ?
+        [form.value['priceFrom'] || 0, form.value['priceTo']].join(",") : '',
       sortBy: form.value.sortBy,
-      ...this.filtersSelected
     }
-    this.itemsService.requestItemsByFilter(filter);
-    console.log(filter);
+    Object.entries(this.filtersSelected).forEach(([k,v]) => {
+      if (v.length) filter[k as keyof Filter] = v.join(",");
+    })
+    let itemsRequest = {gender: '', categoryId: '', filter: filter};
+    this.itemsService.requestItems(itemsRequest).subscribe();
   }
 
   changeFilter(filterType: 'colors' | 'brands' | 'sizes', filter: string) {
-    // console.log(filter)
     const filterIndex = this.filtersSelected[filterType].indexOf(filter);
     const NOT_FOUND = -1;
     filterIndex === NOT_FOUND ?
       this.filtersSelected[filterType].push(filter) :
       this.filtersSelected[filterType].splice(filterIndex, 1);
     console.log(this.filtersSelected);
-    // if (filterType === 'size') {
-    //   const sizeIndex = this.filtersSelected.sizes.indexOf(filter);
-    //   if ( sizeIndex < 0) {
-    //     this.filtersSelected.sizes.push(filter);
-    //   } else {
-    //     this.filtersSelected.sizes.splice(sizeIndex, 1);
-    //   }
-    // } else if (filterType === 'brand') {
-    //   const brandIndex = this.filtersSelected.brands.indexOf(filter);
-    //   if (brandIndex < 0) {
-    //     this.filtersSelected.brands.push(filter);
-    //   } else {
-    //     this.filtersSelected.brands.splice(brandIndex, 1);
-    //   }
-    // } else if (filterType === 'colors') {
-    //   const colorIndex = this.filtersSelected.colors.indexOf(filter);
-    //   if(colorIndex < 0) {
-    //     console.log('not found');
-    //     this.filtersSelected.colors.push(filter);
-    //   } else {
-    //     console.log('found');
-    //     this.filtersSelected.colors.splice(colorIndex, 1);
-    //   }
-    // }
-    // console.log(this.filtersSelected);
   }
 
   onCloseDrawer() {

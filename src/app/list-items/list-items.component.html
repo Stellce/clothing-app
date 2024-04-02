@@ -8,25 +8,25 @@
     <app-filter (closeDrawer)="drawer.close()"></app-filter>
   </mat-drawer>
   <app-breadcrumb></app-breadcrumb>
-  <mat-spinner *ngIf="!subcategories"></mat-spinner>
+  <mat-spinner *ngIf="!subcategories && isLoading"></mat-spinner>
   <mat-tab-group
     *ngIf="subcategories.length; else noSubcategories"
     (selectedTabChange)="loadItemsBySubcategory($event)">
     <mat-tab [label]="subcategories.length > 0 ? 'All' : ''">
-      <mat-spinner *ngIf="items.length <= 0 && subcategories.length"></mat-spinner>
+      <mat-spinner *ngIf="items.length <= 0 && subcategories.length && isLoading"></mat-spinner>
       <div class="cloth-grid">
         <app-item *ngFor="let item of items" [item]="item"></app-item>
       </div>
     </mat-tab>
     <mat-tab *ngFor="let subcategory of subcategories" [label]="subcategory.name">
-      <mat-spinner *ngIf="items.length <= 0 && subcategories"></mat-spinner>
+      <mat-spinner *ngIf="items.length <= 0 && subcategories && isLoading"></mat-spinner>
       <div class="cloth-grid">
         <app-item *ngFor="let item of items" [item]="item"></app-item>
       </div>
     </mat-tab>
   </mat-tab-group>
   <ng-template #noSubcategories>
-    <mat-spinner *ngIf="items.length <= 0 && subcategories"></mat-spinner>
+    <mat-spinner *ngIf="items.length <= 0 && subcategories && isLoading"></mat-spinner>
     <div class="cloth-grid">
       <app-item *ngFor="let item of items" [item]="item"></app-item>
     </div>
