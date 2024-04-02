@@ -1,4 +1,4 @@
-@import '../../styles';
+@import '../../../styles';
 .card {
   display: flex;
   flex-direction: column;
@@ -38,4 +38,9 @@ img {
   color: #d9d9d9;
   font-weight: bold;
   font-size: 22px;
+}
+.placeholder {
+  height: 150px;
+  background: #404040;
+  border-radius: 4px;
 }

@@ -6,11 +6,13 @@
     </a>
   </div>
   <span>/</span>
-  <div *ngFor="let u of this.url; let i = index"  class="breadcrumb-links">
-    <div class="breadcrumb-link" *ngIf="u.path !== 'boys' && u.path !== 'girls'">
-      <a *ngIf="i !== this.url.length - 1" [routerLink]="[generateLink(i)]">{{u.path}}</a>
+  <ng-container *ngIf="!params.categoryId || (params.categoryId && link[1]?.path) ">
+    <div *ngFor="let l of link; let i = index" class="breadcrumb-links">
+      <div class="breadcrumb-link">
+        <a *ngIf="i !== link.length - 1" [routerLink]="['/', l.path]">{{l.name}}</a>
+      </div>
+      <span *ngIf="i === link.length - 1">{{l.name}}</span>
+      <span *ngIf="i !== link.length - 1">/</span>
     </div>
-    <span *ngIf="i === this.url.length - 1">{{u.path}}</span>
-    <span *ngIf="i !== this.url.length - 1 && u.path !== 'boys' && u.path !== 'girls'">/</span>
-  </div>
+  </ng-container>
 </div>

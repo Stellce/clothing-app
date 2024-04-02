@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {AppService} from "../app.service";
-import {Category} from "../list-items/category.model";
+import {Category} from "./category.model";
+import {CategoriesService} from "./categories.service";
 
 @Component({
   selector: 'app-categories',
@@ -9,26 +9,32 @@ import {Category} from "../list-items/category.model";
   styleUrls: ['./categories.component.scss']
 })
 export class CategoriesComponent implements OnInit{
-
   categories: Category[];
   gender: string;
   isLoading: boolean;
 
-  constructor(private activatedRoute: ActivatedRoute, private appService: AppService) {}
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private categoriesService: CategoriesService
+  ) {}
 
   ngOnInit() {
     this.isLoading = true;
-    this.activatedRoute.url.subscribe(url => {
-      this.gender = url[0].path;
-      this.appService.gender = this.gender;
+    this.activatedRoute.params.subscribe(params => {
+      this.gender = params['gender'];
 
-      this.appService.getCategories()
+      this.categoriesService.requestCategories()
         .subscribe(categories => {
           this.isLoading = false;
           this.categories = categories;
-          console.log(categories);
+
+          this.categoriesService.requestCategoriesImages(this.gender)
+            .subscribe(categoriesImages => {
+              Object.entries(categoriesImages).forEach(([categoryId, image]) => {
+                categories.find(category => category.id === categoryId)!.image = image;
+              });
+            })
         });
     })
   }
-
 }

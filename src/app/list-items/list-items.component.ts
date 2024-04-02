@@ -1,10 +1,9 @@
-import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
-import {ItemModel} from "../item.model";
-import {AppService} from "../app.service";
-import {Subscription} from "rxjs";
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Item} from "./item/item.model";
 import {ActivatedRoute} from "@angular/router";
-import {Category} from "./category.model";
 import {MatTabChangeEvent} from "@angular/material/tabs";
+import {ItemsService} from "./item/items.service";
+import {ItemsRequest} from "./item/items-request.model";
 
 @Component({
   selector: 'app-list-items',
@@ -12,53 +11,49 @@ import {MatTabChangeEvent} from "@angular/material/tabs";
   styleUrls: ['./list-items.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class ListItemsComponent implements OnInit, OnDestroy{
+export class ListItemsComponent implements OnInit{
+  items: Item[] = [];
+  subcategories: {id: string; name: string}[] = [];
   gender: string;
-  items: ItemModel[] = [];
-  itemsSub: Subscription;
-  categories: Category[];
-  categoriesSub: Subscription;
-  category: string;
-  subcategories: string[] = [];
-  subcategoriesSub: Subscription;
+  categoryId: string;
+  isLoading: boolean = false;
   constructor(
-    private appService: AppService,
+    private itemsService: ItemsService,
     private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    let url = this.activatedRoute.snapshot.url;
+    this.itemsService.items$.subscribe((items: Item[]) => {
+      this.isLoading = false;
+      this.items = items;
+    });
+    let params = this.activatedRoute.snapshot.params;
+    this.gender = params['gender'];
+    this.categoryId = params['categoryId'];
 
-    this.itemsSub = this.appService.itemsUpdated.subscribe((items: ItemModel[]) => {
-        this.items = items;
-      });
-
-    this.subcategoriesSub = this.appService.subcategoriesUpdated.subscribe(subcategories => {
+    this.isLoading = true;
+    this.itemsService.requestItems({gender: this.gender, categoryId: this.categoryId}).subscribe(items => {
+      this.isLoading = false;
+      this.items = items;
+    });
+    this.itemsService.requestSubcategories(this.categoryId).subscribe(subcategories => {
       this.subcategories = subcategories;
     });
-
-    this.gender = url[0].path;
-    this.appService.gender = url[0].path;
-
-    this.category = url[1].path;
-    this.appService.category = url[1].path;
-
-    this.appService.getItems();
-    this.appService.getSubcategories();
   }
 
-  loadItems(event: MatTabChangeEvent) {
-    this.items = <ItemModel[]>[];
-    let subcategoryId = event.index;
-    this.appService.pageUpdated.next(0);
-    this.appService.isLastPageUpdate.next(false);
-    this.appService.page = 0;
-    this.appService.getItemsBySubcategory(subcategoryId);
-  }
-
-  ngOnDestroy() {
-    this.itemsSub.unsubscribe();
-    // this.categoriesSub.unsubscribe();
-    // this.subcategoriesSub.unsubscribe();
+  loadItemsBySubcategory(event: MatTabChangeEvent) {
+    this.items = <Item[]>[];
+    let subcategory = this.subcategories
+      .find(subcategory =>
+        subcategory.name.toLowerCase() === event.tab.textLabel.toLowerCase()
+      );
+    let itemsRequest: ItemsRequest = {
+      gender: this.gender,
+      categoryId: this.categoryId,
+      subcategoryId: subcategory?.id
+    }
+    this.itemsService.requestItems(itemsRequest).subscribe(items => {
+      this.items = items;
+    });
   }
 }

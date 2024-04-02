@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, UrlSegment} from "@angular/router";
+import {CategoriesService} from "../../categories/categories.service";
 
 @Component({
   selector: 'app-breadcrumb',
@@ -7,19 +8,34 @@ import {ActivatedRoute, UrlSegment} from "@angular/router";
   styleUrls: ['./breadcrumb.component.scss']
 })
 export class BreadcrumbComponent implements OnInit{
-  url: UrlSegment[];
+  params: {gender?: string, categoryId?: string};
+  link: {name?: string, path?: string}[] = [];
 
-  constructor(private activatedRoute: ActivatedRoute) {}
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private categoriesService: CategoriesService
+  ) {}
 
   ngOnInit() {
-    this.url = this.activatedRoute.snapshot.url;
+    this.params = this.activatedRoute.snapshot.params;
+
+    this.link = [
+      {
+        name: this.params.gender?.toUpperCase(),
+        path: this.params.gender
+      },
+    ];
+    if (this.params.categoryId) {
+      this.categoriesService.requestCategories().subscribe(categories => {
+        let categoryName = categories
+          .find(category => category.id === this.params.categoryId)?.name;
+        this.link.push({
+          name: categoryName!,
+          path: this.params.gender + '/' + this.params.categoryId!
+        });
+      });
+    }
   }
 
-  generateLink(length: number) {
-    let link = "";
-    for(let i = 0; i<=length; i++) {
-      link += '/' + this.url[i].path;
-    }
-    return link
-  }
+  protected readonly Object = Object;
 }

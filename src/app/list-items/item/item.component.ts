@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {ItemModel} from "../item.model";
+import {Item} from "./item.model";
 
 @Component({
   selector: 'app-item',
@@ -7,7 +7,7 @@ import {ItemModel} from "../item.model";
   styleUrls: ['./item.component.scss']
 })
 export class ItemComponent {
-  @Input() item: ItemModel;
+  @Input() item: Item;
 
   protected readonly Math = Math;
 }
