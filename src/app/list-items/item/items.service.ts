@@ -1,8 +1,8 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
-import {of, Subject, switchMap, take} from "rxjs";
-import {ResponseItems} from "./response-items.model";
+import {of, Subject, switchMap, take, tap} from "rxjs";
+import {ItemsPage} from "./response-items.model";
 import {FilterModel, FilterReady} from "../filter/filter.model";
 import {Item} from "./item.model";
 
@@ -20,7 +20,7 @@ export class ItemsService {
     )
   }
 
-  requestItems(gender: string, categoryId: string, subcategoryId?: string) {
+  requestItems(gender: string, categoryId: string, subcategoryId?: string, pageNumber?: string) {
     this._gender = gender;
     this._categoryId = categoryId;
 
@@ -29,13 +29,19 @@ export class ItemsService {
       .append('categoryId', categoryId)
       .append('pageSize', 24);
     if(subcategoryId) params = params.append('subcategoryId', subcategoryId);
-    console.log(params)
-    return this.http.get<ResponseItems>(
+    if(pageNumber) params = params.append('pageNumber', pageNumber);
+    return this.http.get<ItemsPage>(
       environment.backendUrl + `/catalog/items`,
       {params: params}
     ).pipe(take(1), switchMap(resItems => {
       return of(resItems.content);
     }))
+  }
+
+  requestItemImages(itemId: string) {
+    return this.http.get<{imageId: string, image: string}[]>(
+      environment.backendUrl + `/catalog/items/${itemId}/images`
+    );
   }
 
   requestBrands() {
@@ -69,7 +75,7 @@ export class ItemsService {
       .append('gender', this._gender)
       .append('categoryId', this._categoryId);
 
-    this.http.get<ResponseItems>(
+    this.http.get<ItemsPage>(
       environment.backendUrl + `/catalog/items`,
         {
           params: filterParams
@@ -77,5 +83,16 @@ export class ItemsService {
       ).subscribe( data => {
       this.items$.next(data.content);
     })
+  }
+
+  changePage(pageNumber: number) {
+    let pageParams = new HttpParams();
+    pageParams = pageParams.append('pageNumber', pageNumber);
+
+    return this.http.get<ItemsPage>(
+      environment.backendUrl + `/catalog/items`,
+      {params: pageParams}).pipe(tap(page => {
+      this.items$.next(page.content);
+    }));
   }
 }

@@ -29,9 +29,6 @@
       <mat-chip-listbox aria-label="filter selection" multiple>
         <mat-chip-option *ngFor="let size of filters.sizes" [value]="size" (selectionChange)="changeFilter('sizes', size)">
           {{size}}
-          <!--            <button matChipRemove [attr.aria-label]="'remove' + filter">-->
-          <!--              <mat-icon>cancel</mat-icon>-->
-          <!--            </button>-->
         </mat-chip-option>
       </mat-chip-listbox>
       <mat-divider></mat-divider>
@@ -48,16 +45,6 @@
       </mat-form-field>
       <mat-divider></mat-divider>
     </div>
-<!--    <div class="subcategories" *ngIf="filters.subcategories[0]">-->
-<!--      <div class="label"><span>Subcategory</span></div>-->
-<!--      <mat-form-field>-->
-<!--        <mat-label>Subcategory</mat-label>-->
-<!--        <mat-select ngModel name="subcategory">-->
-<!--          <mat-option *ngFor="let subcategory of filters.subcategories" [value]="subcategory">{{subcategory}}</mat-option>-->
-<!--        </mat-select>-->
-<!--      </mat-form-field>-->
-<!--    <mat-divider></mat-divider>-->
-<!--    </div>-->
     <div class="brands">
       <mat-expansion-panel>
         <mat-expansion-panel-header>

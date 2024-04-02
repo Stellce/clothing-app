@@ -1,35 +1,27 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AppService} from "../../app.service";
 import {Subscription} from "rxjs";
+import {ItemsService} from "../item/items.service";
+import {ItemsPage} from "../item/response-items.model";
 
 @Component({
   selector: 'app-paginator',
   templateUrl: './paginator.component.html',
   styleUrls: ['./paginator.component.scss']
 })
-export class PaginatorComponent implements OnInit, OnDestroy{
-  page: number = 0;
-  pageSub: Subscription;
-  isLastPage: boolean;
-  isLastPageSub: Subscription;
-  constructor(private appService: AppService) {}
+export class PaginatorComponent {
+  page: ItemsPage = {number: 0} as ItemsPage;
 
-  ngOnInit() {
-    this.pageSub = this.appService.page$.subscribe(page => this.page = page);
-    this.isLastPageSub = this.appService.isLastPage$.subscribe(isLast => this.isLastPage = isLast);
-  }
+  constructor(private itemsService: ItemsService) {}
 
-  onPrevious() {
-    if(this.page === 0) return;
-    this.appService.requestPage(-1);
-  }
-  onNext() {
-    if(this.isLastPage) return;
-    this.appService.requestPage(1);
-  }
 
-  ngOnDestroy() {
-    this.pageSub.unsubscribe();
-    this.isLastPageSub.unsubscribe();
+  onChangePage(changePage: number) {
+    let pageNumber = this.page.number + changePage;
+    let lessThan = pageNumber < 0;
+    let greaterThan = changePage > 0 && this.page.last;
+    if(lessThan || greaterThan) return;
+    this.itemsService.changePage(pageNumber).subscribe(page => {
+        this.page = page;
+    });
   }
 }

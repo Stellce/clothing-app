@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AppService} from "../app.service";
+import {ItemsService} from "../list-items/item/items.service";
 
 @Component({
   selector: 'app-outlet',
@@ -9,10 +9,10 @@ import {AppService} from "../app.service";
 export class OutletComponent implements OnInit{
   items: any;
 
-  constructor(private appService: AppService) {}
+  constructor(private itemsService: ItemsService) {}
 
   ngOnInit() {
-    this.appService.items$.subscribe(items => this.items = items);
+    this.itemsService.items$.subscribe(items => this.items = items);
     // this.appService.requestOutlet();
   }
 }
