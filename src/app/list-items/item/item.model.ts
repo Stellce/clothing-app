@@ -5,8 +5,6 @@ export interface Item {
   discount: number;
   priceAfterDiscount: number;
   brand: string;
-  rating: number;
-  color: string[];
   isOnWishList: boolean;
   isNew: boolean;
   isPopular: boolean;

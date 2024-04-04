@@ -45,7 +45,7 @@ export class FilterComponent implements OnInit{
     colors: []
   }
 
-  @Output() closeDrawer = new EventEmitter<void>();
+  @Output()filter = new EventEmitter<Filter>();
     constructor(
       private itemsService: ItemsService,
       private activatedRoute: ActivatedRoute,
@@ -83,9 +83,8 @@ export class FilterComponent implements OnInit{
     }
     Object.entries(this.filtersSelected).forEach(([k,v]) => {
       if (v.length) filter[k as keyof Filter] = v.join(",");
-    })
-    let itemsRequest = {gender: '', categoryId: '', filter: filter};
-    this.itemsService.requestItems(itemsRequest).subscribe();
+    });
+    this.filter.emit(filter);
   }
 
   changeFilter(filterType: 'colors' | 'brands' | 'sizes', filter: string) {
@@ -95,9 +94,5 @@ export class FilterComponent implements OnInit{
       this.filtersSelected[filterType].push(filter) :
       this.filtersSelected[filterType].splice(filterIndex, 1);
     console.log(this.filtersSelected);
-  }
-
-  onCloseDrawer() {
-    this.closeDrawer.emit();
   }
 }

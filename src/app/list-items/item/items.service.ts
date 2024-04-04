@@ -2,13 +2,13 @@ import {Injectable} from "@angular/core";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {BehaviorSubject, of, switchMap, take, tap} from "rxjs";
-import {ItemsPage} from "./response-items.model";
+import {ItemsPage} from "./res/items-page.model";
 import {Item} from "./item.model";
-import {ItemsRequest} from "./items-request.model";
+import {ItemsParamsRequest} from "./req/items-params-request.model";
 
 @Injectable({providedIn: 'root'})
 export class ItemsService {
-  private _requestData: ItemsRequest = {} as ItemsRequest;
+  private _cachedItemsRequest: ItemsParamsRequest = {} as ItemsParamsRequest;
   private _items$ = new BehaviorSubject<Item[]>([]);
 
   constructor(private http: HttpClient) {}
@@ -23,21 +23,13 @@ export class ItemsService {
     )
   }
 
-  requestItems(itemsRequest: ItemsRequest) {
-    if(!itemsRequest.gender)
-      itemsRequest.gender = this._requestData.gender;
-    if(!itemsRequest.categoryId)
-      itemsRequest.categoryId = this._requestData.categoryId;
-    this._requestData = itemsRequest;
-    console.log(this._requestData);
+  requestItems(itemsRequest: ItemsParamsRequest) {
+    this._cachedItemsRequest = itemsRequest;
     let params = new HttpParams();
-    if(itemsRequest.filter) itemsRequest = {
-      ...itemsRequest,
-      ...itemsRequest.filter
-    }
-    delete itemsRequest.filter;
-    console.log('itemsRequest', itemsRequest)
+    console.log('itemsRequest', itemsRequest);
     Object.entries(itemsRequest).forEach(([k,v]) => {
+      if(!v) return;
+      console.log(k, v)
       params = params.append(k,v);
     })
     return this.http.get<ItemsPage>(
@@ -65,6 +57,9 @@ export class ItemsService {
 
   changePage(pageNumber: number) {
     let pageParams = new HttpParams();
+    Object.entries(this._cachedItemsRequest).forEach(([k,v]) => {
+      if(v) pageParams.append(k, v);
+    })
     pageParams = pageParams.append('pageNumber', pageNumber);
 
     return this.http.get<ItemsPage>(
