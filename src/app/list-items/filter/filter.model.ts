@@ -1,15 +1,13 @@
 export interface Filter {
-  ageGroup?: string,
+  // ageGroup?: string,
   priceRange?: string,
   sizes?: string;
   sortBy?: string;
-  types?: string;
-  colors?: string;
+  // types?: string;
   brands?: string;
-  material?: string;
-  rate?: string;
-  subcategory?: string;
-  season?: string;
+  colors?: string;
   materials?: string;
   rating?: string;
+  subcategory?: string;
+  season?: string;
 }

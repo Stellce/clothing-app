@@ -5,7 +5,7 @@
 </div>
 <mat-drawer-container>
   <mat-drawer class="filter" #drawer mode="over">
-    <app-filter (closeDrawer)="drawer.close()"></app-filter>
+    <app-filter (filter)="filterItems($event)"></app-filter>
   </mat-drawer>
   <app-breadcrumb></app-breadcrumb>
   <mat-spinner *ngIf="!subcategories && isLoading"></mat-spinner>
@@ -31,5 +31,5 @@
       <app-item *ngFor="let item of items" [item]="item"></app-item>
     </div>
   </ng-template>
-  <app-paginator></app-paginator>
+  <app-paginator [page]="page" (changePage)="changePage($event)"></app-paginator>
 </mat-drawer-container>

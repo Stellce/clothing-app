@@ -1,9 +1,11 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {Item} from "./item/item.model";
 import {ActivatedRoute} from "@angular/router";
 import {MatTabChangeEvent} from "@angular/material/tabs";
 import {ItemsService} from "./item/items.service";
-import {ItemsRequest} from "./item/items-request.model";
+import {ItemsParamsRequest} from "./item/req/items-params-request.model";
+import {Filter} from "./filter/filter.model";
+import {MatDrawer} from "@angular/material/sidenav";
 
 @Component({
   selector: 'app-list-items',
@@ -12,11 +14,15 @@ import {ItemsRequest} from "./item/items-request.model";
   encapsulation: ViewEncapsulation.None
 })
 export class ListItemsComponent implements OnInit{
+  @ViewChild('drawer') drawer: MatDrawer;
   items: Item[] = [];
   subcategories: {id: string; name: string}[] = [];
-  gender: string;
-  categoryId: string;
+  itemsParamsRequest: ItemsParamsRequest = {} as ItemsParamsRequest;
   isLoading: boolean = false;
+  page: {number: number, last: boolean} = {
+    number: 0,
+    last: false
+  };
   constructor(
     private itemsService: ItemsService,
     private activatedRoute: ActivatedRoute
@@ -27,16 +33,17 @@ export class ListItemsComponent implements OnInit{
       this.isLoading = false;
       this.items = items;
     });
+
     let params = this.activatedRoute.snapshot.params;
-    this.gender = params['gender'];
-    this.categoryId = params['categoryId'];
+    this.itemsParamsRequest.gender = params['gender'];
+    this.itemsParamsRequest.categoryId = params['categoryId'];
 
     this.isLoading = true;
-    this.itemsService.requestItems({gender: this.gender, categoryId: this.categoryId}).subscribe(items => {
+    this.itemsService.requestItems({gender: this.itemsParamsRequest.gender, categoryId: this.itemsParamsRequest.categoryId}).subscribe(items => {
       this.isLoading = false;
       this.items = items;
     });
-    this.itemsService.requestSubcategories(this.categoryId).subscribe(subcategories => {
+    this.itemsService.requestSubcategories(this.itemsParamsRequest.categoryId).subscribe(subcategories => {
       this.subcategories = subcategories;
     });
   }
@@ -47,13 +54,33 @@ export class ListItemsComponent implements OnInit{
       .find(subcategory =>
         subcategory.name.toLowerCase() === event.tab.textLabel.toLowerCase()
       );
-    let itemsRequest: ItemsRequest = {
-      gender: this.gender,
-      categoryId: this.categoryId,
+    if(subcategory) this.itemsParamsRequest.subcategoryId = subcategory.id;
+    let itemsRequest: ItemsParamsRequest = {
+      gender: this.itemsParamsRequest.gender,
+      categoryId: this.itemsParamsRequest.categoryId,
       subcategoryId: subcategory?.id
     }
     this.itemsService.requestItems(itemsRequest).subscribe(items => {
       this.items = items;
+    });
+  }
+
+  filterItems(filter: Filter) {
+    let itemsRequest: ItemsParamsRequest = {
+      ...this.itemsParamsRequest,
+      ...filter
+    };
+    this.itemsService.requestItems(itemsRequest).subscribe();
+    this.drawer.close();
+  }
+
+  changePage(pageNumber: number) {
+    this.itemsService.changePage(pageNumber).subscribe(page => {
+      this.page = {
+        number: page.number,
+        last: page.last
+      }
+      this.items = page.content;
     });
   }
 }
