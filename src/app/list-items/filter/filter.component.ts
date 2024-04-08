@@ -1,9 +1,12 @@
 import {Component, EventEmitter, OnInit, Output, ViewEncapsulation} from '@angular/core';
 import {Filter} from "./filter.model";
-import {NgForm} from "@angular/forms";
+import {FormControl, FormGroup} from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
 import {CategoriesService} from "../../categories/categories.service";
 import {ItemsService} from "../item/items.service";
+import {FilterService} from "./filter.service";
+import {AllowedFilters} from "./allowed-filters.model";
+import {SelectedFilters} from "./selected-filters.model";
 
 @Component({
   selector: 'app-filter',
@@ -12,87 +15,75 @@ import {ItemsService} from "../item/items.service";
   encapsulation: ViewEncapsulation.None
 })
 export class FilterComponent implements OnInit{
-  filters = {
-    colors: ['black', 'white', 'red', 'yellow', 'green', 'blue', 'violet', 'grey', 'multi'],
-    sizes: ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL'],
-    sort: [
-      {
-        name: 'popularity',
-        value: 'popularity'
-      },
-      {
-        name: 'price from lowest',
-        value: 'price_asc'
-      },
-      {
-        name: 'price from highest',
-        value: 'price_desc'
-      },
-      {
-        name: 'newest',
-        value: 'newest'
-      }
-    ],
-    brands: [{id: 0, name: ''}]
-  };
-
-  sizesClothes = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL'];
-  sizesShoes: string[] = [];
-
-  filtersSelected: {colors: string[], sizes: string[], brands: string[]} = {
-    sizes: [],
-    brands: [],
-    colors: []
-  }
-
-  @Output()filter = new EventEmitter<Filter>();
-    constructor(
-      private itemsService: ItemsService,
-      private activatedRoute: ActivatedRoute,
-      private categoriesService: CategoriesService
-    ) {}
-  private setShoeSizes() {
-      for (let i=30;i<=46;i++) {
-        this.sizesShoes.push(String(i));
-      }
+  @Output() filter = new EventEmitter<Filter>();
+  filters: AllowedFilters;
+  form: FormGroup;
+  selectedFilters: SelectedFilters;
+  constructor(
+    private filterService: FilterService,
+    private itemsService: ItemsService,
+    private activatedRoute: ActivatedRoute,
+    private categoriesService: CategoriesService
+  ) {
+    this.filters = filterService.allowedFilters;
+    this.selectedFilters = filterService.selectedFilters
   }
 
   ngOnInit() {
+    this.form = new FormGroup({
+      priceFrom: new FormControl(''),
+      priceTo: new FormControl(''),
+      sizes: new FormControl(''),
+      sortBy: new FormControl(''),
+      // brands: new FormControl(''),
+      // colors: new FormControl(''),
+
+      // materials: new FormControl(''),
+      // rating: new FormControl(''),
+      // season: new FormControl(''),
+    });
+
     let categoryId = this.activatedRoute.snapshot.params['categoryId'];
     this.categoriesService.requestCategories().subscribe(categories => {
       let categoryName = categories
         .find(c => c.id === categoryId)?.name.toUpperCase();
       if(categoryName === 'SHOES' || categoryName === 'SOCKS') {
-        this.setShoeSizes();
-        this.filters.sizes = this.sizesShoes;
+        this.filters.sizes = this.filterService.sizesShoes;
       } else {
-        this.filters.sizes = this.sizesClothes;
+        this.filters.sizes = this.filterService.sizesClothes;
       }
     })
     this.itemsService.requestBrands().subscribe(brands => {
-      this.filters.brands = brands
+      this.filters.brands = brands;
     });
   }
 
-  onSubmitFilter(form: NgForm) {
-    console.log(form)
+  onSubmitFilter() {
+    console.log('form', this.form);
+    let priceRange = this.form.value['priceTo'] ?
+      [this.form.value['priceFrom'] || 0, this.form.value['priceTo']].join(",") : '';
     let filter: Filter = {
-      priceRange: form.value['priceTo'] ?
-        [form.value['priceFrom'] || 0, form.value['priceTo']].join(",") : '',
-      sortBy: form.value.sortBy,
+      priceRange: priceRange,
+      sortBy: this.form.value.sortBy,
     }
-    Object.entries(this.filtersSelected).forEach(([k,v]) => {
+    Object.entries(this.selectedFilters).forEach(([k,v]) => {
       if (v.length) filter[k as keyof Filter] = v.join(",");
     });
     this.filter.emit(filter);
   }
 
-  changeFilter(filterType: 'colors' | 'brands' | 'sizes', filter: string) {
-    const filterIndex = this.filtersSelected[filterType].indexOf(filter);
+  // 'colors' | 'brands' | 'seasons' | 'materials'
+  changeFilter(filterType: 'colors' | 'brands' | 'seasons' | 'materials', changeTo: string) {
+    const filterIndex = this.selectedFilters[filterType]?.indexOf(changeTo);
+    console.log('filterIndex', filterIndex);
     const NOT_FOUND = -1;
     filterIndex === NOT_FOUND ?
-      this.filtersSelected[filterType].push(filter) :
-      this.filtersSelected[filterType].splice(filterIndex, 1);
-    console.log(this.filtersSelected);
+      this.selectedFilters[filterType].push(changeTo) :
+      this.selectedFilters[filterType].splice(filterIndex, 1);
+  }
+
+  getFilterName(filterName: string) {
+    filterName = filterName.split(/_/).join(" ").toLowerCase();
+    return filterName[0].toUpperCase() + filterName.slice(1);
   }
 }

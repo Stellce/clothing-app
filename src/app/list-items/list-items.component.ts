@@ -6,6 +6,7 @@ import {ItemsService} from "./item/items.service";
 import {ItemsParamsRequest} from "./item/req/items-params-request.model";
 import {Filter} from "./filter/filter.model";
 import {MatDrawer} from "@angular/material/sidenav";
+import {ItemsPage} from "./item/res/items-page.model";
 
 @Component({
   selector: 'app-list-items',
@@ -29,9 +30,13 @@ export class ListItemsComponent implements OnInit{
   ) {}
 
   ngOnInit() {
-    this.itemsService.items$.subscribe((items: Item[]) => {
+    this.itemsService.page$.subscribe((page: ItemsPage) => {
       this.isLoading = false;
-      this.items = items;
+      this.items = page.content;
+      this.page = {
+        number: page.number,
+        last: page.last
+      }
     });
 
     let params = this.activatedRoute.snapshot.params;
@@ -39,29 +44,32 @@ export class ListItemsComponent implements OnInit{
     this.itemsParamsRequest.categoryId = params['categoryId'];
 
     this.isLoading = true;
-    this.itemsService.requestItems({gender: this.itemsParamsRequest.gender, categoryId: this.itemsParamsRequest.categoryId}).subscribe(items => {
-      this.isLoading = false;
-      this.items = items;
-    });
     this.itemsService.requestSubcategories(this.itemsParamsRequest.categoryId).subscribe(subcategories => {
       this.subcategories = subcategories;
     });
+    this.requestItems();
   }
 
   loadItemsBySubcategory(event: MatTabChangeEvent) {
+    this.isLoading = true;
     this.items = <Item[]>[];
+    if(event.tab.textLabel === 'All') return this.requestItems();
     let subcategory = this.subcategories
       .find(subcategory =>
         subcategory.name.toLowerCase() === event.tab.textLabel.toLowerCase()
       );
     if(subcategory) this.itemsParamsRequest.subcategoryId = subcategory.id;
-    let itemsRequest: ItemsParamsRequest = {
-      gender: this.itemsParamsRequest.gender,
-      categoryId: this.itemsParamsRequest.categoryId,
-      subcategoryId: subcategory?.id
-    }
-    this.itemsService.requestItems(itemsRequest).subscribe(items => {
-      this.items = items;
+    this.requestItems();
+  }
+
+  private requestItems() {
+    this.itemsService.requestItems(this.itemsParamsRequest).subscribe(page => {
+      this.isLoading = false;
+      this.page = {
+        number: page.number,
+        last: page.last
+      }
+      this.items = page.content;
     });
   }
 
@@ -76,11 +84,11 @@ export class ListItemsComponent implements OnInit{
 
   changePage(pageNumber: number) {
     this.itemsService.changePage(pageNumber).subscribe(page => {
+      this.items = page.content;
       this.page = {
         number: page.number,
         last: page.last
       }
-      this.items = page.content;
     });
   }
 }

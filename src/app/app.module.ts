@@ -14,7 +14,7 @@ import {MatSidenavModule} from "@angular/material/sidenav";
 import {NgOptimizedImage} from "@angular/common";
 import {MatSliderModule} from "@angular/material/slider";
 import {MatInputModule} from "@angular/material/input";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatChipsModule} from "@angular/material/chips";
 import {HttpClientModule} from "@angular/common/http";
 import {MatDividerModule} from "@angular/material/divider";
@@ -45,29 +45,30 @@ import { PaginatorComponent } from './list-items/paginator/paginator.component';
     CheckboxComponent,
     PaginatorComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        HttpClientModule,
-        MatToolbarModule,
-        MatButtonModule,
-        MatCardModule,
-        MatIconModule,
-        MatSidenavModule,
-        NgOptimizedImage,
-        MatSliderModule,
-        MatInputModule,
-        FormsModule,
-        MatChipsModule,
-        MatDividerModule,
-        MatSelectModule,
-        MatExpansionModule,
-        MatCheckboxModule,
-        MatPaginatorModule,
-        MatProgressSpinnerModule,
-        MatTabsModule
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule,
+    MatSidenavModule,
+    NgOptimizedImage,
+    MatSliderModule,
+    MatInputModule,
+    FormsModule,
+    MatChipsModule,
+    MatDividerModule,
+    MatSelectModule,
+    MatExpansionModule,
+    MatCheckboxModule,
+    MatPaginatorModule,
+    MatProgressSpinnerModule,
+    MatTabsModule,
+    ReactiveFormsModule
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })

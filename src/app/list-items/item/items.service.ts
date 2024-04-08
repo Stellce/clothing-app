@@ -9,12 +9,12 @@ import {ItemsParamsRequest} from "./req/items-params-request.model";
 @Injectable({providedIn: 'root'})
 export class ItemsService {
   private _cachedItemsRequest: ItemsParamsRequest = {} as ItemsParamsRequest;
-  private _items$ = new BehaviorSubject<Item[]>([]);
+  private _page$ = new BehaviorSubject<ItemsPage>({} as ItemsPage);
 
   constructor(private http: HttpClient) {}
 
-  get items$() {
-    return this._items$.asObservable();
+  get page$() {
+    return this._page$.asObservable();
   }
 
   requestSubcategories(category: string) {
@@ -29,17 +29,15 @@ export class ItemsService {
     console.log('itemsRequest', itemsRequest);
     Object.entries(itemsRequest).forEach(([k,v]) => {
       if(!v) return;
-      console.log(k, v)
       params = params.append(k,v);
     })
     return this.http.get<ItemsPage>(
       environment.backendUrl + `/catalog/items`,
       {params: params}
-    ).pipe(take(1), switchMap(itemsPage => {
-      let items = itemsPage.content;
-      this._items$.next(items);
-      this.requestAllItemsImages(items);
-      return of(items);
+    ).pipe(take(1), switchMap(page => {
+      this._page$.next(page);
+      this.requestAllItemsImages(page);
+      return of(page);
     }))
   }
 
@@ -50,7 +48,7 @@ export class ItemsService {
   }
 
   requestBrands() {
-    return this.http.get<{id: number, name: string}[]>(
+    return this.http.get<{id: string, name: string}[]>(
       environment.backendUrl + `/catalog/brands`
     )
   }
@@ -66,19 +64,18 @@ export class ItemsService {
       environment.backendUrl + `/catalog/items`,
       {params: pageParams}
     ).pipe(tap(page => {
-      let items = page.content;
-      this._items$.next(items);
-      this.requestAllItemsImages(items);
+      this._page$.next(page);
+      this.requestAllItemsImages(page);
     }));
   }
 
-  private requestAllItemsImages(items: Item[]) {
-    items.forEach(item => {
+  private requestAllItemsImages(page: ItemsPage) {
+    page.content.forEach(item => {
       this.requestItemImages(item.id).subscribe(images => {
-        let newItem: Item | undefined = items.find(i => i.id === item.id);
+        let newItem: Item | undefined = page.content.find(i => i.id === item.id);
         if(newItem)
           newItem.images = images.map(i => i.image);
-        this._items$.next(items);
+        this._page$.next(page);
       });
     })
   }

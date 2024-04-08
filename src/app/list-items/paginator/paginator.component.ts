@@ -1,6 +1,4 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {ItemsService} from "../item/items.service";
-import {ItemsPage} from "../item/res/items-page.model";
 
 @Component({
   selector: 'app-paginator',

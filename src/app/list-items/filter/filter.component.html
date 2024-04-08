@@ -1,15 +1,17 @@
 <div class="filter-centered-container">
-  <form #filterForm="ngForm" (submit)="onSubmitFilter(filterForm)">
-    <img class="logo" src="../../../assets/logo.svg" alt="logo" height="47" width="26"/> SPACE FINCHER
+  <form *ngIf="form" [formGroup]="form" (submit)="onSubmitFilter()">
+    <div class="filter-header">
+      <img class="logo" src="../../../assets/logo_light.svg" alt="logo" height="47" width="26"/>
+      <span>SPACE FINCHER</span>
+    </div>
     <div class="price-box">
-      <div class="label"><span>Price</span></div>
+      <div class="label">Price</div>
       <div class="price-inputs">
         <mat-form-field>
           <input
             type="number"
             matInput
-            name="priceFrom"
-            ngModel
+            formControlName="priceFrom"
             placeholder="From">
         </mat-form-field>
         <span class="dash"> - </span>
@@ -17,8 +19,7 @@
           <input
             type="number"
             matInput
-            name="priceTo"
-            ngModel
+            formControlName="priceTo"
             placeholder="To">
         </mat-form-field>
       </div>
@@ -26,46 +27,86 @@
     </div>
     <div class="size-box">
       <div class="label"><span>Size</span></div>
-      <mat-chip-listbox aria-label="filter selection" multiple>
-        <mat-chip-option *ngFor="let size of filters.sizes" [value]="size" (selectionChange)="changeFilter('sizes', size)">
+      <mat-chip-listbox aria-label="filter selection" multiple formControlName="sizes">
+        <mat-chip-option
+          *ngFor="let size of filters.sizes"
+          [value]="size">
           {{size}}
         </mat-chip-option>
       </mat-chip-listbox>
-      <mat-divider></mat-divider>
     </div>
+    <mat-divider></mat-divider>
     <div class="sortBy">
-      <div class="label"><span>Sort by</span></div>
+      <div class="label">Sort by</div>
       <mat-form-field>
-        <mat-label><div class="label"><span>Sort By</span></div></mat-label>
-        <mat-select ngModel name="sortBy">
+        <mat-label><span>Sort By</span></mat-label>
+        <mat-select formControlName="sortBy">
           <mat-option *ngFor="let sort of filters.sort" [value]="sort.value">
             {{sort.name[0].toUpperCase() + sort.name.slice(1)}}
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-divider></mat-divider>
     </div>
+    <mat-divider></mat-divider>
     <div class="brands">
       <mat-expansion-panel>
         <mat-expansion-panel-header>
-          <mat-panel-title><div class="label"><span>Brands</span></div></mat-panel-title>
+          <mat-panel-title>Brands</mat-panel-title>
         </mat-expansion-panel-header>
-        <div class="checkboxes-column">
-          <mat-checkbox *ngFor="let brand of filters.brands" (change)="changeFilter('brands', brand.name)">{{brand.name}}</mat-checkbox>
+        <div class="column">
+          <mat-checkbox
+            *ngFor="let filterName of filters.brands"
+            [value]="filterName.id"
+            (change)="changeFilter('brands', filterName.name)"
+          >{{filterName.name}}</mat-checkbox>
         </div>
       </mat-expansion-panel>
       <mat-divider></mat-divider>
     </div>
     <div class="colors">
-      <mat-expansion-panel expanded="true">
+      <mat-expansion-panel>
         <mat-expansion-panel-header>
-          <div class="label"><span>Colors</span></div>
+          <mat-panel-title>Colors</mat-panel-title>
         </mat-expansion-panel-header>
-        <app-checkbox *ngFor="let colorFilter of filters.colors" [text]="colorFilter" [bgColor]="colorFilter" (change)="changeFilter('colors', colorFilter)"></app-checkbox>
+        <app-checkbox
+          *ngFor="let colorFilter of filters.colors"
+          [text]="colorFilter"
+          [bgColor]="colorFilter"
+          [inputValue]="colorFilter"
+          (change)="changeFilter('colors', colorFilter)"
+        ></app-checkbox>
       </mat-expansion-panel>
       <mat-divider></mat-divider>
     </div>
-    <button mat-raised-button id="filterButton" type="submit" color="primary">Filter</button>
+    <div class="seasons">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Seasons</mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="column">
+          <mat-checkbox
+            *ngFor="let filterName of filters.seasons"
+            (change)="changeFilter('seasons', filterName)"
+          >{{getFilterName(filterName)}}</mat-checkbox>
+        </div>
+      </mat-expansion-panel>
+      <mat-divider></mat-divider>
+    </div>
+    <div class="materials">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Materials</mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="column">
+          <mat-checkbox
+            *ngFor="let filterName of filters.materials"
+            (change)="changeFilter('materials', filterName)"
+          >{{getFilterName(filterName)}}</mat-checkbox>
+        </div>
+      </mat-expansion-panel>
+    </div>
+    <mat-divider></mat-divider>
+    <button mat-raised-button id="filter-button" type="submit" color="primary">Filter</button>
   </form>
 </div>
 

@@ -1,4 +1,8 @@
-<label class="item-bg">{{itemText[0].toUpperCase() + itemText.slice(1)}}
-  <input type="checkbox" [name]="inputName" [value]="inputValue">
-  <span class="checkmark" [ngClass]="darkColors.includes(bgColor.toLowerCase()) ? 'color-white' : 'color-black'" [ngStyle]="{background: getColorOfColorFilter(bgColor)}"></span>
+<label class="item-bg">
+  {{itemText[0].toUpperCase() + itemText.slice(1)}}
+  <input type="checkbox" [ngModel]="checked" (ngModelChange)="onModelChange($event)" [value]="inputValue">
+  <span
+    class="checkmark"
+    [ngClass]="darkColors.includes(bgColor.toLowerCase()) ? 'color-white' : 'color-black'"
+    [ngStyle]="{background: getColorOfColorFilter(bgColor)}"></span>
 </label>
