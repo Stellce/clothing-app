@@ -35,18 +35,17 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 mat-spinner {
-  margin: 30dvh auto;
+  margin: 30vh auto;
 }
 
 .cloth-grid {
   display: grid;
   max-width: 1600px;
-  margin: auto;
+  margin: 10px auto;
   grid-template-columns: repeat(4, 1fr);
   justify-content: center;
   gap: 10px;
   width: 90vw;
-  padding-top: 25px;
 }
 
 app-paginator {
