@@ -1,18 +1,15 @@
 <div class="breadcrumb">
   <div class="breadcrumb-link">
-    <a [routerLink]="['/']">
-      <span>&#5130;</span>
-      Main page
-    </a>
+    <a [routerLink]="['/']"><span>&#5130;</span> Main page</a>
   </div>
-  <span>/</span>
+  <span> / </span>
   <ng-container *ngIf="!params.categoryId || (params.categoryId && link[1]?.path) ">
     <div *ngFor="let l of link; let i = index" class="breadcrumb-links">
       <div class="breadcrumb-link">
         <a *ngIf="i !== link.length - 1" [routerLink]="['/', l.path]">{{l.name}}</a>
       </div>
       <span *ngIf="i === link.length - 1">{{l.name}}</span>
-      <span *ngIf="i !== link.length - 1">/</span>
+      <span *ngIf="i !== link.length - 1"> / </span>
     </div>
   </ng-container>
 </div>

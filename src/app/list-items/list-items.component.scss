@@ -12,14 +12,15 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .filter-bubble {
+  display: none;
   z-index: 999;
   background: $filter-bubble;
   border-radius: 50px;
   height: 40px;
   width: 40px;
   position: fixed;
-  top: 1dvh;
-  left: 1dvw;
+  top: 1vh;
+  left: 1vw;
   svg {
     width: 70%;
     height: 70%;
@@ -54,13 +55,34 @@ app-paginator {
   display: flex;
 }
 
-.mat-mdc-progress-spinner {
-  //--mdc-circular-progress-active-indicator-color: blue;
+.breadcrumb-line {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+  padding-left: 4%;
+  gap: 10px;
 }
 
+.inline-wrapper {
+  display: inline-block;
+}
 
-footer {
-  //height: 250px;
+.filter-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 150px;
+  width: 150px;
+  border-radius: 1rem;
+  background: $filter-bubble;
+  padding: 5px 10px 5px;
+  font-size: 16px;
+  color: black;
+  cursor: pointer;
+}
+
+.mat-mdc-progress-spinner {
+  //--mdc-circular-progress-active-indicator-color: blue;
 }
 
 @media only screen and (max-width: 960px) {
@@ -70,6 +92,12 @@ footer {
 }
 
 @media only screen and (max-width: 600px) {
+  .filter-bar {
+    display: none;
+  }
+  .filter-bubble {
+    display: block;
+  }
   .cloth-grid {
     grid-template-columns: repeat(2, 1fr);
   }

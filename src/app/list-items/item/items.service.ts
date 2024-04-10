@@ -26,11 +26,12 @@ export class ItemsService {
   requestItems(itemsRequest: ItemsParamsRequest) {
     this._cachedItemsRequest = itemsRequest;
     let params = new HttpParams();
-    console.log('itemsRequest', itemsRequest);
     Object.entries(itemsRequest).forEach(([k,v]) => {
       if(!v) return;
       params = params.append(k,v);
     })
+    params = params.append('pageSize', 12);
+    console.log(params)
     return this.http.get<ItemsPage>(
       environment.backendUrl + `/catalog/items`,
       {params: params}
@@ -54,15 +55,16 @@ export class ItemsService {
   }
 
   changePage(pageNumber: number) {
-    let pageParams = new HttpParams();
+    let params = new HttpParams();
     Object.entries(this._cachedItemsRequest).forEach(([k,v]) => {
-      if(v) pageParams.append(k, v);
+      if(v) params = params.append(k, v);
     })
-    pageParams = pageParams.append('pageNumber', pageNumber);
+    params = params.append('pageNumber', pageNumber);
+    params = params.append('pageSize', 12);
 
     return this.http.get<ItemsPage>(
       environment.backendUrl + `/catalog/items`,
-      {params: pageParams}
+      {params: params}
     ).pipe(tap(page => {
       this._page$.next(page);
       this.requestAllItemsImages(page);
