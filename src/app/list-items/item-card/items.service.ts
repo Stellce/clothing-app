@@ -3,7 +3,7 @@ import {HttpClient, HttpParams} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {BehaviorSubject, of, switchMap, take, tap} from "rxjs";
 import {ItemsPage} from "./res/items-page.model";
-import {Item} from "./item.model";
+import {ItemCard} from "./item-card.model";
 import {ItemsParamsRequest} from "./req/items-params-request.model";
 
 @Injectable({providedIn: 'root'})
@@ -74,7 +74,7 @@ export class ItemsService {
   private requestAllItemsImages(page: ItemsPage) {
     page.content.forEach(item => {
       this.requestItemImages(item.id).subscribe(images => {
-        let newItem: Item | undefined = page.content.find(i => i.id === item.id);
+        let newItem: ItemCard | undefined = page.content.find(i => i.id === item.id);
         if(newItem)
           newItem.images = images.map(i => i.image);
         this._page$.next(page);

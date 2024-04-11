@@ -1,12 +1,21 @@
-import {Component, EventEmitter, OnInit, Output, ViewEncapsulation} from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  QueryList,
+  ViewChildren,
+  ViewEncapsulation
+} from '@angular/core';
 import {Filter} from "./filter.model";
 import {FormControl, FormGroup} from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
 import {CategoriesService} from "../../categories/categories.service";
-import {ItemsService} from "../item/items.service";
+import {ItemsService} from "../item-card/items.service";
 import {FilterService} from "./filter.service";
 import {AllowedFilters} from "./allowed-filters.model";
 import {SelectedFilters} from "./selected-filters.model";
+import {MatCheckbox} from "@angular/material/checkbox";
 
 @Component({
   selector: 'app-filter',
@@ -15,12 +24,14 @@ import {SelectedFilters} from "./selected-filters.model";
   encapsulation: ViewEncapsulation.None
 })
 export class FilterComponent implements OnInit{
+  @ViewChildren('checkboxes') checkboxes: QueryList<MatCheckbox>;
   @Output() filter = new EventEmitter<Filter>();
   filters: AllowedFilters;
   form: FormGroup;
   selectedFilters: SelectedFilters;
+  // resetCheckboxes = false;
   constructor(
-    private filterService: FilterService,
+    public filterService: FilterService,
     private itemsService: ItemsService,
     private activatedRoute: ActivatedRoute,
     private categoriesService: CategoriesService
@@ -64,7 +75,7 @@ export class FilterComponent implements OnInit{
       [this.form.value['priceFrom'] || 0, this.form.value['priceTo']].join(",") : '';
     let filter: Filter = {
       priceRange: priceRange,
-      sortBy: this.form.value.sortBy,
+      sort: this.form.value.sortBy,
     }
     Object.entries(this.selectedFilters).forEach(([k,v]) => {
       if (v.length) filter[k as keyof Filter] = v.join(",");
@@ -85,5 +96,13 @@ export class FilterComponent implements OnInit{
   getFilterName(filterName: string) {
     filterName = filterName.split(/_/).join(" ").toLowerCase();
     return filterName[0].toUpperCase() + filterName.slice(1);
+  }
+
+  resetForm() {
+    this.selectedFilters = this.filterService.selectedFilters;
+    this.checkboxes.toArray().forEach(el => {
+      el.checked = false;
+    });
+    this.form.reset();
   }
 }

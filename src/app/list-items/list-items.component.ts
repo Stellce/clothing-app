@@ -1,12 +1,12 @@
 import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
-import {Item} from "./item/item.model";
+import {ItemCard} from "./item-card/item-card.model";
 import {ActivatedRoute} from "@angular/router";
 import {MatTabChangeEvent} from "@angular/material/tabs";
-import {ItemsService} from "./item/items.service";
-import {ItemsParamsRequest} from "./item/req/items-params-request.model";
+import {ItemsService} from "./item-card/items.service";
+import {ItemsParamsRequest} from "./item-card/req/items-params-request.model";
 import {Filter} from "./filter/filter.model";
 import {MatDrawer} from "@angular/material/sidenav";
-import {ItemsPage} from "./item/res/items-page.model";
+import {ItemsPage} from "./item-card/res/items-page.model";
 
 @Component({
   selector: 'app-list-items',
@@ -16,7 +16,7 @@ import {ItemsPage} from "./item/res/items-page.model";
 })
 export class ListItemsComponent implements OnInit{
   @ViewChild('drawer') drawer: MatDrawer;
-  items: Item[] = [];
+  items: ItemCard[] = [];
   subcategories: {id: string; name: string}[] = [];
   itemsParamsRequest: ItemsParamsRequest = {} as ItemsParamsRequest;
   isLoading: boolean = false;
@@ -52,7 +52,7 @@ export class ListItemsComponent implements OnInit{
 
   loadItemsBySubcategory(event: MatTabChangeEvent) {
     this.isLoading = true;
-    this.items = <Item[]>[];
+    this.items = <ItemCard[]>[];
     if(event.tab.textLabel === 'All') return this.requestItems();
     let subcategory = this.subcategories
       .find(subcategory =>

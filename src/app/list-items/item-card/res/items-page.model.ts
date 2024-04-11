@@ -1,7 +1,7 @@
-import {Item} from "../item.model";
+import {ItemCard} from "../item-card.model";
 
 export class ItemsPage {
-  content: Item[];
+  content: ItemCard[];
   pageable: {
     sort: {
       empty: boolean;

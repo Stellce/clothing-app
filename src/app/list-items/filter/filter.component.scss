@@ -9,6 +9,10 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0;
 }
 
+.mat-drawer-backdrop.mat-drawer-shown {
+  background: rgba(0,0,0,.68);
+}
+
 .filter-centered-container {
   display: flex;
   justify-content: space-around;
@@ -22,12 +26,16 @@ form {
   width: 90%;
 }
 
-.filter-header {
-  display: flex;
-  align-items: center;
-  align-content: center;
-  justify-content: center;
-  flex-wrap: wrap;
+.mdc-text-field--filled:not(.mdc-text-field--disabled),
+.mat-mdc-standard-chip:not(.mdc-evolution-chip--disabled),
+.mat-expansion-panel{
+  background: none;
+}
+
+
+.filter-logo {
+  display: none;
+  font-size: 21px;
 }
 
 .logo {
@@ -37,6 +45,11 @@ form {
 .label, mat-panel-title {
   margin: 10px;
   font-size: 16px;
+}
+
+.clear {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .price-box {
@@ -73,6 +86,16 @@ mat-expansion-panel {
   width: 100% !important;
   height: 50px;
   margin: 20px 0;
+}
+
+@media screen and (max-width: 600px) {
+  .filter-logo {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
 }
 
 @media only screen and (max-width: 320px) {

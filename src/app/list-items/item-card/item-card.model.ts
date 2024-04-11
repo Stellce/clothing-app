@@ -1,4 +1,4 @@
-export interface Item {
+export interface ItemCard {
   id: string;
   name: string;
   price: number;

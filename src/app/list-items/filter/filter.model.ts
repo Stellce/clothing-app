@@ -1,7 +1,7 @@
 export interface Filter {
   priceRange?: string,
   sizes?: string;
-  sortBy?: string;
+  sort?: string;
   brands?: string;
   colors?: string;
   materials?: string;

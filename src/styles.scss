@@ -1,4 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
+@use "@angular/material" as mat;
+
+@include mat.core();
+
+//$my-primary: mat.define-palette(mat.$indigo-palette);
+//$theme: mat.define-dark-theme((
+//  color: (primary: $my-primary, accent:mat.define-palette(mat.$amber-palette)),
+//  typography: mat.define-typography-config(),
+//  density: 0,
+//));
+//@include mat.all-component-themes($theme);
 
 $dark-theme-background: #1c1c1c;
 $background-primary: #383838;
@@ -13,4 +24,20 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   background: $dark-theme-background;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: $dark-theme-background;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $background-secondary;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: $background-primary;
 }

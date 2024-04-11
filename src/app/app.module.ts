@@ -22,7 +22,7 @@ import {MatSelectModule} from "@angular/material/select";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatPaginatorModule} from "@angular/material/paginator";
-import { ItemComponent } from './list-items/item/item.component';
+import { ItemCardComponent } from './list-items/item-card/item-card.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { FilterComponent } from './list-items/filter/filter.component';
 import { BreadcrumbComponent } from './list-items/breadcrumb/breadcrumb.component';
@@ -37,7 +37,7 @@ import { PaginatorComponent } from './list-items/paginator/paginator.component';
     AppComponent,
     HeaderComponent,
     ListItemsComponent,
-    ItemComponent,
+    ItemCardComponent,
     CategoriesComponent,
     FilterComponent,
     BreadcrumbComponent,

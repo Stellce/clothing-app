@@ -1,8 +1,11 @@
 <div class="filter-centered-container">
   <form *ngIf="form" [formGroup]="form" (submit)="onSubmitFilter()">
-    <div class="filter-header">
+    <div class="filter-logo">
       <img class="logo" src="../../../assets/logo_light.svg" alt="logo" height="47" width="26"/>
       <span>SPACE FINCHER</span>
+    </div>
+    <div class="clear">
+      <button mat-button (click)="resetForm()">Reset</button>
     </div>
     <div class="price-box">
       <div class="label">Price</div>
@@ -23,7 +26,6 @@
             placeholder="To">
         </mat-form-field>
       </div>
-      <mat-divider></mat-divider>
     </div>
     <div class="size-box">
       <div class="label"><span>Size</span></div>
@@ -35,7 +37,6 @@
         </mat-chip-option>
       </mat-chip-listbox>
     </div>
-    <mat-divider></mat-divider>
     <div class="sortBy">
       <div class="label">Sort by</div>
       <mat-form-field>
@@ -47,7 +48,6 @@
         </mat-select>
       </mat-form-field>
     </div>
-    <mat-divider></mat-divider>
     <div class="brands">
       <mat-expansion-panel>
         <mat-expansion-panel-header>
@@ -99,13 +99,13 @@
         </mat-expansion-panel-header>
         <div class="column">
           <mat-checkbox
+            #checkboxes
             *ngFor="let filterName of filters.materials"
             (change)="changeFilter('materials', filterName)"
           >{{getFilterName(filterName)}}</mat-checkbox>
         </div>
       </mat-expansion-panel>
     </div>
-    <mat-divider></mat-divider>
     <button mat-raised-button id="filter-button" type="submit" color="primary">Filter</button>
   </form>
 </div>
