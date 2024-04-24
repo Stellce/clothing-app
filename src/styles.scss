@@ -3,12 +3,52 @@
 
 @include mat.core();
 
-//$my-primary: mat.define-palette(mat.$indigo-palette);
-//$theme: mat.define-dark-theme((
-//  color: (primary: $my-primary, accent:mat.define-palette(mat.$amber-palette)),
-//  typography: mat.define-typography-config(),
-//  density: 0,
-//));
+$my-palette: (
+  50 : #e5e5e5,
+  100 : #bfbfbf,
+  200 : #949494,
+  300 : #696969,
+  400 : #484848,
+  500 : #282828,
+  600 : #242424,
+  700 : #1e1e1e,
+  800 : #181818,
+  900 : #0f0f0f,
+  A100 : #ee6767,
+  A200 : #e93a3a,
+  A400 : #f00000,
+  A700 : #d60000,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #ffffff,
+    400 : #ffffff,
+    500 : #ffffff,
+    600 : #ffffff,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #000000,
+    A200 : #ffffff,
+    A400 : #ffffff,
+    A700 : #ffffff,
+  )
+);
+
+$my-primary: mat.define-palette(mat.$blue-gray-palette);
+$my-accent: mat.define-palette(mat.$gray-palette);
+$theme: mat.define-dark-theme((
+  color: (
+    primary: $my-primary,
+    accent: $my-accent
+  ),
+  typography: mat.define-typography-config(),
+  density: 0,
+));
+
+//@include mat.core-theme();
+@include mat.chips-theme($theme);
 //@include mat.all-component-themes($theme);
 
 $dark-theme-background: #1c1c1c;

@@ -4,7 +4,7 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0;
 }
 
-.filter {
+.mat-drawer {
   background: $dark-theme-background;
   width: 90%;
   max-width: 480px;
@@ -13,7 +13,7 @@ h1, h2, h3, h4, h5, h6 {
 .filter-bubble {
   display: none;
   z-index: 999;
-  background: $filter-bubble;
+  background: $background-primary;
   border-radius: 50px;
   height: 40px;
   width: 40px;
@@ -26,6 +26,9 @@ h1, h2, h3, h4, h5, h6 {
     position: relative;
     left: 15%;
     top: 20%;
+    path {
+      fill: white;
+    }
   }
 }
 
@@ -45,7 +48,7 @@ mat-spinner {
   grid-template-columns: repeat(6, 1fr);
   justify-content: center;
   gap: 10px;
-  width: 90vw;
+  padding: 0 4%;
 }
 
 app-paginator {
@@ -75,15 +78,30 @@ app-paginator {
   max-width: 150px;
   width: 150px;
   border-radius: 1rem;
-  background: $filter-bubble;
+  background: $background-primary;
   padding: 5px 10px 5px;
   font-size: 16px;
-  color: black;
+  color: white;
   cursor: pointer;
+  svg path {
+    fill: white;
+  }
 }
 
 .mat-mdc-progress-spinner {
   //--mdc-circular-progress-active-indicator-color: blue;
+}
+
+.mat-mdc-tab-group {
+  padding: 0 4%;
+}
+
+.mdc-menu-surface {
+  background: $dark-theme-background;
+}
+
+.mat-mdc-form-field-focus-overlay {
+  background-color: rgb(0 0 0 / 87%);
 }
 
 @media screen and (max-width: 1200px) {

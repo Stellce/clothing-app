@@ -31,6 +31,7 @@ import { CheckboxComponent } from './list-items/filter/checkbox/checkbox.compone
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatTabsModule} from "@angular/material/tabs";
 import { PaginatorComponent } from './list-items/paginator/paginator.component';
+import {MatRippleModule} from "@angular/material/core";
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import { PaginatorComponent } from './list-items/paginator/paginator.component';
     MatPaginatorModule,
     MatProgressSpinnerModule,
     MatTabsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatRippleModule
   ],
   providers: [],
   bootstrap: [AppComponent]

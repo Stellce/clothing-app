@@ -4,8 +4,8 @@
       <img class="logo" src="../../../assets/logo_light.svg" alt="logo" height="47" width="26"/>
       <span>SPACE FINCHER</span>
     </div>
-    <div class="clear">
-      <button mat-button (click)="resetForm()">Reset</button>
+    <div class="reset">
+      <button mat-button type="button" (click)="resetForm()">Reset</button>
     </div>
     <div class="price-box">
       <div class="label">Price</div>
@@ -28,7 +28,7 @@
       </div>
     </div>
     <div class="size-box">
-      <div class="label"><span>Size</span></div>
+      <div class="label">Size</div>
       <mat-chip-listbox aria-label="filter selection" multiple formControlName="sizes">
         <mat-chip-option
           *ngFor="let size of filters.sizes"
@@ -38,9 +38,9 @@
       </mat-chip-listbox>
     </div>
     <div class="sortBy">
-      <div class="label">Sort by</div>
+      <div class="label">Sort</div>
       <mat-form-field>
-        <mat-label><span>Sort By</span></mat-label>
+        <mat-label>Sort</mat-label>
         <mat-select formControlName="sortBy">
           <mat-option *ngFor="let sort of filters.sort" [value]="sort.value">
             {{sort.name[0].toUpperCase() + sort.name.slice(1)}}
@@ -55,6 +55,7 @@
         </mat-expansion-panel-header>
         <div class="column">
           <mat-checkbox
+            #checkboxes
             *ngFor="let filterName of filters.brands"
             [value]="filterName.id"
             (change)="changeFilter('brands', filterName.name)"
@@ -69,6 +70,7 @@
           <mat-panel-title>Colors</mat-panel-title>
         </mat-expansion-panel-header>
         <app-checkbox
+          #checkboxes
           *ngFor="let colorFilter of filters.colors"
           [text]="colorFilter"
           [bgColor]="colorFilter"
@@ -85,6 +87,7 @@
         </mat-expansion-panel-header>
         <div class="column">
           <mat-checkbox
+            #checkboxes
             *ngFor="let filterName of filters.seasons"
             (change)="changeFilter('seasons', filterName)"
           >{{getFilterName(filterName)}}</mat-checkbox>

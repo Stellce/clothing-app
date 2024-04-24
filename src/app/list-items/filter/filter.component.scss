@@ -47,7 +47,7 @@ form {
   font-size: 16px;
 }
 
-.clear {
+.reset {
   display: flex;
   justify-content: flex-end;
 }
@@ -67,6 +67,12 @@ form {
   }
   .dash {
     display: inline;
+  }
+}
+
+.size-box {
+  .mat-mdc-standard-chip:not(.mdc-evolution-chip--disabled) {
+    //background-color: ;
   }
 }
 

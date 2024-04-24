@@ -45,13 +45,7 @@ export class FilterComponent implements OnInit{
       priceFrom: new FormControl(''),
       priceTo: new FormControl(''),
       sizes: new FormControl(''),
-      sortBy: new FormControl(''),
-      // brands: new FormControl(''),
-      // colors: new FormControl(''),
-
-      // materials: new FormControl(''),
-      // rating: new FormControl(''),
-      // season: new FormControl(''),
+      sortBy: new FormControl('')
     });
 
     let categoryId = this.activatedRoute.snapshot.params['categoryId'];
@@ -83,10 +77,9 @@ export class FilterComponent implements OnInit{
     this.filter.emit(filter);
   }
 
-  // 'colors' | 'brands' | 'seasons' | 'materials'
   changeFilter(filterType: 'colors' | 'brands' | 'seasons' | 'materials', changeTo: string) {
     const filterIndex = this.selectedFilters[filterType]?.indexOf(changeTo);
-    console.log('filterIndex', filterIndex);
+    // console.log('filterIndex', filterIndex);
     const NOT_FOUND = -1;
     filterIndex === NOT_FOUND ?
       this.selectedFilters[filterType].push(changeTo) :
@@ -104,5 +97,6 @@ export class FilterComponent implements OnInit{
       el.checked = false;
     });
     this.form.reset();
+    this.onSubmitFilter();
   }
 }
