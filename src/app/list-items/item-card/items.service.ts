@@ -23,6 +23,16 @@ export class ItemsService {
     )
   }
 
+  requestLandingPageItems() {
+    return this.http.get<ItemsPage>(
+      environment.backendUrl + `/items/landing-page`
+    ).pipe(take(1), switchMap(page => {
+      this._page$.next(page);
+      this.requestAllItemsImages(page);
+      return of(page);
+    }));
+  }
+
   requestItems(itemsRequest: ItemsParamsRequest) {
     this._cachedItemsRequest = itemsRequest;
     let params = new HttpParams();
