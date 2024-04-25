@@ -1,1 +1,15 @@
-<p>account works!</p>
+<div class="header">
+  <div class="sec">
+    <img src="./assets/navbar/Account.svg" alt="">
+    Hello, {{user.name}}
+  </div>
+  <mat-icon (click)="onLogout()">logout</mat-icon>
+</div>
+<app-item-bar></app-item-bar>
+<ul>
+  <li>Enter Promocode</li>
+  <li routerLink="history">Order history</li>
+  <li>Add credit or debit card</li>
+  <li routerLink="policies">Privacy Policy & Agreements</li>
+  <li (click)="onLogout()">Logout</li>
+</ul>

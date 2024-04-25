@@ -1,0 +1,19 @@
+@import '../../../../styles';
+
+.item-bars-list {
+  padding: 10px;
+  margin: 0 auto;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+ul {
+  list-style: none;
+  color: $text-color;
+  font-size: 16px;
+  padding-left: 16px;
+}
+li {
+  margin: 20px 0;
+}

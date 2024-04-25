@@ -1,0 +1,10 @@
+
+<div class="item-bar">
+  <img [src]="item.images[0]" alt="">
+  <div class="delivery-title">
+    <div class="delivery"></div>{{item.deliveryStatus}}</div>
+  <div class="price-date">
+    <div class="price">{{item.price | currency}}</div>
+    <div class="date">{{item.orderDate | date}}</div>
+  </div>
+</div>

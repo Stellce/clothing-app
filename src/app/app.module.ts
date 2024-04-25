@@ -39,6 +39,9 @@ import { SearchComponent } from './navigation/bottom-navbar/search/search.compon
 import { AccountComponent } from './navigation/bottom-navbar/account/account.component';
 import { FavoritesComponent } from './navigation/bottom-navbar/favorites/favorites.component';
 import { CartComponent } from './navigation/bottom-navbar/cart/cart.component';
+import { ItemBarComponent } from './categories/item-bar/item-bar.component';
+import { RegisterComponent } from './auth/register/register.component';
+import { LoginComponent } from './auth/login/login.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +61,10 @@ import { CartComponent } from './navigation/bottom-navbar/cart/cart.component';
     SearchComponent,
     AccountComponent,
     FavoritesComponent,
-    CartComponent
+    CartComponent,
+    ItemBarComponent,
+    RegisterComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
