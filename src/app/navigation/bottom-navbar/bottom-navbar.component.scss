@@ -2,6 +2,10 @@
 
 nav {
   display: none;
+
+  img {
+    cursor: pointer;
+  }
 }
 
 @media screen and (max-width: 500px) {

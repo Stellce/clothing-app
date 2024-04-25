@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {HttpClient, HttpParams} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {environment} from "../../../../environments/environment";
 import {BehaviorSubject, of, switchMap, take, tap} from "rxjs";
 import {ItemsPage} from "./res/items-page.model";
@@ -10,6 +10,7 @@ import {ItemsParamsRequest} from "./req/items-params-request.model";
 export class ItemsService {
   private _cachedItemsRequest: ItemsParamsRequest = {} as ItemsParamsRequest;
   private _page$ = new BehaviorSubject<ItemsPage>({} as ItemsPage);
+  private pageSize = 6*4;
 
   constructor(private http: HttpClient) {}
 
@@ -40,7 +41,7 @@ export class ItemsService {
       if(!v) return;
       params = params.append(k,v);
     })
-    params = params.append('pageSize', 12);
+    params = params.append('pageSize', this.pageSize);
     console.log(params)
     return this.http.get<ItemsPage>(
       environment.backendUrl + `/catalog/items`,
@@ -70,7 +71,7 @@ export class ItemsService {
       if(v) params = params.append(k, v);
     })
     params = params.append('pageNumber', pageNumber);
-    params = params.append('pageSize', 12);
+    params = params.append('pageSize', this.pageSize);
 
     return this.http.get<ItemsPage>(
       environment.backendUrl + `/catalog/items`,
@@ -79,6 +80,11 @@ export class ItemsService {
       this._page$.next(page);
       this.requestAllItemsImages(page);
     }));
+  }
+
+  search(search: string) {
+    let headers = new HttpHeaders().append('search', search);
+    return this.http.get(environment.backendUrl + '/search', {headers});
   }
 
   private requestAllItemsImages(page: ItemsPage) {

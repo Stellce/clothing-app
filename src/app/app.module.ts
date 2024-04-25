@@ -34,6 +34,11 @@ import { PaginatorComponent } from './categories/list-items/paginator/paginator.
 import {MatRippleModule} from "@angular/material/core";
 import { BottomNavbarComponent } from './navigation/bottom-navbar/bottom-navbar.component';
 import { ItemComponent } from './item/item.component';
+import { DashboardComponent } from './navigation/bottom-navbar/dashboard/dashboard.component';
+import { SearchComponent } from './navigation/bottom-navbar/search/search.component';
+import { AccountComponent } from './navigation/bottom-navbar/account/account.component';
+import { FavoritesComponent } from './navigation/bottom-navbar/favorites/favorites.component';
+import { CartComponent } from './navigation/bottom-navbar/cart/cart.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +53,12 @@ import { ItemComponent } from './item/item.component';
     CheckboxComponent,
     PaginatorComponent,
     BottomNavbarComponent,
-    ItemComponent
+    ItemComponent,
+    DashboardComponent,
+    SearchComponent,
+    AccountComponent,
+    FavoritesComponent,
+    CartComponent
   ],
   imports: [
     BrowserModule,

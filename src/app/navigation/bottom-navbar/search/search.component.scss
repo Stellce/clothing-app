@@ -1,0 +1,29 @@
+@import "../../../../styles";
+input {
+  background: $filter-bubble;
+  border: none;
+  font-size: 21px;
+  border-radius: 1rem;
+  padding: 10px;
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px $background-secondary;
+  }
+}
+
+mat-icon {
+  color: $filter-bubble;
+  border-radius: 1rem;
+  padding: 10px;
+  &:hover {
+    background: #404040;
+  }
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 100%;
+}
