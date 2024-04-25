@@ -4,11 +4,20 @@
 
 .outlet {
   display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .outlet * {
   text-decoration: none;
   color: #d9d9d9;
+}
+
+.carousel {
+  display: flex;
+  gap: 10px;
+  flex: 1;
+  overflow-x: auto;
 }
 
 @media only screen and (max-width: 300px) {

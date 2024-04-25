@@ -8,8 +8,7 @@ import {CategoriesService} from "../../categories.service";
   styleUrls: ['./breadcrumb.component.scss']
 })
 export class BreadcrumbComponent implements OnInit{
-  params: {gender?: string, categoryId?: string};
-  link: {name?: string, path?: string}[] = [];
+  link: {name?: string, path?: string[]}[] = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -17,24 +16,24 @@ export class BreadcrumbComponent implements OnInit{
   ) {}
 
   ngOnInit() {
-    this.params = this.activatedRoute.snapshot.params;
-
-    this.link = [
-      {
-        name: this.params.gender?.toUpperCase(),
-        path: this.params.gender
-      },
-    ];
-    if (this.params.categoryId) {
-      this.categoriesService.requestCategories().subscribe(categories => {
-        let categoryName = categories
-          .find(category => category.id === this.params.categoryId)?.name;
-        this.link.push({
-          name: categoryName!,
-          path: this.params.gender + '/' + this.params.categoryId!
+    this.activatedRoute.paramMap.subscribe(params => {
+      console.log(params)
+      this.link = [{
+        name: params.get('gender').toUpperCase() || '',
+        path: ['/', 'products', params.get('gender')]
+      }];
+      if (params.has('categoryId')) {
+        this.categoriesService.requestCategories().subscribe(categories => {
+          let categoryName = categories
+            .find(category => category.id === params.get('categoryId')).name;
+          this.link.push({
+            name: categoryName!,
+            path: ['/', 'products', params.get('gender'), params.get('categoryId')]
+          });
+          console.log(this.link)
         });
-      });
-    }
+      }
+    });
   }
 
   protected readonly Object = Object;
