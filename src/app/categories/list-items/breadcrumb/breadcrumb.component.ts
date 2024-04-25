@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {CategoriesService} from "../../categories/categories.service";
+import {CategoriesService} from "../../categories.service";
 
 @Component({
   selector: 'app-breadcrumb',

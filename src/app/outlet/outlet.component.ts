@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {ItemsService} from "../list-items/item-card/items.service";
-import {ItemCard} from "../list-items/item-card/item-card.model";
-import {ItemsPage} from "../list-items/item-card/res/items-page.model";
+import {ItemsService} from "../categories/list-items/item-card/items.service";
+import {ItemCard} from "../categories/list-items/item-card/item-card.model";
+import {ItemsPage} from "../categories/list-items/item-card/res/items-page.model";
 
 @Component({
   selector: 'app-outlet',
@@ -16,7 +16,10 @@ export class OutletComponent implements OnInit{
 
   ngOnInit() {
     this.itemsService.page$.subscribe(page => this.getItems(page));
-    this.itemsService.requestLandingPageItems().subscribe(page => this.getItems(page));
+    this.itemsService.requestLandingPageItems().subscribe({
+      next: page => this.getItems(page),
+      error: err => console.log(err)
+    });
   }
 
   getItems(page: ItemsPage) {

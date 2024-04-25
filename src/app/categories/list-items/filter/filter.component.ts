@@ -10,7 +10,7 @@ import {
 import {Filter} from "./filter.model";
 import {FormControl, FormGroup} from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
-import {CategoriesService} from "../../categories/categories.service";
+import {CategoriesService} from "../../categories.service";
 import {ItemsService} from "../item-card/items.service";
 import {FilterService} from "./filter.service";
 import {AllowedFilters} from "./allowed-filters.model";

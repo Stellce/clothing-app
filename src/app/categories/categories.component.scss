@@ -5,7 +5,9 @@ mat-spinner {
 .breadcrumb-wrapper {
   display: flex;
   flex-direction: row;
-  margin: 2dvw 5dvw;
+  align-items: center;
+  margin: 20px auto;
+  max-width: 1200px;
 }
 
 app-breadcrumb {

@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpParams} from "@angular/common/http";
-import {environment} from "../../../environments/environment";
+import {environment} from "../../../../environments/environment";
 import {BehaviorSubject, of, switchMap, take, tap} from "rxjs";
 import {ItemsPage} from "./res/items-page.model";
 import {ItemCard} from "./item-card.model";

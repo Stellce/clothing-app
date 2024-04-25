@@ -48,7 +48,7 @@ $theme: mat.define-dark-theme((
 ));
 
 //@include mat.core-theme();
-@include mat.chips-theme($theme);
+//@include mat.chips-theme($theme);
 //@include mat.all-component-themes($theme);
 
 $dark-theme-background: #1c1c1c;

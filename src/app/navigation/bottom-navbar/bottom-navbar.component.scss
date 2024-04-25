@@ -1,0 +1,20 @@
+@import "../../../styles";
+
+nav {
+  display: none;
+}
+
+@media screen and (max-width: 500px) {
+  nav {
+    background: $dark-theme-background;
+    z-index: 999;
+    height: 67px;
+    width: 100vw;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+  }
+}
