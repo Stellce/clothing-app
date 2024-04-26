@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card" [ngStyle]="{}">
   <div class="placeholder" *ngIf="!item?.images?.length"></div>
   <img *ngIf="item.images?.length" [src]="'data:image/png;base64,' + item.images[0]" [alt]=item.name />
   <div class="discount" *ngIf="Math.floor(this.item.discount * 100) !== 0"><span>{{Math.floor(this.item.discount * 100)}}%</span></div>

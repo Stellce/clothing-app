@@ -1,5 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {ItemCard} from "./item-card.model";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-item-card',
@@ -8,6 +9,8 @@ import {ItemCard} from "./item-card.model";
 })
 export class ItemCardComponent {
   @Input() item: ItemCard;
+
+
 
   protected readonly Math = Math;
 }

@@ -42,6 +42,7 @@ import { CartComponent } from './navigation/bottom-navbar/cart/cart.component';
 import { ItemBarComponent } from './categories/item-bar/item-bar.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { LoginComponent } from './auth/login/login.component';
+import {MatRadioModule} from "@angular/material/radio";
 
 @NgModule({
   declarations: [
@@ -89,7 +90,8 @@ import { LoginComponent } from './auth/login/login.component';
     MatProgressSpinnerModule,
     MatTabsModule,
     ReactiveFormsModule,
-    MatRippleModule
+    MatRippleModule,
+    MatRadioModule
   ],
   providers: [],
   bootstrap: [AppComponent]

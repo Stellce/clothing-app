@@ -7,17 +7,26 @@ import {SearchComponent} from "./navigation/bottom-navbar/search/search.componen
 import {AccountComponent} from "./navigation/bottom-navbar/account/account.component";
 import {FavoritesComponent} from "./navigation/bottom-navbar/favorites/favorites.component";
 import {CartComponent} from "./navigation/bottom-navbar/cart/cart.component";
+import {LoginComponent} from "./auth/login/login.component";
+import {RegisterComponent} from "./auth/register/register.component";
+import {OutletComponent} from "./outlet/outlet.component";
 
 const routes: Routes = [
   {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
-  {path: 'dashboard', component: DashboardComponent},
+  {path: 'dashboard', component: DashboardComponent, children: [
+      {path: '', component: OutletComponent}
+  ]},
   {path: 'search', component: SearchComponent},
   {path: 'account', component: AccountComponent},
   {path: 'favorites', component: FavoritesComponent},
   {path: 'cart', component: CartComponent},
 
+  {path: 'login', component: LoginComponent},
+  {path: 'register', component: RegisterComponent},
+
   {path: 'products/:gender', component: CategoriesComponent},
   {path: 'products/:gender/:categoryId', component: ListItemsComponent},
+
 ];
 
 @NgModule({

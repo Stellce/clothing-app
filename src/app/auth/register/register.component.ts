@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-register',
@@ -7,11 +7,17 @@ import {FormControl, FormGroup} from "@angular/forms";
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-  form;
+  form: FormGroup;
+  isAgreementConsent: boolean = false;
+
 
   ngOnInit() {
     this.form = new FormGroup({
-      // name: new FormControl
+      firstname: new FormControl('', Validators.required),
+      surname: new FormControl('', Validators.required),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', Validators.required),
+      isAdult: new FormControl('', Validators.required),
     })
   }
 

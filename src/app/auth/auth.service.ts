@@ -6,13 +6,27 @@ import {User} from "./user.model";
 })
 export class AuthService {
   private _user: User;
-  constructor() { }
+  constructor() {}
 
   get user() {
     return this._user;
   }
 
-  logout() {
-
+  set user(user: User) {
+    this._user = user;
   }
+
+  login() {
+    this.user = {
+      name: 'John',
+      surname: 'Doe',
+      email: 'john.doe@email.com'
+    }
+  }
+
+  logout() {
+    this.user = {} as User;
+  }
+
+
 }

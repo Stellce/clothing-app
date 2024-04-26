@@ -1,3 +1,3 @@
 <nav>
-  <img *ngFor="let link of links" [src]="srcPrefics + link + svgExtension" [alt]="link" [title]="link" [routerLink]="['/', link.toLowerCase()]">
+  <img *ngFor="let link of links" [src]="srcPrefics + link + svgExtension" [alt]="link" [title]="link" [routerLink]="['/', buildLink(link).toLowerCase()]">
 </nav>
