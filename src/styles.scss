@@ -81,3 +81,7 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: $background-primary;
 }
+
+mat-icon {
+  color: $text-color;
+}

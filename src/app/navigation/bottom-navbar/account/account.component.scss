@@ -7,6 +7,15 @@
 .header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  .sec {
+    display: flex;
+    align-items: center;
+  }
+  .hello {
+    color: $text-color;
+    font-size: 21px;
+  }
 }
 ul {
   list-style: none;

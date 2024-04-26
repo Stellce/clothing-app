@@ -10,6 +10,7 @@ import {CartComponent} from "./navigation/bottom-navbar/cart/cart.component";
 import {LoginComponent} from "./auth/login/login.component";
 import {RegisterComponent} from "./auth/register/register.component";
 import {OutletComponent} from "./outlet/outlet.component";
+import {canActivate} from "./auth/auth.guard";
 
 const routes: Routes = [
   {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
@@ -17,7 +18,7 @@ const routes: Routes = [
       {path: '', component: OutletComponent}
   ]},
   {path: 'search', component: SearchComponent},
-  {path: 'account', component: AccountComponent},
+  {path: 'account', component: AccountComponent, canActivate: [canActivate]},
   {path: 'favorites', component: FavoritesComponent},
   {path: 'cart', component: CartComponent},
 
