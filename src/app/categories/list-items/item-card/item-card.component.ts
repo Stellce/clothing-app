@@ -1,6 +1,5 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ItemCard} from "./item-card.model";
-import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-item-card',
@@ -8,9 +7,17 @@ import {ActivatedRoute} from "@angular/router";
   styleUrls: ['./item-card.component.scss']
 })
 export class ItemCardComponent {
+  @Output() favoritesChanged = new EventEmitter<boolean>();
   @Input() item: ItemCard;
+  @Input() isFavorite: boolean = false;
 
-
+  onFavoritesChange() {
+    // Test
+    // if(this.item.id === '61bbe332-a7bd-45fb-b41c-6db31c850515') this.item = {...this.item, discount: 0};
+    //
+    this.isFavorite = !this.isFavorite;
+    this.favoritesChanged.next(this.isFavorite);
+  }
 
   protected readonly Math = Math;
 }

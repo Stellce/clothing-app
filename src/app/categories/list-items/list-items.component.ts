@@ -91,4 +91,8 @@ export class ListItemsComponent implements OnInit{
       }
     });
   }
+
+  onFavoritesChanged(e: any, itemId: string) {
+    console.log(e, itemId);
+  }
 }
