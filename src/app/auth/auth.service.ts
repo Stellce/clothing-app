@@ -10,6 +10,7 @@ import {Router} from "@angular/router";
 })
 export class AuthService {
   private _user: User;
+  private _token: string = '';
   constructor(
     private http: HttpClient,
     private router: Router
@@ -23,12 +24,21 @@ export class AuthService {
     this._user = user;
   }
 
+  get token() {
+    return this._token;
+  }
+
+  set token(token: string) {
+    this._token = token;
+  }
+
   login(loginUser: LoginUser) {
     this.user = {
       name: 'John',
       surname: 'Doe',
       email: 'john.doe@email.com'
     }
+    this.token = 'token'
     this.router.navigate(['/', 'account']);
   }
 

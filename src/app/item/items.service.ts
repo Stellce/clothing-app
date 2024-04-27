@@ -115,6 +115,11 @@ export class ItemsService {
     return of(this.mockOrder);
   }
 
+  requestOrders() {
+    let orders: Order[] = Array(5).fill(this.mockOrder);
+    return of(orders);
+  }
+
   private requestAllItemsImages(page: ItemsPage) {
     page.content.forEach(item => {
       this.requestItemImages(item.id).subscribe(images => {

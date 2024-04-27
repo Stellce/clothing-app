@@ -11,6 +11,7 @@ import {LoginComponent} from "./auth/login/login.component";
 import {RegisterComponent} from "./auth/register/register.component";
 import {OutletComponent} from "./outlet/outlet.component";
 import {canActivate} from "./auth/auth.guard";
+import {OrderHistoryComponent} from "./navigation/bottom-navbar/account/order-history/order-history.component";
 
 const routes: Routes = [
   {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
@@ -19,6 +20,7 @@ const routes: Routes = [
   ]},
   {path: 'search', component: SearchComponent},
   {path: 'account', component: AccountComponent, canActivate: [canActivate]},
+  {path: 'account/history', component: OrderHistoryComponent, canActivate: [canActivate]},
   {path: 'favorites', component: FavoritesComponent},
   {path: 'cart', component: CartComponent},
 
