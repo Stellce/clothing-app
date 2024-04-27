@@ -51,7 +51,9 @@ $theme: mat.define-dark-theme((
 //@include mat.chips-theme($theme);
 //@include mat.all-component-themes($theme);
 
+$dark-theme-background-darker: #151515;
 $dark-theme-background: #1c1c1c;
+$dark-theme-background-lighter: #252525;
 $background-primary: #383838;
 $background-secondary: #404040;
 $filter-bubble: #A9A9A9;

@@ -43,6 +43,7 @@ import { ItemBarComponent } from './categories/item-bar/item-bar.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { LoginComponent } from './auth/login/login.component';
 import {MatRadioModule} from "@angular/material/radio";
+import { OrderHistoryComponent } from './navigation/bottom-navbar/account/order-history/order-history.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import {MatRadioModule} from "@angular/material/radio";
     CartComponent,
     ItemBarComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    OrderHistoryComponent
   ],
   imports: [
     BrowserModule,

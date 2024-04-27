@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {ItemsService} from "../../../categories/list-items/item-card/items.service";
+import {ItemsService} from "../../../item/items.service";
 
 @Component({
   selector: 'app-search',

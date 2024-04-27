@@ -11,11 +11,11 @@ import {Filter} from "./filter.model";
 import {FormControl, FormGroup} from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
 import {CategoriesService} from "../../categories.service";
-import {ItemsService} from "../item-card/items.service";
 import {FilterService} from "./filter.service";
 import {AllowedFilters} from "./allowed-filters.model";
 import {SelectedFilters} from "./selected-filters.model";
 import {MatCheckbox} from "@angular/material/checkbox";
+import {ItemsService} from "../../../item/items.service";
 
 @Component({
   selector: 'app-filter',

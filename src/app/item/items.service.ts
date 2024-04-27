@@ -1,16 +1,35 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
-import {environment} from "../../../../environments/environment";
+import {environment} from "../../environments/environment";
 import {BehaviorSubject, of, switchMap, take, tap} from "rxjs";
-import {ItemsPage} from "./res/items-page.model";
-import {ItemCard} from "./item-card.model";
-import {ItemsParamsRequest} from "./req/items-params-request.model";
+import {ItemsPage} from "../categories/list-items/item-card/res/items-page.model";
+import {ItemCard} from "../categories/list-items/item-card/item-card.model";
+import {ItemsParamsRequest} from "../categories/list-items/item-card/req/items-params-request.model";
+import {Order} from "./order.model";
 
 @Injectable({providedIn: 'root'})
 export class ItemsService {
   private _cachedItemsRequest: ItemsParamsRequest = {} as ItemsParamsRequest;
   private _page$ = new BehaviorSubject<ItemsPage>({} as ItemsPage);
   private pageSize = 6*4;
+
+  private mockItem: Order = {
+    id: 'asd',
+    name: 'Air 2',
+    images: ['/assets/test.jpg'],
+    price: 12.99,
+    brand: 'Nike',
+    discount: 25,
+    isNew: true,
+    isOnWishList: true,
+    isPopular: true,
+    priceAfterDiscount: 10.99
+  }
+  private mockOrder: Order = {
+    ...this.mockItem,
+    deliveryStatus: 'packaging',
+    orderDate: '01.01.2024'
+  }
 
   constructor(private http: HttpClient) {}
 
@@ -85,6 +104,15 @@ export class ItemsService {
   search(search: string) {
     let headers = new HttpHeaders().append('search', search);
     return this.http.get(environment.backendUrl + '/search', {headers});
+  }
+
+  requestFavorites() {
+    let items: Order[] = Array(5).fill(this.mockItem);
+    return of(items);
+  }
+
+  getLastOrder() {
+    return of(this.mockOrder);
   }
 
   private requestAllItemsImages(page: ItemsPage) {

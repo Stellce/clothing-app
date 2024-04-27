@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {ItemsService} from "../categories/list-items/item-card/items.service";
 import {ItemCard} from "../categories/list-items/item-card/item-card.model";
 import {ItemsPage} from "../categories/list-items/item-card/res/items-page.model";
+import {ItemsService} from "../item/items.service";
 
 @Component({
   selector: 'app-outlet',

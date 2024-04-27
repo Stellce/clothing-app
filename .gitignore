@@ -43,3 +43,6 @@ Thumbs.db
 
 # Prod files
 /src/environments/environment.prod.ts
+
+# Test files
+/src/assets/test.jpg

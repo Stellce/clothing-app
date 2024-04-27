@@ -5,7 +5,7 @@
   </div>
   <mat-icon (click)="onLogout()">logout</mat-icon>
 </div>
-<app-item-bar></app-item-bar>
+<app-item-bar [item]="order"></app-item-bar>
 <ul>
   <li>Enter Promocode</li>
   <li routerLink="history">Order history</li>

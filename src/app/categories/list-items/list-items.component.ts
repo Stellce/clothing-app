@@ -2,11 +2,11 @@ import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ItemCard} from "./item-card/item-card.model";
 import {ActivatedRoute} from "@angular/router";
 import {MatTabChangeEvent} from "@angular/material/tabs";
-import {ItemsService} from "./item-card/items.service";
 import {ItemsParamsRequest} from "./item-card/req/items-params-request.model";
 import {Filter} from "./filter/filter.model";
 import {MatDrawer} from "@angular/material/sidenav";
 import {ItemsPage} from "./item-card/res/items-page.model";
+import {ItemsService} from "../../item/items.service";
 
 @Component({
   selector: 'app-list-items',
