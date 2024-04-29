@@ -42,10 +42,13 @@ app-breadcrumb {
 }
 
 .category span {
-  //top: 90%;
   margin: 90% auto 0;
   font-size: 14px;
   z-index: 5;
+}
+
+.category:hover span {
+  transform: scale(1.1);
 }
 
 .category span:hover + .darken {

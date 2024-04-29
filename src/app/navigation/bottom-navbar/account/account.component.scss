@@ -1,28 +1,36 @@
 @import '../../../../styles';
 
-.item-bars-list {
-  padding: 10px;
+.account {
+
+  max-width: 500px;
   margin: 0 auto;
-}
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  .sec {
+
+
+  .item-bars-list {
+    padding: 10px;
+    margin: 0 auto;
+  }
+  .header {
     display: flex;
+    justify-content: space-between;
     align-items: center;
+    .sec {
+      display: flex;
+      align-items: center;
+    }
+    .hello {
+      color: $text-color;
+      font-size: 21px;
+    }
   }
-  .hello {
+  ul {
+    list-style: none;
     color: $text-color;
-    font-size: 21px;
+    font-size: 16px;
+    padding-left: 16px;
   }
-}
-ul {
-  list-style: none;
-  color: $text-color;
-  font-size: 16px;
-  padding-left: 16px;
-}
-li {
-  margin: 20px 0;
+  li {
+    margin: 20px 0;
+    cursor: pointer;
+  }
 }

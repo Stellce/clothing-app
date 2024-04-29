@@ -9,6 +9,7 @@
   color: $text-color;
   font-size: 21px;
   justify-self: start;
+  cursor: pointer;
 }
 
 header {
@@ -20,7 +21,7 @@ header {
   align-items: center;
   justify-items: center;
   background: $dark-theme-background;
-  padding: 0;
+  padding-left: 4%;
 }
 .genders {
   width: 100%;
@@ -36,17 +37,26 @@ a {
   font-weight: 100;
   font-size: 14px;
 }
-@media screen and (max-width: 1600px) {
-  header {
-    padding: 0 4%;
+nav {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  cursor: pointer;
+  gap: 10px;
+  img {
+    height: 30px;
   }
 }
+
 @media screen and (max-width: 600px) {
   header {
     display: flex;
     justify-content: center;
   }
   .logo {
+    display: none;
+  }
+  nav {
     display: none;
   }
 }

@@ -17,7 +17,6 @@ export class BreadcrumbComponent implements OnInit{
 
   ngOnInit() {
     this.activatedRoute.paramMap.subscribe(params => {
-      console.log(params)
       this.link = [{
         name: params.get('gender').toUpperCase() || '',
         path: ['/', 'products', params.get('gender')]
@@ -30,11 +29,8 @@ export class BreadcrumbComponent implements OnInit{
             name: categoryName!,
             path: ['/', 'products', params.get('gender'), params.get('categoryId')]
           });
-          console.log(this.link)
         });
       }
     });
   }
-
-  protected readonly Object = Object;
 }

@@ -1,1 +1,6 @@
-<app-item-bar *ngFor="let item of items" [item]="item"></app-item-bar>
+<div class="back-button-wrapper">
+  <button mat-icon-button (click)="navigateBack()"><mat-icon>arrow_back</mat-icon></button>
+</div>
+<div class="order-history">
+  <app-item-bar *ngFor="let item of items" [item]="item"></app-item-bar>
+</div>

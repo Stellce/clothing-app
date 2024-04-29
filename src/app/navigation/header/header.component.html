@@ -1,5 +1,5 @@
 <header>
-  <div class="logo">
+  <div class="logo" [routerLink]="['/', 'dashboard']">
     <img src="assets/navbar/Dashboard.svg" alt="logo" height="47" width="26"/>
     <span>SPACE FINCHER</span>
   </div>
@@ -7,4 +7,7 @@
     <a [routerLink]="['/', 'products', 'men']">MEN</a>
     <a [routerLink]="['/', 'products', 'women']">WOMEN</a>
   </div>
+  <nav>
+    <img *ngFor="let link of links" [src]="srcPrefics + link + svgExtension" [alt]="link" [title]="link" [routerLink]="['/', buildLink(link).toLowerCase()]">
+  </nav>
 </header>

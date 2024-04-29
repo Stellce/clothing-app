@@ -1,15 +1,18 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {Component} from '@angular/core';
+import {AuthService} from "../../auth/auth.service";
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit{
-  constructor(private activatedRoute: ActivatedRoute) {}
+export class HeaderComponent{
+  srcPrefics = 'assets/navbar/';
+  svgExtension = '.svg';
+  links = ['Search', 'Account', 'Favorites', 'Cart'];
 
-  ngOnInit() {
-    console.log(this.activatedRoute);
+  constructor(private authService: AuthService) {}
+  buildLink(link: string): string {
+    return link === 'Account' && !this.authService.user ? 'register' : link;
   }
 }

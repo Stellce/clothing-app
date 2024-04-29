@@ -61,7 +61,6 @@ export class ItemsService {
       params = params.append(k,v);
     })
     params = params.append('pageSize', this.pageSize);
-    console.log(params)
     return this.http.get<ItemsPage>(
       environment.backendUrl + `/catalog/items`,
       {params: params}

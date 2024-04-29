@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {Order} from "../../../../item/order.model";
 import {ItemsService} from "../../../../item/items.service";
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-order-history',
@@ -9,10 +10,14 @@ import {ItemsService} from "../../../../item/items.service";
 })
 export class OrderHistoryComponent {
   items: Order[];
-  constructor(private itemsService: ItemsService) {}
+  constructor(private itemsService: ItemsService, private location: Location) {}
   ngOnInit() {
     this.itemsService.requestOrders().subscribe(items => {
       this.items = items;
     })
+  }
+
+  navigateBack() {
+    this.location.back();
   }
 }

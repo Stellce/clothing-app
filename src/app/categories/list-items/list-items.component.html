@@ -38,7 +38,7 @@
   <ng-template #noSubcategories>
     <mat-spinner *ngIf="items?.length === 0 && isLoading"></mat-spinner>
     <div class="cloth-grid">
-      <app-item-card *ngFor="let item of items" [item]="item" (favoritesChanged)="onFavoritesChanged($event, item.id)"></app-item-card>
+      <app-item-card *ngFor="let item of items" [item]="item"  (favoritesChanged)="onFavoritesChanged($event, item.id)"></app-item-card>
     </div>
   </ng-template>
   <app-paginator [page]="page" (changePage)="changePage($event)"></app-paginator>

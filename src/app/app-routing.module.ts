@@ -12,6 +12,7 @@ import {RegisterComponent} from "./auth/register/register.component";
 import {OutletComponent} from "./outlet/outlet.component";
 import {canActivate} from "./auth/auth.guard";
 import {OrderHistoryComponent} from "./navigation/bottom-navbar/account/order-history/order-history.component";
+import {ItemComponent} from "./item/item.component";
 
 const routes: Routes = [
   {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
@@ -29,6 +30,7 @@ const routes: Routes = [
 
   {path: 'products/:gender', component: CategoriesComponent},
   {path: 'products/:gender/:categoryId', component: ListItemsComponent},
+  {path: 'products/:gender/:categoryId/:itemId', component: ItemComponent},
 
 ];
 
