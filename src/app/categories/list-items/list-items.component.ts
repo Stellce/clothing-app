@@ -30,7 +30,8 @@ export class ListItemsComponent implements OnInit{
   ) {}
 
   ngOnInit() {
-    this.itemsService.page$.subscribe((page: ItemsPage) => {
+    this.itemsService.page$.subscribe(page => {
+      if(!page) return;
       this.isLoading = false;
       this.items = page.content;
       this.page = {

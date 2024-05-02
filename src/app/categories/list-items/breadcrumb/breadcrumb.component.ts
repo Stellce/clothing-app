@@ -1,6 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {CategoriesService} from "../../categories.service";
+import {ItemsService} from "../../../item/items.service";
 
 @Component({
   selector: 'app-breadcrumb',
@@ -8,29 +9,44 @@ import {CategoriesService} from "../../categories.service";
   styleUrls: ['./breadcrumb.component.scss']
 })
 export class BreadcrumbComponent implements OnInit{
-  link: {name?: string, path?: string[]}[] = [];
+  @Input()itemName: string;
+  link: {name: string, path: string[]}[] = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private categoriesService: CategoriesService
+    private categoriesService: CategoriesService,
+    private itemsService: ItemsService
   ) {}
 
   ngOnInit() {
     this.activatedRoute.paramMap.subscribe(params => {
-      this.link = [{
-        name: params.get('gender').toUpperCase() || '',
-        path: ['/', 'products', params.get('gender')]
-      }];
+      let path: string[] = ['/', 'products', params.get('gender')];
+      this.link.push({
+        name: params.get('gender').toUpperCase(),
+        path: [...path]
+      });
       if (params.has('categoryId')) {
         this.categoriesService.requestCategories().subscribe(categories => {
+          let categoryId: string = params.get('categoryId');
           let categoryName = categories
-            .find(category => category.id === params.get('categoryId')).name;
+            .find(category => category.id === categoryId).name;
+          path.push(categoryId);
           this.link.push({
             name: categoryName!,
-            path: ['/', 'products', params.get('gender'), params.get('categoryId')]
+            path: [...path]
           });
+          if(this.itemName) {
+            this.link.push({
+              name: this.itemName,
+              path: []
+            });
+          }
         });
       }
     });
+  }
+
+  isLast(i: number) {
+    return i === this.link.length - 1;
   }
 }

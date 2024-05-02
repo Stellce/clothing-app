@@ -6,14 +6,16 @@ import {ItemsPage} from "../categories/list-items/item-card/res/items-page.model
 import {ItemCard} from "../categories/list-items/item-card/item-card.model";
 import {ItemsParamsRequest} from "../categories/list-items/item-card/req/items-params-request.model";
 import {Order} from "./order.model";
+import {Item} from "./item.model";
 
 @Injectable({providedIn: 'root'})
 export class ItemsService {
   private _cachedItemsRequest: ItemsParamsRequest = {} as ItemsParamsRequest;
-  private _page$ = new BehaviorSubject<ItemsPage>({} as ItemsPage);
+  private _page$ = new BehaviorSubject<ItemsPage>(null);
+  private _item$ = new BehaviorSubject<Item>(null);
   private pageSize = 6*4;
 
-  private mockItem: Order = {
+  private mockItemBar: Order = {
     id: 'asd',
     name: 'Air 2',
     images: ['/assets/test.jpg'],
@@ -26,15 +28,27 @@ export class ItemsService {
     priceAfterDiscount: 10.99
   }
   private mockOrder: Order = {
-    ...this.mockItem,
+    ...this.mockItemBar,
     deliveryStatus: 'packaging',
     orderDate: '01.01.2024'
+  }
+  private mockItem: Item = {
+    ...this.mockItemBar,
+    materials: ['WOOL'],
+    brand: 'SpeedFinch',
+    colors: ['red', 'green', 'blue'],
+    model: 'Speed 2.0',
+    reviews: []
   }
 
   constructor(private http: HttpClient) {}
 
   get page$() {
     return this._page$.asObservable();
+  }
+
+  get item$() {
+    return this._item$.asObservable();
   }
 
   requestSubcategories(category: string) {
@@ -77,6 +91,15 @@ export class ItemsService {
     );
   }
 
+  requestItemById(itemId: string) {
+    // Test
+    this._item$.next(this.mockItem);
+
+    // return this.http.get<Item>(
+    //   environment.backendUrl + itemId
+    // ).pipe(take(1), tap(item => this._item$.next(item)));
+  }
+
   requestBrands() {
     return this.http.get<{id: string, name: string}[]>(
       environment.backendUrl + `/catalog/brands`
@@ -106,7 +129,7 @@ export class ItemsService {
   }
 
   requestFavorites() {
-    let items: Order[] = Array(5).fill(this.mockItem);
+    let items: Order[] = Array(5).fill(this.mockItemBar);
     return of(items);
   }
 

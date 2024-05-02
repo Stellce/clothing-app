@@ -4,7 +4,7 @@
     *ngIf="item.images?.length"
     [src]="'data:image/png;base64,' + item.images[0]"
     [alt]=item.name
-    [routerLink]="item.id" />
+    [routerLink]="item.id"/>
   <div class="discount" [routerLink]="item.id" *ngIf="Math.floor(this.item.discount * 100) !== 0">
   </div>
   <svg class="fav-icon" [style]="{'fill': this.isFavorite ? this.item.discount ? '#D9D9D9' : '#FF4F4F' : 'none'}" width="40" height="39" viewBox="0 0 40 39" xmlns="http://www.w3.org/2000/svg" (click)="onFavoritesChange()">
