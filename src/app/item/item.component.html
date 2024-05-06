@@ -1,3 +1,20 @@
 <div class="item" *ngIf="item">
   <app-breadcrumb [itemName]="item.name"></app-breadcrumb>
+  <img [src]="item.images[selectedImageIndex]" [alt]="item.name">
+  <div class="img-carousel">
+    <img *ngFor="let image of item.images; let i = index" [src]="image" [alt]="item.name" (click)="selectedImageIndex = i">
+  </div>
+  <div class="product-name flex-space-between">
+    <span>{{item.name}}</span>
+    <span>{{item.price | currency}}</span>
+  </div>
+  <div class="parameters">
+    <span>Parameters</span>
+    <div class="param flex-space-between" *ngFor="let param of params">
+      <span>{{param.key + ":"}}</span>
+      <span>{{param.value}}</span>
+    </div>
+  </div>
+  <button mat-flat-button color="primary">Add to cart</button>
+  <button mat-flat-button color="primary">Order now</button>
 </div>

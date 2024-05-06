@@ -45,4 +45,4 @@ Thumbs.db
 /src/environments/environment.prod.ts
 
 # Test files
-/src/assets/test.jpg
+/src/assets/test

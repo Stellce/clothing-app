@@ -18,7 +18,13 @@ export class ItemsService {
   private mockItemBar: Order = {
     id: 'asd',
     name: 'Air 2',
-    images: ['/assets/test.jpg'],
+    images: [
+      '/assets/test/test (1).jpg',
+      '/assets/test/test (2).jpg',
+      '/assets/test/test (3).jpg',
+      '/assets/test/test (4).jpg',
+      '/assets/test/test (5).jpg',
+    ],
     price: 12.99,
     brand: 'Nike',
     discount: 25,
@@ -34,10 +40,12 @@ export class ItemsService {
   }
   private mockItem: Item = {
     ...this.mockItemBar,
-    materials: ['WOOL'],
-    brand: 'SpeedFinch',
-    colors: ['red', 'green', 'blue'],
-    model: 'Speed 2.0',
+    params: {
+      materials: ['WOOL'],
+      brand: 'SpeedFinch',
+      colors: ['red', 'green', 'blue'],
+      model: 'Speed 2.0'
+    },
     reviews: []
   }
 
@@ -93,7 +101,8 @@ export class ItemsService {
 
   requestItemById(itemId: string) {
     // Test
-    this._item$.next(this.mockItem);
+    // this._item$.next(this.mockItem);
+    return of(this.mockItem);
 
     // return this.http.get<Item>(
     //   environment.backendUrl + itemId
