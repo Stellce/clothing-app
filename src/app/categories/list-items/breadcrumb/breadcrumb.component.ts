@@ -10,17 +10,18 @@ import {ItemsService} from "../../../item/items.service";
 })
 export class BreadcrumbComponent implements OnInit{
   @Input()itemName: string;
-  link: {name: string, path: string[]}[] = [];
+  link: {name: string, path: string[]}[]
+  ;
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private categoriesService: CategoriesService,
-    private itemsService: ItemsService
+    private categoriesService: CategoriesService
   ) {}
 
   ngOnInit() {
     this.activatedRoute.paramMap.subscribe(params => {
       let path: string[] = ['/', 'products', params.get('gender')];
+      this.link = [];
       this.link.push({
         name: params.get('gender').toUpperCase(),
         path: [...path]

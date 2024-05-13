@@ -16,7 +16,7 @@
     overflow: auto;
     gap: 10px;
     img {
-      height: 70px;
+      height: calc(100% - 5px);
       width: auto;
       cursor: pointer;
     }

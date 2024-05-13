@@ -37,7 +37,7 @@ $my-palette: (
 );
 
 $my-primary: mat.define-palette(mat.$blue-gray-palette);
-$my-accent: mat.define-palette(mat.$gray-palette);
+$my-accent: mat.define-palette(mat.$blue-palette);
 $theme: mat.define-dark-theme((
   color: (
     primary: $my-primary,
@@ -70,7 +70,13 @@ body {
 }
 
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 5px;
+  cursor: pointer !important;
+}
+
+::-webkit-scrollbar:horizontal {
+  height: 15px;
+  cursor: pointer !important;
 }
 
 ::-webkit-scrollbar-track {
@@ -79,6 +85,7 @@ body {
 
 ::-webkit-scrollbar-thumb {
   background: $background-secondary;
+  -webkit-border-radius: 2rem;
 }
 
 ::-webkit-scrollbar-thumb:hover {
