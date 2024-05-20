@@ -33,11 +33,11 @@ const routes: Routes = [
   ]},
 
 
-  {path: 'products', children: [
-    {path: ':gender', component: CategoriesComponent, children: [
-      {path: ':categoryId', component: ListItemsComponent, children: [
-        {path: ':itemId', component: ItemComponent},
-      ]},
+  {path: 'products/:gender', children: [
+    {path: '', component: CategoriesComponent},
+    {path: ':categoryId', children: [
+      {path: '', component: ListItemsComponent},
+      {path: ':itemId', component: ItemComponent},
     ]},
   ]}
 ];
