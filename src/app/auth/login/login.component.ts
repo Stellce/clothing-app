@@ -25,4 +25,8 @@ export class LoginComponent implements OnInit{
     let loginUser: LoginUser = {...this.form.value}
     this.authService.login(loginUser);
   }
+
+  onPasswordReset() {
+    this.authService.resetPassword();
+  }
 }

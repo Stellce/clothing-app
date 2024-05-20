@@ -46,8 +46,9 @@ import {MatRadioModule} from "@angular/material/radio";
 import { OrderHistoryComponent } from './navigation/bottom-navbar/account/order-history/order-history.component';
 import {AuthInterceptor} from "./auth/auth.interceptor";
 import { OrderPageComponent } from './order-page/order-page.component';
-import { DialogComponent } from './dialog/dialog.component';
+import { DialogComponent } from './dialogs/dialog/dialog.component';
 import {MatDialogModule} from "@angular/material/dialog";
+import { ErrorDialogComponent } from './dialogs/error-dialog/error-dialog.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +74,8 @@ import {MatDialogModule} from "@angular/material/dialog";
     LoginComponent,
     OrderHistoryComponent,
     OrderPageComponent,
-    DialogComponent
+    DialogComponent,
+    ErrorDialogComponent
   ],
   imports: [
     BrowserModule,

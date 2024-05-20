@@ -4,9 +4,10 @@ import {LoginUser} from "./login/login-user.model";
 import {RegisterUser} from "./register/register-user.model";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
-import {DialogData} from "../dialog/dialog-data.model";
-import {DialogComponent} from "../dialog/dialog.component";
+import {DialogData} from "../dialogs/dialog/dialog-data.model";
+import {DialogComponent} from "../dialogs/dialog/dialog.component";
 import {MatDialog} from "@angular/material/dialog";
+import {ErrorDialogData} from "../dialogs/error-dialog/error-dialog-data.model";
 
 @Injectable({
   providedIn: 'root'
@@ -64,6 +65,30 @@ export class AuthService {
     let dialogData: DialogData = {
       title: 'Title',
       description: 'Description'
+    }
+    this.dialog.open(DialogComponent, {data: dialogData});
+  }
+
+  resetPassword() {
+    const dialogData: DialogData = {
+      title: 'Password reset',
+      description: '',
+      note: 'After clicking “Reset”, you will receive an email with following steps',
+      inputs: ['email'],
+      buttonName: 'Reset'
+    }
+    const dialogRef = this.dialog.open(DialogComponent, {data: dialogData});
+
+    dialogRef.afterClosed().subscribe(result => {
+
+    })
+  }
+
+  openErrorDialog(errorCode: string) {
+    let dialogData: ErrorDialogData = {
+      title: 'Title',
+      description: 'Description',
+      errorCode
     }
     this.dialog.open(DialogComponent, {data: dialogData});
   }

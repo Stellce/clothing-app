@@ -1,9 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CategoriesService} from "../../../categories/categories.service";
 import {Category} from "../../../categories/category.model";
-import {MatDialog} from "@angular/material/dialog";
-import {DialogComponent} from "../../../dialog/dialog.component";
-import {DialogData} from "../../../dialog/dialog-data.model";
 
 @Component({
   selector: 'app-dashboard',
