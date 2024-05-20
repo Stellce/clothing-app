@@ -26,7 +26,7 @@ import { ItemCardComponent } from './categories/list-items/item-card/item-card.c
 import { CategoriesComponent } from './categories/categories.component';
 import { FilterComponent } from './categories/list-items/filter/filter.component';
 import { BreadcrumbComponent } from './categories/list-items/breadcrumb/breadcrumb.component';
-import { OutletComponent } from './outlet/outlet.component';
+import { OutletComponent } from './navigation/bottom-navbar/dashboard/outlet/outlet.component';
 import { CheckboxComponent } from './categories/list-items/filter/checkbox/checkbox.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatTabsModule} from "@angular/material/tabs";
@@ -45,6 +45,7 @@ import { LoginComponent } from './auth/login/login.component';
 import {MatRadioModule} from "@angular/material/radio";
 import { OrderHistoryComponent } from './navigation/bottom-navbar/account/order-history/order-history.component';
 import {AuthInterceptor} from "./auth/auth.interceptor";
+import { OrderPageComponent } from './order-page/order-page.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import {AuthInterceptor} from "./auth/auth.interceptor";
     ItemBarComponent,
     RegisterComponent,
     LoginComponent,
-    OrderHistoryComponent
+    OrderHistoryComponent,
+    OrderPageComponent
   ],
   imports: [
     BrowserModule,

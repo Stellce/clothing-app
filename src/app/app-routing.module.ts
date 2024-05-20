@@ -9,29 +9,37 @@ import {FavoritesComponent} from "./navigation/bottom-navbar/favorites/favorites
 import {CartComponent} from "./navigation/bottom-navbar/cart/cart.component";
 import {LoginComponent} from "./auth/login/login.component";
 import {RegisterComponent} from "./auth/register/register.component";
-import {OutletComponent} from "./outlet/outlet.component";
-import {canActivate} from "./auth/auth.guard";
+import {loginGuard} from "./auth/auth.guard";
 import {OrderHistoryComponent} from "./navigation/bottom-navbar/account/order-history/order-history.component";
 import {ItemComponent} from "./item/item.component";
+import {OrderPageComponent} from "./order-page/order-page.component";
 
 const routes: Routes = [
   {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
-  {path: 'dashboard', component: DashboardComponent, children: [
-      {path: '', component: OutletComponent}
-  ]},
+
+  {path: 'dashboard', component: DashboardComponent},
   {path: 'search', component: SearchComponent},
-  {path: 'account', component: AccountComponent, canActivate: [canActivate]},
-  {path: 'account/history', component: OrderHistoryComponent, canActivate: [canActivate]},
+  {path: 'account', children: [
+    {path: '', component: AccountComponent, canActivate: [loginGuard]},
+    {path: 'login', component: LoginComponent},
+    {path: 'register', component: RegisterComponent}
+  ]},
   {path: 'favorites', component: FavoritesComponent},
   {path: 'cart', component: CartComponent},
 
-  {path: 'login', component: LoginComponent},
-  {path: 'register', component: RegisterComponent},
+  {path: 'orders', canActivate: [loginGuard], children: [
+    {path: 'history', component: OrderHistoryComponent},
+    {path: ':orderId', component: OrderPageComponent},
+  ]},
 
-  {path: 'products/:gender', component: CategoriesComponent},
-  {path: 'products/:gender/:categoryId', component: ListItemsComponent},
-  {path: 'products/:gender/:categoryId/:itemId', component: ItemComponent},
 
+  {path: 'products', children: [
+    {path: ':gender', component: CategoriesComponent, children: [
+      {path: ':categoryId', component: ListItemsComponent, children: [
+        {path: ':itemId', component: ItemComponent},
+      ]},
+    ]},
+  ]}
 ];
 
 @NgModule({

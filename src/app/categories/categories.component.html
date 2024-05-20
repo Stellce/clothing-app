@@ -7,7 +7,7 @@
        [routerLink]="category.id | lowercase"
     >
       <ng-container *ngIf="category.image">
-        <div class="darken"></div>
+        <div class="dark-bottom-gradient"></div>
         <img class="category-image" [src]="'data:image/png;base64,' + category.image" [alt]="category">
       </ng-container>
       <span>{{category.name | uppercase}}</span>

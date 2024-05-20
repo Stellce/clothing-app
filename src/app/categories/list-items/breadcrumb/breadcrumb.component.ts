@@ -10,8 +10,7 @@ import {ItemsService} from "../../../item/items.service";
 })
 export class BreadcrumbComponent implements OnInit{
   @Input()itemName: string;
-  link: {name: string, path: string[]}[]
-  ;
+  link: {name: string, path: string[]}[];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -27,7 +26,7 @@ export class BreadcrumbComponent implements OnInit{
         path: [...path]
       });
       if (params.has('categoryId')) {
-        this.categoriesService.requestCategories().subscribe(categories => {
+        this.categoriesService.categoriesList$.subscribe(categories => {
           let categoryId: string = params.get('categoryId');
           let categoryName = categories
             .find(category => category.id === categoryId).name;

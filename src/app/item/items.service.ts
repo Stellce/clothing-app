@@ -12,7 +12,6 @@ import {Item} from "./item.model";
 export class ItemsService {
   private _cachedItemsRequest: ItemsParamsRequest = {} as ItemsParamsRequest;
   private _page$ = new BehaviorSubject<ItemsPage>(null);
-  private _item$ = new BehaviorSubject<Item>(null);
   private pageSize = 6*4;
 
   private mockItemBar: Order = {
@@ -55,10 +54,6 @@ export class ItemsService {
     return this._page$.asObservable();
   }
 
-  get item$() {
-    return this._item$.asObservable();
-  }
-
   requestSubcategories(category: string) {
     return this.http.get<{id: string, name: string}[]>(
       environment.backendUrl + `/catalog/categories/${category}/subcategories`
@@ -67,7 +62,7 @@ export class ItemsService {
 
   requestLandingPageItems() {
     return this.http.get<ItemsPage>(
-      environment.backendUrl + `/items/landing-page`
+      environment.backendUrl + `/catalog/items/landing-page`
     ).pipe(take(1), switchMap(page => {
       this._page$.next(page);
       this.requestAllItemsImages(page);
@@ -146,7 +141,12 @@ export class ItemsService {
     return of(this.mockOrder);
   }
 
-  requestOrders() {
+  requestOrdersHistory() {
+    let orders: Order[] = Array(5).fill(this.mockOrder);
+    return of(orders);
+  }
+
+  requestCartItems() {
     let orders: Order[] = Array(5).fill(this.mockOrder);
     return of(orders);
   }
