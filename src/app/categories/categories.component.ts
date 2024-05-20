@@ -23,17 +23,20 @@ export class CategoriesComponent implements OnInit{
     this.activatedRoute.params.subscribe(params => {
       this.gender = params['gender'];
 
-      this.categoriesService.requestCategories()
+      this.categoriesService.categoriesList$
         .subscribe(categories => {
+          if(!categories) return
           this.isLoading = false;
           this.categories = categories;
 
           this.categoriesService.requestCategoriesImages(this.gender)
             .subscribe(categoriesImages => {
-              Object.entries(categoriesImages).forEach(([categoryId, image]) => {
-                categories.find(category => category.id === categoryId)!.image = image;
+              if(!categoriesImages) return;
+              categories = categories.map(category => {
+                category.image = categoriesImages[category.id];
+                return category;
               });
-            })
+            });
         });
     })
   }

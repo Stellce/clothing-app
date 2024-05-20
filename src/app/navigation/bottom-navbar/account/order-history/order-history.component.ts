@@ -12,7 +12,7 @@ export class OrderHistoryComponent {
   items: Order[];
   constructor(private itemsService: ItemsService, private location: Location) {}
   ngOnInit() {
-    this.itemsService.requestOrders().subscribe(items => {
+    this.itemsService.requestOrdersHistory().subscribe(items => {
       this.items = items;
     })
   }

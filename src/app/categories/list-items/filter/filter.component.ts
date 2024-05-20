@@ -49,7 +49,7 @@ export class FilterComponent implements OnInit{
     });
 
     let categoryId = this.activatedRoute.snapshot.params['categoryId'];
-    this.categoriesService.requestCategories().subscribe(categories => {
+    this.categoriesService.categoriesList$.subscribe(categories => {
       let categoryName = categories
         .find(c => c.id === categoryId)?.name.toUpperCase();
       if(categoryName === 'SHOES' || categoryName === 'SOCKS') {

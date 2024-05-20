@@ -1,7 +1,10 @@
-<div class="item-bar">
+<div class="item-bar" [routerLink]="['/', 'orders', item.id]">
   <img [src]="item.images[0]" alt="">
-  <div class="delivery" [ngStyle]="{color: getDeliveryColor(item.deliveryStatus)}">
-    {{item.deliveryStatus}}
+  <div class="name-delivery" [ngStyle]="{justifyContent: item.deliveryStatus ? 'flex-end' : 'center'}">
+    <span class="name">{{item.name}}</span>
+    <span class="delivery" [ngStyle]="{color: getDeliveryColor(item.deliveryStatus)}">
+      {{item.deliveryStatus}}
+    </span>
   </div>
   <div class="price-date" [ngStyle]="{'justify-content': item.orderDate ? 'space-between' : 'center'}">
     <div class="price" [ngStyle]="{'margin-top': item.orderDate ? '20%' : 0}">{{item.price | currency}}</div>
