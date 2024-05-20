@@ -4,6 +4,9 @@ import {LoginUser} from "./login/login-user.model";
 import {RegisterUser} from "./register/register-user.model";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
+import {DialogData} from "../dialog/dialog-data.model";
+import {DialogComponent} from "../dialog/dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +16,8 @@ export class AuthService {
   private _token: string = '';
   constructor(
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog
   ) {}
 
   get user() {
@@ -56,5 +60,12 @@ export class AuthService {
     this.router.navigate(['/', 'account', 'login']);
   }
 
+  openDialog() {
+    let dialogData: DialogData = {
+      title: 'Title',
+      description: 'Description'
+    }
+    this.dialog.open(DialogComponent, {data: dialogData});
+  }
 
 }

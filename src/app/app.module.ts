@@ -46,6 +46,8 @@ import {MatRadioModule} from "@angular/material/radio";
 import { OrderHistoryComponent } from './navigation/bottom-navbar/account/order-history/order-history.component';
 import {AuthInterceptor} from "./auth/auth.interceptor";
 import { OrderPageComponent } from './order-page/order-page.component';
+import { DialogComponent } from './dialog/dialog.component';
+import {MatDialogModule} from "@angular/material/dialog";
 
 @NgModule({
   declarations: [
@@ -70,7 +72,8 @@ import { OrderPageComponent } from './order-page/order-page.component';
     RegisterComponent,
     LoginComponent,
     OrderHistoryComponent,
-    OrderPageComponent
+    OrderPageComponent,
+    DialogComponent
   ],
   imports: [
     BrowserModule,
@@ -96,7 +99,8 @@ import { OrderPageComponent } from './order-page/order-page.component';
     MatTabsModule,
     ReactiveFormsModule,
     MatRippleModule,
-    MatRadioModule
+    MatRadioModule,
+    MatDialogModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent]

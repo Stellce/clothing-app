@@ -1,4 +1,4 @@
-@import "../../../styles";
+@import "../../styles";
 * {
   color: $text-color;
 }
@@ -45,4 +45,7 @@ form {
   margin: 25px auto;
   font-size: 16px;
   padding: 0 20px;
+  a {
+    cursor: pointer;
+  }
 }

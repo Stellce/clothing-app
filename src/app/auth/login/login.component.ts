@@ -6,12 +6,12 @@ import {LoginUser} from "./login-user.model";
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['../shared.scss']
 })
 export class LoginComponent implements OnInit{
   form: FormGroup;
 
-  constructor(private authService: AuthService) {}
+  constructor(public authService: AuthService) {}
 
   ngOnInit() {
     this.form = new FormGroup({

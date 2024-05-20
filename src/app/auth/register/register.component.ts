@@ -6,12 +6,12 @@ import {AuthService} from "../auth.service";
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  styleUrls: ['../shared.scss']
 })
 export class RegisterComponent implements OnInit {
   form: FormGroup;
 
-  constructor(private authService: AuthService) {}
+  constructor(public authService: AuthService) {}
   ngOnInit() {
     this.form = new FormGroup({
       firstname: new FormControl('', Validators.required),

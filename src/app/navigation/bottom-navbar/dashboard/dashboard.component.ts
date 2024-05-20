@@ -1,6 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {CategoriesService} from "../../../categories/categories.service";
 import {Category} from "../../../categories/category.model";
+import {MatDialog} from "@angular/material/dialog";
+import {DialogComponent} from "../../../dialog/dialog.component";
+import {DialogData} from "../../../dialog/dialog-data.model";
 
 @Component({
   selector: 'app-dashboard',
@@ -11,7 +14,9 @@ export class DashboardComponent implements OnInit{
   categories: Category[];
   randomCategory: Category;
   gender: 'MEN' | 'WOMEN';
-  constructor(private categoriesService: CategoriesService) {}
+  constructor(
+    private categoriesService: CategoriesService
+  ) {}
 
   ngOnInit() {
     this.categoriesService.categoriesList$.subscribe(categories => {
@@ -36,4 +41,5 @@ export class DashboardComponent implements OnInit{
       this.randomCategory.image = categoriesImages[categoryId];
     });
   }
+
 }

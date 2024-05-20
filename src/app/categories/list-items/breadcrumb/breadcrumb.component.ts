@@ -27,6 +27,7 @@ export class BreadcrumbComponent implements OnInit{
       });
       if (params.has('categoryId')) {
         this.categoriesService.categoriesList$.subscribe(categories => {
+          if(!categories) return;
           let categoryId: string = params.get('categoryId');
           let categoryName = categories
             .find(category => category.id === categoryId).name;
