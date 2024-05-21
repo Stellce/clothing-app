@@ -50,6 +50,7 @@ export class FilterComponent implements OnInit{
 
     let categoryId = this.activatedRoute.snapshot.params['categoryId'];
     this.categoriesService.categoriesList$.subscribe(categories => {
+      if(!categories) return;
       let categoryName = categories
         .find(c => c.id === categoryId)?.name.toUpperCase();
       if(categoryName === 'SHOES' || categoryName === 'SOCKS') {

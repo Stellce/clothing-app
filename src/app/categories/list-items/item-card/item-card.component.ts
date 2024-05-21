@@ -10,6 +10,7 @@ export class ItemCardComponent {
   @Output() favoritesChanged = new EventEmitter<boolean>();
   @Input() item: ItemCard;
   @Input() isFavorite: boolean = false;
+  @Input() isBreadcrumbResolved: boolean = false;
 
   onFavoritesChange() {
     // Test
@@ -17,6 +18,10 @@ export class ItemCardComponent {
     //
     this.isFavorite = !this.isFavorite;
     this.favoritesChanged.next(this.isFavorite);
+  }
+
+  getLinkToItem() {
+    return this.isBreadcrumbResolved ? [this.item.id] : ['/', 'product', this.item.id];
   }
 
   protected readonly Math = Math;

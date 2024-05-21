@@ -8,6 +8,7 @@ import {DialogData} from "../dialogs/dialog/dialog-data.model";
 import {DialogComponent} from "../dialogs/dialog/dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {ErrorDialogData} from "../dialogs/error-dialog/error-dialog-data.model";
+import {NgForm} from "@angular/forms";
 
 @Injectable({
   providedIn: 'root'
@@ -79,9 +80,9 @@ export class AuthService {
     }
     const dialogRef = this.dialog.open(DialogComponent, {data: dialogData});
 
-    dialogRef.afterClosed().subscribe(result => {
-
-    })
+    dialogRef.afterClosed().subscribe((form: NgForm) => {
+      console.log('result', form.value);
+    });
   }
 
   openErrorDialog(errorCode: string) {

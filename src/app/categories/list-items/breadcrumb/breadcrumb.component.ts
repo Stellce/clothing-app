@@ -19,6 +19,7 @@ export class BreadcrumbComponent implements OnInit{
 
   ngOnInit() {
     this.activatedRoute.paramMap.subscribe(params => {
+      if(!params.get('gender')) return;
       let path: string[] = ['/', 'products', params.get('gender')];
       this.link = [];
       this.link.push({

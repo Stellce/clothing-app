@@ -1,5 +1,5 @@
 import {Component, Inject} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA} from "@angular/material/dialog";
 import {DialogData} from "./dialog-data.model";
 
 @Component({
@@ -8,11 +8,20 @@ import {DialogData} from "./dialog-data.model";
   styleUrls: ['./dialog.component.scss']
 })
 export class DialogComponent {
+  passwordsShown: {fieldName: string, isShown: boolean}[] = [];
   constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData) {}
 
-  setAppropriateType(type: string) {
+  setInputType(type: string): string {
     const types = ['email', 'password'];
-    if(type in types) return type;
-    return 'text';
+    return types.find(el => type.includes(el)) || 'text';
+  }
+
+  turnPasswordShown(fieldName: string): void {
+    let passwordIndex = this.getPasswordIndex(fieldName);
+    this.passwordsShown[passwordIndex].isShown = !this.passwordsShown[passwordIndex].isShown;
+  }
+
+  getPasswordIndex(fieldName: string): number {
+    return this.passwordsShown.findIndex(pass => pass.fieldName === fieldName)
   }
 }

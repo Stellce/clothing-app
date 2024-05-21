@@ -1,16 +1,17 @@
 <div class="dialog">
   <h2 mat-dialog-title>{{data.title}}</h2>
   <mat-dialog-content>
-  <div class="description">{{data.description}}</div>
+    <div class="description">{{data.description}}</div>
     <form #f="ngForm">
       <mat-form-field *ngFor="let input of data.inputs">
-        <mat-label>{{input}}</mat-label>
-        <input [type]="setAppropriateType(input)" [name]="input">
+        <mat-label>{{input[0].toUpperCase() + input.slice(1).toLowerCase()}}</mat-label>
+        <input matInput ngModel [type]="setInputType(input)" [name]="input">
+        <mat-icon *ngIf="input.includes('password')" (click)="turnPasswordShown(input)">{{passwordsShown[getPasswordIndex(input)].isShown ? 'visibility' : 'visibility_off'}}</mat-icon>
       </mat-form-field>
     </form>
+    <p>{{data.note}}</p>
   </mat-dialog-content>
   <mat-dialog-actions>
-    <button mat-button [mat-dialog-close]="data.inputs ? f : null">{{data.buttonName || 'Ok'}}</button>
+    <button mat-raised-button color="primary" [mat-dialog-close]="data.inputs ? f : null">{{data.buttonName || 'Ok'}}</button>
   </mat-dialog-actions>
-  <p>{{data.note}}</p>
 </div>
