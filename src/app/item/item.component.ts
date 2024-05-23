@@ -25,7 +25,16 @@ export class ItemComponent implements OnInit{
   private requestItem() {
     this.itemsService.requestItemById(this.route.snapshot.paramMap.get("itemId")).subscribe(item => {
       if(!item) return;
+      console.log('got item', item)
       this.item = item;
+      this.item.params = {
+        description: this.item.description,
+        sizes: this.item.sizes,
+        availableSizes: this.item.availableSizes,
+        color: this.item.color,
+        itemCode: this.item.itemCode,
+        brand: this.item.brand,
+      };
       this.params = paramsPrepareForView(this.item.params);
     });
     function paramsPrepareForView(params: ItemParams) {

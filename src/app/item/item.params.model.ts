@@ -1,3 +1,8 @@
 export interface ItemParams {
-  [k: string]: string | string[]
+  description: string;
+  sizes: string[];
+  availableSizes: string[];
+  color: string;
+  itemCode: string;
+  brand: string;
 }

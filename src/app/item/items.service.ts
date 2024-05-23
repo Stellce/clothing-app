@@ -37,16 +37,6 @@ export class ItemsService {
     deliveryStatus: 'packaging',
     orderDate: '01.01.2024'
   }
-  private mockItem: Item = {
-    ...this.mockItemBar,
-    params: {
-      materials: ['WOOL'],
-      brand: 'SpeedFinch',
-      colors: ['red', 'green', 'blue'],
-      model: 'Speed 2.0'
-    },
-    reviews: []
-  }
 
   constructor(private http: HttpClient) {}
 
@@ -95,13 +85,9 @@ export class ItemsService {
   }
 
   requestItemById(itemId: string) {
-    // Test
-    // this._item$.next(this.mockItem);
-    return of(this.mockItem);
-
-    // return this.http.get<Item>(
-    //   environment.backendUrl + itemId
-    // ).pipe(take(1), tap(item => this._item$.next(item)));
+    return this.http.get<Item>(
+      environment.backendUrl + `/catalog/items/${itemId}`
+    );
   }
 
   requestBrands() {
