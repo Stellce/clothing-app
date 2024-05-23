@@ -8,6 +8,6 @@
     <a [routerLink]="['/', 'products', 'women']">WOMEN</a>
   </div>
   <nav>
-    <img *ngFor="let link of links" [src]="srcPrefics + link + svgExtension" [alt]="link" [title]="link" [routerLink]="['/', buildLink(link).toLowerCase()]">
+    <img *ngFor="let link of links" [src]="srcPrefics + link + svgExtension" [alt]="link" [title]="link" [routerLink]="buildLink(link)">
   </nav>
 </header>

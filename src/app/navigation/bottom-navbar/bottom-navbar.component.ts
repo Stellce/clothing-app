@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {AuthService} from "../../auth/auth.service";
+import {NavigationService} from "../navigation.service";
 
 @Component({
   selector: 'app-bottom-navbar',
@@ -11,13 +12,11 @@ export class BottomNavbarComponent {
   svgExtension = '.svg';
   links = ['Dashboard', 'Search', 'Account', 'Favorites', 'Cart'];
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private navigationService: NavigationService
+  ) {}
 
   buildLink(link: string): string[] {
-    let finalLink = ['/'];
-    let linkPart = link === 'Account' && !this.authService.user ?
-      ['account', 'register'] : [link.toLowerCase()];
-    finalLink.push(...linkPart);
-    return finalLink;
+    return this.navigationService.buildLink(link);
   }
 }

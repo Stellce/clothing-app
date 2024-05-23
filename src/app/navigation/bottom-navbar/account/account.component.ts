@@ -3,6 +3,7 @@ import {User} from "../../../auth/user.model";
 import {AuthService} from "../../../auth/auth.service";
 import {ItemsService} from "../../../item/items.service";
 import {Order} from "../../../item/order.model";
+import {AccountService} from "./account.service";
 
 @Component({
   selector: 'app-account',
@@ -15,7 +16,8 @@ export class AccountComponent implements OnInit{
 
   constructor(
     private authService: AuthService,
-    private itemsService: ItemsService
+    private itemsService: ItemsService,
+    public accounService: AccountService
   ) {}
   ngOnInit() {
     this.user = this.authService.user;

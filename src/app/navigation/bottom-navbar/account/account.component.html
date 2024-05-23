@@ -10,7 +10,7 @@
   </div>
   <app-item-bar [item]="order"></app-item-bar>
   <ul>
-    <li>Enter Promocode</li>
+    <li (click)="accounService.enterPromocode()">Enter Promocode</li>
     <li [routerLink]="['/', 'orders', 'history']">Orders history</li>
     <li>Add credit or debit card</li>
     <li routerLink="policies">Privacy Policy & Agreements</li>

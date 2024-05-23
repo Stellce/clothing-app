@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {AuthService} from "../../auth/auth.service";
+import {NavigationService} from "../navigation.service";
 
 @Component({
   selector: 'app-header',
@@ -11,8 +12,10 @@ export class HeaderComponent{
   svgExtension = '.svg';
   links = ['Search', 'Account', 'Favorites', 'Cart'];
 
-  constructor(private authService: AuthService) {}
-  buildLink(link: string): string {
-    return link === 'Account' && !this.authService.user ? 'register' : link;
+  constructor(
+    private navigationService: NavigationService
+  ) {}
+  buildLink(link: string): string[] {
+    return this.navigationService.buildLink(link);
   }
 }
