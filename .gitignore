@@ -21,6 +21,7 @@ yarn-error.log
 *.sublime-workspace
 
 # Visual Studio Code
+.vscode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
@@ -46,3 +47,11 @@ Thumbs.db
 
 # Test files
 /src/assets/test
+
+#GitHub
+.github
+
+# Firebase
+.firebase
+.firebaserc
+
