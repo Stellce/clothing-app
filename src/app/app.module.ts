@@ -49,6 +49,9 @@ import { OrderPageComponent } from './order-page/order-page.component';
 import { DialogComponent } from './dialogs/dialog/dialog.component';
 import {MatDialogModule} from "@angular/material/dialog";
 import { ErrorDialogComponent } from './dialogs/error-dialog/error-dialog.component';
+import { ReviewsComponent } from './item/reviews/reviews.component';
+import { ReviewComponent } from './item/reviews/review/review.component';
+import { NewReviewComponent } from './item/reviews/new-review/new-review.component';
 
 @NgModule({
   declarations: [
@@ -75,7 +78,10 @@ import { ErrorDialogComponent } from './dialogs/error-dialog/error-dialog.compon
     OrderHistoryComponent,
     OrderPageComponent,
     DialogComponent,
-    ErrorDialogComponent
+    ErrorDialogComponent,
+    ReviewsComponent,
+    ReviewComponent,
+    NewReviewComponent
   ],
   imports: [
     BrowserModule,

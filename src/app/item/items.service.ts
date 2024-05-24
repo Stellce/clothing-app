@@ -18,11 +18,13 @@ export class ItemsService {
     id: 'asd',
     name: 'Air 2',
     images: [
-      '/assets/test/test (1).jpg',
-      '/assets/test/test (2).jpg',
-      '/assets/test/test (3).jpg',
-      '/assets/test/test (4).jpg',
-      '/assets/test/test (5).jpg',
+      '/assets/test/test (1).jpeg',
+      '/assets/test/test (2).jpeg',
+      '/assets/test/test (3).jpeg',
+      '/assets/test/test (4).jpeg',
+      '/assets/test/test (5).jpeg',
+      '/assets/test/test (6).jpeg',
+      '/assets/test/test (7).jpeg',
     ],
     price: 12.99,
     brand: 'Nike',
@@ -36,6 +38,23 @@ export class ItemsService {
     ...this.mockItemBar,
     deliveryStatus: 'packaging',
     orderDate: '01.01.2024'
+  }
+  private mockItem: Item = {
+    ...this.mockItemBar,
+    params: {
+      materials: ['WOOL'],
+      brand: 'SpeedFinch',
+      colors: ['red', 'green', 'blue'],
+      model: 'Speed 2.0'
+    },
+    reviews: [
+      {
+        author: 'John Smith',
+        text: 'Very nice shoes! Bought for my wife too, I think it\'s unisex',
+        date: new Date('05-24-2024'),
+        rating: 4
+      }
+    ]
   }
 
   constructor(private http: HttpClient) {}
@@ -85,9 +104,13 @@ export class ItemsService {
   }
 
   requestItemById(itemId: string) {
-    return this.http.get<Item>(
-      environment.backendUrl + `/catalog/items/${itemId}`
-    );
+    // Test
+    // this._item$.next(this.mockItem);
+    return of(this.mockItem);
+
+    // return this.http.get<Item>(
+    //   environment.backendUrl + itemId
+    // ).pipe(take(1), tap(item => this._item$.next(item)));
   }
 
   requestBrands() {
