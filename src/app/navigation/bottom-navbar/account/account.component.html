@@ -12,8 +12,9 @@
   <ul>
     <li (click)="accounService.enterPromocode()">Enter Promocode</li>
     <li [routerLink]="['/', 'orders', 'history']">Orders history</li>
-    <li>Add credit or debit card</li>
-    <li routerLink="policies">Privacy Policy & Agreements</li>
+<!--    <li>Add credit or debit card</li>-->
+<!--    <li routerLink="policies">Privacy Policy & Agreements</li>-->
+    <li><a href="http://localhost:4200/assets/test/Privacy_Policy.pdf" download="Privacy Policy" id="privacy" [style]="{'text-decoration': 'none', 'color': '#D9D9D9'}">Privacy Policy & Agreements</a></li>
     <li (click)="onLogout()">Logout</li>
   </ul>
 </div>
