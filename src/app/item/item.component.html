@@ -19,8 +19,11 @@
           <span>{{param.value}}</span>
         </div>
       </div>
+      <div class="actions">
+        <button mat-flat-button color="primary">Add to cart</button>
+        <button mat-flat-button color="primary">Order now</button>
+      </div>
     </div>
   </div>
-  <button mat-flat-button color="primary">Add to cart</button>
-  <button mat-flat-button color="primary">Order now</button>
 </div>
+<app-reviews [reviews]="item.reviews"></app-reviews>

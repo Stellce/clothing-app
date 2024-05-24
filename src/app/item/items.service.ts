@@ -18,11 +18,13 @@ export class ItemsService {
     id: 'asd',
     name: 'Air 2',
     images: [
-      '/assets/test/test (1).jpg',
-      '/assets/test/test (2).jpg',
-      '/assets/test/test (3).jpg',
-      '/assets/test/test (4).jpg',
-      '/assets/test/test (5).jpg',
+      '/assets/test/test (1).jpeg',
+      '/assets/test/test (2).jpeg',
+      '/assets/test/test (3).jpeg',
+      '/assets/test/test (4).jpeg',
+      '/assets/test/test (5).jpeg',
+      '/assets/test/test (6).jpeg',
+      '/assets/test/test (7).jpeg',
     ],
     price: 12.99,
     brand: 'Nike',
@@ -45,7 +47,14 @@ export class ItemsService {
       colors: ['red', 'green', 'blue'],
       model: 'Speed 2.0'
     },
-    reviews: []
+    reviews: [
+      {
+        author: 'John Smith',
+        text: 'Very nice shoes! Bought for my wife too, I think it\'s unisex',
+        date: new Date('05-24-2024'),
+        rating: 4
+      }
+    ]
   }
 
   constructor(private http: HttpClient) {}
