@@ -137,8 +137,10 @@ export class ItemsService {
   }
 
   search(search: string) {
-    let headers = new HttpHeaders().append('search', search);
-    return this.http.get(environment.backendUrl + '/search', {headers});
+    // let headers = new HttpHeaders().append('search', search);
+    // return this.http.get(environment.backendUrl + '/search', {headers});
+    let items: ItemCard[] = Array(5).fill(this.mockItem);
+    return of(items);
   }
 
   requestFavorites() {

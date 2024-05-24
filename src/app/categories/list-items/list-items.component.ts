@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ItemCard} from "./item-card/item-card.model";
 import {ActivatedRoute} from "@angular/router";
 import {MatTabChangeEvent} from "@angular/material/tabs";
@@ -16,6 +16,7 @@ import {ItemsService} from "../../item/items.service";
 })
 export class ListItemsComponent implements OnInit{
   @ViewChild('drawer') drawer: MatDrawer;
+  @Input()
   items: ItemCard[] = [];
   subcategories: {id: string; name: string}[] = [];
   itemsParamsRequest: ItemsParamsRequest = {} as ItemsParamsRequest;

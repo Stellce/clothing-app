@@ -2,4 +2,4 @@
   <input [(ngModel)]="search">
   <mat-icon (click)="onSearch()">search</mat-icon>
 </div>
-<app-list-items *ngIf="!isLoading && wasSearched"></app-list-items>
+<app-list-items [items]="items" *ngIf="!isLoading && wasSearched"></app-list-items>
