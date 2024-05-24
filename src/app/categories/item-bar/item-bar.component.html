@@ -1,4 +1,7 @@
-<div class="item-bar" [routerLink]="['/', 'orders', item.id]">
+<!--<div class="item-bar" [routerLink]="['/', 'product', item.id]">-->
+<!--HOTFIX-->
+<div class="item-bar" [routerLink]="['/', 'product', '68c12c4e-1f87-49e3-b1f4-4fe02678c900']">
+<!-- -->
   <img [src]="item.images[0]" alt="">
   <div class="name-delivery" [ngStyle]="{justifyContent: item.deliveryStatus ? 'flex-end' : 'center'}">
     <span class="name">{{item.name}}</span>
