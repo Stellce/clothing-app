@@ -11,7 +11,7 @@ export class CartComponent implements OnInit{
   items: Order[];
   constructor(private itemsService: ItemsService) {}
   ngOnInit() {
-    this.itemsService.requestFavorites().subscribe(items => {
+    this.itemsService.requestCartItems().subscribe(items => {
       this.items = items;
     })
   }

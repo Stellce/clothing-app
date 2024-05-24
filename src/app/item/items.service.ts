@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {environment} from "../../environments/environment";
-import {BehaviorSubject, of, switchMap, take, tap} from "rxjs";
+import {BehaviorSubject, firstValueFrom, Observable, of, switchMap, take, tap} from "rxjs";
 import {ItemsPage} from "../categories/list-items/item-card/res/items-page.model";
 import {ItemCard} from "../categories/list-items/item-card/item-card.model";
 import {ItemsParamsRequest} from "../categories/list-items/item-card/req/items-params-request.model";
@@ -28,7 +28,7 @@ export class ItemsService {
     ],
     price: 12.99,
     brand: 'Nike',
-    discount: 25,
+    discount: 0.25,
     isNew: true,
     isOnWishList: true,
     isPopular: true,
@@ -142,6 +142,8 @@ export class ItemsService {
   }
 
   requestFavorites() {
+    // this.mockItem.images[0] = this.readBase64(this.mockItem.images[0]);
+    // this.mockItem.images[0] = (await this.readBase64(this.mockItem.images[0])) as Blob;
     let items: Order[] = Array(5).fill(this.mockItemBar);
     return of(items);
   }
@@ -169,5 +171,16 @@ export class ItemsService {
         this._page$.next(page);
       });
     })
+  }
+
+  private async readBase64(url: any) {
+    let fileUrl = 'http://localhost:4200' + url;
+    fileUrl = fileUrl.replace(' ', '%20');
+    console.log(fileUrl)
+    let file = await firstValueFrom(this.http.get<Blob>(fileUrl, {responseType: 'blob' as 'json'}));
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    console.log(file)
+    return file;
   }
 }

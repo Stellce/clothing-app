@@ -15,7 +15,7 @@
 
     &::before {
       content: "";
-      background: grey;
+      background: $dark-theme-background-lighter;
       position: absolute;
       top: 0;
       left: 0;
@@ -23,7 +23,7 @@
       right: 0;
       z-index: -1;
       height: 500px;
-      width: 100px;
+      //width: 100px;
     }
   }
   .card-bottom {

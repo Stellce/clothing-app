@@ -1,8 +1,13 @@
 <div class="card">
   <div class="placeholder" *ngIf="!item?.images?.length"></div>
   <img
-    *ngIf="item.images?.length"
-    [src]="'data:image/png;base64,' + item.images[0]"
+    *ngIf="item.images?.length && !isFavoritesPage"
+    [src]="'data:image/png;base64,' + item?.images[0]"
+    [alt]=item.name
+    [routerLink]="getLinkToItem()"/>
+  <img
+    *ngIf="item.images?.length && isFavoritesPage"
+    [src]="item?.images[0]"
     [alt]=item.name
     [routerLink]="getLinkToItem()"/>
   <div class="red-overlay" [routerLink]="getLinkToItem()" *ngIf="Math.floor(item.discount * 100) !== 0">

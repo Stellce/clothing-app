@@ -11,6 +11,7 @@ export class ItemCardComponent {
   @Input() item: ItemCard;
   @Input() isFavorite: boolean = false;
   @Input() isBreadcrumbResolved: boolean = false;
+  @Input() isFavoritesPage: boolean = false;
 
   onFavoritesChange() {
     // Test
