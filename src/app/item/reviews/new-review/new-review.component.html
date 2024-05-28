@@ -1,4 +1,4 @@
-<div class="review">
+<div class="review" *ngIf="isAuth">
   <div class="header">
     <div class="author">{{getUser().name + ' ' + getUser().surname}}</div>
     <div class="date-stars">
@@ -21,4 +21,7 @@
   <div class="actions">
     <button mat-raised-button color="primary">Post</button>
   </div>
+</div>
+<div class="review" *ngIf="!isAuth">
+  Please, register or log in to leave a review
 </div>

@@ -1,7 +1,7 @@
 <div class="reviews">
   <div class="header">Reviews</div>
   <div class="body">
-    <app-new-review *ngIf="isAuth()"></app-new-review>
+    <app-new-review [isAuth]="isAuth()"></app-new-review>
     <app-review *ngFor="let review of reviews" [review]="review"></app-review>
   </div>
 </div>

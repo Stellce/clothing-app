@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {AuthService} from "../../../auth/auth.service";
 
 @Component({
@@ -7,6 +7,8 @@ import {AuthService} from "../../../auth/auth.service";
   styleUrls: ['./new-review.component.scss']
 })
 export class NewReviewComponent {
+  @Input()
+  isAuth: boolean;
   rating: number;
   text: string;
   stars = [
