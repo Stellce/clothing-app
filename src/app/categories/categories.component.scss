@@ -44,8 +44,15 @@ mat-spinner {
     .dark-bottom-gradient {
       transition: transform .2s;
       z-index: 1;
-      &:hover, &:hover + .category-image {
+      &:hover, &:hover + .category-image, &:hover + span {
         transform: scale(1.1);
+        z-index: 2;
+      }
+      &:hover ~ span {
+        z-index: 5;
+      }
+      &:hover {
+        z-index: 3;
       }
     }
 
@@ -66,7 +73,7 @@ mat-spinner {
       left: 0;
       width: 100%;
       font-size: 14px;
-      z-index: 1;
+      z-index: 2;
     }
   }
 }

@@ -1,10 +1,10 @@
 <div class="item" *ngIf="item">
   <app-breadcrumb [itemName]="item.name"></app-breadcrumb>
   <div class="product">
-    <div class="images">
-      <img [src]="item.images[selectedImageIndex]" [alt]="item.name">
+    <div class="images" *ngIf="item.images">
+      <img [src]="'data:image/png;base64,' + item.images[selectedImageIndex].image" [alt]="item.name">
       <div class="img-carousel">
-        <img *ngFor="let image of item.images; let i = index" [src]="image" [alt]="item.name" (click)="selectedImageIndex = i">
+        <img *ngFor="let image of item.images; let i = index" [src]="'data:image/png;base64,' + image.image" [alt]="item.name" (click)="selectedImageIndex = i">
       </div>
     </div>
     <div class="description">
@@ -26,4 +26,4 @@
     </div>
   </div>
 </div>
-<app-reviews [reviews]="item.reviews"></app-reviews>
+<app-reviews [reviews]="item?.reviews"></app-reviews>

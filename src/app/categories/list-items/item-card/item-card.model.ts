@@ -1,3 +1,5 @@
+import {Image} from "../../../item/image.model";
+
 export interface ItemCard {
   id: string;
   name: string;
@@ -8,5 +10,5 @@ export interface ItemCard {
   isOnWishList: boolean;
   isNew: boolean;
   isPopular: boolean;
-  images: string[];
+  images?: Image[];
 }

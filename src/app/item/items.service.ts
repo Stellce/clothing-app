@@ -7,6 +7,7 @@ import {ItemCard} from "../categories/list-items/item-card/item-card.model";
 import {ItemsParamsRequest} from "../categories/list-items/item-card/req/items-params-request.model";
 import {Order} from "./order.model";
 import {Item} from "./item.model";
+import {Image} from "./image.model";
 
 @Injectable({providedIn: 'root'})
 export class ItemsService {
@@ -18,13 +19,13 @@ export class ItemsService {
     id: 'asd',
     name: 'Air 2',
     images: [
-      '/assets/test/test (1).jpeg',
-      '/assets/test/test (2).jpeg',
-      '/assets/test/test (3).jpeg',
-      '/assets/test/test (4).jpeg',
-      '/assets/test/test (5).jpeg',
-      '/assets/test/test (6).jpeg',
-      '/assets/test/test (7).jpeg',
+      {id: '', image: '/assets/test/test (1).jpeg'},
+      {id: '', image: '/assets/test/test (2).jpeg'},
+      {id: '', image: '/assets/test/test (3).jpeg'},
+      {id: '', image: '/assets/test/test (4).jpeg'},
+      {id: '', image: '/assets/test/test (5).jpeg'},
+      {id: '', image: '/assets/test/test (6).jpeg'},
+      {id: '', image: '/assets/test/test (7).jpeg'},
     ],
     price: 12.99,
     brand: 'Nike',
@@ -41,12 +42,22 @@ export class ItemsService {
   }
   private mockItem: Item = {
     ...this.mockItemBar,
+
+    images: [{} as Image],
+
+    description: '',
+    sizes: ['S'],
+    availableSizes: ['S', 'M'],
+    color: 'red',
+    itemCode: '',
+    brand: 'SpeedFinch',
+
     params: {
-      materials: ['WOOL'],
+      description: '',
+      color: 'red',
       brand: 'SpeedFinch',
-      colors: ['red', 'green', 'blue'],
-      model: 'Speed 2.0'
     },
+
     reviews: [
       {
         author: 'John Smith',
@@ -54,7 +65,13 @@ export class ItemsService {
         date: new Date('05-24-2024'),
         rating: 4
       }
-    ]
+    ],
+
+    rating: 4.2,
+
+    similarItems: null,
+    reviewsCount: null,
+    isAvailable: true,
   }
 
   constructor(private http: HttpClient) {}
@@ -98,7 +115,7 @@ export class ItemsService {
   }
 
   requestItemImages(itemId: string) {
-    return this.http.get<{imageId: string, image: string}[]>(
+    return this.http.get<Image[]>(
       environment.backendUrl + `/catalog/items/${itemId}/images`
     );
   }
@@ -106,11 +123,11 @@ export class ItemsService {
   requestItemById(itemId: string) {
     // Test
     // this._item$.next(this.mockItem);
-    return of(this.mockItem);
+    // return of(this.mockItem);
 
-    // return this.http.get<Item>(
-    //   environment.backendUrl + itemId
-    // ).pipe(take(1), tap(item => this._item$.next(item)));
+    return this.http.get<Item>(
+      environment.backendUrl + '/catalog/items/' + itemId
+    );
   }
 
   requestBrands() {
@@ -165,7 +182,7 @@ export class ItemsService {
       this.requestItemImages(item.id).subscribe(images => {
         let newItem: ItemCard | undefined = page.content.find(i => i.id === item.id);
         if(newItem)
-          newItem.images = images.map(i => i.image);
+          newItem.images = images;
         this._page$.next(page);
       });
     })

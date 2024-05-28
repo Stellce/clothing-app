@@ -3,6 +3,7 @@ import {ItemsService} from "./items.service";
 import {Item} from "./item.model";
 import {ActivatedRoute} from "@angular/router";
 import {ItemParams} from "./item.params.model";
+import {Image} from "./image.model";
 
 @Component({
   selector: 'app-item',
@@ -23,19 +24,20 @@ export class ItemComponent implements OnInit{
   }
 
   private requestItem() {
-    this.itemsService.requestItemById(this.route.snapshot.paramMap.get("itemId")).subscribe(item => {
+    const itemId = this.route.snapshot.paramMap.get("itemId");
+    this.itemsService.requestItemById(itemId).subscribe((item: Item) => {
       if(!item) return;
-      console.log('got item', item)
+      console.log('got item', item);
       this.item = item;
       this.item.params = {
         description: this.item.description,
-        sizes: this.item.sizes,
-        availableSizes: this.item.availableSizes,
         color: this.item.color,
-        itemCode: this.item.itemCode,
         brand: this.item.brand,
       };
       this.params = paramsPrepareForView(this.item.params);
+      this.itemsService.requestItemImages(item.id).subscribe((images: Image[]) => {
+        this.item.images = images;
+      })
     });
     function paramsPrepareForView(params: ItemParams) {
       let paramsKeyValue: [string, (string | string[])][] = Object.entries(params);

@@ -2,7 +2,7 @@
   <div class="placeholder" *ngIf="!item?.images?.length"></div>
   <img
     *ngIf="item.images?.length"
-    [src]="'data:image/png;base64,' + item.images[0]"
+    [src]="'data:image/png;base64,' + item.images[0].image"
     [alt]=item.name
     [routerLink]="getLinkToItem()"/>
   <div class="red-overlay" [routerLink]="getLinkToItem()" *ngIf="Math.floor(item.discount * 100) !== 0">
