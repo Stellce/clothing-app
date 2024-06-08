@@ -12,6 +12,12 @@
         <span>{{item.name}}</span>
         <span>{{item.price | currency}}</span>
       </div>
+      <div class="sizes">
+        <div class="size"
+             *ngFor="let size of item.sizes"
+             [ngClass]="{'available-size': item.availableSizes.includes(size)}"
+        >{{sizeString(size)}}</div>
+      </div>
       <div class="parameters">
         <span>Parameters</span>
         <div class="param flex-space-between" *ngFor="let param of params">

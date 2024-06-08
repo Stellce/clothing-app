@@ -23,6 +23,13 @@ export class ItemComponent implements OnInit{
     this.requestItem();
   }
 
+  sizeString(size: string): string {
+    let split = size.split("X");
+    let splitNoEmpty = split.filter(Boolean).toString();
+    let numOfXes = split.length - splitNoEmpty.length;
+    return size.length > 2 ? numOfXes + "X" + splitNoEmpty : size;
+  }
+
   private requestItem() {
     const itemId = this.route.snapshot.paramMap.get("itemId");
     this.itemsService.requestItemById(itemId).subscribe((item: Item) => {
