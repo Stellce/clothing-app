@@ -1,12 +1,17 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import { ActivatedRoute, RouterLink } from "@angular/router";
 import {Category} from "./category.model";
 import {CategoriesService} from "./categories.service";
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { NgIf, NgFor, UpperCasePipe, LowerCasePipe } from '@angular/common';
+import { BreadcrumbComponent } from './list-items/breadcrumb/breadcrumb.component';
 
 @Component({
-  selector: 'app-categories',
-  templateUrl: './categories.component.html',
-  styleUrls: ['./categories.component.scss']
+    selector: 'app-categories',
+    templateUrl: './categories.component.html',
+    styleUrls: ['./categories.component.scss'],
+    standalone: true,
+    imports: [BreadcrumbComponent, NgIf, MatProgressSpinnerModule, NgFor, RouterLink, UpperCasePipe, LowerCasePipe]
 })
 export class CategoriesComponent implements OnInit{
   categories: Category[];

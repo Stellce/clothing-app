@@ -1,11 +1,19 @@
 import {Component, Inject} from '@angular/core';
-import {MAT_DIALOG_DATA} from "@angular/material/dialog";
+import { MAT_DIALOG_DATA, MatDialogModule } from "@angular/material/dialog";
 import {DialogData} from "./dialog-data.model";
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { NgFor, NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-dialog',
-  templateUrl: './dialog.component.html',
-  styleUrls: ['./dialog.component.scss']
+    selector: 'app-dialog',
+    templateUrl: './dialog.component.html',
+    styleUrls: ['./dialog.component.scss'],
+    standalone: true,
+    imports: [MatDialogModule, FormsModule, NgFor, MatFormFieldModule, MatInputModule, NgIf, MatIconModule, MatButtonModule]
 })
 export class DialogComponent {
   passwordsShown: {fieldName: string, isShown: boolean}[] = [];

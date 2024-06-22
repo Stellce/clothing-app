@@ -8,20 +8,32 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import {Filter} from "./filter.model";
-import {FormControl, FormGroup} from "@angular/forms";
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
 import {CategoriesService} from "../../categories.service";
 import {FilterService} from "./filter.service";
 import {AllowedFilters} from "./allowed-filters.model";
 import {SelectedFilters} from "./selected-filters.model";
-import {MatCheckbox} from "@angular/material/checkbox";
+import { MatCheckbox, MatCheckboxModule } from "@angular/material/checkbox";
 import {ItemsService} from "../../../item/items.service";
+import { CheckboxComponent } from './checkbox/checkbox.component';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-filter',
-  templateUrl: './filter.component.html',
-  styleUrls: ['./filter.component.scss'],
-  encapsulation: ViewEncapsulation.None
+    selector: 'app-filter',
+    templateUrl: './filter.component.html',
+    styleUrls: ['./filter.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    standalone: true,
+    imports: [NgIf, FormsModule, ReactiveFormsModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatChipsModule, NgFor, MatSelectModule, MatOptionModule, MatExpansionModule, MatCheckboxModule, MatDividerModule, CheckboxComponent]
 })
 export class FilterComponent implements OnInit{
   @ViewChildren('checkboxes') checkboxes: QueryList<MatCheckbox>;

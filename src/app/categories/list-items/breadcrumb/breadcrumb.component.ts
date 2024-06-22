@@ -1,12 +1,15 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import { ActivatedRoute, RouterLink } from "@angular/router";
 import {CategoriesService} from "../../categories.service";
 import {ItemsService} from "../../../item/items.service";
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-breadcrumb',
-  templateUrl: './breadcrumb.component.html',
-  styleUrls: ['./breadcrumb.component.scss']
+    selector: 'app-breadcrumb',
+    templateUrl: './breadcrumb.component.html',
+    styleUrls: ['./breadcrumb.component.scss'],
+    standalone: true,
+    imports: [RouterLink, NgIf, NgFor]
 })
 export class BreadcrumbComponent implements OnInit{
   @Input()itemName: string;

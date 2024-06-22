@@ -4,11 +4,17 @@ import {Item} from "./item.model";
 import {ActivatedRoute} from "@angular/router";
 import {ItemParams} from "./item.params.model";
 import {Image} from "./image.model";
+import { ReviewsComponent } from './reviews/reviews.component';
+import { MatButtonModule } from '@angular/material/button';
+import { BreadcrumbComponent } from '../categories/list-items/breadcrumb/breadcrumb.component';
+import { NgIf, NgFor, NgClass, CurrencyPipe } from '@angular/common';
 
 @Component({
-  selector: 'app-item',
-  templateUrl: './item.component.html',
-  styleUrls: ['./item.component.scss']
+    selector: 'app-item',
+    templateUrl: './item.component.html',
+    styleUrls: ['./item.component.scss'],
+    standalone: true,
+    imports: [NgIf, BreadcrumbComponent, NgFor, NgClass, MatButtonModule, ReviewsComponent, CurrencyPipe]
 })
 export class ItemComponent implements OnInit{
   item: Item;

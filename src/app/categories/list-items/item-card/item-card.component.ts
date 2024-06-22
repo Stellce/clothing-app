@@ -1,10 +1,14 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ItemCard} from "./item-card.model";
+import { RouterLink } from '@angular/router';
+import { NgIf, PercentPipe, CurrencyPipe } from '@angular/common';
 
 @Component({
-  selector: 'app-item-card',
-  templateUrl: './item-card.component.html',
-  styleUrls: ['./item-card.component.scss']
+    selector: 'app-item-card',
+    templateUrl: './item-card.component.html',
+    styleUrls: ['./item-card.component.scss'],
+    standalone: true,
+    imports: [NgIf, RouterLink, PercentPipe, CurrencyPipe]
 })
 export class ItemCardComponent {
   @Output() favoritesChanged = new EventEmitter<boolean>();

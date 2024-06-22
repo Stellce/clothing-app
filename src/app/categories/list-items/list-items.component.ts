@@ -1,18 +1,27 @@
 import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ItemCard} from "./item-card/item-card.model";
 import {ActivatedRoute} from "@angular/router";
-import {MatTabChangeEvent} from "@angular/material/tabs";
+import { MatTabChangeEvent, MatTabsModule } from "@angular/material/tabs";
 import {ItemsParamsRequest} from "./item-card/req/items-params-request.model";
 import {Filter} from "./filter/filter.model";
-import {MatDrawer} from "@angular/material/sidenav";
+import { MatDrawer, MatSidenavModule } from "@angular/material/sidenav";
 import {ItemsPage} from "./item-card/res/items-page.model";
 import {ItemsService} from "../../item/items.service";
+import { PaginatorComponent } from './paginator/paginator.component';
+import { ItemCardComponent } from './item-card/item-card.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatRippleModule } from '@angular/material/core';
+import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
+import { FilterComponent } from './filter/filter.component';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-list-items',
-  templateUrl: './list-items.component.html',
-  styleUrls: ['./list-items.component.scss'],
-  encapsulation: ViewEncapsulation.None
+    selector: 'app-list-items',
+    templateUrl: './list-items.component.html',
+    styleUrls: ['./list-items.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    standalone: true,
+    imports: [NgIf, MatSidenavModule, FilterComponent, BreadcrumbComponent, MatRippleModule, MatProgressSpinnerModule, MatTabsModule, NgFor, ItemCardComponent, PaginatorComponent]
 })
 export class ListItemsComponent implements OnInit{
   @ViewChild('drawer') drawer: MatDrawer;

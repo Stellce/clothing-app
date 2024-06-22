@@ -2,11 +2,16 @@ import {Component, OnInit} from '@angular/core';
 import {ItemCard} from "../../../../categories/list-items/item-card/item-card.model";
 import {ItemsPage} from "../../../../categories/list-items/item-card/res/items-page.model";
 import {ItemsService} from "../../../../item/items.service";
+import { ItemCardComponent } from '../../../../categories/list-items/item-card/item-card.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-outlet',
-  templateUrl: './outlet.component.html',
-  styleUrls: ['./outlet.component.scss']
+    selector: 'app-outlet',
+    templateUrl: './outlet.component.html',
+    styleUrls: ['./outlet.component.scss'],
+    standalone: true,
+    imports: [NgIf, MatProgressSpinnerModule, NgFor, ItemCardComponent]
 })
 export class OutletComponent implements OnInit{
   items: ItemCard[];

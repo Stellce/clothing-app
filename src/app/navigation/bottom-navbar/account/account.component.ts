@@ -4,11 +4,17 @@ import {AuthService} from "../../../auth/auth.service";
 import {ItemsService} from "../../../item/items.service";
 import {Order} from "../../../item/order.model";
 import {AccountService} from "./account.service";
+import { RouterLink } from '@angular/router';
+import { ItemBarComponent } from '../../../categories/item-bar/item-bar.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'app-account',
-  templateUrl: './account.component.html',
-  styleUrls: ['./account.component.scss']
+    selector: 'app-account',
+    templateUrl: './account.component.html',
+    styleUrls: ['./account.component.scss'],
+    standalone: true,
+    imports: [MatButtonModule, MatIconModule, ItemBarComponent, RouterLink]
 })
 export class AccountComponent implements OnInit{
   user: User;

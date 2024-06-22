@@ -1,9 +1,12 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
+import { NgClass } from '@angular/common';
 
 @Component({
-  selector: 'app-paginator',
-  templateUrl: './paginator.component.html',
-  styleUrls: ['./paginator.component.scss']
+    selector: 'app-paginator',
+    templateUrl: './paginator.component.html',
+    styleUrls: ['./paginator.component.scss'],
+    standalone: true,
+    imports: [NgClass]
 })
 export class PaginatorComponent {
   @Output() changePage = new EventEmitter<number>();

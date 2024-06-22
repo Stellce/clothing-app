@@ -1,11 +1,17 @@
 import {Component, OnInit} from '@angular/core';
 import {CategoriesService} from "../../../categories/categories.service";
 import {Category} from "../../../categories/category.model";
+import { OutletComponent } from './outlet/outlet.component';
+import { MatIconModule } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
+import { NgIf, UpperCasePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+    selector: 'app-dashboard',
+    templateUrl: './dashboard.component.html',
+    styleUrls: ['./dashboard.component.scss'],
+    standalone: true,
+    imports: [NgIf, RouterLink, MatIconModule, OutletComponent, UpperCasePipe]
 })
 export class DashboardComponent implements OnInit{
   categories: Category[];

@@ -1,11 +1,15 @@
 import {Component} from '@angular/core';
 import {AuthService} from "../../auth/auth.service";
 import {NavigationService} from "../navigation.service";
+import { NgFor } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+    selector: 'app-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.scss'],
+    standalone: true,
+    imports: [RouterLink, NgFor]
 })
 export class HeaderComponent{
   srcPrefics = 'assets/navbar/';
