@@ -1,6 +1,5 @@
 <div class="categories">
-  <div class="breadcrumb-wrapper"><app-breadcrumb></app-breadcrumb>
-  </div>
+  <div class="breadcrumb-wrapper"><app-breadcrumb></app-breadcrumb></div>
   <mat-spinner *ngIf="isLoading"></mat-spinner>
   <div class="categories-list" *ngIf="categories && !isLoading">
     <a class="category"
@@ -8,7 +7,7 @@
        [routerLink]="category.id | lowercase"
     >
       <ng-container *ngIf="category.image">
-        <div class="darken"></div>
+        <div class="dark-bottom-gradient"></div>
         <img class="category-image" [src]="'data:image/png;base64,' + category.image" [alt]="category">
       </ng-container>
       <span>{{category.name | uppercase}}</span>

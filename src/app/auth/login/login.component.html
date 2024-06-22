@@ -1,0 +1,23 @@
+<div class="header">
+  <img src="./assets/navbar/Account.svg" alt="">
+  <div class="hello">Hello</div>
+</div>
+<form [formGroup]="form" (ngSubmit)="onLogin()">
+  <div class="title">Login</div>
+
+  <mat-form-field>
+    <mat-label>Email: </mat-label>
+    <input matInput formControlName="email">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Password: </mat-label>
+    <input matInput type="password" formControlName="password">
+  </mat-form-field>
+
+  <button mat-raised-button color="primary">Login</button>
+</form>
+<div class="additional-actions">
+  <a [routerLink]="['/', 'account', 'register']">Register</a>
+  <a (click)="onPasswordReset()">Forgot password?</a>
+</div>

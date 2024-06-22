@@ -1,0 +1,51 @@
+@import "../../styles";
+* {
+  color: $text-color;
+}
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 21px;
+  padding: 5px 10px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 16px;
+  & > * {
+    font-size: 16px;
+  }
+  padding: 5px 20px;
+  .title {
+    font-size: 21px;
+    padding: 5px 0;
+  }
+  mat-form-field {
+    width: 100%;
+  }
+  mat-radio-group {
+    display: flex;
+    flex-direction: column;
+  }
+  button {
+    width: 100%;
+  }
+  max-width: 500px;
+  margin: 0 auto;
+}
+.additional-actions {
+  display: flex;
+  justify-content: space-between;
+  max-width: 500px;
+  margin: 25px auto;
+  font-size: 16px;
+  padding: 0 20px;
+  a {
+    cursor: pointer;
+  }
+}

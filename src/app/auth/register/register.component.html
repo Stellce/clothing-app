@@ -1,0 +1,40 @@
+<div class="header">
+  <img src="./assets/navbar/Account.svg" alt="">
+  <div class="hello">Hello</div>
+</div>
+<form [formGroup]="form" (ngSubmit)="onRegister()">
+  <div class="title">Registration</div>
+  <mat-form-field>
+    <mat-label>Firstname: </mat-label>
+    <input matInput formControlName="firstname">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Surname: </mat-label>
+    <input matInput formControlName="surname">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Email: </mat-label>
+    <input matInput formControlName="email">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Password: </mat-label>
+    <input matInput type="password" formControlName="password">
+  </mat-form-field>
+
+  <label id="age">Age: </label>
+  <mat-radio-group
+    aria-labelledby="age"
+    formControlName="isAdult">
+    <mat-radio-button [value]="false">I am under</mat-radio-button>
+    <mat-radio-button [value]="true">I am 18 or over</mat-radio-button>
+  </mat-radio-group>
+  <mat-checkbox formControlName="isAgreementConsent">I declare that I have read and accept the SpaceFincher Terms & Conditions.<span [style]="{color: 'red'}">*</span>
+  </mat-checkbox>
+  <button mat-raised-button color="primary">Register</button>
+</form>
+<div class="additional-actions">
+  <a [routerLink]="['/', 'account', 'login']">Login</a>
+</div>

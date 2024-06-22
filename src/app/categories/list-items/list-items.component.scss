@@ -1,0 +1,133 @@
+@import '../../../styles';
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+}
+
+.mat-drawer {
+  background: $dark-theme-background;
+  width: 90%;
+  max-width: 480px;
+}
+
+.filter-bubble {
+  display: none;
+  z-index: 999;
+  background: $background-primary;
+  border-radius: 50px;
+  height: 40px;
+  width: 40px;
+  position: fixed;
+  top: 1vh;
+  left: 1vw;
+  cursor: pointer;
+  svg {
+    width: 70%;
+    height: 70%;
+    position: relative;
+    left: 15%;
+    top: 20%;
+    path {
+      fill: white;
+    }
+  }
+}
+
+.mat-drawer-container{
+  background: #1c1c1c;
+  min-height: 100dvh;
+}
+
+mat-spinner {
+  margin: 30vh auto;
+}
+
+.cloth-grid {
+  display: grid;
+  max-width: 1600px;
+  margin: 10px auto;
+  grid-template-columns: repeat(6, 1fr);
+  justify-content: center;
+  gap: 10px;
+  //padding: 0 4%;
+}
+
+app-paginator {
+  width: 75%;
+  margin: 50px auto;
+  display: flex;
+  justify-content: center;
+  max-width: 250px;
+}
+
+.breadcrumb-line {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+  padding-left: 4%;
+  gap: 10px;
+}
+
+.inline-wrapper {
+  display: inline-block;
+}
+
+.filter-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 150px;
+  width: 150px;
+  border-radius: 1rem;
+  background: $background-primary;
+  padding: 5px 10px 5px;
+  font-size: 16px;
+  color: white;
+  cursor: pointer;
+  svg path {
+    fill: white;
+  }
+}
+
+.mat-mdc-progress-spinner {
+  //--mdc-circular-progress-active-indicator-color: blue;
+}
+
+.mat-mdc-tab-group {
+  padding: 0 4%;
+}
+
+.mdc-menu-surface {
+  background: $dark-theme-background;
+}
+
+.mat-mdc-form-field-focus-overlay {
+  background-color: rgb(0 0 0 / 87%);
+}
+
+@media screen and (max-width: 1200px) {
+  .cloth-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media only screen and (max-width: 960px) {
+  .cloth-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .filter-bar {
+    display: none;
+  }
+  .filter-bubble {
+    display: block;
+  }
+  .cloth-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  app-paginator {
+    max-width: 100%;
+  }
+}

@@ -1,4 +1,63 @@
 /* You can add global styles to this file, and also import other style files */
+@use "@angular/material" as mat;
+@use "sass:map";
+@import "palettes";
+//@import "themes";
+
+//@include mat.core();
+$dark-primary: mat.define-palette($dark-palette);
+$dark-accent: mat.define-palette(mat.$pink-palette);
+$dark-theme: mat.define-dark-theme((
+  color: (
+    primary: $dark-primary,
+    accent: $dark-accent
+  ),
+  typography: mat.define-typography-config(),
+  density: 0,
+));
+
+$background: (
+  status-bar: black,
+  app-bar: #212121,
+  background: #1c1c1c,
+  hover: rgba(255, 255, 255, 0.04),
+  card: #424242,
+  dialog: #424242,
+  disabled-button: rgba(255, 255, 255, 0.12),
+  raised-button: #424242,
+  focused-button: rgba(255, 255, 255, 0.12),
+  selected-button: #212121,
+  selected-disabled-button: #424242,
+  disabled-button-toggle: black,
+  unselected-chip: #616161,
+  disabled-list-option: rgba(255, 255, 255, 0.12),
+  tooltip: #616161
+);
+
+//map.set(map.set($dark-theme, background, $background), background, #1c1c1c);
+
+$primary: map.get($dark-primary, default);
+$accent: map.get($dark-accent, default);
+
+//@include mat.core-theme();
+//@include mat.chips-theme($theme);
+//@include mat.all-component-themes($dark-theme);
+@include mat.sidenav-color($dark-theme);
+//@include mat.sidenav-theme($dark-theme);
+
+//@debug type-of(mat.$pink-palette);
+//@debug $a;
+
+
+
+$dark-theme-background-darker: #151515;
+$dark-theme-background: #1c1c1c;
+$dark-theme-background-lighter: #252525;
+$background-primary: #383838;
+$background-secondary: #404040;
+$filter-bubble: #A9A9A9;
+$text-color: #D9D9D9;
+$breadcrumb-hover: #19ccb2;
 
 html, body {
   height: 100%;
@@ -6,9 +65,54 @@ html, body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+  background: $dark-theme-background;
 }
-$dark-theme-background: #1c1c1c;
-$background-primary: #383838;
-$background-secondary: #404040;
-$filter-bubble: #A9A9A9;
-$text-color: #D9D9D9;
+
+mat-spinner {
+  align-self: center;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  cursor: pointer !important;
+}
+
+::-webkit-scrollbar:horizontal {
+  height: 15px;
+  cursor: pointer !important;
+}
+
+::-webkit-scrollbar-track {
+  background: $dark-theme-background;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $background-secondary;
+  -webkit-border-radius: 2rem;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: $background-primary;
+}
+
+mat-icon {
+  color: $text-color;
+}
+
+button {
+  font-size: 16px;
+}
+
+.dark-bottom-gradient {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(transparent, rgba(0, 0, 0, .75));
+  left: 0;
+  top: 0;
+  z-index: 1;
+}
+
+.mat-drawer-container, .mat-drawer {
+  background: $dark-theme-background;
+}

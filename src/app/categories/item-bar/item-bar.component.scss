@@ -1,0 +1,38 @@
+@import '../../../styles';
+
+.item-bar {
+  padding: 10px;
+  border-radius: 1rem;
+  background: $dark-theme-background-lighter;
+  height: 80px;
+  margin: 5px auto;
+  color: $text-color;
+  cursor: pointer;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+
+  .name-delivery {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+  }
+
+  img {
+    height: 100%;
+    width: 100%;
+    max-width: 100px;
+    border-radius: .5rem;
+  }
+
+  .price-date {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+}
+
+

@@ -1,0 +1,15 @@
+<div class="breadcrumb">
+  <div class="breadcrumb-link">
+    <a [routerLink]="['/']">&#5130; Dashboard</a>
+  </div>
+  <span> / </span>
+  <ng-container *ngIf="link">
+    <div class="breadcrumb-links" *ngFor="let l of link; let i = index">
+      <div class="breadcrumb-link">
+        <a *ngIf="!isLast(i)" [routerLink]="l.path">{{l.name}}</a>
+      </div>
+      <span *ngIf="isLast(i)">{{l.name}}</span>
+      <span *ngIf="!isLast(i)"> / </span>
+    </div>
+  </ng-container>
+</div>

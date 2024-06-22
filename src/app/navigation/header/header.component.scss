@@ -1,0 +1,62 @@
+@import '../../../styles.scss';
+
+.logo {
+  height: 34px;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $text-color;
+  font-size: 21px;
+  justify-self: start;
+  cursor: pointer;
+}
+
+header {
+  max-width: 1600px;
+  height: 70px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 5fr 2fr;
+  align-items: center;
+  justify-items: center;
+  background: $dark-theme-background;
+  padding: 0 20px 0 4%;
+}
+.genders {
+  width: 100%;
+  max-width: 200px;
+  display: flex;
+  justify-content: space-between;
+  justify-self: center;
+}
+
+a {
+  text-decoration: none;
+  color: #d9d9d9;
+  font-weight: 100;
+  font-size: 14px;
+}
+nav {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  cursor: pointer;
+  gap: 10px;
+  img {
+    height: 30px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  header {
+    display: flex;
+    justify-content: center;
+  }
+  .logo {
+    display: none;
+  }
+  nav {
+    display: none;
+  }
+}

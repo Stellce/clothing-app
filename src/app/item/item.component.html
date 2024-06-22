@@ -1,0 +1,35 @@
+<div class="item" *ngIf="item">
+  <app-breadcrumb [itemName]="item.name"></app-breadcrumb>
+  <div class="product">
+    <div class="images" *ngIf="item.images">
+      <img [src]="'data:image/png;base64,' + item.images[selectedImageIndex].image" [alt]="item.name">
+      <div class="img-carousel">
+        <img *ngFor="let image of item.images; let i = index" [src]="'data:image/png;base64,' + image.image" [alt]="item.name" (click)="selectedImageIndex = i">
+      </div>
+    </div>
+    <div class="description">
+      <div class="product-name flex-space-between">
+        <span>{{item.name}}</span>
+        <span>{{item.price | currency}}</span>
+      </div>
+      <div class="sizes">
+        <div class="size"
+             *ngFor="let size of item.sizes"
+             [ngClass]="{'available-size': item.availableSizes.includes(size)}"
+        >{{sizeString(size)}}</div>
+      </div>
+      <div class="parameters">
+        <span>Parameters</span>
+        <div class="param flex-space-between" *ngFor="let param of params">
+          <span>{{param.key + ":"}}</span>
+          <span>{{param.value}}</span>
+        </div>
+      </div>
+      <div class="actions">
+        <button mat-flat-button color="primary">Add to cart</button>
+        <button mat-flat-button color="primary">Order now</button>
+      </div>
+    </div>
+  </div>
+</div>
+<app-reviews [reviews]="item?.reviews"></app-reviews>

@@ -1,0 +1,29 @@
+@import "../../../../styles";
+.breadcrumb {
+  display: inline-block;
+  color: $text-color;
+  font-size: 16px;
+}
+
+.breadcrumb-links > *{
+  display: inline;
+}
+
+.breadcrumb-links {
+  display: inline;
+}
+.breadcrumb-link {
+  display: inline;
+}
+
+.breadcrumb-link a{
+  text-decoration: none;
+  color: $text-color;
+}
+
+.breadcrumb-link :hover{
+  color: $breadcrumb-hover;
+}
+ng-content:hover {
+  color: $breadcrumb-hover;
+}
