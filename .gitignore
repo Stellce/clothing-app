@@ -46,3 +46,6 @@ Thumbs.db
 
 # Test files
 /src/assets/test
+
+#Firebase files
+.firebase
