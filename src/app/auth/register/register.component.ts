@@ -37,6 +37,8 @@ export class RegisterComponent implements OnInit {
     let registerUser: RegisterUser = {
       ...this.form.value
     }
-    this.authService.register(registerUser);
+    this.authService.register(registerUser).subscribe({
+      next: res => this.form.reset()
+    });
   }
 }

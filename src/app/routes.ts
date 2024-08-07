@@ -11,8 +11,9 @@ export const routes: Routes = [
       loadComponent: () => import('./navigation/bottom-navbar/account/account.component').then(c => c.AccountComponent),
       canActivate: [loginGuard]},
     {path: 'login', loadComponent: () => import('./auth/login/login.component').then(c => c.LoginComponent)},
-    {path: 'register', loadComponent: () => import('./auth/register/register.component').then(c => c.RegisterComponent)}
+    {path: 'register', loadComponent: () => import('./auth/register/register.component').then(c => c.RegisterComponent)},
   ]},
+  {path: 'activate-account', loadComponent: () => import('./auth/activate/activate.component').then(c => c.ActivateComponent)},
   {path: 'favorites', loadComponent: () => import('./navigation/bottom-navbar/favorites/favorites.component').then(c => c.FavoritesComponent)},
   {path: 'cart', loadComponent: () => import('./navigation/bottom-navbar/cart/cart.component').then(c => c.CartComponent)},
 

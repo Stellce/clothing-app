@@ -9,6 +9,8 @@ import {DialogComponent} from "../dialogs/dialog/dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {ErrorDialogData} from "../dialogs/error-dialog/error-dialog-data.model";
 import {NgForm} from "@angular/forms";
+import { environment } from 'src/environments/environment';
+import { tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +18,7 @@ import {NgForm} from "@angular/forms";
 export class AuthService {
   private _user: User;
   private _token: string = '';
+  usersUrl = environment.backendUrl + '/users';
   constructor(
     private http: HttpClient,
     private router: Router,
@@ -49,17 +52,32 @@ export class AuthService {
   }
 
   register(registerUser: RegisterUser) {
-    this.user = {
-      name: 'John',
-      surname: 'Doe',
-      email: 'john.doe@email.com'
-    }
-    this.router.navigate(['/', 'account']);
+    // this.user = {
+    //   name: 'John',
+    //   surname: 'Doe',
+    //   email: 'john.doe@email.com'
+    // }
+    // this.router.navigate(['/', 'account']);
+
+    return this.http.post(this.usersUrl + '/registration/customer', registerUser).pipe(tap(res => {
+      let dialogData: DialogData = {title: 'Registration completed!', description: 'Please, check your email'};
+      this.dialog.open(DialogComponent, {data: dialogData});
+    }));
   }
 
   logout() {
     this.user = null;
     this.router.navigate(['/', 'account', 'login']);
+  }
+
+  activate(token: string) {
+    return this.http.post(environment.backendUrl + '/keycloak/users/activate?token=' + token, {}).pipe(tap(res => {
+      let dialogData: DialogData = {
+        title: 'Welcome!',
+        description: 'Account activated!'
+      }
+      this.dialog.open(DialogComponent, {data: dialogData})
+    }));
   }
 
   openDialog() {
