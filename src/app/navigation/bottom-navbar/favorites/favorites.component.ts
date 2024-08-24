@@ -15,8 +15,8 @@ export class FavoritesComponent implements OnInit{
   items: Order[];
   constructor(private itemsService: ItemsService) {}
   ngOnInit() {
-    this.itemsService.requestFavorites().subscribe(items => {
-      this.items = items;
-    })
+    // this.itemsService.requestFavorites().subscribe(items => {
+    //   this.items = items;
+    // })
   }
 }

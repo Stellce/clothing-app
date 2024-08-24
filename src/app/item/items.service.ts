@@ -6,73 +6,16 @@ import {ItemsPage} from "../categories/list-items/item-card/res/items-page.model
 import {ItemCard} from "../categories/list-items/item-card/item-card.model";
 import {ItemsParamsRequest} from "../categories/list-items/item-card/req/items-params-request.model";
 import {Order} from "./order.model";
-import {Item} from "./item.model";
+import {ItemDetails} from "./item.model";
 import {Image} from "./image.model";
+import {OrderItem} from "../order-page/order-item.model";
 
 @Injectable({providedIn: 'root'})
 export class ItemsService {
   private _cachedItemsRequest: ItemsParamsRequest = {} as ItemsParamsRequest;
   private _page$ = new BehaviorSubject<ItemsPage>(null);
   private pageSize = 6*4;
-
-  private mockItemBar: Order = {
-    id: 'asd',
-    name: 'Air 2',
-    images: [
-      {id: '', image: '/assets/test/test (1).jpeg'},
-      {id: '', image: '/assets/test/test (2).jpeg'},
-      {id: '', image: '/assets/test/test (3).jpeg'},
-      {id: '', image: '/assets/test/test (4).jpeg'},
-      {id: '', image: '/assets/test/test (5).jpeg'},
-      {id: '', image: '/assets/test/test (6).jpeg'},
-      {id: '', image: '/assets/test/test (7).jpeg'},
-    ],
-    price: 12.99,
-    brand: 'Nike',
-    discount: 25,
-    isNew: true,
-    isOnWishList: true,
-    isPopular: true,
-    priceAfterDiscount: 10.99
-  }
-  private mockOrder: Order = {
-    ...this.mockItemBar,
-    deliveryStatus: 'packaging',
-    orderDate: '01.01.2024'
-  }
-  private mockItem: Item = {
-    ...this.mockItemBar,
-
-    images: [{} as Image],
-
-    description: '',
-    sizes: ['S'],
-    availableSizes: ['S', 'M'],
-    color: 'red',
-    itemCode: '',
-    brand: 'SpeedFinch',
-
-    params: {
-      description: '',
-      color: 'red',
-      brand: 'SpeedFinch',
-    },
-
-    reviews: [
-      {
-        author: 'John Smith',
-        text: 'Very nice shoes! Bought for my wife too, I think it\'s unisex',
-        date: new Date('05-24-2024'),
-        rating: 4
-      }
-    ],
-
-    rating: 4.2,
-
-    similarItems: null,
-    reviewsCount: null,
-    isAvailable: true,
-  }
+  private ordersItems: OrderItem[];
 
   constructor(private http: HttpClient) {}
 
@@ -121,11 +64,7 @@ export class ItemsService {
   }
 
   requestItemById(itemId: string) {
-    // Test
-    // this._item$.next(this.mockItem);
-    // return of(this.mockItem);
-
-    return this.http.get<Item>(
+    return this.http.get<ItemDetails>(
       environment.backendUrl + '/catalog/items/' + itemId
     );
   }
@@ -153,28 +92,36 @@ export class ItemsService {
     }));
   }
 
+  addToCart(orderItem: OrderItem) {
+    const cart: OrderItem[] = JSON.parse(localStorage.getItem("orders"));
+    cart.push(orderItem);
+    this.ordersItems = cart;
+    localStorage.setItem("orders", JSON.stringify(cart));
+  }
+
   search(search: string) {
     let headers = new HttpHeaders().append('search', search);
     return this.http.get(environment.backendUrl + '/search', {headers});
   }
 
-  requestFavorites() {
-    let items: Order[] = Array(5).fill(this.mockItemBar);
-    return of(items);
-  }
+  // requestFavorites() {
+  //   let items: Order[] = Array(5).fill(this.mockItemBar);
+  //   return of(items);
+  // }
 
-  getLastOrder() {
-    return of(this.mockOrder);
-  }
+  // getLastOrder() {
+  //   return of(this.mockOrder);
+  // }
 
-  requestOrdersHistory() {
-    let orders: Order[] = Array(5).fill(this.mockOrder);
-    return of(orders);
-  }
+  // requestOrdersHistory() {
+  //   let orders: Order[] = Array(5).fill(this.mockOrder);
+  //   return of(orders);
+  // }
 
   requestCartItems() {
-    let orders: Order[] = Array(5).fill(this.mockOrder);
-    return of(orders);
+    // let orders: Order[] = Array(5).fill(this.mockOrder);
+    // return of(orders);
+    return JSON.parse(localStorage.getItem("cart"));
   }
 
   private requestAllItemsImages(page: ItemsPage) {
@@ -186,5 +133,9 @@ export class ItemsService {
         this._page$.next(page);
       });
     })
+  }
+
+  private readCart() {
+    this.ordersItems = JSON.parse(localStorage.getItem("orders"));
   }
 }

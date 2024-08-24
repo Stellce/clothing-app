@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Order} from "../item/order.model";
-import {ItemsService} from "../item/items.service";
+import {OrdersService} from "./orders.service";
+import {OrderReq} from "./order-req.model";
 
 @Component({
     selector: 'app-order-page',
@@ -11,9 +12,12 @@ import {ItemsService} from "../item/items.service";
 export class OrderPageComponent implements OnInit{
   orders: Order[];
 
-  constructor(private itemsService: ItemsService) {}
+  constructor(private ordersService: OrdersService) {}
 
   ngOnInit() {
-    this.itemsService
+    // const orderReq: OrderReq = {
+    //   itemEntries:
+    // }
+    // this.ordersService.createOrder(orderReq);
   }
 }

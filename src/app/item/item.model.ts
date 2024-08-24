@@ -3,19 +3,17 @@ import {ItemParams} from "./item.params.model";
 import {Review} from "./reviews/review.model";
 import {Image} from "./image.model";
 
-export interface Item extends ItemCard, ItemParams {
-  params?: ItemParams;
-  reviews: Review[];
-  images?: Image[];
-
-  sizes: string[];
+export interface ItemDetails extends ItemCard {
+  description: string;
   availableSizes: string[];
-
-  rating: number,
-
+  isAvailable: boolean;
   itemCode: string;
-
+  reviews: Review[];
+  reviewsCount: null
   similarItems: null,
-  reviewsCount: null,
-  isAvailable: true,
+  sizes: string[];
+
+  params?: ItemParams;
+  images?: Image[];
 }
+

@@ -8,7 +8,7 @@
       <mat-icon>logout</mat-icon>
     </button>
   </div>
-  <app-item-bar [item]="order"></app-item-bar>
+  <app-item-bar [order]="order"></app-item-bar>
   <ul>
     <li (click)="accounService.enterPromocode()">Enter Promocode</li>
     <li [routerLink]="['/', 'orders', 'history']">Orders history</li>

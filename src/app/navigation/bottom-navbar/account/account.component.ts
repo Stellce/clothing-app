@@ -27,9 +27,9 @@ export class AccountComponent implements OnInit{
   ) {}
   ngOnInit() {
     this.user = this.authService.user;
-    this.itemsService.getLastOrder().subscribe(order => {
-      this.order = order;
-    });
+    // this.itemsService.getLastOrder().subscribe(order => {
+    //   this.order = order;
+    // });
   }
 
   onLogout() {
