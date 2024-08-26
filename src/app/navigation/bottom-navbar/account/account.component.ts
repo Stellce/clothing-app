@@ -8,13 +8,14 @@ import { RouterLink } from '@angular/router';
 import { ItemBarComponent } from '../../../categories/item-bar/item-bar.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import {NgIf} from "@angular/common";
 
 @Component({
     selector: 'app-account',
     templateUrl: './account.component.html',
     styleUrls: ['./account.component.scss'],
     standalone: true,
-    imports: [MatButtonModule, MatIconModule, ItemBarComponent, RouterLink]
+  imports: [MatButtonModule, MatIconModule, ItemBarComponent, RouterLink, NgIf]
 })
 export class AccountComponent implements OnInit{
   user: User;

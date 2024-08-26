@@ -4,6 +4,7 @@ import {DomSanitizer} from "@angular/platform-browser";
 import { BottomNavbarComponent } from './navigation/bottom-navbar/bottom-navbar.component';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './navigation/header/header.component';
+import {AuthService} from "./auth/auth.service";
 
 @Component({
     selector: 'app-root',
@@ -15,8 +16,13 @@ import { HeaderComponent } from './navigation/header/header.component';
 export class AppComponent implements OnInit{
   title = 'cloth-app';
 
-  constructor(private iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer) {}
+  constructor(
+    private iconRegistry: MatIconRegistry,
+    private sanitizer: DomSanitizer,
+    private authService: AuthService
+  ) {}
   ngOnInit() {
     this.iconRegistry.addSvgIcon('Favorites', this.sanitizer.bypassSecurityTrustResourceUrl('assets/navbar/Favorites.svg'))
+    this.authService.autoAuth();
   }
 }

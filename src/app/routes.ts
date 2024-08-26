@@ -7,14 +7,12 @@ export const routes: Routes = [
   {path: 'dashboard', loadComponent: () => import('./navigation/bottom-navbar/dashboard/dashboard.component').then(c => c.DashboardComponent)},
   {path: 'search', loadComponent: () => import('./navigation/bottom-navbar/search/search.component').then(c => c.SearchComponent)},
   {path: 'account', children: [
-    {path: '',
-      loadComponent: () => import('./navigation/bottom-navbar/account/account.component').then(c => c.AccountComponent),
-      canActivate: [loginGuard]},
+    {path: '', loadComponent: () => import('./navigation/bottom-navbar/account/account.component').then(c => c.AccountComponent), canActivate: [loginGuard]},
     {path: 'login', loadComponent: () => import('./auth/login/login.component').then(c => c.LoginComponent)},
     {path: 'register', loadComponent: () => import('./auth/register/register.component').then(c => c.RegisterComponent)},
   ]},
   {path: 'activate-account', loadComponent: () => import('./auth/activate/activate.component').then(c => c.ActivateComponent)},
-  {path: 'favorites', loadComponent: () => import('./navigation/bottom-navbar/favorites/favorites.component').then(c => c.FavoritesComponent)},
+  {path: 'favorites', loadComponent: () => import('./navigation/bottom-navbar/favorites/favorites.component').then(c => c.FavoritesComponent), canActivate: [loginGuard]},
   {path: 'cart', loadComponent: () => import('./navigation/bottom-navbar/cart/cart.component').then(c => c.CartComponent)},
 
   {path: 'orders', canActivate: [loginGuard], children: [

@@ -22,7 +22,7 @@ export class AccountService {
     const dialogRef = this.dialog.open(DialogComponent, {data: dialogData});
 
     dialogRef.afterClosed().subscribe((form: NgForm) => {
-      console.log('promo', form.value);
+      if (form?.value) console.log('promo', form.value);
     });
   }
 }

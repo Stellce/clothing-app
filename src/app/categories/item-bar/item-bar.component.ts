@@ -19,7 +19,7 @@ export class ItemBarComponent implements OnInit {
   constructor(private itemsService: ItemsService) {}
 
   ngOnInit() {
-    this.itemsService.requestItemById(this.order.itemEntries[0].itemId)
+    this.itemsService.requestItemById(this.order.itemEntries[0]?.itemId)
       .subscribe(item => this.item0 = item);
   }
 
