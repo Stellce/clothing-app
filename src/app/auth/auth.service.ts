@@ -51,8 +51,8 @@ export class AuthService {
     let tokenInfo: TokenInfo = JSON.parse(localStorage.getItem("tokenInfo"));
     if (!tokenInfo) return;
     let decodedToken = jwtDecode(tokenInfo.access_token);
-    let expiresInMs = decodedToken.exp * 1000 - (new Date()).getTime();
-    if (expiresInMs > 0) {
+    let tokenTimeoutInMs = decodedToken.exp * 1000 - (new Date()).getTime();
+    if (tokenTimeoutInMs > 0) {
       this.authUser(tokenInfo);
     } else {
       localStorage.removeItem("tokenInfo");
@@ -125,7 +125,7 @@ export class AuthService {
   private authUser(tokenInfo: TokenInfo) {
     this.tokenInfo = tokenInfo;
     let decodedToken: JwtDecoded = this.getDecodedAccessToken(tokenInfo.access_token);
-    let tokenTimeoutInMs = decodedToken.exp - new Date().getTime() * 1000;
+    let tokenTimeoutInMs = decodedToken.exp * 1000 - (new Date()).getTime();
 
     this.setTokenRefresh(tokenTimeoutInMs);
     this.setAutoLogout(tokenTimeoutInMs);
@@ -163,15 +163,15 @@ export class AuthService {
   }
 
   private setAutoLogout(tokenTimeoutInMs: number) {
+    let oldToken = this.tokenInfo.access_token;
     setTimeout(() => {
-      let oldToken = this.tokenInfo.access_token;
       if (oldToken === this.tokenInfo.access_token) {
         let dialogData: DialogData = {
           title: 'Token expiration',
           description: 'You will be logged out in 60 seconds, unless you relogin'
         }
         this.dialog.open(DialogComponent, {data: dialogData});
-        this.logout();
+        setTimeout(() => oldToken === this.tokenInfo.access_token ? this.logout() : 0, 60_000);
       }
     }, tokenTimeoutInMs - 60_000);
   }
