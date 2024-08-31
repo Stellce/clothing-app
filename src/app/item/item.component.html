@@ -15,10 +15,10 @@
       </div>
       <div class="sizes">
         <div class="size"
-             *ngFor="let size of item.sizes"
-             [ngClass]="{'available': item.availableSizes.includes(size), 'selected': size === selectedUniqueItem.size}"
-             (click)="item.availableSizes.includes(size) ? setUniqueItemBySize(size) : ''"
-        >{{sizeString(size)}}</div>
+             *ngFor="let uniqueItem of item.uniqueItems"
+             [ngClass]="{'available': true, 'selected': uniqueItem === selectedUniqueItem}"
+             (click)="setUniqueItem(uniqueItem)"
+        >{{sizeString(uniqueItem.size)}}</div>
       </div>
       <div class="parameters">
         <span>Parameters</span>
@@ -28,9 +28,9 @@
         </div>
       </div>
       <div class="count space-between">
-        <span>Count:</span>
-        <input type="number" [(ngModel)]="count">
-        <mat-error *ngIf="count > selectedUniqueItem.quantity">Please, provide number less or equal to the quantity of the item</mat-error>
+        <span>Quantity (max: {{selectedUniqueItem.quantity}}):</span>
+        <input type="number" [(ngModel)]="quantity">
+        <mat-error *ngIf="quantity > selectedUniqueItem.quantity">Please, provide number less or equal to the quantity of the item</mat-error>
       </div>
       <div class="actions">
         <button mat-flat-button color="primary" (click)="addToCart()">Add to cart</button>

@@ -1,4 +1,4 @@
-import {Image} from "../../../item/image.model";
+import { Image } from "../../../item/image.model";
 
 export interface ItemCard {
   id: string
@@ -9,16 +9,21 @@ export interface ItemCard {
   brand: string
   rating: number
   color: string
-  isOnWishList: boolean
-  isNew: boolean
-  isPopular: boolean
   uniqueItems: UniqueItem[]
+  metadata: Metadata
   images?: Image[]
 }
 
 export interface UniqueItem {
   size: string
   quantity: number
+}
+
+export interface Metadata {
+  available: boolean
+  onWishList: boolean
+  new: boolean
+  popular: boolean
 }
 
 export type CatalogItem = ItemCard;

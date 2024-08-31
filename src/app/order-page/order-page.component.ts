@@ -20,4 +20,19 @@ export class OrderPageComponent implements OnInit{
     // }
     // this.ordersService.createOrder(orderReq);
   }
+
+  getDeliveryColor(deliveryStatus: string): string {
+    switch (deliveryStatus) {
+      case 'paid':
+        return 'SeaGreen';
+      case 'packaging':
+        return 'DarkSeaGreen';
+      case 'in transit':
+        return 'DarkOrange';
+      case 'delivered':
+        return 'Green';
+      default:
+        return '';
+    }
+  }
 }

@@ -3,7 +3,7 @@ import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {BehaviorSubject, of, switchMap, take, tap} from "rxjs";
 import {ItemsPage} from "../categories/list-items/item-card/res/items-page.model";
-import {ItemCard} from "../categories/list-items/item-card/item-card.model";
+import {CatalogItem} from "../categories/list-items/item-card/item-card.model";
 import {ItemsParamsRequest} from "../categories/list-items/item-card/req/items-params-request.model";
 import {Order} from "./order.model";
 import {ItemDetails} from "./item.model";
@@ -15,7 +15,6 @@ export class ItemsService {
   private _cachedItemsRequest: ItemsParamsRequest = {} as ItemsParamsRequest;
   private _page$ = new BehaviorSubject<ItemsPage>(null);
   private pageSize = 6*4;
-  private ordersItems: OrderItem[];
 
   constructor(private http: HttpClient) {}
 
@@ -29,13 +28,12 @@ export class ItemsService {
     )
   }
 
-  requestLandingPageItems() {
+  requestLandingPage() {
     return this.http.get<ItemsPage>(
       environment.backendUrl + `/catalog/items/landing-page`
-    ).pipe(take(1), switchMap(page => {
+    ).pipe(tap(page => {
       this._page$.next(page);
       this.requestAllItemsImages(page);
-      return of(page);
     }));
   }
 
@@ -49,11 +47,10 @@ export class ItemsService {
     params = params.append('pageSize', this.pageSize);
     return this.http.get<ItemsPage>(
       environment.backendUrl + `/catalog/items`,
-      {params: params}
-    ).pipe(take(1), switchMap(page => {
+      {params}
+    ).pipe(tap(page => {
       this._page$.next(page);
       this.requestAllItemsImages(page);
-      return of(page);
     }))
   }
 
@@ -92,22 +89,13 @@ export class ItemsService {
     }));
   }
 
-  addToCart(orderItem: OrderItem) {
-    const cart: OrderItem[] = JSON.parse(localStorage.getItem("orders"));
-    cart.push(orderItem);
-    this.ordersItems = cart;
-    localStorage.setItem("orders", JSON.stringify(cart));
-  }
+
 
   search(search: string) {
     let headers = new HttpHeaders().append('search', search);
     return this.http.get(environment.backendUrl + '/search', {headers});
   }
 
-  // requestFavorites() {
-  //   let items: Order[] = Array(5).fill(this.mockItemBar);
-  //   return of(items);
-  // }
 
   // getLastOrder() {
   //   return of(this.mockOrder);
@@ -118,24 +106,13 @@ export class ItemsService {
   //   return of(orders);
   // }
 
-  requestCartItems() {
-    // let orders: Order[] = Array(5).fill(this.mockOrder);
-    // return of(orders);
-    return JSON.parse(localStorage.getItem("cart"));
-  }
-
   private requestAllItemsImages(page: ItemsPage) {
-    page.content.forEach(item => {
-      this.requestItemImages(item.id).subscribe(images => {
-        let newItem: ItemCard | undefined = page.content.find(i => i.id === item.id);
-        if(newItem)
-          newItem.images = images;
+    page.content.forEach(contentItem => {
+      this.requestItemImages(contentItem.id).subscribe(images => {
+        let item: CatalogItem | undefined = page.content.find(i => i.id === contentItem.id);
+        if(item) item.images = images;
         this._page$.next(page);
       });
     })
-  }
-
-  private readCart() {
-    this.ordersItems = JSON.parse(localStorage.getItem("orders"));
   }
 }

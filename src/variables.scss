@@ -1,0 +1,38 @@
+@use '@angular/material' as mat;
+@use 'sass:map';
+@use 'm3-theme';
+@mixin show($map) {
+  @at-root {
+    @each $key, $value in $map {
+      @debug "#{$key}";
+    }
+  }
+}
+
+$dark-theme-background-darker: mat.get-theme-color(m3-theme.$dark-theme, primary, 0);
+$dark-theme-background: mat.get-theme-color(m3-theme.$dark-theme, surface);
+$dark-theme-background-lighter: mat.get-theme-color(m3-theme.$dark-theme, primary, 20);
+$background-primary: #383838;
+$background-secondary: #404040;
+$filter-bubble: #A9A9A9;
+$text-color: mat.get-theme-color(m3-theme.$dark-theme, on-surface);
+$breadcrumb-hover: #19ccb2;
+$accent-color: mat.get-theme-color(m3-theme.$dark-theme, on-surface-variant);
+$accent: mat.get-theme-color(m3-theme.$dark-theme, surface-bright);
+
+/*
+Valid color roles are: 
+  background, error, error-container, inverse-on-surface, inverse-primary, inverse-surface, on-background, on-error, on-error-container, 
+  on-primary, on-primary-container, on-primary-fixed, on-primary-fixed-variant, 
+  on-secondary, on-secondary-container, on-secondary-fixed, on-secondary-fixed-variant, 
+  on-surface, on-surface-variant, 
+  on-tertiary, on-tertiary-container, on-tertiary-fixed, on-tertiary-fixed-variant, 
+  outline, outline-variant, 
+  primary, primary-container, primary-fixed, primary-fixed-dim, 
+  scrim, 
+  secondary, secondary-container, secondary-fixed, secondary-fixed-dim, 
+  shadow, 
+  surface, surface-bright, surface-container, surface-container-high, surface-container-highest, surface-container-low, surface-container-lowest, surface-dim, surface-tint, surface-variant, 
+  tertiary, tertiary-container, tertiary-fixed, tertiary-fixed-dim.
+*/
+

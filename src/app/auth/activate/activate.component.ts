@@ -20,11 +20,9 @@ export class ActivateComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log(this.route.snapshot.queryParamMap.get('token'))
     this.router.navigate(['/', 'account']);
     this.authService.activateAccount(this.route.snapshot.queryParamMap.get('token')).subscribe({
       next: res => {
-        console.log(res)
         this.title = 'Activation success! You will be redirected in a second'
         setTimeout(() => this.router.navigate(['/', 'account']), 1000);
       },

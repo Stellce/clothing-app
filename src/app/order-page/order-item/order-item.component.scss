@@ -13,26 +13,11 @@
   justify-content: space-between;
   align-items: flex-end;
 
-  .description {
-    flex-grow: 1;
-    height: 100%;
-    padding: 10px 0 0 10px;
-    box-sizing: border-box;
+  .name-delivery {
     display: flex;
     flex-direction: column;
-  }
-
-  .name {
-    display: flex;
-    height: 33%;
-  }
-
-  .size-price-quantity {
-    display: flex;
-    width: 100%;
-    justify-content: flex-end;
-    gap: 10px;
-    height: 33%;
+    align-items: center;
+    height: 100%;
   }
 
   img {
@@ -41,8 +26,6 @@
     max-width: 100px;
     border-radius: .5rem;
   }
-
-
 
   .price-date {
     height: 100%;

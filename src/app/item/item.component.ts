@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {ItemsService} from "./items.service";
 import {ItemDetails} from "./item.model";
 import {ActivatedRoute} from "@angular/router";
-import {ItemParams} from "./item.params.model";
 import {Image} from "./image.model";
 import { ReviewsComponent } from './reviews/reviews.component';
 import { MatButtonModule } from '@angular/material/button';
@@ -12,7 +11,12 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {FormsModule} from "@angular/forms";
 import {OrderItem} from "../order-page/order-item.model";
-import {UniqueItem} from "../categories/list-items/item-card/item-card.model";
+import { UniqueItem } from '../categories/list-items/item-card/item-card.model';
+import { CartItem } from '../navigation/bottom-navbar/cart/cart-item.model';
+import { CartService } from '../navigation/bottom-navbar/cart/cart.service';
+import { AuthService } from '../auth/auth.service';
+import { LocalService } from '../local/local.service';
+import { LocalCartItem } from '../local/local-cart-item.model';
 
 @Component({
     selector: 'app-item',
@@ -24,30 +28,43 @@ import {UniqueItem} from "../categories/list-items/item-card/item-card.model";
 export class ItemComponent implements OnInit{
   item: ItemDetails;
   selectedUniqueItem: UniqueItem;
-  count: number = 1;
+  quantity: number = 1;
   params: { key: string, value: string }[];
   selectedImageIndex: number = 0;
   constructor(
     private itemsService: ItemsService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private cartService: CartService,
+    private authService: AuthService,
+    private localService: LocalService
   ) {}
 
   ngOnInit() {
     this.requestItem();
   }
 
-  setUniqueItemBySize(size: string) {
-    this.selectedUniqueItem = this.item.uniqueItems.find(item => item.size === size)
+  setUniqueItem(uniqueItem: UniqueItem) {
+    this.selectedUniqueItem = uniqueItem;
   }
 
   addToCart() {
-    if (this.count > this.selectedUniqueItem.quantity) return;
-    const orderItem: OrderItem = {
+    if (this.quantity > this.selectedUniqueItem.quantity) return;
+    const item: CartItem = {
       itemId: this.item.id,
-      quantity: this.count,
-      size: this.selectedUniqueItem.size
+      quantity: this.quantity,
+      itemSize: this.selectedUniqueItem.size,
+      ...this.item,
+      itemName: this.item.name,
+      itemPrice: this.item.price,
+      itemPriceAfterDiscount: this.item.priceAfterDiscount,
+      totalPrice: this.item.price * this.quantity,
+      totalPriceAfterDiscount: this.item.priceAfterDiscount * this.quantity
     }
-    this.itemsService.addToCart(orderItem);
+    if (this.authService.user) {
+      this.cartService.addItem(item);
+    } else {
+      this.localService.addToCart(item as LocalCartItem);
+    }
   }
 
   orderNow() {

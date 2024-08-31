@@ -1,27 +1,44 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ItemCard} from "./item-card.model";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ItemCard } from "./item-card.model";
 import { RouterLink } from '@angular/router';
-import { NgIf, PercentPipe, CurrencyPipe } from '@angular/common';
+import { NgIf, PercentPipe, CurrencyPipe, NgStyle, NgForOf } from '@angular/common';
+import { FavoritesService } from 'src/app/navigation/bottom-navbar/favorites/favorites.service';
+import { LocalService } from 'src/app/local/local.service';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
-    selector: 'app-item-card',
-    templateUrl: './item-card.component.html',
-    styleUrls: ['./item-card.component.scss'],
-    standalone: true,
-    imports: [NgIf, RouterLink, PercentPipe, CurrencyPipe]
+  selector: 'app-item-card',
+  templateUrl: './item-card.component.html',
+  styleUrls: ['./item-card.component.scss'],
+  standalone: true,
+  imports: [NgIf, RouterLink, PercentPipe, CurrencyPipe, NgStyle, NgForOf]
 })
 export class ItemCardComponent {
-  @Output() favoritesChanged = new EventEmitter<boolean>();
   @Input() item: ItemCard;
-  @Input() isFavorite: boolean = false;
   @Input() isBreadcrumbResolved: boolean = false;
 
-  onFavoritesChange() {
-    // Test
-    // if(this.item.id === '61bbe332-a7bd-45fb-b41c-6db31c850515') this.item = {...this.item, discount: 0};
-    //
-    this.isFavorite = !this.isFavorite;
-    this.favoritesChanged.next(this.isFavorite);
+  constructor(
+    private favoritesService: FavoritesService,
+    private localService: LocalService,
+    private authService: AuthService
+  ) {}
+
+  onFavoriteToggle(event: MouseEvent) {
+    event.stopPropagation();
+    if (this.item.metadata.onWishList) {
+      if (this.authService.user) {
+        this.favoritesService.removeItem(this.item.id).subscribe({next: () => this.item.metadata.onWishList = true, error: () => {}})
+      } else {
+        this.localService.removeFromFavorites(this.item.id);
+      }
+    } else {
+      if (this.authService.user) {
+        this.favoritesService.addItem(this.item.id).subscribe({next: () => this.item.metadata.onWishList = true, error: () => {}});
+      } else {
+        this.localService.addToFavorites(this.item.id);
+      }
+    }
+      
   }
 
   getLinkToItem() {

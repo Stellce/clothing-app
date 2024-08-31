@@ -1,4 +1,4 @@
-@import "../../styles";
+@import "../../variables";
 
 .item {
   color: $text-color;
@@ -76,6 +76,7 @@
         .selected {
           //@debug $primary;
           background: $accent;
+          color: $accent-color;
         }
       }
 

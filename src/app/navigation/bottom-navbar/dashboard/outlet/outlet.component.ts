@@ -21,7 +21,7 @@ export class OutletComponent implements OnInit{
 
   ngOnInit() {
     this.isLoading = true;
-    this.itemsService.requestLandingPageItems().subscribe({
+    this.itemsService.requestLandingPage().subscribe({
       next: (page: ItemsPage) => {
         this.isLoading = false;
         this.items = page.content;

@@ -1,1 +1,3 @@
-<app-item-bar *ngFor="let item of items" [order]="item"></app-item-bar>
+<ng-template [ngIf]="items.length">
+    <app-item-bar *ngFor="let item of items" [item]="item"></app-item-bar>
+</ng-template>

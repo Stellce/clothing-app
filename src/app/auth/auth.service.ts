@@ -157,7 +157,7 @@ export class AuthService {
         'Content-Type': 'application/x-www-form-urlencoded'
       })
       let options = { headers: headers };
-      this.http.post<TokenInfo>(environment.backendUrl + '/keycloak/embedded/realms/e-commerce/protocol/openid-connect/token', body, options)
+      this.http.post<TokenInfo>(environment.backendUrl + '/keycloak/realms/e-commerce/protocol/openid-connect/token', body, options)
         .subscribe(tokenInfo => this.authUser(tokenInfo));
     }, tokenTimeoutInMs - 120_000)
   }

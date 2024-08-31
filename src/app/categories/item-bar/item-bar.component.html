@@ -1,13 +1,13 @@
-<div class="item-bar" [routerLink]="['/', 'orders', order.id]">
-  <img [src]="item0.images[0]" alt="">
-  <div class="name-delivery" [ngStyle]="{justifyContent: order.delivery.status ? 'flex-end' : 'center'}">
-    <span class="name">{{item0.name + '...'}}</span>
-    <span class="delivery" [ngStyle]="{color: getDeliveryColor(order.delivery.status)}">
-      {{order.delivery.status}}
-    </span>
-  </div>
-  <div class="price-date" [ngStyle]="{'justify-content': order.createdAt ? 'space-between' : 'center'}">
-    <div class="price" [ngStyle]="{'margin-top': order.createdAt ? '20%' : 0}">{{order.totalPriceAfterDiscount | currency}}</div>
-    <div class="date">{{order.createdAt | date}}</div>
+<div class="item-bar">
+  <img *ngIf="item?.images" [src]="'data:image/png;base64,' + item.images[0].image" alt="">
+  <div class="description">
+    <div class="name">
+      {{item.itemName}}
+    </div>
+    <div class="size-price-quantity">
+      <div class="size">{{item.itemSize}}</div>
+      <div class="price">{{item.itemPriceAfterDiscount | currency}}</div>
+      <div class="quantity">{{item.quantity}}</div>
+    </div>
   </div>
 </div>
