@@ -6,5 +6,5 @@ export interface LocalCartItem {
     quantity: number;
     itemSize: string;
     item?: ItemDetails;
-    images: Image[];
+    images?: Image[];
 }

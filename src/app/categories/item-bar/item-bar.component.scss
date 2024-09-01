@@ -1,39 +1,16 @@
 @import "../../../variables";
 
-.item-bar {
-  padding: 10px;
+:host {
   border-radius: 1rem;
-  background: $dark-theme-background-lighter;
+  background: none;
   height: 80px;
-  margin: 5px auto;
   color: $text-color;
   cursor: pointer;
+  font-size: 16px;
 
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-
-  .description {
-    flex-grow: 1;
-    height: 100%;
-    padding: 10px 0 0 10px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .name {
-    display: flex;
-    height: 33%;
-  }
-
-  .size-price-quantity {
-    display: flex;
-    width: 100%;
-    justify-content: flex-end;
-    gap: 10px;
-    height: 33%;
-  }
 
   img {
     height: 100%;
@@ -42,13 +19,31 @@
     border-radius: .5rem;
   }
 
-
-
-  .price-date {
+  .description {
+    padding-left: 10px;
+    flex-grow: 1;
     height: 100%;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    justify-content: space-evenly;
+
+    .name {
+      display: flex;
+      
+    }
+
+    .size {
+      flex: 0;
+      font-size: 12px;
+    }
+  }
+
+  .price-quantity {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
   }
 }
 

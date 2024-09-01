@@ -2,22 +2,24 @@ import {Component, OnInit} from '@angular/core';
 import {Order} from "../../../item/order.model";
 import {ItemsService} from "../../../item/items.service";
 import { ItemBarComponent } from '../../../categories/item-bar/item-bar.component';
-import { NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { CartService } from './cart.service';
 import { CartItem } from './cart-item.model';
 import { AuthService } from 'src/app/auth/auth.service';
 import { LocalService } from 'src/app/local/local.service';
 import { LocalCartItem } from 'src/app/local/local-cart-item.model';
+import { forkJoin, Observable, of, switchMap } from 'rxjs';
+import { ItemDetails } from 'src/app/item/item.model';
 
 @Component({
     selector: 'app-cart',
     templateUrl: './cart.component.html',
     styleUrls: ['./cart.component.scss'],
     standalone: true,
-    imports: [NgFor, NgIf, ItemBarComponent]
+    imports: [NgFor, NgIf, ItemBarComponent, AsyncPipe]
 })
 export class CartComponent implements OnInit{
-  items: CartItem[] = [];
+  cartItems: CartItem[] = [];
   constructor(
     private cartService: CartService,
     private localService: LocalService,
@@ -26,18 +28,17 @@ export class CartComponent implements OnInit{
   ) {}
   ngOnInit() {
     if (this.authService.user) {
-      this.cartService.getItems().subscribe(items => {
-        this.items = items;
-      });
+      this.cartService.getItems().subscribe(items => this.cartItems = items);
     } else {
       let localCartItems: LocalCartItem[] = this.localService.getCartItems();
-      localCartItems.forEach((localCartItem, index) => this.itemService.requestItemById(localCartItem.id).subscribe(itemDetails => {
+      let localCartItems$: Observable<CartItem>[];
+      localCartItems$ = localCartItems.map((localCartItem, index) => this.itemService.requestItemById(localCartItem.id).pipe(switchMap((itemDetails: ItemDetails) => {
         let item: CartItem = {
           id: '',
           itemId: itemDetails.id,
           itemName: itemDetails.name,
           itemSize: localCartItem.itemSize,
-          quantity: localCartItem.quantity,
+          quantity: this.setValidQuantity(itemDetails, localCartItem),
           discount: itemDetails.discount,
           itemPrice: itemDetails.price,
           itemPriceAfterDiscount: itemDetails.priceAfterDiscount,
@@ -45,8 +46,18 @@ export class CartComponent implements OnInit{
           totalPriceAfterDiscount: itemDetails.price * localCartItem.quantity,
           uniqueItems: itemDetails.uniqueItems
         };
-        this.items[index] = item;
-      }));
+        return of (item);
+      })));
+      forkJoin(localCartItems$).subscribe(items => this.cartItems = items);
     }
+  }
+
+  setValidQuantity(itemDetails: ItemDetails, localCartItem: LocalCartItem) {
+    let maxQuantity = this.getItemQuantity(itemDetails, localCartItem.itemSize);
+    return localCartItem.quantity > maxQuantity ? maxQuantity : localCartItem.quantity
+  }
+
+  getItemQuantity(itemDetails: ItemDetails, localCartItemSize: string) {
+    return itemDetails.uniqueItems.find(i => i.size === localCartItemSize).quantity;
   }
 }

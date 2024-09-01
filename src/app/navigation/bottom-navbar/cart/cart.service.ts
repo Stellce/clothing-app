@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { environment } from "src/environments/environment";
 import { CartItem } from "./cart-item.model";
 import { OrderItem } from "src/app/order-page/order-item.model";
+import { UpdateCartItemReq } from "./req/update-cart-req.model";
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
@@ -18,9 +19,7 @@ export class CartService {
     return this.http.post(this.cartUrl, cartItem);
   }
 
-
-
-  updateItem(cartItem: CartItem) {
+  updateItem(cartItem: UpdateCartItemReq) {
     let params = new HttpParams();
     Object.entries(cartItem).forEach(([k, v]) => {
       if (!v) return;

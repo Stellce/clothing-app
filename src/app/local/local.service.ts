@@ -17,6 +17,13 @@ export class LocalService {
     localStorage.setItem("cart", JSON.stringify(cart));
   }
 
+  updateCartItem(localCartItem: LocalCartItem) {
+    const cart: LocalCartItem[] = this.getCartItems();
+    const itemIndex = cart.findIndex(i => i.id === localCartItem.id);
+    cart[itemIndex] = localCartItem;
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }
+
   getFavoritesIds() {
     const favorites: string[] = JSON.parse(localStorage.getItem("favorites")) || [];
     return favorites;
