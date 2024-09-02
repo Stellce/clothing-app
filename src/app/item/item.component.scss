@@ -48,35 +48,38 @@
       }
 
       .sizes {
-        margin: 10px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 10px;
-
-        & > * {
-          background: $dark-theme-background-darker;
-          color: grey;
-          padding: 10px;
-          border-radius: 50%;
-          aspect-ratio: 1/1;
-          width: 50px;
-          box-sizing: border-box;
+        margin: 10px 0;
+        width: 100%;
+        overflow: auto;
+        .scroll {
+          width: fit-content;
           display: flex;
-          justify-content: center;
+          justify-content: space-between;
           align-items: center;
-        }
+          gap: 10px;
+          padding: 5px 10px;
 
-        .available {
-          background: $dark-theme-background-darker;
-          color: white;
-          cursor: pointer;
-        }
+          & > * {
+            background: $dark-theme-background-darker;
+            color: grey;
+            border-radius: 50%;
+            aspect-ratio: 1/1;
+            width: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
 
-        .selected {
-          //@debug $primary;
-          background: $accent;
-          color: $accent-color;
+          .available {
+            background: $dark-theme-background-darker;
+            color: white;
+            cursor: pointer;
+          }
+  
+          .selected {
+            background: $accent;
+            color: $accent-color;
+          }
         }
       }
 

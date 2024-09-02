@@ -19,31 +19,45 @@
     border-radius: .5rem;
   }
 
-  .description {
+  .description-price-quantity {      
     padding-left: 10px;
     flex-grow: 1;
     height: 100%;
     box-sizing: border-box;
     display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-
-    .name {
+    justify-content: space-between;
+    
+    .description {
       display: flex;
-      
+      flex-direction: column;
+      justify-content: space-around;
+  
+      .name {
+        display: flex;
+        
+      }
+  
+      .size {
+        flex: 0;
+        font-size: 12px;
+      }
     }
-
-    .size {
-      flex: 0;
-      font-size: 12px;
+  
+    .price-quantity {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      justify-content: center;
+      align-items: center;
+  
+      .quantity {
+        display: flex;
+        align-items: center;
+        button {
+          margin: 0 10px;
+        }
+      }
     }
-  }
-
-  .price-quantity {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    justify-content: center;
   }
 }
 

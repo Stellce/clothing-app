@@ -4,6 +4,7 @@ import { environment } from "src/environments/environment";
 import { CartItem } from "./cart-item.model";
 import { OrderItem } from "src/app/order-page/order-item.model";
 import { UpdateCartItemReq } from "./req/update-cart-req.model";
+import { AddCartReq } from "./req/add-cart-req.model";
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
@@ -15,7 +16,7 @@ export class CartService {
     return this.http.get<CartItem[]>(this.cartUrl);
   }
 
-  addItem(cartItem: CartItem) {
+  addItem(cartItem: AddCartReq) {
     return this.http.post(this.cartUrl, cartItem);
   }
 

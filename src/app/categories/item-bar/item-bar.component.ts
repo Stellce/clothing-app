@@ -11,13 +11,14 @@ import { MatError } from '@angular/material/form-field';
 import { AuthService } from 'src/app/auth/auth.service';
 import { CartService } from 'src/app/navigation/bottom-navbar/cart/cart.service';
 import { LocalService } from 'src/app/local/local.service';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-item-bar',
   templateUrl: './item-bar.component.html',
   styleUrls: ['./item-bar.component.scss'],
   standalone: true,
-  imports: [RouterLink, NgStyle, CurrencyPipe, DatePipe, NgIf, MatMiniFabButton, MatError]
+  imports: [RouterLink, NgStyle, CurrencyPipe, DatePipe, NgIf, MatMiniFabButton, MatError, MatIcon]
 })
 export class ItemBarComponent implements OnInit{
   @Input() cartItem: CartItem;

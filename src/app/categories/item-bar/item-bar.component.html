@@ -1,16 +1,18 @@
 <img *ngIf="cartItem?.images" [src]="'data:image/png;base64,' + cartItem.images[0].image" alt="">
-<div class="description">
-  <div class="name">
-    {{cartItem.itemName}}
+<div class="description-price-quantity">
+  <div class="description">
+    <div class="name">
+      {{cartItem.itemName}}
+    </div>
+    <div class="size">{{cartItem.itemSize}} (max q-ty: {{getCurrentQuantityMax()}})</div>
   </div>
-  <div class="size">{{cartItem.itemSize}} (max quantity: {{getCurrentQuantityMax()}})</div>
-</div>
-<div class="price-quantity">
-  <div class="price">{{cartItem.itemPriceAfterDiscount | currency}}</div>
-  <div class="quantity">
-    <button mat-mini-fab (click)="addMore(-1)">-</button> 
-    {{cartItem.quantity}}
-    <button mat-mini-fab (click)="addMore(1)">+</button>
+  <div class="price-quantity">
+    <div class="price">{{cartItem.itemPriceAfterDiscount | currency}}</div>
+    <div class="quantity">
+      <button mat-mini-fab (click)="addMore(-1)"><mat-icon>remove</mat-icon></button> 
+      {{cartItem.quantity}}
+      <button mat-mini-fab (click)="addMore(1)"><mat-icon>add</mat-icon></button>
+    </div>
+    <!-- <div class="total-price">{{cartItem.totalPriceAfterDiscount | currency}}</div> -->
   </div>
-  <!-- <div class="total-price">{{cartItem.totalPriceAfterDiscount | currency}}</div> -->
 </div>

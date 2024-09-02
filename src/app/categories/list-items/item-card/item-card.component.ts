@@ -13,7 +13,7 @@ import { AuthService } from 'src/app/auth/auth.service';
   standalone: true,
   imports: [NgIf, RouterLink, PercentPipe, CurrencyPipe, NgStyle, NgForOf]
 })
-export class ItemCardComponent {
+export class ItemCardComponent implements OnInit {
   @Input() item: ItemCard;
   @Input() isBreadcrumbResolved: boolean = false;
 
@@ -23,22 +23,38 @@ export class ItemCardComponent {
     private authService: AuthService
   ) {}
 
+  ngOnInit(): void {
+    if (this.authService.user) return;
+    let id = this.localService.favoritesIds.indexOf(this.item.id);
+    let onWishList = id !== -1;
+    this.item.metadata.onWishList = onWishList;
+  }
+
   onFavoriteToggle(event: MouseEvent) {
     event.stopPropagation();
     if (this.item.metadata.onWishList) {
-      if (this.authService.user) {
-        this.favoritesService.removeItem(this.item.id).subscribe({next: () => this.item.metadata.onWishList = true, error: () => {}})
-      } else {
-        this.localService.removeFromFavorites(this.item.id);
-      }
+      this.removeFromFavorites();
     } else {
-      if (this.authService.user) {
-        this.favoritesService.addItem(this.item.id).subscribe({next: () => this.item.metadata.onWishList = true, error: () => {}});
-      } else {
-        this.localService.addToFavorites(this.item.id);
-      }
+      this.addToFavorites();
     }
-      
+  }
+
+  addToFavorites() {
+    if (this.authService.user) {
+      this.favoritesService.addItem(this.item.id).subscribe({next: () => this.item.metadata.onWishList = true, error: () => {}});
+    } else {
+      this.localService.addToFavorites(this.item.id);
+      this.item.metadata.onWishList = true;
+    }
+  }
+
+  removeFromFavorites() {
+    if (this.authService.user) {
+      this.favoritesService.removeItem(this.item.id).subscribe({next: () => this.item.metadata.onWishList = true, error: () => {}})
+    } else {
+      this.localService.removeFromFavorites(this.item.id);
+      this.item.metadata.onWishList = false;
+    }
   }
 
   getLinkToItem() {

@@ -1,4 +1,4 @@
-@import "../../../variables";
+@use "../../../variables" as variables;
 
 nav {
   display: none;
@@ -6,11 +6,28 @@ nav {
   img {
     cursor: pointer;
   }
+
+  & > * {
+    cursor: pointer;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .selected {
+    background: variables.$secondary;
+    svg > * {
+      stroke: variables.$on-secondary;
+    }
+  }
 }
 
 @media screen and (max-width: 600px) {
   nav {
-    background: $dark-theme-background;
+    background: variables.$dark-theme-background;
     z-index: 999;
     height: 67px;
     width: 100vw;

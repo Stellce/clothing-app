@@ -47,23 +47,28 @@ export class ItemComponent implements OnInit{
     this.selectedUniqueItem = uniqueItem;
   }
 
+  addMore(n: number) {
+    let res = n + this.quantity;
+    let isPositiveRes = ((res) > 0);
+    let isValidQuantity = isPositiveRes && this.selectedUniqueItem.quantity >= res;
+    if (!isValidQuantity) return;
+    this.quantity += n;
+  }
+
   addToCart() {
     if (this.quantity > this.selectedUniqueItem.quantity) return;
-    const item: CartItem = {
-      itemId: this.item.id,
-      quantity: this.quantity,
-      itemSize: this.selectedUniqueItem.size,
-      ...this.item,
-      itemName: this.item.name,
-      itemPrice: this.item.price,
-      itemPriceAfterDiscount: this.item.priceAfterDiscount,
-      totalPrice: this.item.price * this.quantity,
-      totalPriceAfterDiscount: this.item.priceAfterDiscount * this.quantity
-    }
     if (this.authService.user) {
-      this.cartService.addItem(item);
+      this.cartService.addItem({
+        itemId: this.item.id,
+        quantity: this.quantity,
+        size: this.selectedUniqueItem.size
+      });
     } else {
-      this.localService.addToCart(item as LocalCartItem);
+      this.localService.addToCart({
+        id: this.item.id,
+        quantity: this.quantity,
+        itemSize: this.selectedUniqueItem.size
+      });
     }
   }
 

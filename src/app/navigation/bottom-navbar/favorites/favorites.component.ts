@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {Order} from "../../../item/order.model";
 import {ItemsService} from "../../../item/items.service";
 import { ItemCardComponent } from '../../../categories/list-items/item-card/item-card.component';
 import { NgFor } from '@angular/common';
@@ -16,7 +15,7 @@ import { AuthService } from 'src/app/auth/auth.service';
     imports: [NgFor, ItemCardComponent]
 })
 export class FavoritesComponent implements OnInit{
-  items: ItemCard[];
+  items: ItemCard[] = [];
   constructor(
     private favoritesService: FavoritesService,
     private localService: LocalService,
@@ -28,7 +27,13 @@ export class FavoritesComponent implements OnInit{
       this.favoritesService.getItems().subscribe(items => this.items = items);
     } else {
       let itemsIds = this.localService.getFavoritesIds();
-      itemsIds.forEach((itemId, index) => this.itemService.requestItemById(itemId).subscribe(item => this.items[index] = item));
+      itemsIds.forEach((itemId, index) => this.itemService.requestItemById(itemId).subscribe(item => {
+        item.metadata.onWishList = true;
+        this.items[index] = item;
+        this.itemService.requestItemImages(itemId).subscribe(images => {
+          this.items[index].images = images;
+        })
+      }));
     }
   }
 }

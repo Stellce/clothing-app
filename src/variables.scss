@@ -20,6 +20,9 @@ $breadcrumb-hover: #19ccb2;
 $accent-color: mat.get-theme-color(m3-theme.$dark-theme, on-surface-variant);
 $accent: mat.get-theme-color(m3-theme.$dark-theme, surface-bright);
 
+$secondary: mat.get-theme-color(m3-theme.$dark-theme, secondary);
+$on-secondary: mat.get-theme-color(m3-theme.$dark-theme, on-secondary);
+
 /*
 Valid color roles are: 
   background, error, error-container, inverse-on-surface, inverse-primary, inverse-surface, on-background, on-error, on-error-container, 

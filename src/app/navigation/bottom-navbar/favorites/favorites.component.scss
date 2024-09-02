@@ -1,4 +1,4 @@
-.favorites {
+:host {
   display: grid;
   max-width: 1600px;
   margin: 10px auto;
@@ -9,19 +9,19 @@
 }
 
 @media screen and (max-width: 1200px) {
-  .favorites {
+  :host {
     grid-template-columns: repeat(4, 1fr);
   }
 }
 
 @media screen and (max-width: 960px) {
-  .favorites {
+  :host {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
 @media screen and (max-width: 600px) {
-  .favorites {
+  :host {
     grid-template-columns: repeat(2, 1fr);
   }
 }
