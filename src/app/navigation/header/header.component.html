@@ -6,7 +6,7 @@
   <a [routerLink]="['/', 'products', 'men']">MEN</a>
   <a [routerLink]="['/', 'products', 'women']">WOMEN</a>
 </div>
-<div class="tab-name" *ngIf="!isProductPage">
+<div class="tab-name" *ngIf="!isProductPage && tabIcon">
   {{tabIcon.name| firstLetterUpperCase}} 
   <img [src]="tabIcon.link" [alt]="tabIcon.name" [height]="tabIcon.height" [width]="tabIcon.width"/>
 </div>
