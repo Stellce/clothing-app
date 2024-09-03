@@ -10,6 +10,7 @@ import { BreadcrumbComponent } from '../categories/list-items/breadcrumb/breadcr
 import { UniqueItem } from '../categories/list-items/item-card/item-card.model';
 import { LocalService } from '../local/local.service';
 import { CartService } from '../navigation/navbar/cart/cart.service';
+import { FirstLetterUpperCasePipe } from '../pipes/first-letter-upper-case.pipe';
 import { Image } from "./image.model";
 import { ItemDetails } from "./item.model";
 import { ItemsService } from "./items.service";
@@ -20,13 +21,13 @@ import { ReviewsComponent } from './reviews/reviews.component';
     templateUrl: './item.component.html',
     styleUrls: ['./item.component.scss'],
     standalone: true,
-  imports: [NgIf, BreadcrumbComponent, NgFor, NgClass, MatButtonModule, ReviewsComponent, CurrencyPipe, MatFormFieldModule, MatInputModule, FormsModule, NgStyle]
+  imports: [NgIf, BreadcrumbComponent, NgFor, NgClass, MatButtonModule, ReviewsComponent, CurrencyPipe, MatFormFieldModule, MatInputModule, FormsModule, NgStyle, FirstLetterUpperCasePipe]
 })
 export class ItemComponent implements OnInit{
   item: ItemDetails;
   selectedUniqueItem: UniqueItem;
   quantity: number = 1;
-  params: { key: string, value: string }[];
+  params: { key: string, value: string }[] = [];
   selectedImageIndex: number = 0;
   constructor(
     private itemsService: ItemsService,
@@ -42,6 +43,7 @@ export class ItemComponent implements OnInit{
 
   setUniqueItem(uniqueItem: UniqueItem) {
     this.selectedUniqueItem = uniqueItem;
+    if (this.quantity > uniqueItem.quantity) this.quantity = uniqueItem.quantity;
   }
 
   addMore(n: number) {
@@ -88,12 +90,10 @@ export class ItemComponent implements OnInit{
       console.log(item)
       this.selectedUniqueItem = item.uniqueItems.find(i => i.quantity > 0);
       this.item.params = {
-        description: this.item.description,
         color: this.item.color,
-        brand: this.item.brand,
-        quantity: this.selectedUniqueItem.quantity
+        brand: this.item.brand
       };
-      // this.params = paramsPrepareForView(this.item.params);
+      Object.entries(this.item.params).forEach(([key, value]) => this.params.push({key, value}))
       this.itemsService.requestItemImages(item.id).subscribe((images: Image[]) => {
         this.item.images = images;
       })

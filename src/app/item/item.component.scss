@@ -1,7 +1,7 @@
-@import "../../variables";
+@use "../../variables";
 
 .item {
-  color: $text-color;
+  color: variables.$text-color;
   font-size: 16px;
   display: flex;
   flex-direction: column;
@@ -60,7 +60,7 @@
           padding: 5px 10px;
 
           & > * {
-            background: $dark-theme-background-darker;
+            background: variables.$dark-theme-background-darker;
             color: grey;
             border-radius: 50%;
             aspect-ratio: 1/1;
@@ -71,14 +71,14 @@
           }
 
           .available {
-            background: $dark-theme-background-darker;
+            background: variables.$dark-theme-background-darker;
             color: white;
             cursor: pointer;
           }
   
           .selected {
-            background: $accent;
-            color: $accent-color;
+            background: variables.$accent;
+            color: variables.$accent-color;
           }
         }
       }
@@ -111,27 +111,34 @@
         justify-content: space-between;
       }
 
-      .count {
+      .quantity {
         margin: 10px 20px;
+        display: flex;
+        align-items: center;
 
         span {
           font-size: 18px;
         }
 
-        input {
-          width: 50px;
-          background: $dark-theme-background-lighter;
-          outline: 0;
-          border: 0;
-          color: white;
-          text-align: right;
-        }
+        .select-quantity {
+          max-width: 150px;
 
-        input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button {
-          -webkit-appearance: none;
-          margin: 0;
-        }
+          input {
+            width: 50px;
+            background: variables.$dark-theme-background;
+            outline: 0;
+            border: 0;
+            color: variables.$text-color;
+            text-align: center;
+            font-size: 18px;
+          }
+  
+          input::-webkit-outer-spin-button,
+          input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+          }
+        }        
       }
 
       .actions {

@@ -24,17 +24,19 @@
       </div>
       <div class="parameters">
         <span>Parameters</span>
+        {{item.description}}
         <div class="param space-between" *ngFor="let param of params">
-          <span>{{param.key + ":"}}</span>
+          <span>{{param.key + ":" | firstLetterUpperCase}}</span>
           <span>{{param.value}}</span>
         </div>
       </div>
-      <div class="count space-between">
-        <span>Quantity (max: {{selectedUniqueItem.quantity}}):</span>    
-        <button mat-mini-fab (click)="addMore(-1)">-</button> 
-        <input type="number" [(ngModel)]="quantity">
-        <button mat-mini-fab (click)="addMore(1)">+</button> 
-        <mat-error *ngIf="quantity > selectedUniqueItem.quantity">Please, provide number less or equal to the quantity of the item</mat-error>
+      <div class="quantity space-between">
+        <span>Quantity (max: {{selectedUniqueItem.quantity}}):</span>
+        <div class="select-quantity">
+          <button mat-mini-fab (click)="addMore(-1)">-</button> 
+          <input type="number" [(ngModel)]="quantity">
+          <button mat-mini-fab (click)="addMore(1)">+</button>
+        </div>  
       </div>
       <div class="actions">
         <button mat-flat-button color="primary" (click)="addToCart()">Add to cart</button>
