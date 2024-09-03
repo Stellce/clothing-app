@@ -1,22 +1,19 @@
-import {Component, OnInit} from '@angular/core';
-import {ItemsService} from "./items.service";
-import {ItemDetails} from "./item.model";
-import {ActivatedRoute} from "@angular/router";
-import {Image} from "./image.model";
-import { ReviewsComponent } from './reviews/reviews.component';
+import { CurrencyPipe, NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { FormsModule } from "@angular/forms";
 import { MatButtonModule } from '@angular/material/button';
-import { BreadcrumbComponent } from '../categories/list-items/breadcrumb/breadcrumb.component';
-import {NgIf, NgFor, NgClass, CurrencyPipe, NgStyle} from '@angular/common';
-import {MatFormFieldModule} from "@angular/material/form-field";
-import {MatInputModule} from "@angular/material/input";
-import {FormsModule} from "@angular/forms";
-import {OrderItem} from "../order-page/order-item.model";
-import { UniqueItem } from '../categories/list-items/item-card/item-card.model';
-import { CartItem } from '../navigation/bottom-navbar/cart/cart-item.model';
-import { CartService } from '../navigation/bottom-navbar/cart/cart.service';
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { ActivatedRoute } from "@angular/router";
 import { AuthService } from '../auth/auth.service';
+import { BreadcrumbComponent } from '../categories/list-items/breadcrumb/breadcrumb.component';
+import { UniqueItem } from '../categories/list-items/item-card/item-card.model';
 import { LocalService } from '../local/local.service';
-import { LocalCartItem } from '../local/local-cart-item.model';
+import { CartService } from '../navigation/navbar/cart/cart.service';
+import { Image } from "./image.model";
+import { ItemDetails } from "./item.model";
+import { ItemsService } from "./items.service";
+import { ReviewsComponent } from './reviews/reviews.component';
 
 @Component({
     selector: 'app-item',

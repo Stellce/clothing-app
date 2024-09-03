@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import { ActivatedRoute, RouterLink } from "@angular/router";
-import {Category} from "./category.model";
-import {CategoriesService} from "./categories.service";
+import { LowerCasePipe, NgFor, NgIf, UpperCasePipe } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { NgIf, NgFor, UpperCasePipe, LowerCasePipe } from '@angular/common';
+import { ActivatedRoute, RouterLink } from "@angular/router";
+import { CategoriesService } from "./categories.service";
+import { Category } from "./category.model";
 import { BreadcrumbComponent } from './list-items/breadcrumb/breadcrumb.component';
 
 @Component({

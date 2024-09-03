@@ -1,6 +1,6 @@
-import {Injectable} from "@angular/core";
-import {AllowedFilters} from "./allowed-filters.model";
-import {SelectedFilters} from "./selected-filters.model";
+import { Injectable } from "@angular/core";
+import { AllowedFilters } from "./allowed-filters.model";
+import { SelectedFilters } from "./selected-filters.model";
 
 @Injectable({providedIn: "root"})
 export class FilterService {

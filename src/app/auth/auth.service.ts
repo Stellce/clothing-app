@@ -1,20 +1,19 @@
-import {Injectable} from '@angular/core';
-import {User} from "./user.model";
-import {LoginUser} from "./login/login-user.model";
-import {RegisterUser} from "./register/register-user.model";
-import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
-import {Router} from "@angular/router";
-import {DialogData} from "../dialogs/dialog/dialog-data.model";
-import {DialogComponent} from "../dialogs/dialog/dialog.component";
-import {MatDialog} from "@angular/material/dialog";
-import {ErrorDialogData} from "../dialogs/error-dialog/error-dialog-data.model";
-import {NgForm} from "@angular/forms";
-import {environment} from 'src/environments/environment';
-import {tap} from 'rxjs';
-import {TokenInfo} from "./token-info.model";
-import {jwtDecode} from "jwt-decode";
-import {JwtDecoded} from "./jwt-decoded.model";
-import {RefreshTokenReq} from "./refresh-token-req.model";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
+import { Injectable } from '@angular/core';
+import { NgForm } from "@angular/forms";
+import { MatDialog } from "@angular/material/dialog";
+import { Router } from "@angular/router";
+import { jwtDecode } from "jwt-decode";
+import { tap } from 'rxjs';
+import { environment } from 'src/environments/environment';
+import { DialogData } from "../dialogs/dialog/dialog-data.model";
+import { DialogComponent } from "../dialogs/dialog/dialog.component";
+import { JwtDecoded } from "./jwt-decoded.model";
+import { LoginUser } from "./login/login-user.model";
+import { RefreshTokenReq } from "./refresh-token-req.model";
+import { RegisterUser } from "./register/register-user.model";
+import { TokenInfo } from "./token-info.model";
+import { User } from "./user.model";
 
 @Injectable({
   providedIn: 'root'

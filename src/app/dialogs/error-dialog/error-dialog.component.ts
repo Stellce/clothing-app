@@ -1,7 +1,7 @@
-import {Component, Inject} from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogModule } from "@angular/material/dialog";
-import {DialogData} from "../dialog/dialog-data.model";
+import { Component, Inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MAT_DIALOG_DATA, MatDialogModule } from "@angular/material/dialog";
+import { DialogData } from "../dialog/dialog-data.model";
 
 @Component({
     selector: 'app-error-dialog',

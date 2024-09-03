@@ -1,12 +1,11 @@
-import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../auth.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
 import { LocalService } from 'src/app/local/local.service';
-import { ItemsService } from 'src/app/item/items.service';
-import { FavoritesService } from 'src/app/navigation/bottom-navbar/favorites/favorites.service';
-import { forkJoin, merge } from 'rxjs';
-import { CartService } from 'src/app/navigation/bottom-navbar/cart/cart.service';
+import { CartService } from 'src/app/navigation/navbar/cart/cart.service';
+import { FavoritesService } from 'src/app/navigation/navbar/favorites/favorites.service';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-activate',

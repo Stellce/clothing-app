@@ -1,14 +1,14 @@
-import {Component, OnInit} from '@angular/core';
-import {User} from "../../../auth/user.model";
-import {AuthService} from "../../../auth/auth.service";
-import {ItemsService} from "../../../item/items.service";
-import {Order} from "../../../item/order.model";
-import {AccountService} from "./account.service";
-import { RouterLink } from '@angular/router';
-import { ItemBarComponent } from '../../../categories/item-bar/item-bar.component';
-import { MatIconModule } from '@angular/material/icon';
+import { NgIf } from "@angular/common";
+import { Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import {NgIf} from "@angular/common";
+import { MatIconModule } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
+import { AuthService } from "../../../auth/auth.service";
+import { User } from "../../../auth/user.model";
+import { ItemBarComponent } from '../../../categories/item-bar/item-bar.component';
+import { ItemsService } from "../../../item/items.service";
+import { Order } from "../../../item/order.model";
+import { AccountService } from "./account.service";
 
 @Component({
     selector: 'app-account',

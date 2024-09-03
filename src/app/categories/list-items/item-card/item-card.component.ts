@@ -1,10 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ItemCard } from "./item-card.model";
+import { CurrencyPipe, NgForOf, NgIf, NgStyle, PercentPipe } from '@angular/common';
+import { Component, Input, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { NgIf, PercentPipe, CurrencyPipe, NgStyle, NgForOf } from '@angular/common';
-import { FavoritesService } from 'src/app/navigation/bottom-navbar/favorites/favorites.service';
-import { LocalService } from 'src/app/local/local.service';
 import { AuthService } from 'src/app/auth/auth.service';
+import { LocalService } from 'src/app/local/local.service';
+import { FavoritesService } from 'src/app/navigation/navbar/favorites/favorites.service';
+import { ItemCard } from "./item-card.model";
 
 @Component({
   selector: 'app-item-card',
@@ -14,7 +14,7 @@ import { AuthService } from 'src/app/auth/auth.service';
   imports: [NgIf, RouterLink, PercentPipe, CurrencyPipe, NgStyle, NgForOf]
 })
 export class ItemCardComponent implements OnInit {
-  @Input() item: ItemCard;
+  @Input() item: ItemCard = {} as ItemCard;
   @Input() isBreadcrumbResolved: boolean = false;
 
   constructor(
@@ -25,9 +25,9 @@ export class ItemCardComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.authService.user) return;
-    let id = this.localService.favoritesIds.indexOf(this.item.id);
+    let id = this.localService.favoritesIds.indexOf(this.item?.id);
     let onWishList = id !== -1;
-    this.item.metadata.onWishList = onWishList;
+    if (this.item && this.item.metadata) this.item.metadata.onWishList = onWishList;
   }
 
   onFavoriteToggle(event: MouseEvent) {

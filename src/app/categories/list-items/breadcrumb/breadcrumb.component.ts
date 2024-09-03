@@ -1,8 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { NgFor, NgIf } from '@angular/common';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from "@angular/router";
-import {CategoriesService} from "../../categories.service";
-import {ItemsService} from "../../../item/items.service";
-import { NgIf, NgFor } from '@angular/common';
+import { CategoriesService } from "../../categories.service";
 
 @Component({
     selector: 'app-breadcrumb',

@@ -1,0 +1,57 @@
+<div
+  [title]="links.dashboard"
+  [routerLink]="buildLink(links.dashboard)"
+  [routerLinkActive]="'selected'"
+>
+  <svg width="26" height="47" viewBox="0 0 26 47" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17 18C17 18 13.5 24 13 24C12.5 24 3.5 7.99998 3.5 7.49997C3.50001 6.99995 22.5 7.00008 22.5 7.50003C22.5 7.99998 18.5 15.5 18.5 15.5" stroke="#D9D9D9" stroke-linecap="round"/>
+    <path d="M9.00001 29C9.00001 29 12.5 23 13 23C13.5 23 22.5 39 22.5 39.5C22.5 40 3.49999 39.9999 3.5 39.5C3.50001 39 7.49999 31.5 7.49999 31.5" stroke="#D9D9D9" stroke-linecap="round"/>
+  </svg>    
+</div>
+
+<div
+  [title]="links.search"
+  [routerLink]="buildLink(links.search)"
+  [routerLinkActive]="'selected'"
+>
+  <svg width="39" height="40" viewBox="0 0 39 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="17.4603" cy="17.8968" rx="11.1111" ry="11.3889" stroke="#D9D9D9" stroke-width="2"/>
+    <path d="M31.746 32.5397L26.9841 27.6588" stroke="#D9D9D9" stroke-width="2" stroke-linecap="round"/>
+  </svg>      
+</div>
+
+<div
+  [title]="links.account"
+  [routerLink]="buildLink(links.account)"
+  [ngClass]="{'selected': url.includes('account')}"
+>
+  <svg width="40" height="39" viewBox="0 0 40 39" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M32.0962 32.4557C31.3546 30.4306 29.7205 28.6412 27.4474 27.3649C25.1742 26.0886 22.389 25.3969 19.5238 25.3969C16.6586 25.3969 13.8734 26.0886 11.6002 27.3649C9.3271 28.6412 7.69302 30.4306 6.95144 32.4557" stroke="#D9D9D9" stroke-width="2" stroke-linecap="round"/>
+    <ellipse cx="19.5238" cy="12.6984" rx="6.50794" ry="6.34921" stroke="#D9D9D9" stroke-width="2" stroke-linecap="round"/>
+  </svg>   
+</div>
+
+<div
+  [title]="links.favorites"
+  [routerLink]="buildLink(links.favorites)"
+  [routerLinkActive]="'selected'"
+  [routerLinkActiveOptions]=""
+>
+  <svg width="40" height="39" viewBox="0 0 40 39" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M7.38685 22.21L18.8482 32.7141C19.169 33.0081 19.3294 33.1551 19.5238 33.1551C19.7183 33.1551 19.8787 33.0081 20.1995 32.7141L31.6608 22.21C34.9051 19.2367 35.2968 14.2605 32.5577 10.8162L32.163 10.32C28.9394 6.26638 22.5912 6.95746 20.3152 11.6097C19.9931 12.2682 19.0546 12.2682 18.7324 11.6097C16.4565 6.95746 10.1083 6.26638 6.88465 10.32L6.48999 10.8162C3.75091 14.2605 4.14261 19.2367 7.38685 22.21Z" stroke="#D9D9D9" stroke-width="2"/>
+  </svg>
+</div>
+
+<div
+  [title]="links.cart"
+  [routerLink]="buildLink(links.cart)"
+  [routerLinkActive]="'selected'"
+>
+  <svg width="39" height="40" viewBox="0 0 39 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M15.873 24.4048L15.873 19.5238" stroke="#D9D9D9" stroke-width="2" stroke-linecap="round"/>
+    <path d="M12.6984 8.13495L9.5238 14.6429M25.3968 8.13495L28.5714 14.6429" stroke="#D9D9D9" stroke-width="2" stroke-linecap="round"/>
+    <path d="M22.2222 24.4048L22.2222 19.5238" stroke="#D9D9D9" stroke-width="2" stroke-linecap="round"/>
+    <path d="M4.7619 14.6429H4.93943C6.38255 14.6429 7.10411 14.6429 7.63722 15.0423C8.17032 15.4418 8.37301 16.1343 8.77838 17.5193L11.8565 28.0363C12.2619 29.4213 12.4646 30.1138 12.9977 30.5133C13.5308 30.9127 14.2524 30.9127 15.6955 30.9127H22.3997C23.8429 30.9127 24.5644 30.9127 25.0975 30.5133C25.6306 30.1138 25.8333 29.4213 26.2387 28.0363L29.3169 17.5193C29.7222 16.1343 29.9249 15.4418 30.458 15.0423C30.9911 14.6429 31.7127 14.6429 33.1558 14.6429H33.3333" stroke="#D9D9D9" stroke-width="2" stroke-linecap="round"/>
+    <path d="M4.7619 14.6429L33.3333 14.6429" stroke="#D9D9D9" stroke-width="2" stroke-linecap="round"/>
+  </svg>
+</div>

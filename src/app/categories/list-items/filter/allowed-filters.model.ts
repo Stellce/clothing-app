@@ -5,6 +5,5 @@ export class AllowedFilters {
   brands: {id: string, name: string}[];
 
   materials: string[];
-  // rating
   seasons: string[];
 }

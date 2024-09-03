@@ -1,28 +1,41 @@
-import {Component, OnInit} from '@angular/core';
-import {MatIconRegistry} from "@angular/material/icon";
-import {DomSanitizer} from "@angular/platform-browser";
-import { BottomNavbarComponent } from './navigation/bottom-navbar/bottom-navbar.component';
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { MatIcon, MatIconRegistry } from "@angular/material/icon";
+import { DomSanitizer } from "@angular/platform-browser";
 import { RouterOutlet } from '@angular/router';
+import { AuthService } from "./auth/auth.service";
 import { HeaderComponent } from './navigation/header/header.component';
-import {AuthService} from "./auth/auth.service";
+import { NavbarComponent } from './navigation/navbar/navbar.component';
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
     standalone: true,
-    imports: [HeaderComponent, RouterOutlet, BottomNavbarComponent]
+    imports: [HeaderComponent, RouterOutlet, NavbarComponent, MatIcon],
+    providers: [HttpClient]
 })
 export class AppComponent implements OnInit{
   title = 'cloth-app';
-
+  icons = [
+    'logo',
+    'search', 
+    'account', 
+    'favorites', 
+    'cart'
+  ]
+  
   constructor(
     private iconRegistry: MatIconRegistry,
     private sanitizer: DomSanitizer,
     private authService: AuthService
-  ) {}
+  ) {
+    this.icons.forEach(icon => {
+      this.iconRegistry.addSvgIcon(icon, this.sanitizer.bypassSecurityTrustResourceUrl(`assets/navbar/${icon}.svg`));
+    })
+  }
   ngOnInit() {
-    this.iconRegistry.addSvgIcon('Favorites', this.sanitizer.bypassSecurityTrustResourceUrl('assets/navbar/Favorites.svg'))
     this.authService.autoAuth();
+
   }
 }

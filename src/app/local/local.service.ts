@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
+import { CartItem } from "../navigation/navbar/cart/cart-item.model";
 import { LocalCartItem } from "./local-cart-item.model";
-import { CartItem } from "../navigation/bottom-navbar/cart/cart-item.model";
 
 @Injectable({ providedIn: 'root' })
 export class LocalService {

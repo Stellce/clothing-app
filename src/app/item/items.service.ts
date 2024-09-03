@@ -1,14 +1,12 @@
-import {Injectable} from "@angular/core";
-import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
-import {environment} from "../../environments/environment";
-import {BehaviorSubject, of, switchMap, take, tap} from "rxjs";
-import {ItemsPage} from "../categories/list-items/item-card/res/items-page.model";
-import {CatalogItem} from "../categories/list-items/item-card/item-card.model";
-import {ItemsParamsRequest} from "../categories/list-items/item-card/req/items-params-request.model";
-import {Order} from "./order.model";
-import {ItemDetails} from "./item.model";
-import {Image} from "./image.model";
-import {OrderItem} from "../order-page/order-item.model";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { BehaviorSubject, tap } from "rxjs";
+import { environment } from "../../environments/environment";
+import { CatalogItem } from "../categories/list-items/item-card/item-card.model";
+import { ItemsParamsRequest } from "../categories/list-items/item-card/req/items-params-request.model";
+import { ItemsPage } from "../categories/list-items/item-card/res/items-page.model";
+import { Image } from "./image.model";
+import { ItemDetails } from "./item.model";
 
 @Injectable({providedIn: 'root'})
 export class ItemsService {

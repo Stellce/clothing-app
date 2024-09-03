@@ -1,4 +1,4 @@
-import {Filter} from "../../filter/filter.model";
+import { Filter } from "../../filter/filter.model";
 
 export interface ItemsParamsRequest extends Filter{
   gender: string;

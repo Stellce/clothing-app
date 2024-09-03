@@ -1,13 +1,13 @@
-<header>
-  <div class="logo" [routerLink]="['/', 'dashboard']">
-    <img src="assets/navbar/Dashboard.svg" alt="logo" height="47" width="26"/>
-    <span>SPACE FINCHER</span>
-  </div>
-  <div class="genders">
-    <a [routerLink]="['/', 'products', 'men']">MEN</a>
-    <a [routerLink]="['/', 'products', 'women']">WOMEN</a>
-  </div>
-  <nav>
-    <img *ngFor="let link of links" [src]="srcPrefics + link + svgExtension" [alt]="link" [title]="link" [routerLink]="buildLink(link)">
-  </nav>
-</header>
+<div class="logo" [routerLink]="['/', 'dashboard']">
+  <img src="assets/navbar/logo.svg" alt="logo" height="47" width="26"/>
+  <span>SPACE FINCHER</span>
+</div>
+<div class="genders" *ngIf="isProductPage">
+  <a [routerLink]="['/', 'products', 'men']">MEN</a>
+  <a [routerLink]="['/', 'products', 'women']">WOMEN</a>
+</div>
+<div class="tab-name" *ngIf="!isProductPage">
+  {{tabIcon.name| firstLetterUpperCase}} 
+  <img [src]="tabIcon.link" [alt]="tabIcon.name" [height]="tabIcon.height" [width]="tabIcon.width"/>
+</div>
+<app-navbar></app-navbar>

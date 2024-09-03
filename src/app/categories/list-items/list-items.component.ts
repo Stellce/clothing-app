@@ -1,19 +1,18 @@
-import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
-import {ItemCard} from "./item-card/item-card.model";
-import {ActivatedRoute} from "@angular/router";
-import { MatTabChangeEvent, MatTabsModule } from "@angular/material/tabs";
-import {ItemsParamsRequest} from "./item-card/req/items-params-request.model";
-import {Filter} from "./filter/filter.model";
-import { MatDrawer, MatSidenavModule } from "@angular/material/sidenav";
-import {ItemsPage} from "./item-card/res/items-page.model";
-import {ItemsService} from "../../item/items.service";
-import { PaginatorComponent } from './paginator/paginator.component';
-import { ItemCardComponent } from './item-card/item-card.component';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { NgFor, NgIf } from '@angular/common';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatRippleModule } from '@angular/material/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDrawer, MatSidenavModule } from "@angular/material/sidenav";
+import { MatTabChangeEvent, MatTabsModule } from "@angular/material/tabs";
+import { ActivatedRoute } from "@angular/router";
+import { ItemsService } from "../../item/items.service";
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { FilterComponent } from './filter/filter.component';
-import { NgIf, NgFor } from '@angular/common';
+import { Filter } from "./filter/filter.model";
+import { ItemCardComponent } from './item-card/item-card.component';
+import { ItemCard } from "./item-card/item-card.model";
+import { ItemsParamsRequest } from "./item-card/req/items-params-request.model";
+import { PaginatorComponent } from './paginator/paginator.component';
 
 @Component({
     selector: 'app-list-items',

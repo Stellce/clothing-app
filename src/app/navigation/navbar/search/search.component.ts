@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
-import {ItemsService} from "../../../item/items.service";
-import { ListItemsComponent } from '../../../categories/list-items/list-items.component';
 import { NgIf } from '@angular/common';
-import { MatIconModule } from '@angular/material/icon';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+import { ListItemsComponent } from '../../../categories/list-items/list-items.component';
+import { ItemsService } from "../../../item/items.service";
 
 @Component({
     selector: 'app-search',

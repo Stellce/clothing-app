@@ -1,7 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {Order} from "../item/order.model";
-import {OrdersService} from "./orders.service";
-import {OrderReq} from "./order-req.model";
+import { Component, OnInit } from '@angular/core';
+import { Order } from "../item/order.model";
+import { OrdersService } from "./orders.service";
 
 @Component({
     selector: 'app-order-page',

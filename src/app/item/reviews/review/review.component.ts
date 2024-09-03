@@ -1,6 +1,6 @@
-import {Component, Input} from '@angular/core';
-import {Review} from "../review.model";
-import { NgFor, NgClass, DatePipe } from '@angular/common';
+import { DatePipe, NgClass, NgFor } from '@angular/common';
+import { Component, Input } from '@angular/core';
+import { Review } from "../review.model";
 
 @Component({
     selector: 'app-review',

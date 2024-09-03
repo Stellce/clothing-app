@@ -24,20 +24,20 @@
     (selectedTabChange)="loadItemsBySubcategory($event)">
     <mat-tab [label]="subcategories.length > 0 ? 'All' : ''">
       <mat-spinner *ngIf="items?.length == 0 && isLoading"></mat-spinner>
-      <div class="cloth-grid">
+      <div class="cloth-grid" *ngIf="items.length">
         <app-item-card *ngFor="let item of items" [item]="item" [isBreadcrumbResolved]="true"></app-item-card>
       </div>
     </mat-tab>
     <mat-tab *ngFor="let subcategory of subcategories" [label]="subcategory.name">
       <mat-spinner *ngIf="items?.length == 0 && isLoading"></mat-spinner>
-      <div class="cloth-grid">
+      <div class="cloth-grid" *ngIf="items.length">
         <app-item-card *ngFor="let item of items" [item]="item" [isBreadcrumbResolved]="true"></app-item-card>
       </div>
     </mat-tab>
   </mat-tab-group>
   <ng-template #noSubcategories>
     <mat-spinner *ngIf="items?.length === 0 && isLoading"></mat-spinner>
-    <div class="cloth-grid">
+    <div class="cloth-grid" *ngIf="items.length">
       <app-item-card *ngFor="let item of items" [item]="item" [isBreadcrumbResolved]="true"></app-item-card>
     </div>
   </ng-template>

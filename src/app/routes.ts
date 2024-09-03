@@ -1,22 +1,22 @@
 import { Routes } from '@angular/router';
-import {loginGuard} from "./auth/auth.guard";
+import { loginGuard } from "./auth/auth.guard";
 
 export const routes: Routes = [
   {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
 
-  {path: 'dashboard', loadComponent: () => import('./navigation/bottom-navbar/dashboard/dashboard.component').then(c => c.DashboardComponent)},
-  {path: 'search', loadComponent: () => import('./navigation/bottom-navbar/search/search.component').then(c => c.SearchComponent)},
+  {path: 'dashboard', loadComponent: () => import('./navigation/navbar/dashboard/dashboard.component').then(c => c.DashboardComponent)},
+  {path: 'search', loadComponent: () => import('./navigation/navbar/search/search.component').then(c => c.SearchComponent)},
   {path: 'account', children: [
-    {path: '', loadComponent: () => import('./navigation/bottom-navbar/account/account.component').then(c => c.AccountComponent), canActivate: [loginGuard]},
+    {path: '', loadComponent: () => import('./navigation/navbar/account/account.component').then(c => c.AccountComponent), canActivate: [loginGuard]},
     {path: 'login', loadComponent: () => import('./auth/login/login.component').then(c => c.LoginComponent)},
     {path: 'register', loadComponent: () => import('./auth/register/register.component').then(c => c.RegisterComponent)},
   ]},
   {path: 'activate-account', loadComponent: () => import('./auth/activate/activate.component').then(c => c.ActivateComponent)},
-  {path: 'favorites', loadComponent: () => import('./navigation/bottom-navbar/favorites/favorites.component').then(c => c.FavoritesComponent)},
-  {path: 'cart', loadComponent: () => import('./navigation/bottom-navbar/cart/cart.component').then(c => c.CartComponent)},
+  {path: 'favorites', loadComponent: () => import('./navigation/navbar/favorites/favorites.component').then(c => c.FavoritesComponent)},
+  {path: 'cart', loadComponent: () => import('./navigation/navbar/cart/cart.component').then(c => c.CartComponent)},
 
   {path: 'orders', canActivate: [loginGuard], children: [
-    {path: 'history', loadComponent: () => import('./navigation/bottom-navbar/account/order-history/order-history.component').then(c => c.OrderHistoryComponent)},
+    {path: 'history', loadComponent: () => import('./navigation/navbar/account/order-history/order-history.component').then(c => c.OrderHistoryComponent)},
     {path: ':orderId', loadComponent: () => import('./order-page/order-page.component').then(c => c.OrderPageComponent)},
   ]},
 

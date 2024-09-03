@@ -1,18 +1,19 @@
 import {Component, OnInit} from '@angular/core';
 import {ItemsService} from "../../../item/items.service";
 import { ItemCardComponent } from '../../../categories/list-items/item-card/item-card.component';
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { FavoritesService } from './favorites.service';
 import { ItemCard } from 'src/app/categories/list-items/item-card/item-card.model';
 import { LocalService } from 'src/app/local/local.service';
 import { AuthService } from 'src/app/auth/auth.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
     selector: 'app-favorites',
     templateUrl: './favorites.component.html',
     styleUrls: ['./favorites.component.scss'],
     standalone: true,
-    imports: [NgFor, ItemCardComponent]
+    imports: [NgFor, NgIf, ItemCardComponent]
 })
 export class FavoritesComponent implements OnInit{
   items: ItemCard[] = [];
@@ -27,13 +28,18 @@ export class FavoritesComponent implements OnInit{
       this.favoritesService.getItems().subscribe(items => this.items = items);
     } else {
       let itemsIds = this.localService.getFavoritesIds();
-      itemsIds.forEach((itemId, index) => this.itemService.requestItemById(itemId).subscribe(item => {
-        item.metadata.onWishList = true;
-        this.items[index] = item;
-        this.itemService.requestItemImages(itemId).subscribe(images => {
-          this.items[index].images = images;
+      let items$ = itemsIds.map((itemId, index) => this.itemService.requestItemById(itemId));
+      forkJoin(items$).subscribe(items => {
+        this.items = items;
+        items.forEach((item, index) => {
+          this.itemService.requestItemImages(item.id).subscribe(images => {
+            this.items[index].images = images;
+          })
         })
-      }));
+        // item.metadata.onWishList = true;
+        // this.items[index] = item;
+
+      })
     }
   }
 }

@@ -1,17 +1,14 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Order} from "../../item/order.model";
-import {CurrencyPipe, DatePipe, NgIf, NgStyle} from '@angular/common';
-import {RouterLink} from '@angular/router';
-import {ItemDetails} from "../../item/item.model";
-import {ItemsService} from "../../item/items.service";
-import { CartItem } from 'src/app/navigation/bottom-navbar/cart/cart-item.model';
-import { LocalCartItem } from 'src/app/local/local-cart-item.model';
+import { CurrencyPipe, DatePipe, NgIf, NgStyle } from '@angular/common';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatMiniFabButton } from '@angular/material/button';
 import { MatError } from '@angular/material/form-field';
-import { AuthService } from 'src/app/auth/auth.service';
-import { CartService } from 'src/app/navigation/bottom-navbar/cart/cart.service';
-import { LocalService } from 'src/app/local/local.service';
 import { MatIcon } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
+import { AuthService } from 'src/app/auth/auth.service';
+import { LocalService } from 'src/app/local/local.service';
+import { CartItem } from 'src/app/navigation/navbar/cart/cart-item.model';
+import { CartService } from 'src/app/navigation/navbar/cart/cart.service';
+import { ItemsService } from "../../item/items.service";
 
 @Component({
   selector: 'app-item-bar',
