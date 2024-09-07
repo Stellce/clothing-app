@@ -27,7 +27,7 @@ export class DashboardComponent implements OnInit{
       this.randomCategory = categories[this.getRandomIntTo(categories.length)];
       this.gender = this.getRandomGender();
       this.setCategoryImage(this.gender, this.randomCategory.id);
-    })
+    });
   }
 
   private getRandomGender() {

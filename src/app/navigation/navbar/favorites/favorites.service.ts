@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class FavoritesService {
-  private favoritesUrl = environment.backendUrl + '/users/wishlist';
+  private favoritesUrl = environment.backendUrl + '/customers/wishlist';
   constructor(private http: HttpClient) {}
 
   getItems() {

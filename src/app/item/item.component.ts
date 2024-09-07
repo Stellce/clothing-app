@@ -87,7 +87,6 @@ export class ItemComponent implements OnInit{
     this.itemsService.requestItemById(itemId).subscribe((item: ItemDetails) => {
       if(!item) return;
       this.item = item;
-      console.log(item)
       this.selectedUniqueItem = item.uniqueItems.find(i => i.quantity > 0);
       this.item.params = {
         color: this.item.color,

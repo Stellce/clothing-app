@@ -2,9 +2,9 @@ import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable } from '@angular/core';
 import { NgForm } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { jwtDecode } from "jwt-decode";
-import { tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { DialogData } from "../dialogs/dialog/dialog-data.model";
 import { DialogComponent } from "../dialogs/dialog/dialog.component";
@@ -20,11 +20,13 @@ import { User } from "./user.model";
 })
 export class AuthService {
   usersUrl = environment.backendUrl + '/users';
+  googleLoginUrl = environment.backendUrl + '/oauth2/login/google';
 
   constructor(
     private http: HttpClient,
     private router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private route: ActivatedRoute
   ) {}
 
   private _user: User;
@@ -46,6 +48,18 @@ export class AuthService {
     this._tokenInfo = token;
   }
 
+  loginGoogle(code: string): Observable<TokenInfo> {
+    const formData = new FormData();
+    formData.append('code', code);
+    formData.append('grant_type', 'authorization_code');
+    return this.http.post<TokenInfo>(this.googleLoginUrl, formData)
+      .pipe(
+        tap(
+          tokenInfo => this.authUser({...tokenInfo, access_token: tokenInfo.id_token})
+        )
+      );
+  }
+
   autoAuth() {
     let tokenInfo: TokenInfo = JSON.parse(localStorage.getItem("tokenInfo"));
     if (!tokenInfo) return;
@@ -61,7 +75,7 @@ export class AuthService {
   }
 
   register(registerUser: RegisterUser) {
-    return this.http.post(this.usersUrl + '/registration/customer', registerUser).pipe(tap(() => {
+    return this.http.post(this.usersUrl + '/oauth2/registration/customer', registerUser).pipe(tap(() => {
       let dialogData: DialogData = {
         title: 'Registration completed!',
         description: 'Please, check your email'
@@ -74,7 +88,7 @@ export class AuthService {
     let httpParams = new HttpParams()
       .set('token', token);
     let options = {params: httpParams};
-    return this.http.post<TokenInfo>(environment.backendUrl + '/keycloak/realms/e-commerce/users/enable', {}, options)
+    return this.http.post<TokenInfo>(environment.backendUrl + '/oauth2/registration/customer/activate-account', {}, options)
       .pipe(tap(tokenInfo => this.authUser(tokenInfo)));
   }
 
@@ -82,9 +96,7 @@ export class AuthService {
     loginUser = {
       username: loginUser.username,
       password: loginUser.password,
-      grant_type: 'password',
-      client_id: 'ecommerce-api',
-      client_secret: 'ecommerce-api-secret'
+      grant_type: 'password'
     }
     let body = new URLSearchParams();
     Object.entries(loginUser).forEach(([name, value]) => body.set(name, value));
@@ -93,7 +105,7 @@ export class AuthService {
     })
     let options = { headers: headers };
 
-    this.http.post<TokenInfo>(environment.backendUrl + '/keycloak/realms/e-commerce/protocol/openid-connect/token', body, options)
+    this.http.post<TokenInfo>(environment.backendUrl + '/oauth2/login/basic', body, options)
       .subscribe(tokenInfo => this.authUser(tokenInfo));
   }
 
@@ -143,21 +155,21 @@ export class AuthService {
 
   private setTokenRefresh(tokenTimeoutInMs: number) {
     setTimeout(() => {
-      //refresh token
       let refreshTokenReq: RefreshTokenReq = {
         grant_type: "refresh_token",
-        refresh_token: this.tokenInfo.refresh_token,
-        client_id: 'ecommerce-api',
-        client_secret: 'ecommerce-api-secret'
+        refresh_token: this.tokenInfo.refresh_token
       }
       let body = new URLSearchParams();
       Object.entries(refreshTokenReq).forEach(([name, value]) => body.set(name, value));
-      let headers = new HttpHeaders({
-        'Content-Type': 'application/x-www-form-urlencoded'
-      })
+      let headers = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'})
       let options = { headers: headers };
-      this.http.post<TokenInfo>(environment.backendUrl + '/keycloak/realms/e-commerce/protocol/openid-connect/token', body, options)
-        .subscribe(tokenInfo => this.authUser(tokenInfo));
+      let decodedToken = this.getDecodedAccessToken(this.tokenInfo.access_token);
+      if (decodedToken.iss.includes('google')) {
+        this.refreshGoogleToken();
+      } else {
+        this.http.post<TokenInfo>(environment.backendUrl + '/oauth2/login/basic', body, options)
+          .subscribe(tokenInfo => this.authUser(tokenInfo));
+      }
     }, tokenTimeoutInMs - 120_000)
   }
 
@@ -181,5 +193,17 @@ export class AuthService {
     } catch (e) {
       return null;
     }
+  }
+
+  private refreshGoogleToken() {
+    const formData = new FormData();
+    formData.append('grant_type', 'refresh_token');
+    formData.append('refresh_token', this.tokenInfo.refresh_token);
+    return this.http.post<TokenInfo>(this.googleLoginUrl, formData)
+      .pipe(
+        tap(
+          tokenInfo => this.authUser({...tokenInfo, access_token: tokenInfo.id_token})
+        )
+      );
   }
 }

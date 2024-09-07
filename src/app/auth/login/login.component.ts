@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { AuthService } from "../auth.service";
 import { LoginUser } from "./login-user.model";
 
@@ -17,14 +17,17 @@ import { LoginUser } from "./login-user.model";
 })
 export class LoginComponent implements OnInit{
   form: FormGroup;
+  googleLink = 'https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=http://localhost:4200/&response_type=code&client_id=366892792903-hcvb0cr5rdfe6afvl628isd4l900uai6.apps.googleusercontent.com&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+openid&access_type=offline';
+  googleIconLink = 'assets/Google__G__logo.svg'
 
-  constructor(public authService: AuthService) {}
+  constructor(
+    public authService: AuthService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
-    this.form = new FormGroup({
-      username: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', Validators.required),
-    })
+    this.createForm();
+    this.loginGoogle();
   }
 
   onLogin() {
@@ -35,5 +38,18 @@ export class LoginComponent implements OnInit{
 
   onPasswordReset() {
     this.authService.resetPassword();
+  }
+
+  private createForm() {
+    this.form = new FormGroup({
+      username: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', Validators.required),
+    });
+  }
+
+  private loginGoogle() {
+    let code = this.route.snapshot.queryParamMap.get('code');
+    if(!this.authService.user && code) 
+      this.authService.loginGoogle(code).subscribe(res => console.log(res));
   }
 }

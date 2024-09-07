@@ -21,3 +21,8 @@
   <a [routerLink]="['/', 'account', 'register']">Register</a>
   <a (click)="onPasswordReset()">Forgot password?</a>
 </div>
+<div class="google-auth">
+  <a [href]="googleLink">
+    <button mat-raised-button><div class=button-label><img [src]="googleIconLink"> Sign in with Google</div></button>
+  </a>
+</div>

@@ -1,6 +1,6 @@
-@import "../../variables";
+@use "../../variables";
 * {
-  color: $text-color;
+  color: variables.$text-color;
 }
 .header {
   display: flex;
@@ -47,5 +47,22 @@ form {
   padding: 0 20px;
   a {
     cursor: pointer;
+  }
+}
+
+.google-auth {
+  max-width: 500px;
+  margin: 25px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  button {
+    background: variables.$dark-theme-background-lighter;
+    .button-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
   }
 }
