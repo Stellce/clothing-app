@@ -41,8 +41,10 @@ form {
 .additional-actions {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   max-width: 500px;
-  margin: 25px auto;
+  min-height: 48px;
+  margin: 16px auto;
   font-size: 16px;
   padding: 0 20px;
   a {
@@ -65,4 +67,57 @@ form {
       gap: 10px;
     }
   }
+}
+
+.activation-resend {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.email-timer {
+  width: 48px;
+  height: 48px;
+  position: relative;
+
+  .loader {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    animation: rotate 1s linear infinite;
+    
+    &::before {
+    content: "";
+    box-sizing: border-box;
+    position: absolute;
+    inset: 0px;
+    border-radius: 50%;
+    border: 5px solid #FFF;
+    animation: prixClipFix 15s linear ;
+    }
+  }
+  
+  .label {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@keyframes rotate {
+  100%   {transform: rotate(360deg)}
+}
+
+@keyframes prixClipFix {
+    0%   {clip-path:polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)}
+    25%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)}
+    50%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}
+    75%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 100%)}
+    100% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 0)}
 }

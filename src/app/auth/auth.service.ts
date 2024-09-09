@@ -4,7 +4,7 @@ import { NgForm } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
 import { ActivatedRoute, Router } from "@angular/router";
 import { jwtDecode } from "jwt-decode";
-import { Observable, tap } from 'rxjs';
+import { catchError, Observable, of, switchMap, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { DialogData } from "../dialogs/dialog/dialog-data.model";
 import { DialogComponent } from "../dialogs/dialog/dialog.component";
@@ -19,7 +19,6 @@ import { User } from "./user.model";
   providedIn: 'root'
 })
 export class AuthService {
-  usersUrl = environment.backendUrl + '/users';
   googleLoginUrl = environment.backendUrl + '/oauth2/login/google';
 
   constructor(
@@ -75,13 +74,42 @@ export class AuthService {
   }
 
   register(registerUser: RegisterUser) {
-    return this.http.post(this.usersUrl + '/oauth2/registration/customer', registerUser).pipe(tap(() => {
+    return this.http.post(environment.backendUrl + '/oauth2/registration/customer', registerUser).pipe(tap(() => {
       let dialogData: DialogData = {
         title: 'Registration completed!',
         description: 'Please, check your email'
       };
       this.dialog.open(DialogComponent, {data: dialogData});
+    }), catchError(() => {
+      let dialogData: DialogData = {
+        title: 'Registration failed!',
+        description: ''
+      };
+      this.dialog.open(DialogComponent, {data: dialogData});
+      return of('something happened');
     }));
+  }
+
+  activationResend(email: string): Observable<Object> {
+    let resend = (email: string) => {
+      let params = new HttpParams();
+      params = params.append('email', email);
+      return this.http.post(environment.backendUrl + '/oauth2/registration/customer/resend-email', {}, {params})
+    }
+
+    if (email) return resend(email);
+    let dialogData: DialogData = {
+      title: 'Please, provide your email',
+      description: 'You will receive a new email with an activation link',
+      inputs: ['email'],
+      buttonName: 'Resend'
+    }
+    const dialogRef = this.dialog.open(DialogComponent, {data: dialogData});
+    return dialogRef.afterClosed().pipe(switchMap(
+      (form: NgForm) => {
+        return resend(form.value.email);
+      }
+    ));
   }
 
   activateAccount(token: string) {
@@ -145,7 +173,7 @@ export class AuthService {
 
     this.user = {
       name: '',
-      surname: '',
+      lastname: '',
       email: decodedToken.preferred_username,
       roles: decodedToken.realm_access.roles
     };

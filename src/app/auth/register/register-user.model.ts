@@ -1,7 +1,8 @@
 import {LoginUser} from "../login/login-user.model";
 
-export interface RegisterUser extends LoginUser {
+export interface RegisterUser {
   firstname: string,
-  surname: string,
-  isAdult: boolean,
+  lastname: string,
+  email: string, 
+  password: string
 }

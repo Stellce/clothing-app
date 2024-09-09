@@ -7,34 +7,40 @@
   <mat-form-field>
     <mat-label>Firstname: </mat-label>
     <input matInput formControlName="firstname">
+    <mat-error *ngIf="form.get('firstname').invalid">Please, provide a firstname</mat-error>
   </mat-form-field>
 
   <mat-form-field>
     <mat-label>Surname: </mat-label>
-    <input matInput formControlName="surname">
+    <input matInput formControlName="lastname">
+    <mat-error *ngIf="form.get('lastname').invalid">Please, provide your lastname</mat-error>
   </mat-form-field>
 
   <mat-form-field>
     <mat-label>Email: </mat-label>
     <input matInput formControlName="email">
+    <mat-error *ngIf="form.get('email').invalid">Please, provide a valid email</mat-error>
   </mat-form-field>
 
   <mat-form-field>
     <mat-label>Password: </mat-label>
     <input matInput type="password" formControlName="password">
+    <mat-error *ngIf="form.get('password').invalid">Please, provide a password</mat-error>
   </mat-form-field>
 
-  <label id="age">Age: </label>
-  <mat-radio-group
-    aria-labelledby="age"
-    formControlName="isAdult">
-    <mat-radio-button [value]="false">I am under</mat-radio-button>
-    <mat-radio-button [value]="true">I am 18 or over</mat-radio-button>
-  </mat-radio-group>
-  <mat-checkbox formControlName="isAgreementConsent">I declare that I have read and accept the SpaceFincher Terms & Conditions.<span [style]="{color: 'red'}">*</span>
+  <mat-checkbox formControlName="isAgreementConsent" #agreement>I declare that I have read and accept the SpaceFincher Terms & Conditions.<span [style]="{color: 'red'}">*</span>
   </mat-checkbox>
+  <mat-error *ngIf="!agreement.checked && showError">Please, consent the agreement</mat-error>
   <button mat-raised-button color="primary">Register</button>
 </form>
 <div class="additional-actions">
   <a [routerLink]="['/', 'account', 'login']">Login</a>
+  <div class="activation-resend">
+    <span *ngIf="showEmailResend">No email? <a (click)="onActivationResend()">Resend</a></span>
+    <span *ngIf="!showEmailResend && emailResendTimer">Successfully sent! Next resend available in: </span>
+    <div class="email-timer" *ngIf="emailResendTimer">
+      <div class="loader"></div>
+      <div class="label">{{emailResendTimer}}</div>
+    </div>
+  </div>
 </div>
