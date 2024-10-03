@@ -27,7 +27,6 @@ export class LoginComponent implements OnInit{
 
   ngOnInit() {
     this.createForm();
-    this.loginGoogle();
   }
 
   onLogin() {
@@ -45,11 +44,5 @@ export class LoginComponent implements OnInit{
       username: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', Validators.required),
     });
-  }
-
-  private loginGoogle() {
-    let code = this.route.snapshot.queryParamMap.get('code');
-    if(!this.authService.user && code) 
-      this.authService.loginGoogle(code).subscribe(res => console.log(res));
   }
 }
