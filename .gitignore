@@ -46,6 +46,7 @@ Thumbs.db
 
 # Test files
 /src/assets/test
+start.txt
 
 #Firebase files
 .firebase

@@ -9,9 +9,9 @@
   <div class="price-quantity">
     <div class="price">{{cartItem.itemPriceAfterDiscount | currency}}</div>
     <div class="quantity">
-      <button mat-mini-fab (click)="addMore(-1)"><mat-icon>remove</mat-icon></button> 
+      <button mat-mini-fab (click)="addMore(-1)">-</button> 
       {{cartItem.quantity}}
-      <button mat-mini-fab (click)="addMore(1)"><mat-icon>add</mat-icon></button>
+      <button mat-mini-fab (click)="addMore(1)">+</button>
     </div>
     <!-- <div class="total-price">{{cartItem.totalPriceAfterDiscount | currency}}</div> -->
   </div>

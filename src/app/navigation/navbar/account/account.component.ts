@@ -30,9 +30,6 @@ export class AccountComponent implements OnInit{
   ngOnInit() {
     this.user = this.authService.user;
     this.loginGoogle();
-    // this.itemsService.getLastOrder().subscribe(order => {
-    //   this.order = order;
-    // });
   }
 
   onLogout() {
@@ -40,7 +37,6 @@ export class AccountComponent implements OnInit{
   }
 
   private loginGoogle() {
-    console.log('snapshot', this.route.snapshot);
     let code = this.route.snapshot.queryParamMap.get('code');
     if(!this.authService.user && code) 
       this.authService.loginGoogle(code).subscribe(res => console.log(res));

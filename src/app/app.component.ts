@@ -18,11 +18,19 @@ import { NavbarComponent } from './navigation/navbar/navbar.component';
 export class AppComponent implements OnInit{
   title = 'cloth-app';
   icons = [
-    'logo',
-    'search', 
-    'account', 
+    'account',
+    'arrow_back',
+    'arrow_down',
+    'cart', 
     'favorites', 
-    'cart'
+    'Google__G__logo',
+    'logo_dark',
+    'logo',
+    'logout',
+    'search',
+    'visibility_off',
+    'visibility',
+    
   ]
   
   constructor(
@@ -31,11 +39,10 @@ export class AppComponent implements OnInit{
     private authService: AuthService
   ) {
     this.icons.forEach(icon => {
-      this.iconRegistry.addSvgIcon(icon, this.sanitizer.bypassSecurityTrustResourceUrl(`assets/navbar/${icon}.svg`));
+      this.iconRegistry.addSvgIcon(icon, this.sanitizer.bypassSecurityTrustResourceUrl(`assets/icons/${icon}.svg`));
     })
   }
   ngOnInit() {
     this.authService.autoAuth();
-
   }
 }

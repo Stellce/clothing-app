@@ -5,10 +5,9 @@
       <div class="hello">Hello, {{user.name}}</div>
     </div>
     <button mat-icon-button (click)="onLogout()">
-      <mat-icon>logout</mat-icon>
+      <mat-icon svgIcon="logout">logout</mat-icon>
     </button>
   </div>
-  <!-- <app-item-bar *ngIf="order" [order]="order"></app-item-bar> -->
   <ul>
     <li (click)="accounService.enterPromocode()">Enter Promocode</li>
     <li [routerLink]="['/', 'orders', 'history']">Orders history</li>
