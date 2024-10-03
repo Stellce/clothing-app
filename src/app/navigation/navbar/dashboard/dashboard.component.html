@@ -4,7 +4,7 @@
   <img [src]="'data:image/png;base64,' + randomCategory.image" alt="">
   <div class="category-name" [routerLink]="['/', 'products', gender, randomCategory.id]">
     <span>MORE ON {{randomCategory.name | uppercase}}</span>
-    <mat-icon svgIcon="arrow_down"></mat-icon>
+    <img src="assets/icons/arrow_down.svg"/>
   </div>
 </div>
 <app-outlet></app-outlet>

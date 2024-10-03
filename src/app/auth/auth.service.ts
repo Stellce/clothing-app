@@ -1,8 +1,8 @@
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
-import { Injectable } from '@angular/core';
+import { Injectable, signal, WritableSignal } from '@angular/core';
 import { NgForm } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
-import { ActivatedRoute, Router } from "@angular/router";
+import { Router } from "@angular/router";
 import { jwtDecode } from "jwt-decode";
 import { catchError, Observable, of, switchMap, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -24,28 +24,11 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router: Router,
-    public dialog: MatDialog,
-    private route: ActivatedRoute
+    public dialog: MatDialog
   ) {}
 
-  private _user: User;
-  private _tokenInfo: TokenInfo;
-
-  get user() {
-    return this._user;
-  }
-
-  set user(user: User) {
-    this._user = user;
-  }
-
-  get tokenInfo() {
-    return this._tokenInfo;
-  }
-
-  set tokenInfo(token: TokenInfo) {
-    this._tokenInfo = token;
-  }
+  user: WritableSignal<User> = signal<User>(null);
+  tokenInfo: WritableSignal<TokenInfo> = signal<TokenInfo>(null);
 
   loginGoogle(code: string): Observable<TokenInfo> {
     const formData = new FormData();
@@ -68,8 +51,8 @@ export class AuthService {
       this.authUser(tokenInfo);
     } else {
       localStorage.removeItem("tokenInfo");
-      this.tokenInfo = null;
-      this.user = null;
+      this.tokenInfo.set(null);
+      this.user.set(null);
     }
   }
 
@@ -162,8 +145,9 @@ export class AuthService {
 
 
   private authUser(tokenInfo: TokenInfo) {
-    this.tokenInfo = tokenInfo;
+    this.tokenInfo.set(tokenInfo);
     let decodedToken: JwtDecoded = this.getDecodedAccessToken(tokenInfo.access_token);
+    console.log('decodedToken', decodedToken);
     let tokenTimeoutInMs = decodedToken.exp * 1000 - (new Date()).getTime();
 
     this.setTokenRefresh(tokenTimeoutInMs);
@@ -171,12 +155,12 @@ export class AuthService {
 
     localStorage.setItem("tokenInfo", JSON.stringify(tokenInfo));
 
-    this.user = {
-      name: '',
+    this.user.set({
+      name: decodedToken.name,
       lastname: '',
       email: decodedToken.preferred_username,
       roles: decodedToken.realm_access.roles
-    };
+    });
 
     this.router.navigate(['/', 'account']);
   }
@@ -185,13 +169,13 @@ export class AuthService {
     setTimeout(() => {
       let refreshTokenReq: RefreshTokenReq = {
         grant_type: "refresh_token",
-        refresh_token: this.tokenInfo.refresh_token
+        refresh_token: this.tokenInfo().refresh_token
       }
       let body = new URLSearchParams();
       Object.entries(refreshTokenReq).forEach(([name, value]) => body.set(name, value));
       let headers = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'})
       let options = { headers: headers };
-      let decodedToken = this.getDecodedAccessToken(this.tokenInfo.access_token);
+      let decodedToken = this.getDecodedAccessToken(this.tokenInfo().access_token);
       if (decodedToken.iss.includes('google')) {
         this.refreshGoogleToken();
       } else {
@@ -202,15 +186,15 @@ export class AuthService {
   }
 
   private setAutoLogout(tokenTimeoutInMs: number) {
-    let oldToken = this.tokenInfo.access_token;
+    let oldToken = this.tokenInfo().access_token;
     setTimeout(() => {
-      if (oldToken === this.tokenInfo.access_token) {
+      if (oldToken === this.tokenInfo().access_token) {
         let dialogData: DialogData = {
           title: 'Token expiration',
           description: 'You will be logged out in 60 seconds, unless you relogin'
         }
         this.dialog.open(DialogComponent, {data: dialogData});
-        setTimeout(() => oldToken === this.tokenInfo.access_token ? this.logout() : 0, 60_000);
+        setTimeout(() => oldToken === this.tokenInfo().access_token ? this.logout() : 0, 60_000);
       }
     }, tokenTimeoutInMs - 60_000);
   }
@@ -226,7 +210,7 @@ export class AuthService {
   private refreshGoogleToken() {
     const formData = new FormData();
     formData.append('grant_type', 'refresh_token');
-    formData.append('refresh_token', this.tokenInfo.refresh_token);
+    formData.append('refresh_token', this.tokenInfo().refresh_token);
     return this.http.post<TokenInfo>(this.googleLoginUrl, formData)
       .pipe(
         tap(

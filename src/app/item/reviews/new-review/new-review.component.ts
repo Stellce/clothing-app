@@ -28,11 +28,7 @@ export class NewReviewComponent {
     {rate: 4},
     {rate: 5}
   ]
-  constructor(private authService: AuthService) {}
-
-  getUser() {
-    return this.authService.user;
-  }
+  constructor(public authService: AuthService) {}
 
   setRating(rating: 1|2|3|4|5) {
     this.rating = rating;

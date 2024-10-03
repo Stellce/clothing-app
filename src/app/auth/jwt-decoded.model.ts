@@ -7,6 +7,7 @@ export interface JwtDecoded extends JwtPayload {
   scope?: string
   sid?: string
   preferred_username?: string
+  name?: string
 }
 
 export interface RealmAccess {

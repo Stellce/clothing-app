@@ -1,6 +1,6 @@
 <div class="review" *ngIf="isAuth">
   <div class="header">
-    <div class="author">{{getUser().name + ' ' + getUser().lastname}}</div>
+    <div class="author">{{authService.user().name + ' ' + authService.user()['lastname']}}</div>
     <div class="date-stars">
       <div class="stars">
         <div class="star" *ngFor="let star of stars" (click)="setRating(star.rate); starX.click()" [ngClass]="{'star-selected': star?.rate <= rating}">

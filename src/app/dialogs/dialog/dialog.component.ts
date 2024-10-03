@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule } from "@angular/material/dialog";
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { DialogData } from "./dialog-data.model";
 
@@ -13,7 +12,7 @@ import { DialogData } from "./dialog-data.model";
     templateUrl: './dialog.component.html',
     styleUrls: ['./dialog.component.scss'],
     standalone: true,
-    imports: [MatDialogModule, FormsModule, NgFor, MatFormFieldModule, MatInputModule, NgIf, MatIconModule, MatButtonModule]
+    imports: [MatDialogModule, FormsModule, NgFor, MatFormFieldModule, MatInputModule, NgIf, MatButtonModule]
 })
 export class DialogComponent {
   passwordsShown: {fieldName: string, isShown: boolean}[] = [];

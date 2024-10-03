@@ -12,7 +12,7 @@ export class NavigationService {
 
   buildLink(link: string): string[] {
     let finalLink = ['/'];
-    let linkPart = link === 'Account' && !this.authService.user ?
+    let linkPart = link === 'Account' && !this.authService.user() ?
       ['account', 'register'] : [link.toLowerCase()];
     finalLink.push(...linkPart);
     return finalLink;

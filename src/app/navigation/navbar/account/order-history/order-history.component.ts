@@ -3,7 +3,6 @@ import {Order} from "../../../../item/order.model";
 import {ItemsService} from "../../../../item/items.service";
 import { Location, NgFor } from '@angular/common';
 import { ItemBarComponent } from '../../../../categories/item-bar/item-bar.component';
-import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
@@ -11,7 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
     templateUrl: './order-history.component.html',
     styleUrls: ['./order-history.component.scss'],
     standalone: true,
-    imports: [MatButtonModule, MatIconModule, NgFor, ItemBarComponent]
+    imports: [MatButtonModule, NgFor, ItemBarComponent]
 })
 export class OrderHistoryComponent {
   items: Order[];

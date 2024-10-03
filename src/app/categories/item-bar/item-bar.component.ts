@@ -2,7 +2,6 @@ import { CurrencyPipe, DatePipe, NgIf, NgStyle } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatMiniFabButton } from '@angular/material/button';
 import { MatError } from '@angular/material/form-field';
-import { MatIcon } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth.service';
 import { LocalService } from 'src/app/local/local.service';
@@ -15,7 +14,7 @@ import { ItemsService } from "../../item/items.service";
   templateUrl: './item-bar.component.html',
   styleUrls: ['./item-bar.component.scss'],
   standalone: true,
-  imports: [RouterLink, NgStyle, CurrencyPipe, DatePipe, NgIf, MatMiniFabButton, MatError, MatIcon]
+  imports: [RouterLink, NgStyle, CurrencyPipe, DatePipe, NgIf, MatMiniFabButton, MatError]
 })
 export class ItemBarComponent implements OnInit{
   @Input() cartItem: CartItem;

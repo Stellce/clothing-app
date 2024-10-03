@@ -6,7 +6,7 @@
       <mat-form-field *ngFor="let input of data.inputs">
         <mat-label>{{input[0].toUpperCase() + input.slice(1).toLowerCase()}}</mat-label>
         <input matInput ngModel [type]="setInputType(input)" [name]="input">
-        <mat-icon *ngIf="input.includes('password')" [svgIcon]="passwordsShown[getPasswordIndex(input)].isShown ? 'visibility' : 'visibility_off'" (click)="turnPasswordShown(input)"></mat-icon>
+        <img *ngIf="input.includes('password')" [src]="'assets/icons/' + passwordsShown[getPasswordIndex(input)].isShown ? 'visibility' : 'visibility_off' + '.svg'" (click)="turnPasswordShown(input)"/>
       </mat-form-field>
     </form>
     <p>{{data.note}}</p>

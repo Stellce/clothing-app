@@ -1,6 +1,5 @@
 import { NgClass, NgFor } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { MatIcon } from '@angular/material/icon';
+import { Component, OnInit } from '@angular/core'
 import { NavigationStart, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { filter } from 'rxjs';
 import { NavigationService } from "../navigation.service";
@@ -10,7 +9,7 @@ import { NavigationService } from "../navigation.service";
     templateUrl: './navbar.component.html',
     styleUrls: ['./navbar.component.scss'],
     standalone: true,
-    imports: [NgFor, RouterLink, MatIcon, RouterLinkActive, NgClass]
+    imports: [NgFor, RouterLink, RouterLinkActive, NgClass]
 })
 export class NavbarComponent implements OnInit{
   srcPrefics = 'assets/navbar/';

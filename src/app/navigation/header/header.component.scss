@@ -1,3 +1,4 @@
+@use "@angular/material" as mat;
 @use "../../../variables";
 
 :host {
@@ -48,6 +49,10 @@ app-navbar {
   font-size: 36px;
   display: flex;
   align-items: center;
+  img {
+    width: 40px;
+    height: 40px;
+  }
 }
 
 @media screen and (max-width: 768px) {
