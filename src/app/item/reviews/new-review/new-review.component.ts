@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { AuthService } from "../../../auth/auth.service";
+import { Review } from '../review.model';
 
 @Component({
     selector: 'app-new-review',
@@ -17,9 +18,10 @@ import { AuthService } from "../../../auth/auth.service";
 export class NewReviewComponent {
   @Input()
   isAuth: boolean;
-  rating: number;
-  text: string;
-  stars = [
+  rating: 1|2|3|4|5;
+  title: string;
+  content: string;
+  stars: {rate: 1|2|3|4|5}[] = [
     {rate: 1},
     {rate: 2},
     {rate: 3},
@@ -32,10 +34,17 @@ export class NewReviewComponent {
     return this.authService.user;
   }
 
-  setRating(rating: number) {
+  setRating(rating: 1|2|3|4|5) {
     this.rating = rating;
   }
   onSubmit() {
+    const review: Review = {
+      itemId: null,
+      rating: this.rating,
+      title: this.title,
+      content: this.content
+    }
 
+    
   }
 }

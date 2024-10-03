@@ -1,8 +1,8 @@
 <div class="review">
   <div class="header">
-    <div class="author">{{review.author}}</div>
+    <div class="author">{{review.title}}</div>
     <div class="date-stars">
-      <span class="date">{{review.date | date}}</span>
+      <!-- <span class="date">{{review.date | date}}</span> -->
       <div class="stars">
         <div class="star" *ngFor="let star of stars" [ngClass]="{'star-selected': star?.rate <= review?.rating}">
           <svg width="20" height="20" >
@@ -12,5 +12,5 @@
       </div>
     </div>
   </div>
-  <div class="content">{{review.text}}</div>
+  <div class="content">{{review.content}}</div>
 </div>

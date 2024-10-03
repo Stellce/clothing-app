@@ -5,5 +5,5 @@ import {AuthService} from "./auth.service";
 export const loginGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
 
-  return !!authService.user;
+  return !!authService.user || !!route.queryParamMap.get('code');
 }

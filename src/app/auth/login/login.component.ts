@@ -17,7 +17,7 @@ import { LoginUser } from "./login-user.model";
 })
 export class LoginComponent implements OnInit{
   form: FormGroup;
-  googleLink = 'https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=http://localhost:4200/&response_type=code&client_id=366892792903-hcvb0cr5rdfe6afvl628isd4l900uai6.apps.googleusercontent.com&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+openid&access_type=offline';
+  googleLink = 'https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=http://localhost:4200/account&response_type=code&client_id=366892792903-hcvb0cr5rdfe6afvl628isd4l900uai6.apps.googleusercontent.com&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+openid&access_type=offline';
   googleIconLink = 'assets/Google__G__logo.svg'
 
   constructor(
