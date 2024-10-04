@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, tap } from "rxjs";
+import { BehaviorSubject, Observable, tap } from "rxjs";
 import { environment } from "../../environments/environment";
 import { CatalogItem } from "../categories/list-items/item-card/item-card.model";
 import { ItemsParamsRequest } from "../categories/list-items/item-card/req/items-params-request.model";
@@ -52,7 +52,7 @@ export class ItemsService {
     }))
   }
 
-  requestItemImages(itemId: string) {
+  requestItemImages(itemId: string): Observable<Image[]> {
     return this.http.get<Image[]>(
       environment.backendUrl + `/catalog/items/${itemId}/images`
     );

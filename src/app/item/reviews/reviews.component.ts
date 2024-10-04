@@ -18,7 +18,7 @@ export class ReviewsComponent {
   constructor(private authService: AuthService) {}
 
   isAuth(): boolean {
-    return !!this.authService.user;
+    return !!this.authService.user();
   }
 
 }

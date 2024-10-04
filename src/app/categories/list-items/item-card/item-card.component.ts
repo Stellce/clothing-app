@@ -24,7 +24,7 @@ export class ItemCardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (this.authService.user) return;
+    if (this.authService.user()) return;
     let id = this.localService.favoritesIds.indexOf(this.item?.id);
     let onWishList = id !== -1;
     if (this.item && this.item.metadata) this.item.metadata.onWishList = onWishList;
@@ -40,7 +40,7 @@ export class ItemCardComponent implements OnInit {
   }
 
   addToFavorites() {
-    if (this.authService.user) {
+    if (this.authService.user()) {
       this.favoritesService.addItem(this.item.id).subscribe({next: () => this.item.metadata.onWishList = true, error: () => {}});
     } else {
       this.localService.addToFavorites(this.item.id);
@@ -49,7 +49,7 @@ export class ItemCardComponent implements OnInit {
   }
 
   removeFromFavorites() {
-    if (this.authService.user) {
+    if (this.authService.user()) {
       this.favoritesService.removeItem(this.item.id).subscribe({next: () => this.item.metadata.onWishList = true, error: () => {}})
     } else {
       this.localService.removeFromFavorites(this.item.id);

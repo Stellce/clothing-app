@@ -35,7 +35,7 @@ export class ItemBarComponent implements OnInit{
     let isPositiveRes = ((res) > 0);
     let isValidQuantity = isPositiveRes && this.getCurrentQuantityMax() >= res;
     if (!isValidQuantity) return;
-    if (this.authService.user) {
+    if (this.authService.user()) {
       this.cartService.updateItem({entryId: this.cartItem.id, quantity: this.cartItem.quantity + n, size: this.cartItem.itemSize})
     } else {
       this.localService.updateCartItem({

@@ -24,7 +24,7 @@ export class FavoritesComponent implements OnInit{
     private itemService: ItemsService
   ) {}
   ngOnInit() {
-    if (this.authService.user) {
+    if (this.authService.user()) {
       this.favoritesService.getItems().subscribe(items => this.items = items);
     } else {
       let itemsIds = this.localService.getFavoritesIds();

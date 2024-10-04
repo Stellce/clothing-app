@@ -27,7 +27,7 @@ export class CartComponent implements OnInit{
     private itemService: ItemsService
   ) {}
   ngOnInit() {
-    if (this.authService.user) {
+    if (this.authService.user()) {
       this.cartService.getItems().subscribe(items => this.cartItems = items);
     } else {
       let localCartItems: LocalCartItem[] = this.localService.getCartItems();

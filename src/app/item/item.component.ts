@@ -56,7 +56,7 @@ export class ItemComponent implements OnInit{
 
   addToCart() {
     if (this.quantity > this.selectedUniqueItem.quantity) return;
-    if (this.authService.user) {
+    if (this.authService.user()) {
       this.cartService.addItem({
         itemId: this.item.id,
         quantity: this.quantity,
