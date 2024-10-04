@@ -8,6 +8,20 @@ export interface JwtDecoded extends JwtPayload {
   sid?: string
   preferred_username?: string
   name?: string
+  lastname?: string
+  email?: string
+  picture?: string
+}
+
+export interface GoogleJwtDecoded extends JwtPayload {
+  azp: string
+  email: string
+  email_verified: boolean
+  at_hash: string
+  name: string
+  picture: string
+  given_name: string
+  iat: number
 }
 
 export interface RealmAccess {

@@ -2,7 +2,7 @@
   <div class="header">
     <div class="sec">
       <img src="assets/icons/account.svg"/>
-      <div class="hello">Hello, {{user.name}}</div>
+      <div class="hello" *ngIf="user()">Hello, {{user().name}}</div>
     </div>
     <button mat-icon-button (click)="onLogout()">
       <img src="assets/icons/logout.svg"/>

@@ -6,14 +6,11 @@ import { AuthService } from "../auth/auth.service";
 })
 export class NavigationService {
 
-  constructor(
-    private authService: AuthService
-  ) { }
+  constructor() {}
 
   buildLink(link: string): string[] {
     let finalLink = ['/'];
-    let linkPart = link === 'Account' && !this.authService.user() ?
-      ['account', 'register'] : [link.toLowerCase()];
+    let linkPart = [link.toLowerCase()]
     finalLink.push(...linkPart);
     return finalLink;
   }

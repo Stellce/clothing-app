@@ -20,7 +20,6 @@ export const routes: Routes = [
     {path: ':orderId', loadComponent: () => import('./order-page/order-page.component').then(c => c.OrderPageComponent)},
   ]},
 
-
   {path: 'products/:gender', children: [
     {path: '', loadComponent: () => import('./categories/categories.component').then(c => c.CategoriesComponent)},
     {path: ':categoryId', children: [
@@ -28,5 +27,7 @@ export const routes: Routes = [
       {path: ':itemId', loadComponent: () => import('./item/item.component').then(c => c.ItemComponent)},
     ]},
   ]},
-  {path: 'product/:itemId', loadComponent: () => import('./item/item.component').then(c => c.ItemComponent)}
+  {path: 'product/:itemId', loadComponent: () => import('./item/item.component').then(c => c.ItemComponent)},
+
+  {path: '**', redirectTo: 'dashboard'}
 ];

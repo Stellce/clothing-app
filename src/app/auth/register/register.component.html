@@ -1,7 +1,3 @@
-<div class="header">
-  <img src="assets/icons/account.svg"/>
-  <div class="hello">Hello</div>
-</div>
 <form [formGroup]="form" (ngSubmit)="onRegister()">
   <div class="title">Registration</div>
   <mat-form-field>
@@ -43,4 +39,9 @@
       <div class="label">{{emailResendTimer}}</div>
     </div>
   </div>
+</div>
+<div class="google-auth">
+  <a [href]="authService.googleLink">
+    <button mat-raised-button><div class=button-label><img src="assets/icons/Google__G__logo.svg"/> Register with Google</div></button>
+  </a>
 </div>

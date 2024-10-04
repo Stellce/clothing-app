@@ -138,4 +138,7 @@ $dark-theme: mat.define-theme((
     primary: $_primary,
     tertiary: $_tertiary,
   ),
+  typography: (
+    plain-family: (Inter, sans-serif)
+  )
 ));

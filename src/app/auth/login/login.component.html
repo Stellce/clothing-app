@@ -1,7 +1,3 @@
-<div class="header">
-  <img src="assets/icons/account.svg"/>
-  <div class="hello">Hello</div>
-</div>
 <form [formGroup]="form" (ngSubmit)="onLogin()">
   <div class="title">Login</div>
 
@@ -22,7 +18,7 @@
   <a (click)="onPasswordReset()">Forgot password?</a>
 </div>
 <div class="google-auth">
-  <a [href]="googleLink">
-    <button mat-raised-button><div class=button-label><img src="assets/icons/Google__G__logo.svg"/> Sign in with Google</div></button>
+  <a [href]="authService.googleLink">
+    <button mat-raised-button><div class=button-label><img src="assets/icons/Google__G__logo.svg"/> Login with Google</div></button>
   </a>
 </div>

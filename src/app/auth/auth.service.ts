@@ -2,13 +2,13 @@ import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable, signal, WritableSignal } from '@angular/core';
 import { NgForm } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { jwtDecode } from "jwt-decode";
 import { catchError, Observable, of, switchMap, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { DialogData } from "../dialogs/dialog/dialog-data.model";
 import { DialogComponent } from "../dialogs/dialog/dialog.component";
-import { JwtDecoded } from "./jwt-decoded.model";
+import { GoogleJwtDecoded, JwtDecoded } from "./jwt-decoded.model";
 import { LoginUser } from "./login/login-user.model";
 import { RefreshTokenReq } from "./refresh-token-req.model";
 import { RegisterUser } from "./register/register-user.model";
@@ -19,27 +19,29 @@ import { User } from "./user.model";
   providedIn: 'root'
 })
 export class AuthService {
+  googleLink = 'https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=http://localhost:4200/account&response_type=code&client_id=366892792903-hcvb0cr5rdfe6afvl628isd4l900uai6.apps.googleusercontent.com&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+openid&access_type=offline';
   googleLoginUrl = environment.backendUrl + '/oauth2/login/google';
-
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-    public dialog: MatDialog
-  ) {}
 
   user: WritableSignal<User> = signal<User>(null);
   tokenInfo: WritableSignal<TokenInfo> = signal<TokenInfo>(null);
 
-  loginGoogle(code: string): Observable<TokenInfo> {
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    public dialog: MatDialog,
+    private route: ActivatedRoute
+  ) {}
+
+  loginGoogle() {
+    const code = this.route.snapshot.queryParamMap.get('code');
+    if(this.user() || !code) return;
+
     const formData = new FormData();
     formData.append('code', code);
     formData.append('grant_type', 'authorization_code');
-    return this.http.post<TokenInfo>(this.googleLoginUrl, formData)
-      .pipe(
-        tap(
-          tokenInfo => this.authUser({...tokenInfo, access_token: tokenInfo.id_token})
-        )
-      );
+    this.http.post<TokenInfo>(this.googleLoginUrl, formData).subscribe(
+      tokenInfo => this.authUser({...tokenInfo, access_token: tokenInfo.id_token})
+    );
   }
 
   autoAuth() {
@@ -146,7 +148,7 @@ export class AuthService {
 
   private authUser(tokenInfo: TokenInfo) {
     this.tokenInfo.set(tokenInfo);
-    let decodedToken: JwtDecoded = this.getDecodedAccessToken(tokenInfo.access_token);
+    let decodedToken: JwtDecoded | GoogleJwtDecoded = this.getDecodedAccessToken(tokenInfo.access_token);
     console.log('decodedToken', decodedToken);
     let tokenTimeoutInMs = decodedToken.exp * 1000 - (new Date()).getTime();
 
@@ -155,13 +157,14 @@ export class AuthService {
 
     localStorage.setItem("tokenInfo", JSON.stringify(tokenInfo));
 
-    this.user.set({
-      name: decodedToken.name,
-      lastname: '',
-      email: decodedToken.preferred_username,
-      roles: decodedToken.realm_access.roles
-    });
+    const user: User = {
+      name: decodedToken['name'],
+      lastname: decodedToken['lastname'],
+      email: decodedToken['email'],
+      roles: decodedToken.realm_access?.['roles'] || null,
+    }
 
+    this.user.set(user);
     this.router.navigate(['/', 'account']);
   }
 
@@ -175,7 +178,7 @@ export class AuthService {
       Object.entries(refreshTokenReq).forEach(([name, value]) => body.set(name, value));
       let headers = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'})
       let options = { headers: headers };
-      let decodedToken = this.getDecodedAccessToken(this.tokenInfo().access_token);
+      let decodedToken: JwtDecoded = this.getDecodedAccessToken(this.tokenInfo().access_token);
       if (decodedToken.iss.includes('google')) {
         this.refreshGoogleToken();
       } else {
@@ -203,6 +206,7 @@ export class AuthService {
     try {
       return jwtDecode(token);
     } catch (e) {
+      console.error(e);
       return null;
     }
   }

@@ -33,6 +33,7 @@ export class RegisterComponent implements OnInit {
       password: new FormControl('', Validators.required),
       isAgreementConsent: new FormControl('', Validators.required)
     });
+    this.authService.loginGoogle();
   }
 
   onRegister() {
