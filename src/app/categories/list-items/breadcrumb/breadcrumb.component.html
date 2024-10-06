@@ -1,15 +1,13 @@
-<div class="breadcrumb">
-  <div class="breadcrumb-link">
-    <a [routerLink]="['/']">&#5130; Dashboard</a>
-  </div>
-  <span> / </span>
-  <ng-container *ngIf="link">
-    <div class="breadcrumb-links" *ngFor="let l of link; let i = index">
-      <div class="breadcrumb-link">
-        <a *ngIf="!isLast(i)" [routerLink]="l.path">{{l.name}}</a>
-      </div>
-      <span *ngIf="isLast(i)">{{l.name}}</span>
-      <span *ngIf="!isLast(i)"> / </span>
-    </div>
-  </ng-container>
+<div class="breadcrumb-link">
+  <a [routerLink]="['/']">&#5130; Dashboard</a>
 </div>
+<span> / </span>
+<ng-template [ngIf]="links">
+  <div class="breadcrumb-links" *ngFor="let link of links; let i = index">
+    <div class="breadcrumb-link">
+      <a *ngIf="!isLast(i)" [routerLink]="link.path">{{link.name | firstLetterUpperCase}}</a>
+    </div>
+    <span *ngIf="isLast(i)">{{link.name | firstLetterUpperCase}}</span>
+    <span *ngIf="!isLast(i)"> / </span>
+  </div>
+</ng-template>

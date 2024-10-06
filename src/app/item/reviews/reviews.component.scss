@@ -1,8 +1,5 @@
-@import "../../../variables";
+@use "../../../variables";
 
-* {
-  color: $text-color;
-}
 .reviews {
   max-width: 1150px;
   margin: 0 auto;

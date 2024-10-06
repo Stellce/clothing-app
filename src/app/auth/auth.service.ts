@@ -139,7 +139,7 @@ export class AuthService {
 
   logout() {
     this.user.set(null);
-    this.tokenInfo = null;
+    this.tokenInfo.set(null);
     localStorage.removeItem("tokenInfo");
     this.router.navigate(['/', 'account', 'login']);
   }

@@ -1,9 +1,8 @@
-@import "../../../../variables";
+@use "../../../../variables";
 
 .card {
   display: flex;
   flex-direction: column;
-  color: $text-color;
   background: rgba(0, 0, 0, 0);
   overflow: hidden;
   position: relative;
@@ -64,14 +63,7 @@
     }
   }
 
-  .fav-icon {
-    height: 30px;
-    width: 30px;
-    position: absolute;
-    right: 0;
-    top: 0;
-    cursor: pointer;
-  }
+
 
   .red-overlay span {
     position: absolute;

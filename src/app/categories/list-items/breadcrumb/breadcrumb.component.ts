@@ -2,17 +2,18 @@ import { NgFor, NgIf } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from "@angular/router";
 import { CategoriesService } from "../../categories.service";
+import {FirstLetterUpperCasePipe} from "../../../pipes/first-letter-upper-case.pipe";
 
 @Component({
     selector: 'app-breadcrumb',
     templateUrl: './breadcrumb.component.html',
     styleUrls: ['./breadcrumb.component.scss'],
     standalone: true,
-    imports: [RouterLink, NgIf, NgFor]
+  imports: [RouterLink, NgIf, NgFor, FirstLetterUpperCasePipe]
 })
 export class BreadcrumbComponent implements OnInit{
   @Input()itemName: string;
-  link: {name: string, path: string[]}[];
+  links: {name: string, path: string[]}[];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -23,8 +24,8 @@ export class BreadcrumbComponent implements OnInit{
     this.activatedRoute.paramMap.subscribe(params => {
       if(!params.get('gender')) return;
       let path: string[] = ['/', 'products', params.get('gender')];
-      this.link = [];
-      this.link.push({
+      this.links = [];
+      this.links.push({
         name: params.get('gender').toUpperCase(),
         path: [...path]
       });
@@ -35,12 +36,12 @@ export class BreadcrumbComponent implements OnInit{
           let categoryName = categories
             .find(category => category.id === categoryId).name;
           path.push(categoryId);
-          this.link.push({
+          this.links.push({
             name: categoryName!,
             path: [...path]
           });
           if(this.itemName) {
-            this.link.push({
+            this.links.push({
               name: this.itemName,
               path: []
             });
@@ -51,6 +52,6 @@ export class BreadcrumbComponent implements OnInit{
   }
 
   isLast(i: number) {
-    return i === this.link.length - 1;
+    return i === this.links.length - 1;
   }
 }

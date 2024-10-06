@@ -15,13 +15,15 @@ import { Image } from "./image.model";
 import { ItemDetails } from "./item.model";
 import { ItemsService } from "./items.service";
 import { ReviewsComponent } from './reviews/reviews.component';
+import {AddToFavoritesComponent} from "./add-to-favorites/add-to-favorites.component";
+import {MatRipple} from "@angular/material/core";
 
 @Component({
     selector: 'app-item',
     templateUrl: './item.component.html',
     styleUrls: ['./item.component.scss'],
     standalone: true,
-  imports: [NgIf, BreadcrumbComponent, NgFor, NgClass, MatButtonModule, ReviewsComponent, CurrencyPipe, MatFormFieldModule, MatInputModule, FormsModule, NgStyle, FirstLetterUpperCasePipe]
+  imports: [NgIf, BreadcrumbComponent, NgFor, NgClass, MatButtonModule, ReviewsComponent, CurrencyPipe, MatFormFieldModule, MatInputModule, FormsModule, NgStyle, FirstLetterUpperCasePipe, AddToFavoritesComponent, MatRipple]
 })
 export class ItemComponent implements OnInit{
   item: ItemDetails;

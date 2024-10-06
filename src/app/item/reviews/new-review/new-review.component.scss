@@ -1,12 +1,7 @@
-@import "../../../../variables";
-
-* {
-  color: $text-color;
-  font-size: 16px;
-}
+@use "../../../../variables";
 
 .review {
-  border: 3px solid $dark-theme-background-lighter;
+  border: 3px solid variables.$dark-theme-background-lighter;
   padding: 20px;
   border-radius: 1rem;
   .header {

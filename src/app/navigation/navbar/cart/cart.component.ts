@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {Order} from "../../../item/order.model";
 import {ItemsService} from "../../../item/items.service";
 import { ItemBarComponent } from '../../../categories/item-bar/item-bar.component';
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, NgFor, NgIf, NgStyle } from '@angular/common';
 import { CartService } from './cart.service';
 import { CartItem } from './cart-item.model';
 import { AuthService } from 'src/app/auth/auth.service';
@@ -16,7 +15,7 @@ import { ItemDetails } from 'src/app/item/item.model';
     templateUrl: './cart.component.html',
     styleUrls: ['./cart.component.scss'],
     standalone: true,
-    imports: [NgFor, NgIf, ItemBarComponent, AsyncPipe]
+    imports: [NgFor, NgIf, ItemBarComponent, AsyncPipe, NgStyle]
 })
 export class CartComponent implements OnInit{
   cartItems: CartItem[] = [];

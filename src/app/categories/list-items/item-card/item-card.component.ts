@@ -5,13 +5,14 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { LocalService } from 'src/app/local/local.service';
 import { FavoritesService } from 'src/app/navigation/navbar/favorites/favorites.service';
 import { ItemCard } from "./item-card.model";
+import {AddToFavoritesComponent} from "../../../item/add-to-favorites/add-to-favorites.component";
 
 @Component({
   selector: 'app-item-card',
   templateUrl: './item-card.component.html',
   styleUrls: ['./item-card.component.scss'],
   standalone: true,
-  imports: [NgIf, RouterLink, PercentPipe, CurrencyPipe, NgStyle, NgForOf]
+  imports: [NgIf, RouterLink, PercentPipe, CurrencyPipe, NgStyle, NgForOf, AddToFavoritesComponent]
 })
 export class ItemCardComponent implements OnInit {
   @Input() item: ItemCard = {} as ItemCard;
@@ -28,33 +29,6 @@ export class ItemCardComponent implements OnInit {
     let id = this.localService.favoritesIds.indexOf(this.item?.id);
     let onWishList = id !== -1;
     if (this.item && this.item.metadata) this.item.metadata.onWishList = onWishList;
-  }
-
-  onFavoriteToggle(event: MouseEvent) {
-    event.stopPropagation();
-    if (this.item.metadata.onWishList) {
-      this.removeFromFavorites();
-    } else {
-      this.addToFavorites();
-    }
-  }
-
-  addToFavorites() {
-    if (this.authService.user()) {
-      this.favoritesService.addItem(this.item.id).subscribe({next: () => this.item.metadata.onWishList = true, error: () => {}});
-    } else {
-      this.localService.addToFavorites(this.item.id);
-      this.item.metadata.onWishList = true;
-    }
-  }
-
-  removeFromFavorites() {
-    if (this.authService.user()) {
-      this.favoritesService.removeItem(this.item.id).subscribe({next: () => this.item.metadata.onWishList = true, error: () => {}})
-    } else {
-      this.localService.removeFromFavorites(this.item.id);
-      this.item.metadata.onWishList = false;
-    }
   }
 
   getLinkToItem() {

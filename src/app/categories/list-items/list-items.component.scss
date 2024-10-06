@@ -1,11 +1,11 @@
-@import "../../../variables";
+@use "../../../variables";
 
 h1, h2, h3, h4, h5, h6 {
   margin: 0;
 }
 
 .mat-drawer {
-  background: $dark-theme-background;
+  background: variables.$dark-theme-background;
   width: 90%;
   max-width: 480px;
 }
@@ -13,7 +13,7 @@ h1, h2, h3, h4, h5, h6 {
 .filter-bubble {
   display: none;
   z-index: 999;
-  background: $background-primary;
+  background: variables.$background-primary;
   border-radius: 50px;
   height: 40px;
   width: 40px;
@@ -59,14 +59,6 @@ app-paginator {
   max-width: 250px;
 }
 
-.breadcrumb-line {
-  display: flex;
-  align-items: center;
-  margin: 20px 0;
-  padding-left: 4%;
-  gap: 10px;
-}
-
 .inline-wrapper {
   display: inline-block;
 }
@@ -78,7 +70,7 @@ app-paginator {
   max-width: 150px;
   width: 150px;
   border-radius: 1rem;
-  background: $background-primary;
+  background: variables.$background-primary;
   padding: 5px 10px 5px;
   font-size: 16px;
   color: white;
@@ -97,7 +89,7 @@ app-paginator {
 }
 
 .mdc-menu-surface {
-  background: $dark-theme-background;
+  background: variables.$dark-theme-background;
 }
 
 .mat-mdc-form-field-focus-overlay {

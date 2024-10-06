@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ItemsService} from "../../../item/items.service";
 import { ItemCardComponent } from '../../../categories/list-items/item-card/item-card.component';
-import { NgFor, NgIf } from '@angular/common';
+import { NgFor, NgIf, NgStyle } from '@angular/common';
 import { FavoritesService } from './favorites.service';
 import { ItemCard } from 'src/app/categories/list-items/item-card/item-card.model';
 import { LocalService } from 'src/app/local/local.service';
@@ -13,7 +13,7 @@ import { forkJoin } from 'rxjs';
     templateUrl: './favorites.component.html',
     styleUrls: ['./favorites.component.scss'],
     standalone: true,
-    imports: [NgFor, NgIf, ItemCardComponent]
+    imports: [NgFor, NgIf, ItemCardComponent, NgStyle]
 })
 export class FavoritesComponent implements OnInit{
   items: ItemCard[] = [];

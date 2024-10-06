@@ -12,13 +12,11 @@ import { NavigationService } from "../navigation.service";
     imports: [NgFor, RouterLink, RouterLinkActive, NgClass]
 })
 export class NavbarComponent implements OnInit{
-  srcPrefics = 'assets/navbar/';
-  svgExtension = '.svg';
   links = {
-    dashboard: 'Dashboard', 
-    search: 'Search', 
-    account: 'Account', 
-    favorites: 'Favorites', 
+    dashboard: 'Dashboard',
+    search: 'Search',
+    account: 'Account',
+    favorites: 'Favorites',
     cart: 'Cart'
   };
   url: string = '';

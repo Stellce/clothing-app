@@ -1,7 +1,6 @@
-@import "../../../../variables";
-.breadcrumb {
+@use "../../../../variables";
+:host {
   display: inline-block;
-  color: $text-color;
   font-size: 16px;
 }
 
@@ -18,12 +17,11 @@
 
 .breadcrumb-link a{
   text-decoration: none;
-  color: $text-color;
 }
 
 .breadcrumb-link :hover{
-  color: $breadcrumb-hover;
+  color: variables.$breadcrumb-hover;
 }
-ng-content:hover {
-  color: $breadcrumb-hover;
+ng-template :hover {
+  color: variables.$breadcrumb-hover;
 }

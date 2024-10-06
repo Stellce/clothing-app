@@ -1,10 +1,9 @@
-@import "../../../variables";
+@use "../../../variables";
 
 :host {
   border-radius: 1rem;
   background: none;
   height: 80px;
-  color: $text-color;
   cursor: pointer;
   font-size: 16px;
 

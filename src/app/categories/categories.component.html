@@ -1,15 +1,15 @@
 <div class="categories">
-  <div class="breadcrumb-wrapper"><app-breadcrumb></app-breadcrumb></div>
-  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <app-breadcrumb class="breadcrumb-line"/>
+  <mat-spinner *ngIf="isLoading"/>
   <div class="categories-list" *ngIf="categories && !isLoading">
     <a class="category"
        *ngFor="let category of categories"
        [routerLink]="category.id | lowercase"
     >
-      <ng-container *ngIf="category.image">
+      <ng-template [ngIf]="category.image">
         <div class="dark-bottom-gradient"></div>
         <img class="category-image" [src]="'data:image/png;base64,' + category.image" [alt]="category">
-      </ng-container>
+      </ng-template>
       <span>{{category.name | uppercase}}</span>
     </a>
   </div>

@@ -1,3 +1,6 @@
-<ng-template [ngIf]="cartItems.length">
-    <app-item-bar *ngFor="let cartItem of cartItems" [cartItem]="cartItem"></app-item-bar>
+<ng-template [ngIf]="cartItems.length" [ngIfElse]="noItems">
+  <app-item-bar *ngFor="let cartItem of cartItems" [cartItem]="cartItem"></app-item-bar>
+</ng-template>
+<ng-template #noItems>
+  <h2 [ngStyle]="{'text-align': 'center'}">There are no items yet</h2>
 </ng-template>

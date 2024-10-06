@@ -1,8 +1,9 @@
 <div class="item" *ngIf="item">
-  <app-breadcrumb [itemName]="item.name"></app-breadcrumb>
+  <app-breadcrumb class="breadcrumb-line" [itemName]="item.name"></app-breadcrumb>
   <div class="product">
     <div class="images" *ngIf="item.images">
       <img [src]="'data:image/png;base64,' + item.images[selectedImageIndex].image" [alt]="item.name">
+      <app-add-to-favorites [item]="item"/>
       <div class="img-carousel">
         <img *ngFor="let image of item.images; let i = index" [src]="'data:image/png;base64,' + image.image"
              [alt]="item.name" (click)="selectedImageIndex = i">
@@ -16,6 +17,7 @@
       <div class="sizes">
         <div class="scroll">
           <div class="size"
+               matRipple
                *ngFor="let uniqueItem of item.uniqueItems"
                [ngClass]="{'available': true, 'selected': uniqueItem === selectedUniqueItem}"
                (click)="setUniqueItem(uniqueItem)"
@@ -33,13 +35,13 @@
       <div class="quantity space-between">
         <span>Quantity (max: {{selectedUniqueItem.quantity}}):</span>
         <div class="select-quantity">
-          <button mat-mini-fab (click)="addMore(-1)">-</button> 
+          <button mat-mini-fab (click)="addMore(-1)">-</button>
           <input type="number" [(ngModel)]="quantity">
           <button mat-mini-fab (click)="addMore(1)">+</button>
-        </div>  
+        </div>
       </div>
       <div class="actions">
-        <button mat-flat-button color="primary" (click)="addToCart()">Add to cart</button>
+        <button class="mat-title-medium" mat-flat-button color="primary" (click)="addToCart()">Add to cart</button>
         <button mat-flat-button color="primary" (click)="orderNow()">Order now</button>
       </div>
     </div>

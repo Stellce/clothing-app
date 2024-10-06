@@ -1,4 +1,4 @@
-@import "../../../../variables";
+@use "../../../../variables";
 .img-placeholder {
   width: 100%;
   aspect-ratio: 375/300;
@@ -28,10 +28,18 @@
     align-items: center;
     z-index: 1;
     font-size: 16px;
-    color: $text-color;
     cursor: pointer;
     &:first-child {
       font-size: 21px;
+    }
+    span {
+      width: 100%;
+      text-align: center;
+    }
+    img {
+      position: initial;
+      height: 25px;
+      display: flex;
     }
   }
 }

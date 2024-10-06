@@ -1,4 +1,4 @@
-@import "../../../../variables";
+@use "../../../../variables";
 
 .account {
   max-width: 500px;
@@ -19,13 +19,11 @@
       align-items: center;
     }
     .hello {
-      color: $text-color;
       font-size: 21px;
     }
   }
   ul {
     list-style: none;
-    color: $text-color;
     font-size: 16px;
     padding-left: 16px;
   }

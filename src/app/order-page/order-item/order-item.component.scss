@@ -1,12 +1,11 @@
-@import "../../../variables";
+@use "../../../variables";
 
 .item-bar {
   padding: 10px;
   border-radius: 1rem;
-  background: $dark-theme-background-lighter;
+  background: variables.$dark-theme-background-lighter;
   height: 80px;
   margin: 5px auto;
-  color: $text-color;
   cursor: pointer;
 
   display: flex;

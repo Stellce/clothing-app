@@ -2,7 +2,14 @@
 @use "sass:map";
 @use 'm3-theme';
 @use 'variables';
-@include mat.core();
+@use 'theme';
+
+//.dark-theme {
+//  @include theme.create-dark-theme();
+//}
+//.light-theme {
+//  @include theme.create-light-theme();
+//}
 
 html, body {
   background: var(--mat-app-background-color);
@@ -12,28 +19,27 @@ html, body {
 
 html {
   @include mat.all-component-themes(m3-theme.$dark-theme);
+  //@include mat.all-component-themes(new-theme.$dark-theme);
   font-family: "Inter", sans-serif;
 }
 
 body {
   margin: 0;
+  color: variables.$text-color;
+  font-size: 1rem;
 }
 
 .mat-typography {
   font-family: 'Inter', sans-serif;
 }
 
-mat-spinner {
-  align-self: center;
-}
-
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 0.5rem;
   cursor: pointer !important;
 }
 
 ::-webkit-scrollbar:horizontal {
-  height: 15px;
+  height: 1rem;
   cursor: pointer !important;
 }
 
@@ -51,7 +57,7 @@ mat-spinner {
 }
 
 button {
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 .dark-bottom-gradient {
@@ -63,3 +69,29 @@ button {
   top: 0;
   z-index: 1;
 }
+
+mat-spinner {
+  align-self: center;
+}
+
+a {
+  color: variables.$text-color;
+}
+
+.breadcrumb-line {
+  display: flex;
+  align-items: center;
+  margin: 1rem 0;
+  padding-left: 1rem;
+  gap: 0.5rem;
+}
+
+.fav-icon {
+  height: 30px;
+  width: 30px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  cursor: pointer;
+}
+

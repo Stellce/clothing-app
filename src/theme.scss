@@ -1,0 +1,12 @@
+@use "@angular/material" as mat;
+@use 'm3-theme' as theme;
+
+@include mat.core();
+
+@mixin create-dark-theme() {
+  @include mat.all-component-themes(theme.$dark-theme);
+}
+
+@mixin create-light-theme() {
+  //@include mat.all-component-themes(theme.$light-theme);
+}

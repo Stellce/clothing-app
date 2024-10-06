@@ -1,3 +1,8 @@
-<ng-template [ngIf]="items && items.length">
+<ng-template [ngIf]="items.length" [ngIfElse]="noItems">
+  <div class="item-card-list">
     <app-item-card *ngFor="let item of items" [item]="item"></app-item-card>
+  </div>
+</ng-template>
+<ng-template #noItems>
+  <h2 [ngStyle]="{'text-align': 'center'}">There are no favorite items yet</h2>
 </ng-template>

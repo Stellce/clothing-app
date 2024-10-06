@@ -1,4 +1,4 @@
-@import "../../../../variables";
+@use "../../../../variables";
 
 .search-bar {
   display: flex;
@@ -9,7 +9,7 @@
   margin: 1rem auto;
 
   input {
-    background: $filter-bubble;
+    background: variables.$filter-bubble;
     border: none;
     font-size: 21px;
     border-radius: 1rem;
@@ -17,12 +17,12 @@
     width: 80%;
     &:focus {
       outline: none;
-      box-shadow: 0 0 0 3px $background-secondary;
+      box-shadow: 0 0 0 3px variables.$background-secondary;
     }
   }
 
   img {
-    color: $filter-bubble;
+    color: variables.$filter-bubble;
     border-radius: 1rem;
     padding: 10px;
     &:hover {

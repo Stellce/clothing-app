@@ -1,6 +1,6 @@
-@import "../../../variables";
+@use "../../../variables";
 .dialog {
-  background: $dark-theme-background-lighter;
+  background: variables.$dark-theme-background-lighter;
 }
 
 button {

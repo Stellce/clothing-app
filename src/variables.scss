@@ -1,6 +1,7 @@
 @use '@angular/material' as mat;
 @use 'sass:map';
 @use 'm3-theme';
+@use 'new-theme';
 @mixin show($map) {
   @at-root {
     @each $key, $value in $map {
@@ -8,6 +9,9 @@
     }
   }
 }
+
+@debug mat.get-theme-color(new-theme.$dark-theme, primary);
+@debug mat.get-theme-color(m3-theme.$dark-theme, primary);
 
 $dark-theme-background-darker: mat.get-theme-color(m3-theme.$dark-theme, primary, 0);
 $dark-theme-background: mat.get-theme-color(m3-theme.$dark-theme, surface);
@@ -17,25 +21,87 @@ $background-secondary: #404040;
 $filter-bubble: #A9A9A9;
 $text-color: mat.get-theme-color(m3-theme.$dark-theme, on-surface);
 $breadcrumb-hover: #19ccb2;
-$accent-color: mat.get-theme-color(m3-theme.$dark-theme, on-surface-variant);
+$accent-color: mat.get-theme-color(m3-theme.$dark-theme, on-surface);
 $accent: mat.get-theme-color(m3-theme.$dark-theme, surface-bright);
 
 $secondary: mat.get-theme-color(m3-theme.$dark-theme, secondary);
 $on-secondary: mat.get-theme-color(m3-theme.$dark-theme, on-secondary);
 
+// error
+$error: #ffb4ab;
+$error-container: #93000a;
+$on-error: #690005;
+$on-error-container: #ffdad6;
+
+//primary
+$primary: #c9c6c5;
+$primary-container: #474646;
+$primary-fixed: #e5e2e1;
+$primary-fixed-dim: #c9c6c5;
+$inverse-primary: #5f5e5e;
+$on-primary: #313030;
+$on-primary-container: #e5e2e1;
+$on-primary-fixed: #1c1b1b;
+$on-primary-fixed-variant: #474646;
+
+// secondary
+$secondary: #c9c6c5;
+$secondary-container: #484646;
+$secondary-fixed: #e5e2e1;
+$secondary-fixed-dim: #c9c6c5;
+$on-secondary: #313030;
+$on-secondary-container: #e5e2e1;
+$on-secondary-fixed: #1c1b1b;
+$on-secondary-fixed-variant: #484646;
+
+// tertiary
+$tertiary: #cac5c5;
+$tertiary-container: #494646;
+$tertiary-fixed: #e6e1e1;
+$tertiary-fixed-dim: #cac5c5;
+$on-tertiary: #323030;
+$on-tertiary-container: #e6e1e1;
+$on-tertiary-fixed: #1d1b1b;
+$on-tertiary-fixed-variant: #494646;
+
+// surface
+$surface: #1c1b1b;
+$surface-bright: #3a3939;
+$surface-container: #201f1f;
+$surface-container-high: #2b2a2a;
+$surface-container-highest: #353434;
+$surface-container-low: #1c1b1b;
+$surface-container-lowest: #0e0e0e;
+$surface-dim: #141313;
+$surface-tint: #c9c6c5;
+$surface-variant: #444748;
+$inverse-surface: #e5e2e1;
+$on-surface: #e5e2e1;
+$on-surface-variant: #c4c7c7;
+$inverse-on-surface: #313030;
+
+$background: #1c1b1b;
+$on-background: #e5e2e1;
+
+$outline: #8e9192;
+$outline-variant: #444748;
+
+$scrim: #000000;
+$shadow: #000000;
+
 /*
-Valid color roles are: 
-  background, error, error-container, inverse-on-surface, inverse-primary, inverse-surface, on-background, on-error, on-error-container, 
-  on-primary, on-primary-container, on-primary-fixed, on-primary-fixed-variant, 
-  on-secondary, on-secondary-container, on-secondary-fixed, on-secondary-fixed-variant, 
-  on-surface, on-surface-variant, 
-  on-tertiary, on-tertiary-container, on-tertiary-fixed, on-tertiary-fixed-variant, 
-  outline, outline-variant, 
-  primary, primary-container, primary-fixed, primary-fixed-dim, 
-  scrim, 
-  secondary, secondary-container, secondary-fixed, secondary-fixed-dim, 
-  shadow, 
-  surface, surface-bright, surface-container, surface-container-high, surface-container-highest, surface-container-low, surface-container-lowest, surface-dim, surface-tint, surface-variant, 
+Valid color roles are:
+  background, error, error-container, inverse-on-surface, inverse-primary, inverse-surface, on-background, on-error, on-error-container,
+  on-primary, on-primary-container, on-primary-fixed, on-primary-fixed-variant,
+  on-secondary, on-secondary-container, on-secondary-fixed, on-secondary-fixed-variant,
+  on-surface, on-surface-variant,
+  on-tertiary, on-tertiary-container, on-tertiary-fixed, on-tertiary-fixed-variant,
+  outline, outline-variant,
+  primary, primary-container, primary-fixed, primary-fixed-dim,
+  scrim,
+  secondary, secondary-container, secondary-fixed, secondary-fixed-dim,
+  shadow,
+  surface, surface-bright, surface-container, surface-container-high, surface-container-highest, surface-container-low, surface-container-lowest, surface-dim, surface-tint, surface-variant,
   tertiary, tertiary-container, tertiary-fixed, tertiary-fixed-dim.
 */
 
