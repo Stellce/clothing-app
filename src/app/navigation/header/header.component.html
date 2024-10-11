@@ -7,7 +7,7 @@
   <a [routerLink]="['/', 'products', 'women']">WOMEN</a>
 </div>
 <div class="tab-name" *ngIf="!isProductPage && tabIcon">
-  {{tabIcon | firstLetterUpperCase}} 
+  {{tabIcon | fieldToText}}
   <img [src]="'assets/icons/' + tabIcon + '.svg'" [alt]="tabIcon"/>
 </div>
 <app-navbar></app-navbar>

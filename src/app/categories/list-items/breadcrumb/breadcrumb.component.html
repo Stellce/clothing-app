@@ -5,9 +5,9 @@
 <ng-template [ngIf]="links">
   <div class="breadcrumb-links" *ngFor="let link of links; let i = index">
     <div class="breadcrumb-link">
-      <a *ngIf="!isLast(i)" [routerLink]="link.path">{{link.name | firstLetterUpperCase}}</a>
+      <a *ngIf="!isLast(i)" [routerLink]="link.path">{{link.name | fieldToText}}</a>
     </div>
-    <span *ngIf="isLast(i)">{{link.name | firstLetterUpperCase}}</span>
+    <span *ngIf="isLast(i)">{{link.name | fieldToText}}</span>
     <span *ngIf="!isLast(i)"> / </span>
   </div>
 </ng-template>

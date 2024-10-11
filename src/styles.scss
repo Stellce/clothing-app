@@ -1,36 +1,31 @@
 @use "@angular/material" as mat;
 @use "sass:map";
-@use 'm3-theme';
 @use 'variables';
 @use 'theme';
 
-//.dark-theme {
-//  @include theme.create-dark-theme();
-//}
-//.light-theme {
-//  @include theme.create-light-theme();
-//}
-
-html, body {
-  background: var(--mat-app-background-color);
-  height: 100%;
-  -webkit-tap-highlight-color: transparent;
-}
-
-html {
-  @include mat.all-component-themes(m3-theme.$dark-theme);
-  //@include mat.all-component-themes(new-theme.$dark-theme);
-  font-family: "Inter", sans-serif;
-}
-
 body {
   margin: 0;
+  padding: 0;
+  background: variables.$surface;
   color: variables.$text-color;
-  font-size: 1rem;
+
+  --mat-form-field-focus-state-layer-opacity: 0;
+}
+
+:host {
+  height: 100%;
+  background: var(--mat-app-background-color);
+  -webkit-tap-highlight-color: transparent;
+  --mat-select-panel-background-color: variables.$surface-container;
+  --mat-form-field-focus-state-layer-opacity: 0;
+  //@include mat.all-component-themes(m3-theme.$dark-theme);
+  //@include mat.all-component-themes(new-theme.$dark-theme);
 }
 
 .mat-typography {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
+  font-size: 1rem;
+  color: variables.$text-color;
 }
 
 ::-webkit-scrollbar {
@@ -44,7 +39,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: variables.$dark-theme-background;
+  background: variables.$surface;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -56,7 +51,7 @@ body {
   background: variables.$background-primary;
 }
 
-button {
+.mdc-button__label {
   font-size: 1rem;
 }
 
@@ -95,3 +90,20 @@ a {
   cursor: pointer;
 }
 
+mat-form-field .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background: none;
+}
+
+.mdc-label {
+  font-size: 1rem;
+}
+
+.dark-theme {
+  @include theme.create-dark-theme();
+}
+
+@media (prefers-color-scheme: light) {
+  .light-theme {
+    @include theme.create-light-theme();
+  }
+}

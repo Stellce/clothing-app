@@ -9,7 +9,7 @@
   grid-template-columns: 2fr 5fr 2fr;
   align-items: center;
   justify-items: center;
-  background: variables.$dark-theme-background;
+  background: variables.$surface;
   padding: 0 1.25rem 0 4%;
   font-size: 1.25rem;
 }
@@ -60,14 +60,14 @@ app-navbar {
   }
   .logo {
     display: none;
-    width: 0px;
+    width: 0;
     position: absolute;
     left: -999px;
     top: -999px;
   }
   app-navbar {
     display: none;
-    width: 0px;
+    width: 0;
     position: absolute;
     left: -999px;
     top: -999px;

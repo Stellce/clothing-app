@@ -14,12 +14,19 @@ import { RefreshTokenReq } from "./refresh-token-req.model";
 import { RegisterUser } from "./register/register-user.model";
 import { TokenInfo } from "./token-info.model";
 import { User } from "./user.model";
+import {PurchaseData} from "./purchase-data.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  googleLink = 'https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=http://localhost:4200/account&response_type=code&client_id=366892792903-hcvb0cr5rdfe6afvl628isd4l900uai6.apps.googleusercontent.com&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+openid&access_type=offline';
+  purchaseData: WritableSignal<PurchaseData> = signal({
+    deliveryAddress: 'st. ExampleStreet, 12/3 45-678, ExmpleCity, ExampleWoiwodeship',
+    deliveryMethod: 'Parcel locker',
+    paymentMethod: 'Card',
+    discountCode: '2547',
+    wishes: 'Fragile'
+  });
   googleLoginUrl = environment.backendUrl + '/oauth2/login/google';
 
   user: WritableSignal<User> = signal<User>(null);
@@ -86,7 +93,7 @@ export class AuthService {
     let dialogData: DialogData = {
       title: 'Please, provide your email',
       description: 'You will receive a new email with an activation link',
-      inputs: ['email'],
+      inputs: [{name: 'email'}],
       buttonName: 'Resend'
     }
     const dialogRef = this.dialog.open(DialogComponent, {data: dialogData});
@@ -127,7 +134,7 @@ export class AuthService {
       title: 'Password reset',
       description: '',
       note: 'After clicking “Reset”, you will receive an email with following steps',
-      inputs: ['email'],
+      inputs: [{name: 'email'}],
       buttonName: 'Reset'
     }
     const dialogRef = this.dialog.open(DialogComponent, {data: dialogData});

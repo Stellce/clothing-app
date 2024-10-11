@@ -2,14 +2,14 @@ import { NgFor, NgIf } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from "@angular/router";
 import { CategoriesService } from "../../categories.service";
-import {FirstLetterUpperCasePipe} from "../../../pipes/first-letter-upper-case.pipe";
+import {FieldToTextPipe} from "../../../pipes/field-to-text";
 
 @Component({
     selector: 'app-breadcrumb',
     templateUrl: './breadcrumb.component.html',
     styleUrls: ['./breadcrumb.component.scss'],
     standalone: true,
-  imports: [RouterLink, NgIf, NgFor, FirstLetterUpperCasePipe]
+  imports: [RouterLink, NgIf, NgFor, FieldToTextPipe]
 })
 export class BreadcrumbComponent implements OnInit{
   @Input()itemName: string;

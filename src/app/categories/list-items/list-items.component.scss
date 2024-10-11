@@ -5,7 +5,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .mat-drawer {
-  background: variables.$dark-theme-background;
+  background: variables.$surface;
   width: 90%;
   max-width: 480px;
 }
@@ -89,7 +89,7 @@ app-paginator {
 }
 
 .mdc-menu-surface {
-  background: variables.$dark-theme-background;
+  background: variables.$surface;
 }
 
 .mat-mdc-form-field-focus-overlay {

@@ -1,7 +1,7 @@
 @use "../../../variables";
 
 :host {
-  background: variables.$dark-theme-background;
+  background: variables.$surface;
 
   display: flex;
   justify-content: space-around;

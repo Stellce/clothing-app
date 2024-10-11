@@ -3,9 +3,8 @@
 :host {
   border-radius: 1rem;
   background: none;
-  height: 80px;
-  cursor: pointer;
-  font-size: 16px;
+  height: 5rem;
+  font-size: 1rem;
 
   display: flex;
   justify-content: space-between;
@@ -14,46 +13,48 @@
   img {
     height: 100%;
     width: 100%;
-    max-width: 100px;
+    max-width: 6rem;
     border-radius: .5rem;
+    cursor: pointer;
   }
 
-  .description-price-quantity {      
-    padding-left: 10px;
+  .description-price-quantity {
     flex-grow: 1;
     height: 100%;
     box-sizing: border-box;
     display: flex;
     justify-content: space-between;
-    
+
     .description {
       display: flex;
       flex-direction: column;
       justify-content: space-around;
-  
+      margin: 0 0.25rem;
+
       .name {
         display: flex;
-        
+        cursor: pointer;
       }
-  
+
       .size {
         flex: 0;
-        font-size: 12px;
+        font-size: 0.75rem;
       }
     }
-  
+
     .price-quantity {
       display: flex;
       flex-direction: column;
       height: 100%;
+      flex: 1;
       justify-content: center;
-      align-items: center;
-  
+      align-items: flex-end;
+
       .quantity {
         display: flex;
         align-items: center;
         button {
-          margin: 0 10px;
+          margin: 0 0.5rem;
         }
       }
     }

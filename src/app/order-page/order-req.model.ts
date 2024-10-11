@@ -1,7 +1,7 @@
 export interface OrderReq {
   itemEntries: ItemEntry[],
   customer?: UnregisteredCustomer,
-  delivery: {}
+  delivery?: {}
 }
 
 export interface ItemEntry {

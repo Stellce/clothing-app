@@ -16,7 +16,7 @@ export class AccountService {
       title: 'Promo-code',
       description: '',
       note: '',
-      inputs: ['promocode'],
+      inputs: [{name: 'promocode'}],
       buttonName: 'Submit'
     }
     const dialogRef = this.dialog.open(DialogComponent, {data: dialogData});

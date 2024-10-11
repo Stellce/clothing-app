@@ -1,18 +1,14 @@
-<img *ngIf="cartItem?.images" [src]="'data:image/png;base64,' + cartItem.images[0].image" alt="">
+<img *ngIf="cartItem?.images" [src]="'data:image/png;base64,' + cartItem.images[0].image" alt="" [routerLink]="itemLink">
 <div class="description-price-quantity">
   <div class="description">
-    <div class="name">
+    <div class="name" [routerLink]="itemLink">
       {{cartItem.itemName}}
     </div>
-    <div class="size">{{cartItem.itemSize}} (max q-ty: {{getCurrentQuantityMax()}})</div>
+    <div class="size">{{cartItem.itemSize}} max: {{getMaxQuantity()}}</div>
   </div>
   <div class="price-quantity">
-    <div class="price">{{cartItem.itemPriceAfterDiscount | currency}}</div>
-    <div class="quantity">
-      <button mat-mini-fab (click)="addMore(-1)">-</button> 
-      {{cartItem.quantity}}
-      <button mat-mini-fab (click)="addMore(1)">+</button>
-    </div>
-    <!-- <div class="total-price">{{cartItem.totalPriceAfterDiscount | currency}}</div> -->
+    <div class="price">{{cartItem.itemPriceAfterDiscount | currency}} per item</div>
+    <app-input-quantity [(quantity)]="cartItem.quantity" [max]="getMaxQuantity()" [min]="1" (quantityChange)="addMore($event)"/>
+<!--   <div class="total-price">{{cartItem.totalPriceAfterDiscount | currency}}</div>-->
   </div>
 </div>

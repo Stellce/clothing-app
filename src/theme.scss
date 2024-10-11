@@ -5,6 +5,9 @@
 
 @mixin create-dark-theme() {
   @include mat.all-component-themes(theme.$dark-theme);
+  .mat-mdc-raised-button:not(:disabled) {
+    background-color: mat.get-theme-color(theme.$dark-theme, surface-container)
+  }
 }
 
 @mixin create-light-theme() {

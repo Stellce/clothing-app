@@ -1,6 +1,7 @@
 @use "../../../variables";
 .dialog {
-  background: variables.$dark-theme-background-lighter;
+  background: variables.$surface-container;
+  height: fit-content;
 }
 
 button {

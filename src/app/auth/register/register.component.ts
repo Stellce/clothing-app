@@ -9,20 +9,20 @@ import { MatRadioModule } from '@angular/material/radio';
 import { RouterLink } from '@angular/router';
 import { AuthService } from "../auth.service";
 import { RegisterUser } from "./register-user.model";
+import {GoogleLoginButtonComponent} from "../google-login-button/google-login-button.component";
 
 @Component({
     selector: 'app-register',
     templateUrl: './register.component.html',
     styleUrls: ['../shared.scss'],
     standalone: true,
-    imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatRadioModule, MatCheckboxModule, MatButtonModule, RouterLink, NgIf]
+  imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatRadioModule, MatCheckboxModule, MatButtonModule, RouterLink, NgIf, GoogleLoginButtonComponent]
 })
 export class RegisterComponent implements OnInit {
   form: FormGroup;
   showError: boolean = false;
   showEmailResend: boolean = true;
   emailResendTimer:number = 0;
-  @ViewChild('circleRef') circleRef: ElementRef;
 
   constructor(public authService: AuthService) {}
   ngOnInit() {
@@ -58,7 +58,7 @@ export class RegisterComponent implements OnInit {
 
         this.emailResendTimer = 15;
         this.showEmailResend = false;
-        
+
         let interval = setInterval(() => {
           if (this.emailResendTimer) {
             this.emailResendTimer--;

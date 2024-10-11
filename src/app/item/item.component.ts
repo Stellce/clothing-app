@@ -10,20 +10,21 @@ import { BreadcrumbComponent } from '../categories/list-items/breadcrumb/breadcr
 import { UniqueItem } from '../categories/list-items/item-card/item-card.model';
 import { LocalService } from '../local/local.service';
 import { CartService } from '../navigation/navbar/cart/cart.service';
-import { FirstLetterUpperCasePipe } from '../pipes/first-letter-upper-case.pipe';
+import { FieldToTextPipe } from '../pipes/field-to-text';
 import { Image } from "./image.model";
 import { ItemDetails } from "./item.model";
 import { ItemsService } from "./items.service";
 import { ReviewsComponent } from './reviews/reviews.component';
 import {AddToFavoritesComponent} from "./add-to-favorites/add-to-favorites.component";
 import {MatRipple} from "@angular/material/core";
+import {InputQuantityComponent} from "./input-quantity/input-quantity.component";
 
 @Component({
     selector: 'app-item',
     templateUrl: './item.component.html',
     styleUrls: ['./item.component.scss'],
     standalone: true,
-  imports: [NgIf, BreadcrumbComponent, NgFor, NgClass, MatButtonModule, ReviewsComponent, CurrencyPipe, MatFormFieldModule, MatInputModule, FormsModule, NgStyle, FirstLetterUpperCasePipe, AddToFavoritesComponent, MatRipple]
+  imports: [NgIf, BreadcrumbComponent, NgFor, NgClass, MatButtonModule, ReviewsComponent, CurrencyPipe, MatFormFieldModule, MatInputModule, FormsModule, NgStyle, FieldToTextPipe, AddToFavoritesComponent, MatRipple, InputQuantityComponent]
 })
 export class ItemComponent implements OnInit{
   item: ItemDetails;
@@ -48,13 +49,7 @@ export class ItemComponent implements OnInit{
     if (this.quantity > uniqueItem.quantity) this.quantity = uniqueItem.quantity;
   }
 
-  addMore(n: number) {
-    let res = n + this.quantity;
-    let isPositiveRes = ((res) > 0);
-    let isValidQuantity = isPositiveRes && this.selectedUniqueItem.quantity >= res;
-    if (!isValidQuantity) return;
-    this.quantity += n;
-  }
+
 
   addToCart() {
     if (this.quantity > this.selectedUniqueItem.quantity) return;

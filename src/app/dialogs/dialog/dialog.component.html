@@ -4,9 +4,15 @@
     <div class="description">{{data.description}}</div>
     <form #f="ngForm">
       <mat-form-field *ngFor="let input of data.inputs">
-        <mat-label>{{input[0].toUpperCase() + input.slice(1).toLowerCase()}}</mat-label>
-        <input matInput ngModel [type]="setInputType(input)" [name]="input">
-        <img *ngIf="input.includes('password')" [src]="'assets/icons/' + passwordsShown[getPasswordIndex(input)].isShown ? 'visibility' : 'visibility_off' + '.svg'" (click)="turnPasswordShown(input)"/>
+        <mat-label>{{input.name | fieldToText}}</mat-label>
+        <input matInput ngModel [type]="setInputType(input.name)" [name]="input.name" [value]="input.defaultValue">
+        <img *ngIf="input.name.includes('password')" [src]="'assets/icons/' + passwordsShown[getPasswordIndex(input.name)].isShown ? 'visibility' : 'visibility_off' + '.svg'" alt="Show/hide password" (click)="turnPasswordShown(input.name)"/>
+      </mat-form-field>
+      <mat-form-field *ngFor="let select of data.selects">
+        <mat-label>{{select.name | fieldToText}}</mat-label>
+        <mat-select ngModel [name]="select.name" [(value)]="select.defaultValue">
+          <mat-option *ngFor="let value of select.values" [value]="value">{{value}}</mat-option>
+        </mat-select>
       </mat-form-field>
     </form>
     <p>{{data.note}}</p>

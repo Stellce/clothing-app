@@ -6,13 +6,14 @@ import { MatInputModule } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
 import { AuthService } from "../auth.service";
 import { LoginUser } from "./login-user.model";
+import {GoogleLoginButtonComponent} from "../google-login-button/google-login-button.component";
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['../shared.scss'],
     standalone: true,
-    imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, RouterLink]
+  imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, RouterLink, GoogleLoginButtonComponent]
 })
 export class LoginComponent implements OnInit{
   form: FormGroup;

@@ -1,5 +1,33 @@
 <ng-template [ngIf]="cartItems.length" [ngIfElse]="noItems">
-  <app-item-bar *ngFor="let cartItem of cartItems" [cartItem]="cartItem"></app-item-bar>
+  <div class="cart">
+    <div class="header">
+      <div class="header-content">
+        <mat-checkbox
+          (change)="onSelectAll($event)"
+          [indeterminate]="selectedItemsIds.size > 0 && !(selectedItemsIds.size === cartItems.length)"
+          [checked]="selectedItemsIds.size === cartItems.length"
+        >Select all</mat-checkbox>
+      </div>
+    </div>
+    <div class="cart-item" *ngFor="let cartItem of cartItems">
+      <mat-checkbox (change)="onItemSelect(cartItem, $event.checked)" #itemCheckbox></mat-checkbox>
+      <app-item-bar [cartItem]="cartItem"></app-item-bar>
+    </div>
+  </div>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-card-title>
+        <div class="cost space-between">Total cost: {{totalCost | currency}}</div>
+      </mat-card-title>
+    </mat-expansion-panel-header>
+    <div class="purchase-details">
+      <div class="detail" *ngFor="let field of Object.entries(authService.purchaseData())">
+        <div class="label"><span>{{field[0] | fieldToText}}: </span><span>{{field[1]}}</span></div>
+        <div class="edit" (click)="onFieldChange(field)">set</div>
+      </div>
+    </div>
+    <button mat-raised-button color="primary" (click)="onBuy()">Buy</button>
+  </mat-expansion-panel>
 </ng-template>
 <ng-template #noItems>
   <h2 [ngStyle]="{'text-align': 'center'}">There are no items yet</h2>
