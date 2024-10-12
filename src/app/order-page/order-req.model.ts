@@ -1,10 +1,10 @@
 export interface OrderReq {
-  itemEntries: ItemEntry[],
+  itemEntries: ItemEntryReq[],
   customer?: UnregisteredCustomer,
   delivery?: {}
 }
 
-export interface ItemEntry {
+export interface ItemEntryReq {
   itemId: string,
   quantity: number,
   size: string

@@ -1,8 +1,8 @@
-import {ItemEntry} from "../order-page/order-req.model";
+import {ItemEntryReq} from "../order-page/order-req.model";
 
 export interface Order {
   id: string
-  itemEntries: ItemEntry[]
+  itemEntries: ItemEntryReq[]
   delivery: Delivery
   createdAt: string
   totalPrice: number

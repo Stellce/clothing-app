@@ -4,5 +4,11 @@
   </div>
 </ng-template>
 <ng-template #noItems>
-  <h2 [ngStyle]="{'text-align': 'center'}">There are no favorite items yet</h2>
+  <div class="center">
+    <div class="center" *ngIf="isLoading">
+      <mat-spinner></mat-spinner>
+      <h2>Loading...</h2>
+    </div>
+    <h2 *ngIf="!isLoading">There are no favorite items yet</h2>
+  </div>
 </ng-template>

@@ -3,6 +3,16 @@
 @use 'variables';
 @use 'theme';
 
+:host {
+  height: 100%;
+  background: var(--mat-app-background-color);
+  -webkit-tap-highlight-color: transparent;
+  --mat-select-panel-background-color: variables.$surface-container;
+  --mat-form-field-focus-state-layer-opacity: 0;
+  //@include mat.all-component-themes(m3-theme.$dark-theme);
+  //@include mat.all-component-themes(new-theme.$dark-theme);
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -12,14 +22,14 @@ body {
   --mat-form-field-focus-state-layer-opacity: 0;
 }
 
-:host {
-  height: 100%;
-  background: var(--mat-app-background-color);
-  -webkit-tap-highlight-color: transparent;
-  --mat-select-panel-background-color: variables.$surface-container;
-  --mat-form-field-focus-state-layer-opacity: 0;
-  //@include mat.all-component-themes(m3-theme.$dark-theme);
-  //@include mat.all-component-themes(new-theme.$dark-theme);
+.dark-theme {
+  @include theme.create-dark-theme();
+}
+
+@media (prefers-color-scheme: light) {
+  .light-theme {
+    @include theme.create-light-theme();
+  }
 }
 
 .mat-typography {
@@ -98,12 +108,10 @@ mat-form-field .mdc-text-field--filled:not(.mdc-text-field--disabled) {
   font-size: 1rem;
 }
 
-.dark-theme {
-  @include theme.create-dark-theme();
-}
-
-@media (prefers-color-scheme: light) {
-  .light-theme {
-    @include theme.create-light-theme();
-  }
+.center {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }

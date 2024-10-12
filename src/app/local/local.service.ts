@@ -11,7 +11,7 @@ export class LocalService {
     this._cartItems = JSON.parse(localStorage.getItem("cart")) || [];
     return this._cartItems;
   }
-  
+
   getCartItems() {
     this.removeSimilar();
     return this.cartItems;
@@ -27,7 +27,7 @@ export class LocalService {
     });
     localStorage.setItem("cart", JSON.stringify(originItems));
   }
-  
+
   addToCart(item: LocalCartItem) {
     const cart: LocalCartItem[] = this.cartItems;
     cart.push(item);
@@ -41,7 +41,7 @@ export class LocalService {
     localStorage.setItem("cart", JSON.stringify(cart));
   }
 
-  get favoritesIds() {
+  get favoritesIds(): string[] {
     return this._favoritesIds = JSON.parse(localStorage.getItem("favorites")) || [];
   }
 
@@ -49,7 +49,7 @@ export class LocalService {
     this._favoritesIds = ids;
   }
 
-  getFavoritesIds() {
+  getFavoritesIds(): string[] {
     return this.favoritesIds = [...new Set(this.favoritesIds)];
   }
 
@@ -64,5 +64,5 @@ export class LocalService {
     favorites = favorites.filter(id => id !== itemId);
     localStorage.setItem("favorites", JSON.stringify(favorites));
   }
-  
+
 }

@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
+import {Component, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {ItemsService} from "../../../item/items.service";
 import {ItemBarComponent} from '../../../categories/item-bar/item-bar.component';
 import {AsyncPipe, CurrencyPipe, NgFor, NgIf, NgStyle} from '@angular/common';
@@ -22,32 +22,36 @@ import {NgForm} from "@angular/forms";
 import {PurchaseData} from "../../../auth/purchase-data.model";
 import {OrdersService} from "../../../order-page/orders.service";
 import {OrderReq} from "../../../order-page/order-req.model";
+import {AddCartReq} from "./req/add-cart-req.model";
+import {AddCartRes, ItemEntryRes} from "./res/add-cart-res.model";
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.scss'],
   standalone: true,
-  imports: [NgFor, NgIf, ItemBarComponent, AsyncPipe, NgStyle, MatCheckbox, MatDivider, MatExpansionPanel, MatCardTitle, MatExpansionPanelHeader, FieldToTextPipe, CurrencyPipe, MatButton]
+  imports: [NgFor, NgIf, ItemBarComponent, AsyncPipe, NgStyle, MatCheckbox, MatDivider, MatExpansionPanel, MatCardTitle, MatExpansionPanelHeader, FieldToTextPipe, CurrencyPipe, MatButton, MatProgressSpinner]
 })
 export class CartComponent implements OnInit {
   cartItems: CartItem[] = [];
   selectedItemsIds: Set<string> = new Set<string>();
   totalCost: number = 0;
+  isLoading: boolean = true;
   @ViewChildren('itemCheckbox') itemCheckboxes: QueryList<MatCheckbox>;
 
   constructor(
     private cartService: CartService,
     private localService: LocalService,
-    public authService: AuthService,
     private itemService: ItemsService,
     private dialog: MatDialog,
+    public authService: AuthService,
     public ordersService: OrdersService
   ) {}
 
   ngOnInit() {
     if (this.authService.user()) {
-      this.cartService.getItems().subscribe(items => this.cartItems = items);
+      this.loadItems();
     } else {
       this.getLocalCartItems();
     }
@@ -57,6 +61,7 @@ export class CartComponent implements OnInit {
     this.itemCheckboxes.forEach((i: MatCheckbox) => {
       i.writeValue(event.checked);
     });
+    this.totalCost = 0;
     if (event.checked) {
       this.cartItems.forEach(i => {
         this.selectedItemsIds.add(i.itemId)
@@ -64,13 +69,12 @@ export class CartComponent implements OnInit {
       });
     } else {
       this.selectedItemsIds = new Set<string>();
-      this.totalCost = 0;
     }
   }
 
   onItemSelect(item: CartItem, isChecked: boolean) {
     this.selectedItemsIds[isChecked ? 'add' : 'delete'](item.itemId);
-    this.totalCost += (item.totalPriceAfterDiscount * (isChecked ? 1 : -1));
+    this.totalCost += (item.itemPriceAfterDiscount * item.quantity * (isChecked ? 1 : -1));
   }
 
   onFieldChange(field: string[]) {
@@ -120,9 +124,7 @@ export class CartComponent implements OnInit {
         }
       })
     }
-    if (this.authService.user()) {
-
-    } else {
+    if (!this.authService.user()) {
       let dialogData = {
         title: 'User data',
         description: 'You are not authenticated, you can login, register, or fill these fields',
@@ -146,6 +148,29 @@ export class CartComponent implements OnInit {
     this.ordersService.createOrder(order);
   }
 
+  private loadItems() {
+    this.cartService.getItems().subscribe(items => {
+      let localItems = this.localService.getCartItems();
+
+      if (items.length === 0 && localItems.length > 0) {
+        let localItemsLoading$: Observable<AddCartRes>[] = localItems.map(lItem => {
+          let addCartReq: AddCartReq = {
+            itemId: lItem.itemId,
+            quantity: lItem.quantity,
+            size: lItem.itemSize
+          }
+          return this.cartService.addItem(addCartReq);
+        });
+        forkJoin<AddCartRes[]>(localItemsLoading$).subscribe(items => {
+          console.log(items);
+
+        })
+      }
+      this.cartItems = items;
+      this.isLoading = false;
+    });
+  }
+
   private getLocalCartItems() {
     let localCartItems: LocalCartItem[] = this.localService.getCartItems();
     let localCartItems$: Observable<CartItem>[] = localCartItems
@@ -167,7 +192,10 @@ export class CartComponent implements OnInit {
           return of(item);
         }))
       );
-    forkJoin<CartItem[]>(localCartItems$).subscribe(items => this.cartItems = items);
+    forkJoin<CartItem[]>(localCartItems$).subscribe(items => {
+      this.cartItems = items;
+      this.isLoading = false;
+    });
   }
   private validateQuantity(itemDetails: ItemDetails, localCartItem: LocalCartItem) {
     let maxQuantity = itemDetails.uniqueItems.find(i => i.size === localCartItem.itemSize).quantity;
