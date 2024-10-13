@@ -121,8 +121,8 @@ export class AuthService {
     })
     let options = { headers: headers };
 
-    this.http.post<TokenInfo>(environment.backendUrl + '/oauth2/login/basic', body, options)
-      .subscribe(tokenInfo => this.authUser(tokenInfo));
+    return this.http.post<TokenInfo>(environment.backendUrl + '/oauth2/login/basic', body, options)
+      .pipe(tap(tokenInfo => this.authUser(tokenInfo)));
   }
 
   resetPassword() {

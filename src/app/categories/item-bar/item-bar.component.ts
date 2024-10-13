@@ -46,6 +46,6 @@ export class ItemBarComponent implements OnInit{
   }
 
   getMaxQuantity() {
-    return this.cartItem.uniqueItems.find(uitem => uitem.size === this.cartItem.itemSize).quantity;
+    return this.cartItem.uniqueItems.find(uItem => uItem.size === this.cartItem.itemSize).quantity;
   }
 }

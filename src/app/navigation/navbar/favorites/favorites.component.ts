@@ -18,7 +18,7 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
   imports: [ItemCardComponent, NgStyle, MatProgressSpinner]
 })
 export class FavoritesComponent implements OnInit{
-  items: ItemCard[] = [];
+  items: ItemCard[] = null;
   isLoading: boolean = true;
 
   constructor(
@@ -32,43 +32,51 @@ export class FavoritesComponent implements OnInit{
     if (this.authService.user()) {
       this.loadItems();
     } else {
-      let itemsIds = this.localService.getFavoritesIds();
-      let items$ = itemsIds.map(itemId => this.itemService.requestItemById(itemId));
-      forkJoin<ItemDetails[]>(items$).subscribe(items => {
-        this.items = items;
-        items.forEach((item, index) => {
-          this.itemService.requestItemImages(item.id).subscribe(images => {
-            this.items[index].images = images;
-          });
-        });
-        // item.metadata.onWishList = true;
-        // this.items[index] = item;
-
-      })
+      this.loadLocalItems();
     }
   }
 
   private loadItems() {
-    this.favoritesService.getItems().subscribe(items => {
-      let localItems = this.localService.getFavoritesIds();
-      if (items.length === 0 && localItems.length > 0) {
-        let favoritesIdsUploading$ = localItems.map(lItemId => {
-          return this.favoritesService.addItem(lItemId);
-        });
-        forkJoin(favoritesIdsUploading$).subscribe({
-          next: () => console.log('Favorite Items uploaded'),
-          error: e => console.log(e)
-        });
-      }
-      this.items = items.map(i => {
-        i.metadata.onWishList = true;
-        return i;
+    const addItemsToServer = (localItems: string[]) => {
+      let favoritesIdsUploading$ = localItems.map(lItemId => {
+        return this.favoritesService.addItem(lItemId);
       });
-      this.items.forEach(item => {
+      forkJoin(favoritesIdsUploading$).subscribe({
+        next: () => console.log('Favorite Items uploaded'),
+        error: e => console.log(e)
+      });
+    }
+    const requestItemsImages = () => {
+      this.items.map(item => {
         this.itemService.requestItemImages(item.id).subscribe(images => {
           this.items.find(i => i.id === item.id).images = images;
         });
       })
+    }
+
+    this.favoritesService.getItems().subscribe(items => {
+      let localItems = this.localService.getFavoritesIds();
+      const itemsNotAdded = items.length === 0 && localItems.length > 0;
+
+      this.isLoading = false;
+      this.items = items;
+
+      if (itemsNotAdded) addItemsToServer(localItems);
+      requestItemsImages();
     });
+  }
+
+  private loadLocalItems() {
+    let itemsIds = this.localService.getFavoritesIds();
+    let items$ = itemsIds.map(itemId => this.itemService.requestItemById(itemId));
+    forkJoin<ItemDetails[]>(items$).subscribe(items => {
+      this.items = items;
+      this.isLoading = false;
+      items.forEach((item, index) => {
+        this.itemService.requestItemImages(item.id).subscribe(images => {
+          this.items[index].images = images;
+        });
+      });
+    })
   }
 }

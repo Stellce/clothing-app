@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable, tap } from "rxjs";
+import {BehaviorSubject, Observable, tap} from "rxjs";
 import { environment } from "../../environments/environment";
 import { CatalogItem } from "../categories/list-items/item-card/item-card.model";
 import { ItemsParamsRequest } from "../categories/list-items/item-card/req/items-params-request.model";
@@ -31,7 +31,7 @@ export class ItemsService {
       environment.backendUrl + `/catalog/items/landing-page`
     ).pipe(tap(page => {
       this._page$.next(page);
-      this.requestAllItemsImages(page);
+      this.requestPageImages(page);
     }));
   }
 
@@ -48,7 +48,7 @@ export class ItemsService {
       {params}
     ).pipe(tap(page => {
       this._page$.next(page);
-      this.requestAllItemsImages(page);
+      this.requestPageImages(page);
     }))
   }
 
@@ -83,11 +83,9 @@ export class ItemsService {
       {params: params}
     ).pipe(tap(page => {
       this._page$.next(page);
-      this.requestAllItemsImages(page);
+      this.requestPageImages(page);
     }));
   }
-
-
 
   search(search: string) {
     let headers = new HttpHeaders().append('search', search);
@@ -104,10 +102,10 @@ export class ItemsService {
   //   return of(orders);
   // }
 
-  private requestAllItemsImages(page: ItemsPage) {
+  private requestPageImages(page: ItemsPage) {
     page.content.forEach(contentItem => {
       this.requestItemImages(contentItem.id).subscribe(images => {
-        let item: CatalogItem | undefined = page.content.find(i => i.id === contentItem.id);
+        const item: CatalogItem | undefined = page.content.find(i => i.id === contentItem.id);
         if(item) item.images = images;
         this._page$.next(page);
       });

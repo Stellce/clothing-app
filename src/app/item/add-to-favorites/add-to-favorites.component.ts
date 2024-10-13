@@ -40,7 +40,7 @@ export class AddToFavoritesComponent {
 
   removeFromFavorites() {
     if (this.authService.user()) {
-      this.favoritesService.removeItem(this.item().id).subscribe({next: () => this.item().metadata.onWishList = true, error: () => {}})
+      this.favoritesService.removeItem(this.item().id).subscribe({next: () => this.item().metadata.onWishList = false, error: () => {}})
     } else {
       this.localService.removeFromFavorites(this.item().id);
       this.item().metadata.onWishList = false;

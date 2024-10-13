@@ -1,4 +1,4 @@
-@if (cartItem?.images) {
+@if (cartItem.images) {
   <img [src]="'data:image/png;base64,' + cartItem.images[0].image" alt="" [routerLink]="itemLink">
 }
 <div class="description-price-quantity">
@@ -11,6 +11,5 @@
   <div class="price-quantity">
     <div class="price">{{cartItem.itemPriceAfterDiscount | currency}} per item</div>
     <app-input-quantity [(quantity)]="cartItem.quantity" [max]="getMaxQuantity()" [min]="1" (quantityChange)="addMore($event)"/>
-<!--   <div class="total-price">{{cartItem.totalPriceAfterDiscount | currency}}</div>-->
   </div>
 </div>
