@@ -23,7 +23,7 @@
       </mat-card-title>
     </mat-expansion-panel-header>
     <div class="purchase-details">
-      @for (field of Object.entries(authService.purchaseData()); track field) {
+      @for (field of Object.entries(authService.purchaseData()); track field[0]) {
         <div class="detail">
           <div class="label"><span>{{field[0] | fieldToText}}: </span><span>{{field[1]}}</span></div>
           <div class="edit" (click)="onFieldChange(field)">set</div>

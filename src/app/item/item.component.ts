@@ -1,6 +1,6 @@
 import { CurrencyPipe, NgClass, NgStyle } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from "@angular/forms";
+import {FormsModule, NgForm} from "@angular/forms";
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
@@ -18,6 +18,10 @@ import { ReviewsComponent } from './reviews/reviews.component';
 import {AddToFavoritesComponent} from "./add-to-favorites/add-to-favorites.component";
 import {MatRipple} from "@angular/material/core";
 import {InputQuantityComponent} from "./input-quantity/input-quantity.component";
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {DialogComponent} from "../dialogs/dialog/dialog.component";
+import {OrdersService} from "../order-page/orders.service";
+import {OrderReq} from "../order-page/order-req.model";
 
 @Component({
     selector: 'app-item',
@@ -37,7 +41,9 @@ export class ItemComponent implements OnInit{
     private route: ActivatedRoute,
     private cartService: CartService,
     private authService: AuthService,
-    private localService: LocalService
+    private localService: LocalService,
+    private dialog: MatDialog,
+    private ordersService: OrdersService
   ) {}
 
   ngOnInit() {
@@ -48,8 +54,6 @@ export class ItemComponent implements OnInit{
     this.selectedUniqueItem = uniqueItem;
     if (this.quantity > uniqueItem.quantity) this.quantity = uniqueItem.quantity;
   }
-
-
 
   addToCart() {
     if (this.quantity > this.selectedUniqueItem.quantity) return;
@@ -69,7 +73,34 @@ export class ItemComponent implements OnInit{
   }
 
   orderNow() {
-    // this.itemsService.orderNow();
+    const order: OrderReq = {
+      itemEntries: [{
+        itemId: this.item.id,
+        quantity: this.quantity,
+        size: this.selectedUniqueItem.size
+      }]
+    };
+    if (!this.authService.user()) {
+      let dialogData = {
+        title: 'User data',
+        description: 'You are not authenticated, you can login, register, or fill these fields',
+        inputs: [
+          {name: 'firstName'},
+          {name: 'lastName'},
+          {name: 'email'},
+        ],
+        buttonName: 'Submit'
+      }
+      const dialogRef: MatDialogRef<DialogComponent, NgForm> = this.dialog.open(DialogComponent, {data: dialogData});
+      dialogRef.afterClosed().subscribe(form => {
+        if (form?.value) {
+          order.customer = {
+            ...form.value
+          }
+        }
+      });
+    }
+    this.ordersService.createOrder(order);
   }
 
   sizeString(size: string): string {
@@ -95,5 +126,4 @@ export class ItemComponent implements OnInit{
       })
     });
   }
-
 }

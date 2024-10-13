@@ -5,25 +5,27 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
-import { RouterLink } from '@angular/router';
+import {ActivatedRoute, RouterLink} from '@angular/router';
 import { AuthService } from "../auth.service";
 import { RegisterUser } from "./register-user.model";
 import {GoogleLoginButtonComponent} from "../google-login-button/google-login-button.component";
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 @Component({
     selector: 'app-register',
     templateUrl: './register.component.html',
     styleUrls: ['../shared.scss'],
     standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatRadioModule, MatCheckboxModule, MatButtonModule, RouterLink, GoogleLoginButtonComponent]
+  imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatRadioModule, MatCheckboxModule, MatButtonModule, RouterLink, GoogleLoginButtonComponent, MatProgressSpinner]
 })
 export class RegisterComponent implements OnInit {
   form: FormGroup;
   showError: boolean = false;
   showEmailResend: boolean = true;
   emailResendTimer:number = 0;
+  isLoading: boolean = false;
 
-  constructor(public authService: AuthService) {}
+  constructor(public authService: AuthService, private route: ActivatedRoute) {}
   ngOnInit() {
     this.form = new FormGroup({
       firstname: new FormControl('', Validators.required),
@@ -32,7 +34,11 @@ export class RegisterComponent implements OnInit {
       password: new FormControl('', Validators.required),
       isAgreementConsent: new FormControl('', Validators.required)
     });
-    this.authService.loginGoogle();
+
+    const code = this.route.snapshot.queryParamMap.get('code');
+    this.isLoading = true;
+    if(this.authService.user() || !code) return;
+    this.authService.loginGoogle(code);
   }
 
   onRegister() {

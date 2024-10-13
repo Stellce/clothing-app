@@ -115,35 +115,23 @@ export class CartComponent implements OnInit {
   }
 
   onBuy() {
+    if (!this.authService.user()) {
+      const dialogData: DialogData = {
+        title: 'Cannot buy',
+        description: 'You have to be registered',
+        buttonName: 'Ok'
+      }
+      this.dialog.open(DialogComponent, {data: dialogData});
+      return;
+    }
     let order: OrderReq = {
-      itemEntries: this.cartItems.filter(cItem => this.selectedItemsIds.has(cItem.itemId)).map(cItem => {
-        return {
+      itemEntries: this.cartItems
+        .filter(cItem => this.selectedItemsIds.has(cItem.itemId))
+        .map(cItem => ({
           itemId: cItem.itemId,
           quantity: cItem.quantity,
           size: cItem.itemSize
-        }
-      })
-    }
-    if (!this.authService.user()) {
-      let dialogData = {
-        title: 'User data',
-        description: 'You are not authenticated, you can login, register, or fill these fields',
-        inputs: [
-          {name: 'firstName'},
-          {name: 'lastName'},
-          {name: 'email'},
-        ],
-        buttonName: 'Submit'
-      }
-      const dialogRef: MatDialogRef<DialogComponent, NgForm> = this.dialog.open(DialogComponent, {data: dialogData});
-
-      dialogRef.afterClosed().subscribe((form: NgForm) => {
-        if (form?.value) {
-          order.customer = {
-            ...form.value
-          }
-        }
-      });
+        }))
     }
     this.ordersService.createOrder(order);
   }

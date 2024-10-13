@@ -1,60 +1,67 @@
-<form [formGroup]="form" (ngSubmit)="onRegister()">
-  <div class="title">Registration</div>
-  <mat-form-field>
-    <mat-label>Firstname: </mat-label>
-    <input matInput formControlName="firstname">
-    @if (form.get('firstname').invalid) {
-      <mat-error>Please, provide a firstname</mat-error>
-    }
-  </mat-form-field>
-
-  <mat-form-field>
-    <mat-label>Surname: </mat-label>
-    <input matInput formControlName="lastname">
-    @if (form.get('lastname').invalid) {
-      <mat-error>Please, provide your lastname</mat-error>
-    }
-  </mat-form-field>
-
-  <mat-form-field>
-    <mat-label>Email: </mat-label>
-    <input matInput formControlName="email">
-    @if (form.get('email').invalid) {
-      <mat-error>Please, provide a valid email</mat-error>
-    }
-  </mat-form-field>
-
-  <mat-form-field>
-    <mat-label>Password: </mat-label>
-    <input matInput type="password" formControlName="password">
-    @if (form.get('password').invalid) {
-      <mat-error>Please, provide a password</mat-error>
-    }
-  </mat-form-field>
-
-  <mat-checkbox formControlName="isAgreementConsent" #agreement>I declare that I have read and accept the SpaceFincher Terms & Conditions.<span [style]="{color: 'red'}">*</span>
-  </mat-checkbox>
-  @if (!agreement.checked && showError) {
-    <mat-error>Please, consent the agreement</mat-error>
-  }
-  <button mat-raised-button color="primary">Register</button>
-</form>
-<div class="additional-actions">
-  <a [routerLink]="['/', 'account', 'login']">Login</a>
-  <div class="activation-resend">
-    @if (showEmailResend) {
-      <span>No email? <a (click)="onActivationResend()">Resend</a></span>
-    } @else if (emailResendTimer) {
-      <span>Successfully sent! Next resend available in: </span>
-    }
-    @if (emailResendTimer) {
-      <div class="email-timer">
-        <div class="loader"></div>
-        <div class="label">{{emailResendTimer}}</div>
-      </div>
-    }
+@if (isLoading) {
+  <div class="center">
+    <mat-spinner></mat-spinner>
+    <h2>Authenticating...</h2>
   </div>
-</div>
-<div class="google-auth">
-  <app-google-login-button> Register with Google</app-google-login-button>
-</div>
+} @else {
+  <form [formGroup]="form" (ngSubmit)="onRegister()">
+    <div class="title">Registration</div>
+    <mat-form-field>
+      <mat-label>Firstname: </mat-label>
+      <input matInput formControlName="firstname">
+      @if (form.get('firstname').invalid) {
+        <mat-error>Please, provide a firstname</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Surname: </mat-label>
+      <input matInput formControlName="lastname">
+      @if (form.get('lastname').invalid) {
+        <mat-error>Please, provide your lastname</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Email: </mat-label>
+      <input matInput formControlName="email">
+      @if (form.get('email').invalid) {
+        <mat-error>Please, provide a valid email</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Password: </mat-label>
+      <input matInput type="password" formControlName="password">
+      @if (form.get('password').invalid) {
+        <mat-error>Please, provide a password</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-checkbox formControlName="isAgreementConsent" #agreement>I declare that I have read and accept the SpaceFincher Terms & Conditions.<span [style]="{color: 'red'}">*</span>
+    </mat-checkbox>
+    @if (!agreement.checked && showError) {
+      <mat-error>Please, consent the agreement</mat-error>
+    }
+    <button mat-raised-button color="primary">Register</button>
+  </form>
+  <div class="additional-actions">
+    <a [routerLink]="['/', 'account', 'login']">Login</a>
+    <div class="activation-resend">
+      @if (showEmailResend) {
+        <span>No email? <a (click)="onActivationResend()">Resend</a></span>
+      } @else if (emailResendTimer) {
+        <span>Successfully sent! Next resend available in: </span>
+      }
+      @if (emailResendTimer) {
+        <div class="email-timer">
+          <div class="loader"></div>
+          <div class="label">{{emailResendTimer}}</div>
+        </div>
+      }
+    </div>
+  </div>
+  <div class="google-auth">
+    <app-google-login-button> Register with Google</app-google-login-button>
+  </div>
+}

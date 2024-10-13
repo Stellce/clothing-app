@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable, signal, WritableSignal } from '@angular/core';
 import { NgForm } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
-import { ActivatedRoute, Router } from "@angular/router";
+import { Router } from "@angular/router";
 import { jwtDecode } from "jwt-decode";
 import { catchError, Observable, of, switchMap, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -35,14 +35,10 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router: Router,
-    public dialog: MatDialog,
-    private route: ActivatedRoute
+    public dialog: MatDialog
   ) {}
 
-  loginGoogle() {
-    const code = this.route.snapshot.queryParamMap.get('code');
-    if(this.user() || !code) return;
-
+  loginGoogle(code: string) {
     const formData = new FormData();
     formData.append('code', code);
     formData.append('grant_type', 'authorization_code');

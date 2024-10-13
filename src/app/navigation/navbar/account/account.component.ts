@@ -13,9 +13,8 @@ import { AccountService } from "./account.service";
     imports: [MatButtonModule, ItemBarComponent, RouterLink]
 })
 export class AccountComponent {
-
   constructor(
     public authService: AuthService,
-    public accounService: AccountService
+    public accountService: AccountService
   ) {}
 }
