@@ -20,12 +20,14 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
 export class FavoritesComponent implements OnInit{
   items: ItemCard[] = [];
   isLoading: boolean = true;
+
   constructor(
     private favoritesService: FavoritesService,
     private localService: LocalService,
     private authService: AuthService,
     private itemService: ItemsService
   ) {}
+
   ngOnInit() {
     if (this.authService.user()) {
       this.loadItems();
@@ -58,7 +60,10 @@ export class FavoritesComponent implements OnInit{
           error: e => console.log(e)
         });
       }
-      this.items = items;
+      this.items = items.map(i => {
+        i.metadata.onWishList = true;
+        return i;
+      });
       this.items.forEach(item => {
         this.itemService.requestItemImages(item.id).subscribe(images => {
           this.items.find(i => i.id === item.id).images = images;
