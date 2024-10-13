@@ -1,11 +1,13 @@
 <div class="account">
   <div class="header">
     <div class="sec">
-      <img src="assets/icons/account.svg"/>
-      <div class="hello" *ngIf="user()">Hello, {{user().name}}</div>
+      <img src="assets/icons/account.svg" alt="account"/>
+      @if (authService.user()) {
+        <div class="hello">Hello, {{authService.user().name}}</div>
+      }
     </div>
-    <button mat-icon-button (click)="onLogout()">
-      <img src="assets/icons/logout.svg"/>
+    <button mat-icon-button (click)="this.authService.logout()">
+      <img src="assets/icons/logout.svg" alt="logout"/>
     </button>
   </div>
   <ul>
@@ -13,7 +15,7 @@
     <li [routerLink]="['/', 'orders', 'history']">Orders history</li>
     <li>Add credit or debit card</li>
     <li routerLink="policies">Privacy Policy & Agreements</li>
-    <li (click)="onLogout()">Logout</li>
+    <li (click)="this.authService.logout()">Logout</li>
   </ul>
 </div>
 

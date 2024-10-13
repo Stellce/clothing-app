@@ -1,7 +1,7 @@
 import {Component, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {ItemsService} from "../../../item/items.service";
 import {ItemBarComponent} from '../../../categories/item-bar/item-bar.component';
-import {AsyncPipe, CurrencyPipe, NgFor, NgIf, NgStyle} from '@angular/common';
+import {AsyncPipe, CurrencyPipe, NgStyle} from '@angular/common';
 import {CartService} from './cart.service';
 import {CartItem} from './cart-item.model';
 import {AuthService} from 'src/app/auth/auth.service';
@@ -23,7 +23,7 @@ import {PurchaseData} from "../../../auth/purchase-data.model";
 import {OrdersService} from "../../../order-page/orders.service";
 import {OrderReq} from "../../../order-page/order-req.model";
 import {AddCartReq} from "./req/add-cart-req.model";
-import {AddCartRes, ItemEntryRes} from "./res/add-cart-res.model";
+import {AddCartRes} from "./res/add-cart-res.model";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 @Component({
@@ -31,7 +31,7 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.scss'],
   standalone: true,
-  imports: [NgFor, NgIf, ItemBarComponent, AsyncPipe, NgStyle, MatCheckbox, MatDivider, MatExpansionPanel, MatCardTitle, MatExpansionPanelHeader, FieldToTextPipe, CurrencyPipe, MatButton, MatProgressSpinner]
+  imports: [ItemBarComponent, AsyncPipe, NgStyle, MatCheckbox, MatDivider, MatExpansionPanel, MatCardTitle, MatExpansionPanelHeader, FieldToTextPipe, CurrencyPipe, MatButton, MatProgressSpinner]
 })
 export class CartComponent implements OnInit {
   cartItems: CartItem[] = [];
@@ -174,7 +174,7 @@ export class CartComponent implements OnInit {
   private getLocalCartItems() {
     let localCartItems: LocalCartItem[] = this.localService.getCartItems();
     let localCartItems$: Observable<CartItem>[] = localCartItems
-      .map((localCartItem, index) => this.itemService.requestItemById(localCartItem.id)
+      .map(localCartItem => this.itemService.requestItemById(localCartItem.id)
         .pipe(switchMap((itemDetails: ItemDetails) => {
           let item: CartItem = {
             id: '',

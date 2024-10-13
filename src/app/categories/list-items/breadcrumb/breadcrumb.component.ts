@@ -1,4 +1,3 @@
-import { NgFor, NgIf } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from "@angular/router";
 import { CategoriesService } from "../../categories.service";
@@ -9,11 +8,11 @@ import {FieldToTextPipe} from "../../../pipes/field-to-text";
     templateUrl: './breadcrumb.component.html',
     styleUrls: ['./breadcrumb.component.scss'],
     standalone: true,
-  imports: [RouterLink, NgIf, NgFor, FieldToTextPipe]
+  imports: [RouterLink, FieldToTextPipe]
 })
 export class BreadcrumbComponent implements OnInit{
   @Input()itemName: string;
-  links: {name: string, path: string[]}[];
+  links: {name: string, path: string[]}[] = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -24,7 +23,6 @@ export class BreadcrumbComponent implements OnInit{
     this.activatedRoute.paramMap.subscribe(params => {
       if(!params.get('gender')) return;
       let path: string[] = ['/', 'products', params.get('gender')];
-      this.links = [];
       this.links.push({
         name: params.get('gender').toUpperCase(),
         path: [...path]

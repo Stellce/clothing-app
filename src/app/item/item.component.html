@@ -1,46 +1,55 @@
-<div class="item" *ngIf="item">
-  <app-breadcrumb class="breadcrumb-line" [itemName]="item.name"></app-breadcrumb>
-  <div class="product">
-    <div class="images" *ngIf="item.images">
-      <img [src]="'data:image/png;base64,' + item.images[selectedImageIndex].image" [alt]="item.name">
-      <app-add-to-favorites [item]="item"/>
-      <div class="img-carousel">
-        <img *ngFor="let image of item.images; let i = index" [src]="'data:image/png;base64,' + image.image"
-             [alt]="item.name" (click)="selectedImageIndex = i">
-      </div>
-    </div>
-    <div class="description">
-      <div class="product-name space-between">
-        <span>{{item.name}}</span>
-        <span>{{item.price | currency}}</span>
-      </div>
-      <div class="sizes">
-        <div class="scroll">
-          <div class="size"
-               matRipple
-               *ngFor="let uniqueItem of item.uniqueItems"
-               [ngClass]="{'available': true, 'selected': uniqueItem === selectedUniqueItem}"
-               (click)="setUniqueItem(uniqueItem)"
-          >{{sizeString(uniqueItem.size)}}</div>
+@if (item) {
+  <div class="item">
+    <app-breadcrumb class="breadcrumb-line" [itemName]="item.name"></app-breadcrumb>
+    <div class="product">
+      @if (item.images) {
+        <div class="images">
+          <img [src]="'data:image/png;base64,' + item.images[selectedImageIndex].image" [alt]="item.name">
+          <app-add-to-favorites [item]="item"/>
+          <div class="img-carousel">
+            @for (image of item.images; track image.id; let i = $index) {
+              <img [src]="'data:image/png;base64,' + image.image"
+                   [alt]="item.name" (click)="selectedImageIndex = i">
+            }
+          </div>
         </div>
-      </div>
-      <div class="parameters">
-        <span>Parameters</span>
-        {{item.description}}
-        <div class="param space-between" *ngFor="let param of params">
-          <span>{{param.key + ":" | fieldToText}}</span>
-          <span>{{param.value}}</span>
+      }
+      <div class="description">
+        <div class="product-name space-between">
+          <span>{{item.name}}</span>
+          <span>{{item.price | currency}}</span>
         </div>
-      </div>
-      <div class="quantity space-between">
-        <span>Quantity (max: {{selectedUniqueItem.quantity}}):</span>
-        <app-input-quantity [(quantity)]="quantity" [max]="selectedUniqueItem.quantity"/>
-      </div>
-      <div class="actions">
-        <button class="mat-title-medium" mat-flat-button color="primary" (click)="addToCart()">Add to cart</button>
-        <button mat-flat-button color="primary" (click)="orderNow()">Order now</button>
+        <div class="sizes">
+          <div class="scroll">
+            @for (uniqueItem of item.uniqueItems; track uniqueItem.size) {
+              <div class="size"
+                   matRipple
+                   [ngClass]="{'available': true, 'selected': uniqueItem === selectedUniqueItem}"
+                   (click)="setUniqueItem(uniqueItem)"
+              >{{sizeString(uniqueItem.size)}}</div>
+            }
+          </div>
+        </div>
+        <div class="parameters">
+          <span>Parameters</span>
+          {{item.description}}
+          @for (param of params; track param.key) {
+            <div class="param space-between">
+              <span>{{param.key + ":" | fieldToText}}</span>
+              <span>{{param.value}}</span>
+            </div>
+          }
+        </div>
+        <div class="quantity space-between">
+          <span>Quantity (max: {{selectedUniqueItem.quantity}}):</span>
+          <app-input-quantity [(quantity)]="quantity" [max]="selectedUniqueItem.quantity"/>
+        </div>
+        <div class="actions">
+          <button class="mat-title-medium" mat-flat-button color="primary" (click)="addToCart()">Add to cart</button>
+          <button mat-flat-button color="primary" (click)="orderNow()">Order now</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<app-reviews [reviews]="item?.reviews"></app-reviews>
+  <app-reviews [reviews]="item.reviews"></app-reviews>
+}

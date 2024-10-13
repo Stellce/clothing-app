@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ListItemsComponent } from '../../../categories/list-items/list-items.component';
@@ -9,7 +8,7 @@ import { ItemsService } from "../../../item/items.service";
     templateUrl: './search.component.html',
     styleUrls: ['./search.component.scss'],
     standalone: true,
-    imports: [FormsModule, NgIf, ListItemsComponent]
+    imports: [FormsModule, ListItemsComponent]
 })
 export class SearchComponent {
   search: string = '';

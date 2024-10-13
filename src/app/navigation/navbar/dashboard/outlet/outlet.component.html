@@ -1,7 +1,12 @@
 <div class="outlet">
   <span>SEASONAL</span>
-  <mat-spinner *ngIf="isLoading"></mat-spinner>
-  <div class="carousel" *ngIf="!isLoading">
-    <app-item-card *ngFor="let item of items" [item]="item"></app-item-card>
-  </div>
+  @if (isLoading) {
+      <mat-spinner></mat-spinner>
+  } @else {
+    <div class="carousel">
+      @for (item of items; track item.id) {
+          <app-item-card [item]="item"></app-item-card>
+      }
+    </div>
+  }
 </div>

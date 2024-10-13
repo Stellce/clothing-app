@@ -1,8 +1,10 @@
-<div class="filter-bubble" (click)="drawer.toggle()" *ngIf="!drawer.opened">
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M8.65812 22.4473L8.97434 23.396L8.97434 23.396L8.65812 22.4473ZM15.6581 20.114L15.3419 19.1653L15.3419 19.1653L15.6581 20.114ZM22.3738 5.62627L23.0809 6.33337L22.3738 5.62627ZM2.33334 2.33337H21.6667V0.333374H2.33334V2.33337ZM2.33334 4.91916V2.33337H0.333344V4.91916H2.33334ZM8.41421 11L2.33334 4.91916L0.91913 6.33337L7 12.4142L8.41421 11ZM7 12.4142V21.973H9V12.4142H7ZM7 21.973C7 22.9968 8.00305 23.7198 8.97434 23.396L8.34189 21.4987C8.66565 21.3907 9 21.6317 9 21.973H7ZM8.97434 23.396L15.9743 21.0627L15.3419 19.1653L8.34189 21.4987L8.97434 23.396ZM15.9743 21.0627C16.5869 20.8585 17 20.2853 17 19.6397H15C15 19.4245 15.1377 19.2334 15.3419 19.1653L15.9743 21.0627ZM17 19.6397V12.4143H15V19.6397H17ZM21.6667 4.91916L15.5858 11L17 12.4143L23.0809 6.33337L21.6667 4.91916ZM21.6667 2.33337V4.91916H23.6667V2.33337H21.6667ZM23.0809 6.33337C23.456 5.9583 23.6667 5.44959 23.6667 4.91916H21.6667L21.6667 4.91916L23.0809 6.33337ZM17 12.4143L17 12.4143L15.5858 11C15.2107 11.3751 15 11.8838 15 12.4143H17ZM7 12.4142L7 12.4142H9C9 11.8838 8.78929 11.3751 8.41421 11L7 12.4142ZM0.333344 4.91916C0.333344 5.44959 0.544057 5.9583 0.91913 6.33337L2.33334 4.91916L2.33334 4.91916H0.333344ZM21.6667 2.33337L21.6667 2.33337H23.6667C23.6667 1.2288 22.7712 0.333374 21.6667 0.333374V2.33337ZM2.33334 0.333374C1.22877 0.333374 0.333344 1.2288 0.333344 2.33337H2.33334L2.33334 2.33337V0.333374Z" fill="#33363F"/>
-  </svg>
-</div>
+@if (!drawer.opened) {
+  <div class="filter-bubble" (click)="drawer.toggle()">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M8.65812 22.4473L8.97434 23.396L8.97434 23.396L8.65812 22.4473ZM15.6581 20.114L15.3419 19.1653L15.3419 19.1653L15.6581 20.114ZM22.3738 5.62627L23.0809 6.33337L22.3738 5.62627ZM2.33334 2.33337H21.6667V0.333374H2.33334V2.33337ZM2.33334 4.91916V2.33337H0.333344V4.91916H2.33334ZM8.41421 11L2.33334 4.91916L0.91913 6.33337L7 12.4142L8.41421 11ZM7 12.4142V21.973H9V12.4142H7ZM7 21.973C7 22.9968 8.00305 23.7198 8.97434 23.396L8.34189 21.4987C8.66565 21.3907 9 21.6317 9 21.973H7ZM8.97434 23.396L15.9743 21.0627L15.3419 19.1653L8.34189 21.4987L8.97434 23.396ZM15.9743 21.0627C16.5869 20.8585 17 20.2853 17 19.6397H15C15 19.4245 15.1377 19.2334 15.3419 19.1653L15.9743 21.0627ZM17 19.6397V12.4143H15V19.6397H17ZM21.6667 4.91916L15.5858 11L17 12.4143L23.0809 6.33337L21.6667 4.91916ZM21.6667 2.33337V4.91916H23.6667V2.33337H21.6667ZM23.0809 6.33337C23.456 5.9583 23.6667 5.44959 23.6667 4.91916H21.6667L21.6667 4.91916L23.0809 6.33337ZM17 12.4143L17 12.4143L15.5858 11C15.2107 11.3751 15 11.8838 15 12.4143H17ZM7 12.4142L7 12.4142H9C9 11.8838 8.78929 11.3751 8.41421 11L7 12.4142ZM0.333344 4.91916C0.333344 5.44959 0.544057 5.9583 0.91913 6.33337L2.33334 4.91916L2.33334 4.91916H0.333344ZM21.6667 2.33337L21.6667 2.33337H23.6667C23.6667 1.2288 22.7712 0.333374 21.6667 0.333374V2.33337ZM2.33334 0.333374C1.22877 0.333374 0.333344 1.2288 0.333344 2.33337H2.33334L2.33334 2.33337V0.333374Z" fill="#33363F"/>
+    </svg>
+  </div>
+}
 <mat-drawer-container>
   <mat-drawer #drawer mode="over">
     <app-filter (filter)="filterItems($event)"></app-filter>
@@ -18,28 +20,50 @@
       </div>
     </div>
   </div>
-  <mat-spinner *ngIf="!subcategories && isLoading"></mat-spinner>
-  <mat-tab-group
-    *ngIf="subcategories.length; else noSubcategories"
-    (selectedTabChange)="loadItemsBySubcategory($event)">
-    <mat-tab [label]="subcategories.length > 0 ? 'All' : ''">
-      <mat-spinner *ngIf="items?.length == 0 && isLoading"></mat-spinner>
-      <div class="cloth-grid" *ngIf="items.length">
-        <app-item-card *ngFor="let item of items" [item]="item" [isBreadcrumbResolved]="true"></app-item-card>
+  @if (!subcategories && isLoading) {
+    <mat-spinner></mat-spinner>
+  }
+  @if (subcategories.length) {
+    <mat-tab-group (selectedTabChange)="loadItemsBySubcategory($event)">
+      <mat-tab [label]="subcategories.length > 0 ? 'All' : ''">
+        @if (items?.length == 0 && isLoading) {
+          <mat-spinner></mat-spinner>
+        }
+        @if (items.length) {
+          <div class="cloth-grid">
+            @for (item of items; track item.id) {
+              <app-item-card [item]="item" [isBreadcrumbResolved]="true"></app-item-card>
+            }
+          </div>
+        }
+      </mat-tab>
+      @for (subcategory of subcategories; track subcategory.id) {
+        <mat-tab [label]="subcategory.name">
+          @if (items?.length == 0 && isLoading) {
+            <mat-spinner></mat-spinner>
+          }
+          @if (items.length) {
+            <div class="cloth-grid">
+              @for (item of items; track item.id) {
+                <app-item-card [item]="item" [isBreadcrumbResolved]="true"></app-item-card>
+              }
+            </div>
+          }
+        </mat-tab>
+      }
+    </mat-tab-group>
+  } @else {
+    @if (items.length === 0 && isLoading) {
+      <mat-spinner></mat-spinner>
+    }
+    @if (items.length) {
+      <div class="cloth-grid">
+        @for (item of items; track item.id) {
+          <app-item-card [item]="item" [isBreadcrumbResolved]="true"></app-item-card>
+        }
       </div>
-    </mat-tab>
-    <mat-tab *ngFor="let subcategory of subcategories" [label]="subcategory.name">
-      <mat-spinner *ngIf="items?.length == 0 && isLoading"></mat-spinner>
-      <div class="cloth-grid" *ngIf="items.length">
-        <app-item-card *ngFor="let item of items" [item]="item" [isBreadcrumbResolved]="true"></app-item-card>
-      </div>
-    </mat-tab>
-  </mat-tab-group>
-  <ng-template #noSubcategories>
-    <mat-spinner *ngIf="items?.length === 0 && isLoading"></mat-spinner>
-    <div class="cloth-grid" *ngIf="items.length">
-      <app-item-card *ngFor="let item of items" [item]="item" [isBreadcrumbResolved]="true"></app-item-card>
-    </div>
-  </ng-template>
+    }
+  }
+
   <app-paginator [page]="page" (changePage)="changePage($event)"></app-paginator>
 </mat-drawer-container>

@@ -2,12 +2,17 @@
   <a [routerLink]="['/']">&#5130; Dashboard</a>
 </div>
 <span> / </span>
-<ng-template [ngIf]="links">
-  <div class="breadcrumb-links" *ngFor="let link of links; let i = index">
-    <div class="breadcrumb-link">
-      <a *ngIf="!isLast(i)" [routerLink]="link.path">{{link.name | fieldToText}}</a>
-    </div>
-    <span *ngIf="isLast(i)">{{link.name | fieldToText}}</span>
-    <span *ngIf="!isLast(i)"> / </span>
+@for (link of links; track link.name; let i = $index) {
+  <div class="breadcrumb-links">
+    @if (!isLast(i)) {
+      <div class="breadcrumb-link">
+          <a [routerLink]="link.path">{{link.name | fieldToText}}</a>
+      </div>
+    }
+    @if (isLast(i)) {
+      <span>{{link.name | fieldToText}}</span>
+    } @else {
+      <span> / </span>
+    }
   </div>
-</ng-template>
+}

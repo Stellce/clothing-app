@@ -1,4 +1,3 @@
-import { NgFor, NgIf } from '@angular/common';
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatRippleModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -20,7 +19,7 @@ import { PaginatorComponent } from './paginator/paginator.component';
     styleUrls: ['./list-items.component.scss'],
     encapsulation: ViewEncapsulation.None,
     standalone: true,
-    imports: [NgIf, MatSidenavModule, FilterComponent, BreadcrumbComponent, MatRippleModule, MatProgressSpinnerModule, MatTabsModule, NgFor, ItemCardComponent, PaginatorComponent]
+    imports: [MatSidenavModule, FilterComponent, BreadcrumbComponent, MatRippleModule, MatProgressSpinnerModule, MatTabsModule, ItemCardComponent, PaginatorComponent]
 })
 export class ListItemsComponent implements OnInit{
   @ViewChild('drawer') drawer: MatDrawer;

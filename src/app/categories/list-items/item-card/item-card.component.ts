@@ -1,4 +1,4 @@
-import { CurrencyPipe, NgForOf, NgIf, NgStyle, PercentPipe } from '@angular/common';
+import { CurrencyPipe, NgStyle, PercentPipe } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth.service';
@@ -12,7 +12,7 @@ import {AddToFavoritesComponent} from "../../../item/add-to-favorites/add-to-fav
   templateUrl: './item-card.component.html',
   styleUrls: ['./item-card.component.scss'],
   standalone: true,
-  imports: [NgIf, RouterLink, PercentPipe, CurrencyPipe, NgStyle, NgForOf, AddToFavoritesComponent]
+  imports: [RouterLink, PercentPipe, CurrencyPipe, NgStyle, AddToFavoritesComponent]
 })
 export class ItemCardComponent implements OnInit {
   @Input() item: ItemCard = {} as ItemCard;

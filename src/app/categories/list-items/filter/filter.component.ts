@@ -1,4 +1,3 @@
-import { NgFor, NgIf } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -33,7 +32,7 @@ import { SelectedFilters } from "./selected-filters.model";
     styleUrls: ['./filter.component.scss'],
     encapsulation: ViewEncapsulation.None,
     standalone: true,
-    imports: [NgIf, FormsModule, ReactiveFormsModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatChipsModule, NgFor, MatSelectModule, MatOptionModule, MatExpansionModule, MatCheckboxModule, MatDividerModule, CheckboxComponent]
+    imports: [FormsModule, ReactiveFormsModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatChipsModule, MatSelectModule, MatOptionModule, MatExpansionModule, MatCheckboxModule, MatDividerModule, CheckboxComponent]
 })
 export class FilterComponent implements OnInit{
   @ViewChildren('checkboxes') checkboxes: QueryList<MatCheckbox>;

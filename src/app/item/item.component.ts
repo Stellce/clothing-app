@@ -1,4 +1,4 @@
-import { CurrencyPipe, NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
+import { CurrencyPipe, NgClass, NgStyle } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from "@angular/forms";
 import { MatButtonModule } from '@angular/material/button';
@@ -24,7 +24,7 @@ import {InputQuantityComponent} from "./input-quantity/input-quantity.component"
     templateUrl: './item.component.html',
     styleUrls: ['./item.component.scss'],
     standalone: true,
-  imports: [NgIf, BreadcrumbComponent, NgFor, NgClass, MatButtonModule, ReviewsComponent, CurrencyPipe, MatFormFieldModule, MatInputModule, FormsModule, NgStyle, FieldToTextPipe, AddToFavoritesComponent, MatRipple, InputQuantityComponent]
+  imports: [BreadcrumbComponent, NgClass, MatButtonModule, ReviewsComponent, CurrencyPipe, MatFormFieldModule, MatInputModule, FormsModule, NgStyle, FieldToTextPipe, AddToFavoritesComponent, MatRipple, InputQuantityComponent]
 })
 export class ItemComponent implements OnInit{
   item: ItemDetails;

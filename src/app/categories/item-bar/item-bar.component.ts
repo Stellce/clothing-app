@@ -1,4 +1,4 @@
-import { CurrencyPipe, DatePipe, NgIf, NgStyle } from '@angular/common';
+import { CurrencyPipe, DatePipe, NgStyle } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatMiniFabButton } from '@angular/material/button';
 import { MatError } from '@angular/material/form-field';
@@ -15,7 +15,7 @@ import {InputQuantityComponent} from "../../item/input-quantity/input-quantity.c
   templateUrl: './item-bar.component.html',
   styleUrls: ['./item-bar.component.scss'],
   standalone: true,
-  imports: [RouterLink, NgStyle, CurrencyPipe, DatePipe, NgIf, MatMiniFabButton, MatError, InputQuantityComponent]
+  imports: [RouterLink, NgStyle, CurrencyPipe, DatePipe, MatMiniFabButton, MatError, InputQuantityComponent]
 })
 export class ItemBarComponent implements OnInit{
   @Input() cartItem: CartItem;

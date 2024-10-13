@@ -2,12 +2,16 @@
   <img src="assets/icons/logo.svg" alt="logo" height="47" width="26"/>
   <span>SPACE FINCHER</span>
 </div>
-<div class="genders" *ngIf="isProductPage">
-  <a [routerLink]="['/', 'products', 'men']">MEN</a>
-  <a [routerLink]="['/', 'products', 'women']">WOMEN</a>
-</div>
-<div class="tab-name" *ngIf="!isProductPage && tabIcon">
-  {{tabIcon | fieldToText}}
-  <img [src]="'assets/icons/' + tabIcon + '.svg'" [alt]="tabIcon"/>
-</div>
+@if (isProductPage) {
+  <div class="genders">
+    <a [routerLink]="['/', 'products', 'men']">MEN</a>
+    <a [routerLink]="['/', 'products', 'women']">WOMEN</a>
+  </div>
+}
+@if (!isProductPage && tabIcon) {
+  <div class="tab-name">
+    {{tabIcon | fieldToText}}
+    <img [src]="'assets/icons/' + tabIcon + '.svg'" [alt]="tabIcon"/>
+  </div>
+}
 <app-navbar></app-navbar>

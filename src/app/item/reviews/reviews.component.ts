@@ -1,4 +1,3 @@
-import { NgFor } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { AuthService } from "../../auth/auth.service";
 import { NewReviewComponent } from './new-review/new-review.component';
@@ -10,7 +9,7 @@ import { ReviewComponent } from './review/review.component';
     templateUrl: './reviews.component.html',
     styleUrls: ['./reviews.component.scss'],
     standalone: true,
-    imports: [NewReviewComponent, NgFor, ReviewComponent]
+    imports: [NewReviewComponent, ReviewComponent]
 })
 export class ReviewsComponent {
   @Input()

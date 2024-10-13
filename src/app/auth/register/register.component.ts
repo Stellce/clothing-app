@@ -1,5 +1,4 @@
-import { NgIf } from '@angular/common';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -16,7 +15,7 @@ import {GoogleLoginButtonComponent} from "../google-login-button/google-login-bu
     templateUrl: './register.component.html',
     styleUrls: ['../shared.scss'],
     standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatRadioModule, MatCheckboxModule, MatButtonModule, RouterLink, NgIf, GoogleLoginButtonComponent]
+  imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatRadioModule, MatCheckboxModule, MatButtonModule, RouterLink, GoogleLoginButtonComponent]
 })
 export class RegisterComponent implements OnInit {
   form: FormGroup;
@@ -47,7 +46,8 @@ export class RegisterComponent implements OnInit {
     }
     console.log(registerUser);
     this.authService.register(registerUser).subscribe({
-      next: res => this.showEmailResend = true
+      next: () => this.showEmailResend = true,
+      error: () => this.showEmailResend = true
     });
   }
 

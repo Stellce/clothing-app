@@ -4,11 +4,13 @@
     <div class="date-stars">
       <!-- <span class="date">{{review.date | date}}</span> -->
       <div class="stars">
-        <div class="star" *ngFor="let star of stars" [ngClass]="{'star-selected': star?.rate <= review?.rating}">
-          <svg width="20" height="20" >
-            <polygon points="10,1 4,19.8 19,7.8 1,7.8 16,19.8"/>
-          </svg>
-        </div>
+        @for (star of stars; track star.rate) {
+          <div class="star" [ngClass]="{'star-selected': star?.rate <= review?.rating}">
+            <svg width="20" height="20" >
+              <polygon points="10,1 4,19.8 19,7.8 1,7.8 16,19.8"/>
+            </svg>
+          </div>
+        }
       </div>
     </div>
   </div>

@@ -1,4 +1,6 @@
-<img *ngIf="cartItem?.images" [src]="'data:image/png;base64,' + cartItem.images[0].image" alt="" [routerLink]="itemLink">
+@if (cartItem?.images) {
+  <img [src]="'data:image/png;base64,' + cartItem.images[0].image" alt="" [routerLink]="itemLink">
+}
 <div class="description-price-quantity">
   <div class="description">
     <div class="name" [routerLink]="itemLink">

@@ -1,5 +1,7 @@
 <div class="search-bar" (keyup.enter)="onSearch()">
   <input [(ngModel)]="search">
-  <img src="assets/icons/search.svg" (click)="onSearch()"/>
+  <img src="assets/icons/search.svg" alt="search" (click)="onSearch()"/>
 </div>
-<app-list-items *ngIf="!isLoading && wasSearched"></app-list-items>
+@if (!isLoading && wasSearched) {
+  <app-list-items></app-list-items>
+}

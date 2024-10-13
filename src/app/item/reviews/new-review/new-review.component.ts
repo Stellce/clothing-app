@@ -1,5 +1,5 @@
 import { TextFieldModule } from '@angular/cdk/text-field';
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,7 +13,7 @@ import { Review } from '../review.model';
     templateUrl: './new-review.component.html',
     styleUrls: ['./new-review.component.scss'],
     standalone: true,
-    imports: [NgIf, NgFor, NgClass, FormsModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatButtonModule]
+    imports: [NgClass, FormsModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatButtonModule]
 })
 export class NewReviewComponent {
   @Input()
@@ -41,6 +41,6 @@ export class NewReviewComponent {
       content: this.content
     }
 
-    
+
   }
 }

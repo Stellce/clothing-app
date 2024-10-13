@@ -4,5 +4,7 @@
     <input type="number" [ngStyle]="{width: input.value.toString().length + 'ch'}" [(ngModel)]="quantity" [min]="min" [max]="max" #input>
     <button mat-mini-fab (click)="changeQuantity(1)">+</button>
   </div>
-  <span class="error" *ngIf="+input.value > max || +input.value < min">Entered value is wrong</span>
+  @if (+input.value > max || +input.value < min) {
+    <span class="error">Entered value is wrong</span>
+  }
 </div>

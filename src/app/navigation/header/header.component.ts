@@ -1,4 +1,3 @@
-import { NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { NavigationStart, Router, RouterLink } from '@angular/router';
 import { filter } from 'rxjs';
@@ -10,7 +9,7 @@ import { NavbarComponent } from '../navbar/navbar.component';
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.scss'],
     standalone: true,
-    imports: [RouterLink, NgFor, NgIf, NavbarComponent, FieldToTextPipe]
+    imports: [RouterLink, NavbarComponent, FieldToTextPipe]
 })
 export class HeaderComponent implements OnInit{
   tabIcon: string;

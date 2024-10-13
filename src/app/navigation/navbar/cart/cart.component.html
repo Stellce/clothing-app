@@ -1,4 +1,4 @@
-<ng-template [ngIf]="cartItems.length" [ngIfElse]="noItems">
+@if (cartItems.length) {
   <div class="cart">
     <div class="header">
       <div class="header-content">
@@ -9,10 +9,12 @@
         >Select all</mat-checkbox>
       </div>
     </div>
-    <div class="cart-item" *ngFor="let cartItem of cartItems">
-      <mat-checkbox (change)="onItemSelect(cartItem, $event.checked)" #itemCheckbox></mat-checkbox>
-      <app-item-bar [cartItem]="cartItem"></app-item-bar>
-    </div>
+    @for (cartItem of cartItems; track cartItem.id) {
+      <div class="cart-item">
+        <mat-checkbox (change)="onItemSelect(cartItem, $event.checked)" #itemCheckbox></mat-checkbox>
+        <app-item-bar [cartItem]="cartItem"></app-item-bar>
+      </div>
+    }
   </div>
   <mat-expansion-panel>
     <mat-expansion-panel-header>
@@ -21,20 +23,24 @@
       </mat-card-title>
     </mat-expansion-panel-header>
     <div class="purchase-details">
-      <div class="detail" *ngFor="let field of Object.entries(authService.purchaseData())">
-        <div class="label"><span>{{field[0] | fieldToText}}: </span><span>{{field[1]}}</span></div>
-        <div class="edit" (click)="onFieldChange(field)">set</div>
-      </div>
+      @for (field of Object.entries(authService.purchaseData()); track field) {
+        <div class="detail">
+          <div class="label"><span>{{field[0] | fieldToText}}: </span><span>{{field[1]}}</span></div>
+          <div class="edit" (click)="onFieldChange(field)">set</div>
+        </div>
+      }
     </div>
     <button mat-raised-button color="primary" (click)="onBuy()">Buy</button>
   </mat-expansion-panel>
-</ng-template>
-<ng-template #noItems>
+} @else {
   <div class="center">
-    <div class="center" *ngIf="isLoading">
-      <mat-spinner></mat-spinner>
-      <h2>Loading...</h2>
-    </div>
-    <h2 *ngIf="!isLoading">There are no items yet</h2>
+    @if (isLoading) {
+      <div class="center">
+        <mat-spinner></mat-spinner>
+        <h2>Loading...</h2>
+      </div>
+    } @else {
+      <h2>There are no items yet</h2>
+    }
   </div>
-</ng-template>
+}

@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {MatMiniFabButton} from "@angular/material/button";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {NgIf, NgStyle} from "@angular/common";
+import {NgStyle} from "@angular/common";
 
 @Component({
   selector: 'app-input-quantity',
@@ -10,8 +10,7 @@ import {NgIf, NgStyle} from "@angular/common";
     MatMiniFabButton,
     ReactiveFormsModule,
     FormsModule,
-    NgStyle,
-    NgIf
+    NgStyle
   ],
   templateUrl: './input-quantity.component.html',
   styleUrl: './input-quantity.component.scss'

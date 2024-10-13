@@ -1,4 +1,4 @@
-import { DatePipe, NgClass, NgFor } from '@angular/common';
+import { DatePipe, NgClass } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { Review } from "../review.model";
 
@@ -7,7 +7,7 @@ import { Review } from "../review.model";
     templateUrl: './review.component.html',
     styleUrls: ['./review.component.scss'],
     standalone: true,
-    imports: [NgFor, NgClass, DatePipe]
+    imports: [NgClass, DatePipe]
 })
 export class ReviewComponent {
   @Input()

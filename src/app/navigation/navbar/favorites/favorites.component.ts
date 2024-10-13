@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ItemsService} from "../../../item/items.service";
 import { ItemCardComponent } from '../../../categories/list-items/item-card/item-card.component';
-import { NgFor, NgIf, NgStyle } from '@angular/common';
+import { NgStyle } from '@angular/common';
 import { FavoritesService } from './favorites.service';
 import { ItemCard } from 'src/app/categories/list-items/item-card/item-card.model';
 import { LocalService } from 'src/app/local/local.service';
@@ -15,7 +15,7 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
     templateUrl: './favorites.component.html',
     styleUrls: ['./favorites.component.scss'],
     standalone: true,
-  imports: [NgFor, NgIf, ItemCardComponent, NgStyle, MatProgressSpinner]
+  imports: [ItemCardComponent, NgStyle, MatProgressSpinner]
 })
 export class FavoritesComponent implements OnInit{
   items: ItemCard[] = [];
@@ -31,7 +31,7 @@ export class FavoritesComponent implements OnInit{
       this.loadItems();
     } else {
       let itemsIds = this.localService.getFavoritesIds();
-      let items$ = itemsIds.map((itemId, index) => this.itemService.requestItemById(itemId));
+      let items$ = itemsIds.map(itemId => this.itemService.requestItemById(itemId));
       forkJoin<ItemDetails[]>(items$).subscribe(items => {
         this.items = items;
         items.forEach((item, index) => {
