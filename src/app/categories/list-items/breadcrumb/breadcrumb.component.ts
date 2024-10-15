@@ -11,8 +11,14 @@ import {FieldToTextPipe} from "../../../pipes/field-to-text";
   imports: [RouterLink, FieldToTextPipe]
 })
 export class BreadcrumbComponent implements OnInit{
-  @Input()itemName: string;
-  links: {name: string, path: string[]}[] = [];
+  @Input() default: {name: string, path: string[]}[];
+  @Input() itemName: string;
+  links: {name: string, path: string[]}[] = [
+    {name: '< Dashboard', path: ['/']}
+  ];
+  afterLinks: {name: string, path: string[]}[] = [
+    {name: '< Dashboard', path: ['/']}
+  ];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -20,6 +26,16 @@ export class BreadcrumbComponent implements OnInit{
   ) {}
 
   ngOnInit() {
+    if (this.default) this.links = this.default;
+    this.setProductLinks();
+    this.afterLinks = this.links.slice(1);
+  }
+
+  isLast(i: number) {
+    return i === this.afterLinks.length - 1;
+  }
+
+  private setProductLinks() {
     this.activatedRoute.paramMap.subscribe(params => {
       if(!params.get('gender')) return;
       let path: string[] = ['/', 'products', params.get('gender')];
@@ -47,9 +63,5 @@ export class BreadcrumbComponent implements OnInit{
         });
       }
     });
-  }
-
-  isLast(i: number) {
-    return i === this.links.length - 1;
   }
 }

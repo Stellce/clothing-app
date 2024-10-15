@@ -1,19 +1,19 @@
-import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
-import { Injectable, signal, WritableSignal } from '@angular/core';
-import { NgForm } from "@angular/forms";
-import { MatDialog } from "@angular/material/dialog";
-import { Router } from "@angular/router";
-import { jwtDecode } from "jwt-decode";
-import { catchError, Observable, of, switchMap, tap } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { DialogData } from "../dialogs/dialog/dialog-data.model";
-import { DialogComponent } from "../dialogs/dialog/dialog.component";
-import { GoogleJwtDecoded, JwtDecoded } from "./jwt-decoded.model";
-import { LoginUser } from "./login/login-user.model";
-import { RefreshTokenReq } from "./refresh-token-req.model";
-import { RegisterUser } from "./register/register-user.model";
-import { TokenInfo } from "./token-info.model";
-import { User } from "./user.model";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
+import {Injectable, signal, WritableSignal} from '@angular/core';
+import {NgForm} from "@angular/forms";
+import {MatDialog} from "@angular/material/dialog";
+import {Router} from "@angular/router";
+import {jwtDecode} from "jwt-decode";
+import {catchError, Observable, of, switchMap, tap} from 'rxjs';
+import {environment} from 'src/environments/environment';
+import {DialogData} from "../dialogs/dialog/dialog-data.model";
+import {DialogComponent} from "../dialogs/dialog/dialog.component";
+import {GoogleJwtDecoded, JwtDecoded} from "./jwt-decoded.model";
+import {LoginUser} from "./login/login-user.model";
+import {RefreshTokenReq} from "./refresh-token-req.model";
+import {RegisterUser} from "./register/register-user.model";
+import {TokenInfo} from "./token-info.model";
+import {User} from "./user.model";
 import {PurchaseData} from "./purchase-data.model";
 
 @Injectable({
@@ -152,7 +152,6 @@ export class AuthService {
   private authUser(tokenInfo: TokenInfo) {
     this.tokenInfo.set(tokenInfo);
     let decodedToken: JwtDecoded | GoogleJwtDecoded = this.getDecodedAccessToken(tokenInfo.access_token);
-    console.log('decodedToken', decodedToken);
     let tokenTimeoutInMs = decodedToken.exp * 1000 - (new Date()).getTime();
 
     this.setTokenRefresh(tokenTimeoutInMs);
@@ -168,7 +167,8 @@ export class AuthService {
     }
 
     this.user.set(user);
-    this.router.navigate(['/', 'account']);
+    let url = window.location.href;
+    if(url.includes('register') || url.includes('login')) this.router.navigate(['/', 'account']);
   }
 
   private setTokenRefresh(tokenTimeoutInMs: number) {

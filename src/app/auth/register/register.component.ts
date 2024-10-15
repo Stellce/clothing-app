@@ -36,8 +36,8 @@ export class RegisterComponent implements OnInit {
     });
 
     const code = this.route.snapshot.queryParamMap.get('code');
-    this.isLoading = true;
     if(this.authService.user() || !code) return;
+    this.isLoading = true;
     this.authService.loginGoogle(code);
   }
 

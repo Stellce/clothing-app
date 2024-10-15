@@ -1,8 +1,7 @@
-import { Component, Input } from '@angular/core';
-import { AuthService } from "../../auth/auth.service";
-import { NewReviewComponent } from './new-review/new-review.component';
-import { Review } from "./review.model";
-import { ReviewComponent } from './review/review.component';
+import {Component, Input} from '@angular/core';
+import {NewReviewComponent} from './new-review/new-review.component';
+import {Review} from "./review.model";
+import {ReviewComponent} from './review/review.component';
 
 @Component({
     selector: 'app-reviews',
@@ -12,12 +11,6 @@ import { ReviewComponent } from './review/review.component';
     imports: [NewReviewComponent, ReviewComponent]
 })
 export class ReviewsComponent {
-  @Input()
-  reviews: Review[];
-  constructor(private authService: AuthService) {}
-
-  isAuth(): boolean {
-    return !!this.authService.user();
-  }
-
+  @Input() reviews: Review[];
+  @Input() itemId: string;
 }

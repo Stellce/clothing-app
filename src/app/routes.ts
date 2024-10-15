@@ -13,7 +13,10 @@ export const routes: Routes = [
   ]},
   {path: 'activate-account', loadComponent: () => import('./auth/activate/activate.component').then(c => c.ActivateComponent)},
   {path: 'favorites', loadComponent: () => import('./navigation/navbar/favorites/favorites.component').then(c => c.FavoritesComponent)},
-  {path: 'cart', loadComponent: () => import('./navigation/navbar/cart/cart.component').then(c => c.CartComponent)},
+  {path: 'cart', children: [
+    {path: '', loadComponent: () => import('./navigation/navbar/cart/cart.component').then(c => c.CartComponent)},
+    {path: ':itemId', loadComponent: () => import('./item/item.component').then(c => c.ItemComponent)},
+  ]},
 
   {path: 'orders', canActivate: [loginGuard], children: [
     {path: 'history', loadComponent: () => import('./navigation/navbar/account/order-history/order-history.component').then(c => c.OrderHistoryComponent)},

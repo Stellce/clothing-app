@@ -137,39 +137,44 @@ export class CartComponent implements OnInit {
   }
 
   private loadItems() {
-    const addItemsToServer = (localItems: CartItem[])=> {
-      let localItemsLoading$: Observable<AddCartRes>[] = localItems.map(lItem => {
-        let addCartReq: AddCartReq = {
-          itemId: lItem.itemId,
-          quantity: lItem.quantity,
-          size: lItem.itemSize
-        }
-        return this.cartService.addItem(addCartReq);
-      });
-      forkJoin<AddCartRes[]>(localItemsLoading$).subscribe(items => {
-        console.log('items loaded', items);
-      })
-    }
-
     this.cartService.getItems().subscribe(items => {
-      const localItems = this.localService.getCartItems();
-      const itemsNotAdded = items.length === 0 && localItems.length > 0;
+      if (items.length === this.localService.getCartItems().length) {
+        this.cartItems = items;
+        this.isLoading = false;
+      } else {
+        this.addItemsToServer();
+      }
+    })
+  }
 
-      if (itemsNotAdded) addItemsToServer(localItems);
-
-      this.cartItems = items;
-      this.isLoading = false;
+  private addItemsToServer() {
+    let localItemsLoading$: Observable<AddCartRes>[] = this.localService.getCartItems().map(lItem => {
+      let addCartReq: AddCartReq = {
+        itemId: lItem.itemId,
+        quantity: lItem.quantity,
+        size: lItem.itemSize
+      }
+      return this.cartService.addItem(addCartReq);
     });
+    forkJoin<AddCartRes[]>(localItemsLoading$).subscribe(async items => {
+      console.log('items loaded', items);
+      this.loadItems();
+    })
   }
 
   private loadLocalItems() {
     const validateQuantity = (itemDetails: ItemDetails, localCartItem: LocalCartItem)=> {
-      const maxQuantity = itemDetails.uniqueItems.find(i => i.size === localCartItem.itemSize).quantity;
-      return localCartItem.quantity > maxQuantity ? maxQuantity : localCartItem.quantity;
+      const quantity = itemDetails.uniqueItems.find(i => i.size === localCartItem.itemSize).quantity;
+      return localCartItem.quantity > quantity ? quantity : localCartItem.quantity;
     }
     const localCartItems: LocalCartItem[] = this.localService.getCartItems();
+    if (!localCartItems || !localCartItems.length) {
+      this.cartItems = [];
+      this.isLoading = false;
+      return;
+    }
     const localCartItems$: Observable<CartItem>[] = localCartItems
-      .map(localCartItem => this.itemService.requestItemById(localCartItem.id)
+      .map(localCartItem => this.itemService.requestItemById(localCartItem.itemId)
         .pipe(switchMap((itemDetails: ItemDetails) => {
           let item: CartItem = {
             id: '',
@@ -181,8 +186,7 @@ export class CartComponent implements OnInit {
             itemPrice: itemDetails.price,
             itemPriceAfterDiscount: itemDetails.priceAfterDiscount,
             totalPrice: itemDetails.price * localCartItem.quantity,
-            totalPriceAfterDiscount: itemDetails.price * localCartItem.quantity,
-            uniqueItems: itemDetails.uniqueItems.filter(uitem => uitem.size === localCartItem.itemSize)
+            totalPriceAfterDiscount: itemDetails.priceAfterDiscount * localCartItem.quantity,
           };
           return of(item);
         }))

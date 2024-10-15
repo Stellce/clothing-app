@@ -1,10 +1,9 @@
-import { Injectable } from "@angular/core";
-import { CartItem } from "../navigation/navbar/cart/cart-item.model";
-import { LocalCartItem } from "./local-cart-item.model";
+import {Injectable} from "@angular/core";
+import {LocalCartItem} from "./local-cart-item.model";
 
 @Injectable({ providedIn: 'root' })
 export class LocalService {
-  _cartItems: CartItem[] = [];
+  _cartItems: LocalCartItem[] = [];
   _favoritesIds: string[] = [];
 
   get cartItems() {
@@ -21,7 +20,7 @@ export class LocalService {
     let cart: LocalCartItem[] = this.cartItems;
     let originItems: LocalCartItem[] = [];
     cart.forEach(cartItem => {
-      let item = originItems.find(i => i.id === cartItem.id && i.itemSize === cartItem.itemSize);
+      let item = originItems.find(i => i.itemId === cartItem.itemId && i.itemSize === cartItem.itemSize);
       if (item) item.quantity += cartItem.quantity;
       else originItems.push(cartItem);
     });
@@ -36,7 +35,7 @@ export class LocalService {
 
   updateCartItem(localCartItem: LocalCartItem) {
     const cart: LocalCartItem[] = this.cartItems;
-    const itemIndex = cart.findIndex(i => i.id === localCartItem.id);
+    const itemIndex = cart.findIndex(i => i.itemId === localCartItem.itemId);
     cart[itemIndex] = localCartItem;
     localStorage.setItem("cart", JSON.stringify(cart));
   }

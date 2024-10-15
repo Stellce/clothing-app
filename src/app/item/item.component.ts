@@ -1,20 +1,20 @@
-import { CurrencyPipe, NgClass, NgStyle } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import {CurrencyPipe, NgClass, NgStyle} from '@angular/common';
+import {Component, OnInit} from '@angular/core';
 import {FormsModule, NgForm} from "@angular/forms";
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatInputModule } from "@angular/material/input";
-import { ActivatedRoute } from "@angular/router";
-import { AuthService } from '../auth/auth.service';
-import { BreadcrumbComponent } from '../categories/list-items/breadcrumb/breadcrumb.component';
-import { UniqueItem } from '../categories/list-items/item-card/item-card.model';
-import { LocalService } from '../local/local.service';
-import { CartService } from '../navigation/navbar/cart/cart.service';
-import { FieldToTextPipe } from '../pipes/field-to-text';
-import { Image } from "./image.model";
-import { ItemDetails } from "./item.model";
-import { ItemsService } from "./items.service";
-import { ReviewsComponent } from './reviews/reviews.component';
+import {MatButtonModule} from '@angular/material/button';
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import {ActivatedRoute} from "@angular/router";
+import {AuthService} from '../auth/auth.service';
+import {BreadcrumbComponent} from '../categories/list-items/breadcrumb/breadcrumb.component';
+import {UniqueItem} from '../categories/list-items/item-card/item-card.model';
+import {LocalService} from '../local/local.service';
+import {CartService} from '../navigation/navbar/cart/cart.service';
+import {FieldToTextPipe} from '../pipes/field-to-text';
+import {Image} from "./image.model";
+import {ItemDetails} from "./item.model";
+import {ItemsService} from "./items.service";
+import {ReviewsComponent} from './reviews/reviews.component';
 import {AddToFavoritesComponent} from "./add-to-favorites/add-to-favorites.component";
 import {MatRipple} from "@angular/material/core";
 import {InputQuantityComponent} from "./input-quantity/input-quantity.component";
@@ -22,6 +22,9 @@ import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {DialogComponent} from "../dialogs/dialog/dialog.component";
 import {OrdersService} from "../order-page/orders.service";
 import {OrderReq} from "../order-page/order-req.model";
+import {UpdateCartItemReq} from "../navigation/navbar/cart/req/update-cart-req.model";
+import {LocalCartItem} from "../local/local-cart-item.model";
+import {DialogData} from "../dialogs/dialog/dialog-data.model";
 
 @Component({
     selector: 'app-item',
@@ -36,9 +39,10 @@ export class ItemComponent implements OnInit{
   quantity: number = 1;
   params: { key: string, value: string }[] = [];
   selectedImageIndex: number = 0;
+  isCartItem: boolean = false;
   constructor(
     private itemsService: ItemsService,
-    private route: ActivatedRoute,
+    protected route: ActivatedRoute,
     private cartService: CartService,
     private authService: AuthService,
     private localService: LocalService,
@@ -65,7 +69,7 @@ export class ItemComponent implements OnInit{
       });
     } else {
       this.localService.addToCart({
-        id: this.item.id,
+        itemId: this.item.id,
         quantity: this.quantity,
         itemSize: this.selectedUniqueItem.size
       });
@@ -110,6 +114,45 @@ export class ItemComponent implements OnInit{
     return size.length > 2 ? numOfXes + "X" + splitNoEmpty : size;
   }
 
+  onSaveCartItem() {
+    const success = () => {
+      const dialogData: DialogData = {
+        title: 'Item updated!',
+        description: 'Check your cart!',
+        buttonName: 'Ok'
+      }
+      this.dialog.open(DialogComponent, {data: dialogData});
+    }
+    const failure = () => {
+      const dialogData: DialogData = {
+        title: 'Something went wrong!',
+        description: 'Try again later!',
+        buttonName: 'Ok'
+      }
+      this.dialog.open(DialogComponent, {data: dialogData});
+    }
+    if (this.authService.user()) {
+      const cartItem: UpdateCartItemReq = {
+        entryId: this.route.snapshot.paramMap.get('id'),
+        quantity: this.quantity,
+        size: this.selectedUniqueItem.size
+      }
+      this.cartService.updateItem(cartItem).subscribe({
+        next: success,
+        error: failure
+      });
+    } else {
+      const localCartItem: LocalCartItem = {
+        itemId: this.item.id,
+        quantity: this.quantity,
+        itemSize: this.selectedUniqueItem.size
+      }
+      this.localService.updateCartItem(localCartItem);
+      success();
+    }
+
+  }
+
   private requestItem() {
     const itemId = this.route.snapshot.paramMap.get("itemId");
     this.itemsService.requestItemById(itemId).subscribe((item: ItemDetails) => {
@@ -123,6 +166,11 @@ export class ItemComponent implements OnInit{
       Object.entries(this.item.params).forEach(([key, value]) => this.params.push({key, value}))
       this.itemsService.requestItemImages(item.id).subscribe((images: Image[]) => {
         this.item.images = images;
+      })
+      this.route.queryParamMap.subscribe(params => {
+        this.isCartItem = true;
+        this.quantity = +params.get('quantity');
+        this.selectedUniqueItem = this.item.uniqueItems.find(uItem => uItem.size === params.get('size'));
       })
     });
   }

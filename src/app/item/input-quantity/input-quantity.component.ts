@@ -23,10 +23,10 @@ export class InputQuantityComponent {
   @Input() max: number = 1;
 
   changeQuantity(n: number) {
-    let res = n + this.quantity;
-    let isValidQuantity = res > 0 && this.max >= res;
+    const res = n + this.quantity;
+    const isValidQuantity = res > 0 && this.max >= res;
     if (!isValidQuantity) return;
-    this.quantity += n;
+    this.quantity = res;
     this.quantityChange.emit(this.quantity);
   }
 }

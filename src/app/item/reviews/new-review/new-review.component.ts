@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { AuthService } from "../../../auth/auth.service";
 import { Review } from '../review.model';
+import {ReviewsService} from "../../reviews.service";
 
 @Component({
     selector: 'app-new-review',
@@ -16,8 +17,7 @@ import { Review } from '../review.model';
     imports: [NgClass, FormsModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatButtonModule]
 })
 export class NewReviewComponent {
-  @Input()
-  isAuth: boolean;
+  @Input() itemId: string;
   rating: 1|2|3|4|5;
   title: string;
   content: string;
@@ -28,19 +28,22 @@ export class NewReviewComponent {
     {rate: 4},
     {rate: 5}
   ]
-  constructor(public authService: AuthService) {}
+  constructor(
+    public authService: AuthService,
+    private reviewsService: ReviewsService
+  ) {}
 
   setRating(rating: 1|2|3|4|5) {
     this.rating = rating;
   }
   onSubmit() {
     const review: Review = {
-      itemId: null,
+      itemId: this.itemId,
       rating: this.rating,
       title: this.title,
       content: this.content
     }
 
-
+    this.reviewsService.createReview(review).subscribe(res => {})
   }
 }

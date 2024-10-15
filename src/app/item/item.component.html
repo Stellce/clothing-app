@@ -1,6 +1,6 @@
 @if (item) {
   <div class="item">
-    <app-breadcrumb class="breadcrumb-line" [itemName]="item.name"></app-breadcrumb>
+    <app-breadcrumb class="breadcrumb-line" [default]="[{name: 'Cart', path: ['/', 'cart']}, {name: item.name, path: ['']}]" [itemName]="item.name"></app-breadcrumb>
     <div class="product">
       @if (item.images) {
         <div class="images">
@@ -45,11 +45,15 @@
           <app-input-quantity [(quantity)]="quantity" [max]="selectedUniqueItem.quantity"/>
         </div>
         <div class="actions">
-          <button class="mat-title-medium" mat-flat-button color="primary" (click)="addToCart()">Add to cart</button>
-          <button mat-flat-button color="primary" (click)="orderNow()">Order now</button>
+          @if (isCartItem) {
+            <button mat-flat-button color="primary" (click)="onSaveCartItem()">Save cart item</button>
+          } @else {
+            <button mat-flat-button color="primary" (click)="addToCart()">Add to cart</button>
+            <button mat-flat-button color="primary" (click)="orderNow()">Order now</button>
+          }
         </div>
       </div>
     </div>
   </div>
-  <app-reviews [reviews]="item.reviews"></app-reviews>
+  <app-reviews [itemId]="item.id" [reviews]="item.reviews"></app-reviews>
 }

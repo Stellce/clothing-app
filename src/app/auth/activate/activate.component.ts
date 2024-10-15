@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { forkJoin } from 'rxjs';
-import { LocalService } from 'src/app/local/local.service';
-import { CartService } from 'src/app/navigation/navbar/cart/cart.service';
-import { FavoritesService } from 'src/app/navigation/navbar/favorites/favorites.service';
-import { AuthService } from '../auth.service';
+import {CommonModule} from '@angular/common';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {forkJoin} from 'rxjs';
+import {LocalService} from 'src/app/local/local.service';
+import {CartService} from 'src/app/navigation/navbar/cart/cart.service';
+import {FavoritesService} from 'src/app/navigation/navbar/favorites/favorites.service';
+import {AuthService} from '../auth.service';
 
 @Component({
   selector: 'app-activate',
@@ -48,7 +48,7 @@ export class ActivateComponent implements OnInit {
   private uploadCart() {
     let cart = this.localService.cartItems;
     let cartItemsAdded$ = cart.map(item => this.cartService.addItem({
-      itemId: item.id,
+      itemId: item.itemId,
       quantity: item.quantity,
       size: item.itemSize
     }));

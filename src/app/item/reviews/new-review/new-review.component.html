@@ -1,7 +1,7 @@
-@if (isAuth) {
+@if (authService.user()) {
   <div class="review">
     <div class="header">
-      <div class="author">{{authService.user().name + ' ' + authService.user()['lastname']}}</div>
+      <div class="author">{{authService.user().name}}</div>
       <div class="date-stars">
         <div class="stars">
           @for (star of stars; track star.rate) {

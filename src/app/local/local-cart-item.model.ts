@@ -1,10 +1,8 @@
-import { Image } from "../item/image.model";
-import { ItemDetails } from "../item/item.model";
+import {Image} from "../item/image.model";
 
 export interface LocalCartItem {
-    id: string;
-    quantity: number;
+    itemId: string;
     itemSize: string;
-    item?: ItemDetails;
+    quantity: number;
     images?: Image[];
 }
