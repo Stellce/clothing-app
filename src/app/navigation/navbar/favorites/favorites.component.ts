@@ -68,6 +68,10 @@ export class FavoritesComponent implements OnInit{
 
   private loadLocalItems() {
     let itemsIds = this.localService.getFavoritesIds();
+    if (itemsIds.length === 0) {
+      this.isLoading = false;
+      return;
+    }
     let items$ = itemsIds.map(itemId => this.itemService.requestItemById(itemId));
     forkJoin<ItemDetails[]>(items$).subscribe(items => {
       this.items = items;

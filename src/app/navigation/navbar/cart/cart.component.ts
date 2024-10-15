@@ -1,4 +1,4 @@
-import {Component, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {afterRender, Component, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {ItemsService} from "../../../item/items.service";
 import {ItemBarComponent} from '../../../categories/item-bar/item-bar.component';
 import {AsyncPipe, CurrencyPipe, NgStyle} from '@angular/common';
@@ -47,9 +47,11 @@ export class CartComponent implements OnInit {
     private dialog: MatDialog,
     public authService: AuthService,
     public ordersService: OrdersService
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
+
     if (this.authService.user()) {
       this.loadItems();
     } else {
@@ -168,6 +170,11 @@ export class CartComponent implements OnInit {
       return localCartItem.quantity > maxQuantity ? maxQuantity : localCartItem.quantity;
     }
     const localCartItems: LocalCartItem[] = this.localService.getCartItems();
+    if (!localCartItems || !localCartItems.length) {
+      this.cartItems = [];
+      this.isLoading = false;
+      return;
+    }
     const localCartItems$: Observable<CartItem>[] = localCartItems
       .map(localCartItem => this.itemService.requestItemById(localCartItem.id)
         .pipe(switchMap((itemDetails: ItemDetails) => {
@@ -182,7 +189,7 @@ export class CartComponent implements OnInit {
             itemPriceAfterDiscount: itemDetails.priceAfterDiscount,
             totalPrice: itemDetails.price * localCartItem.quantity,
             totalPriceAfterDiscount: itemDetails.price * localCartItem.quantity,
-            uniqueItems: itemDetails.uniqueItems.filter(uitem => uitem.size === localCartItem.itemSize)
+            uniqueItems: itemDetails.uniqueItems.filter(uItem => uItem.size === localCartItem.itemSize)
           };
           return of(item);
         }))

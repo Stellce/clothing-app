@@ -1,15 +1,16 @@
-import { NgClass } from '@angular/common';
-import { Component, OnInit } from '@angular/core'
-import { NavigationStart, Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { filter } from 'rxjs';
-import { NavigationService } from "../navigation.service";
+import {NgClass} from '@angular/common';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core'
+import {NavigationStart, Router, RouterLink, RouterLinkActive} from '@angular/router';
+import {filter} from 'rxjs';
+import {NavigationService} from "../navigation.service";
 
 @Component({
     selector: 'app-navbar',
     templateUrl: './navbar.component.html',
     styleUrls: ['./navbar.component.scss'],
     standalone: true,
-    imports: [RouterLink, RouterLinkActive, NgClass]
+    imports: [RouterLink, RouterLinkActive, NgClass],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NavbarComponent implements OnInit{
   links = {

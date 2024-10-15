@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
-import { Injectable, signal, WritableSignal } from '@angular/core';
+import {Injectable, signal, WritableSignal} from '@angular/core';
 import { NgForm } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
 import { Router } from "@angular/router";
@@ -15,6 +15,7 @@ import { RegisterUser } from "./register/register-user.model";
 import { TokenInfo } from "./token-info.model";
 import { User } from "./user.model";
 import {PurchaseData} from "./purchase-data.model";
+import {LocalStorageService} from "../local/local-storage.service";
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +36,8 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private localStorage: LocalStorageService
   ) {}
 
   loginGoogle(code: string) {
@@ -48,14 +50,14 @@ export class AuthService {
   }
 
   autoAuth() {
-    let tokenInfo: TokenInfo = JSON.parse(localStorage.getItem("tokenInfo"));
+    let tokenInfo: TokenInfo = JSON.parse(this.localStorage.getItem("tokenInfo"));
     if (!tokenInfo) return;
     let decodedToken = jwtDecode(tokenInfo.access_token);
     let tokenTimeoutInMs = decodedToken.exp * 1000 - (new Date()).getTime();
     if (tokenTimeoutInMs > 0) {
       this.authUser(tokenInfo);
     } else {
-      localStorage.removeItem("tokenInfo");
+      this.localStorage.removeItem("tokenInfo");
       this.tokenInfo.set(null);
       this.user.set(null);
     }
@@ -143,22 +145,19 @@ export class AuthService {
   logout() {
     this.user.set(null);
     this.tokenInfo.set(null);
-    localStorage.removeItem("tokenInfo");
+    this.localStorage.removeItem("tokenInfo");
     this.router.navigate(['/', 'account', 'login']);
   }
-
-
 
   private authUser(tokenInfo: TokenInfo) {
     this.tokenInfo.set(tokenInfo);
     let decodedToken: JwtDecoded | GoogleJwtDecoded = this.getDecodedAccessToken(tokenInfo.access_token);
-    console.log('decodedToken', decodedToken);
     let tokenTimeoutInMs = decodedToken.exp * 1000 - (new Date()).getTime();
 
     this.setTokenRefresh(tokenTimeoutInMs);
     this.setAutoLogout(tokenTimeoutInMs);
 
-    localStorage.setItem("tokenInfo", JSON.stringify(tokenInfo));
+    this.localStorage.setItem("tokenInfo", JSON.stringify(tokenInfo));
 
     const user: User = {
       name: decodedToken['name'],
@@ -168,7 +167,7 @@ export class AuthService {
     }
 
     this.user.set(user);
-    this.router.navigate(['/', 'account']);
+    // this.router.navigate(['/', 'account']);
   }
 
   private setTokenRefresh(tokenTimeoutInMs: number) {

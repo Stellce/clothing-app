@@ -1,14 +1,21 @@
-import { Injectable } from "@angular/core";
+import {afterRender, Inject, Injectable, OnInit, PLATFORM_ID} from "@angular/core";
 import { CartItem } from "../navigation/navbar/cart/cart-item.model";
 import { LocalCartItem } from "./local-cart-item.model";
+import {CartService} from "../navigation/navbar/cart/cart.service";
+import {isPlatformBrowser} from "@angular/common";
+import {AppComponent} from "../app.component";
+import {BehaviorSubject} from "rxjs";
+import {LocalStorageService} from "./local-storage.service";
 
 @Injectable({ providedIn: 'root' })
 export class LocalService {
   _cartItems: CartItem[] = [];
   _favoritesIds: string[] = [];
 
+  constructor(private localStorage: LocalStorageService) {}
+
   get cartItems() {
-    this._cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+    this._cartItems = JSON.parse(this.localStorage.getItem("cart")) || [];
     return this._cartItems;
   }
 
@@ -25,24 +32,24 @@ export class LocalService {
       if (item) item.quantity += cartItem.quantity;
       else originItems.push(cartItem);
     });
-    localStorage.setItem("cart", JSON.stringify(originItems));
+    this.localStorage.setItem("cart", JSON.stringify(originItems));
   }
 
   addToCart(item: LocalCartItem) {
     const cart: LocalCartItem[] = this.cartItems;
     cart.push(item);
-    localStorage.setItem("cart", JSON.stringify(cart));
+    this.localStorage.setItem("cart", JSON.stringify(cart));
   }
 
   updateCartItem(localCartItem: LocalCartItem) {
     const cart: LocalCartItem[] = this.cartItems;
     const itemIndex = cart.findIndex(i => i.id === localCartItem.id);
     cart[itemIndex] = localCartItem;
-    localStorage.setItem("cart", JSON.stringify(cart));
+    this.localStorage.setItem("cart", JSON.stringify(cart));
   }
 
   get favoritesIds(): string[] {
-    return this._favoritesIds = JSON.parse(localStorage.getItem("favorites")) || [];
+    return this._favoritesIds = JSON.parse(this.localStorage.getItem("favorites")) || [];
   }
 
   set favoritesIds(ids: string[]) {
@@ -56,13 +63,15 @@ export class LocalService {
   addToFavorites(itemId: string) {
     const favorites: string[] = this.favoritesIds;
     favorites.push(itemId);
-    localStorage.setItem("favorites", JSON.stringify(favorites));
+    this.localStorage.setItem("favorites", JSON.stringify(favorites));
   }
 
   removeFromFavorites(itemId: string) {
     let favorites: string[] = this.favoritesIds;
     favorites = favorites.filter(id => id !== itemId);
-    localStorage.setItem("favorites", JSON.stringify(favorites));
+    this.localStorage.setItem("favorites", JSON.stringify(favorites));
   }
+
+
 
 }

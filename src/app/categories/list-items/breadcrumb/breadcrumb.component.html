@@ -2,7 +2,7 @@
   <a [routerLink]="['/']">&#5130; Dashboard</a>
 </div>
 <span> / </span>
-@for (link of links; track link.name; let i = $index) {
+@for (link of links; track link.path; let i = $index) {
   <div class="breadcrumb-links">
     @if (!isLast(i)) {
       <div class="breadcrumb-link">

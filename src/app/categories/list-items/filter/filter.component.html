@@ -44,7 +44,7 @@
         <mat-form-field>
           <mat-label>Sort</mat-label>
           <mat-select formControlName="sortBy">
-            @for (sort of filters.sort; track sort.name) {
+            @for (sort of filters.sort; track sort.value) {
               <mat-option [value]="sort.value">
                 {{sort.name[0].toUpperCase() + sort.name.slice(1)}}
               </mat-option>

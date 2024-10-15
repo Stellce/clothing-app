@@ -1,22 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
-import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatRadioModule } from '@angular/material/radio';
+import {afterRender, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {MatButtonModule} from '@angular/material/button';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatRadioModule} from '@angular/material/radio';
 import {ActivatedRoute, RouterLink} from '@angular/router';
-import { AuthService } from "../auth.service";
-import { RegisterUser } from "./register-user.model";
+import {AuthService} from "../auth.service";
+import {RegisterUser} from "./register-user.model";
 import {GoogleLoginButtonComponent} from "../google-login-button/google-login-button.component";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 @Component({
-    selector: 'app-register',
-    templateUrl: './register.component.html',
-    styleUrls: ['../shared.scss'],
-    standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatRadioModule, MatCheckboxModule, MatButtonModule, RouterLink, GoogleLoginButtonComponent, MatProgressSpinner]
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['../shared.scss'],
+  standalone: true,
+  imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatRadioModule, MatCheckboxModule, MatButtonModule, RouterLink, GoogleLoginButtonComponent, MatProgressSpinner],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RegisterComponent implements OnInit {
   form: FormGroup;
@@ -25,7 +26,20 @@ export class RegisterComponent implements OnInit {
   emailResendTimer:number = 0;
   isLoading: boolean = false;
 
-  constructor(public authService: AuthService, private route: ActivatedRoute) {}
+  constructor(
+    public authService: AuthService,
+    private route: ActivatedRoute,
+    private changeDetectionRef: ChangeDetectorRef
+  ) {
+    afterRender(() => {
+      const code = this.route.snapshot.queryParamMap.get('code');
+      if(!this.authService.user() && code) {
+        this.isLoading = true;
+        this.authService.loginGoogle(code);
+        // changeDetectionRef.markForCheck();
+      }
+    })
+  }
   ngOnInit() {
     this.form = new FormGroup({
       firstname: new FormControl('', Validators.required),
@@ -34,11 +48,6 @@ export class RegisterComponent implements OnInit {
       password: new FormControl('', Validators.required),
       isAgreementConsent: new FormControl('', Validators.required)
     });
-
-    const code = this.route.snapshot.queryParamMap.get('code');
-    this.isLoading = true;
-    if(this.authService.user() || !code) return;
-    this.authService.loginGoogle(code);
   }
 
   onRegister() {
@@ -50,7 +59,6 @@ export class RegisterComponent implements OnInit {
       email: this.form.value.email,
       password: this.form.value.password
     }
-    console.log(registerUser);
     this.authService.register(registerUser).subscribe({
       next: () => this.showEmailResend = true,
       error: () => this.showEmailResend = true
