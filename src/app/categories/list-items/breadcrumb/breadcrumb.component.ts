@@ -13,12 +13,11 @@ import {FieldToTextPipe} from "../../../pipes/field-to-text";
 export class BreadcrumbComponent implements OnInit{
   @Input() default: {name: string, path: string[]}[];
   @Input() itemName: string;
+  firstLink: {name: string, path: string[]};
   links: {name: string, path: string[]}[] = [
-    {name: '< Dashboard', path: ['/']}
+    {name: 'Dashboard', path: ['/']}
   ];
-  afterLinks: {name: string, path: string[]}[] = [
-    {name: '< Dashboard', path: ['/']}
-  ];
+  afterLinks: {name: string, path: string[]}[] = null;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -28,16 +27,14 @@ export class BreadcrumbComponent implements OnInit{
   ngOnInit() {
     if (this.default) this.links = this.default;
     this.setProductLinks();
-    this.afterLinks = this.links.slice(1);
-  }
-
-  isLast(i: number) {
-    return i === this.afterLinks.length - 1;
+    this.firstLink = this.links[0];
+    this.links = this.links.slice(1);
   }
 
   private setProductLinks() {
     this.activatedRoute.paramMap.subscribe(params => {
       if(!params.get('gender')) return;
+
       let path: string[] = ['/', 'products', params.get('gender')];
       this.links.push({
         name: params.get('gender').toUpperCase(),
@@ -46,9 +43,11 @@ export class BreadcrumbComponent implements OnInit{
       if (params.has('categoryId')) {
         this.categoriesService.categoriesList$.subscribe(categories => {
           if(!categories) return;
+
           let categoryId: string = params.get('categoryId');
           let categoryName = categories
             .find(category => category.id === categoryId).name;
+
           path.push(categoryId);
           this.links.push({
             name: categoryName!,
@@ -57,7 +56,7 @@ export class BreadcrumbComponent implements OnInit{
           if(this.itemName) {
             this.links.push({
               name: this.itemName,
-              path: []
+              path: null
             });
           }
         });

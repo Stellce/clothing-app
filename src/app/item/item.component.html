@@ -1,6 +1,6 @@
 @if (item) {
   <div class="item">
-    <app-breadcrumb class="breadcrumb-line" [default]="[{name: 'Cart', path: ['/', 'cart']}, {name: item.name, path: ['']}]" [itemName]="item.name"></app-breadcrumb>
+    <app-breadcrumb class="breadcrumb-line" [default]="isCartItem ? [{name: 'Cart', path: ['/', 'cart']}] : null" [itemName]="item.name"></app-breadcrumb>
     <div class="product">
       @if (item.images) {
         <div class="images">
@@ -55,5 +55,5 @@
       </div>
     </div>
   </div>
-  <app-reviews [itemId]="item.id" [reviews]="item.reviews"></app-reviews>
+  <app-reviews [itemId]="item.id"></app-reviews>
 }

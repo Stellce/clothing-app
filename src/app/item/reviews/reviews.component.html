@@ -1,15 +1,19 @@
 <div class="reviews">
   <div class="header">Reviews</div>
   <div class="body">
-    @if (authService.user()) {
-      <app-new-review [itemId]="itemId"></app-new-review>
-    } @else {
+    @if (authService.user() && isPurchased && !hasOwnReview) {
+      <app-new-review [review]="editableReview" [itemId]="itemId" (updateReviews)="getReviews()"></app-new-review>
+    } @else if (!authService.user()) {
       <div class="review">
         Please, register or log in to post a review
       </div>
     }
-    @for (review of reviews; track review) {
-      <app-review [review]="review"></app-review>
+    @if (reviews?.length > 0) {
+      @for (review of reviews; track review) {
+        <app-review [review]="review" (editReview)="onEditReview(review)"></app-review>
+      }
+    } @else {
+      <h2>There are no reviews yet.</h2>
     }
   </div>
 </div>

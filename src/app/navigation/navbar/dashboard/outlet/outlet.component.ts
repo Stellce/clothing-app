@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {ItemCard} from "../../../../categories/list-items/item-card/item-card.model";
-import {ItemsPage} from "../../../../categories/list-items/item-card/res/items-page.model";
+import {CatalogItem, ItemCard} from "../../../../categories/list-items/item-card/item-card.model";
+import {Page} from "../../../../categories/list-items/item-card/res/page.model";
 import {ItemsService} from "../../../../item/items.service";
 import { ItemCardComponent } from '../../../../categories/list-items/item-card/item-card.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -21,7 +21,7 @@ export class OutletComponent implements OnInit{
   ngOnInit() {
     this.isLoading = true;
     this.itemsService.requestLandingPage().subscribe({
-      next: (page: ItemsPage) => {
+      next: (page: Page<CatalogItem[]>) => {
         this.isLoading = false;
         this.items = page.content;
       },

@@ -4,14 +4,14 @@ import {BehaviorSubject, Observable, tap} from "rxjs";
 import { environment } from "../../environments/environment";
 import { CatalogItem } from "../categories/list-items/item-card/item-card.model";
 import { ItemsParamsRequest } from "../categories/list-items/item-card/req/items-params-request.model";
-import { ItemsPage } from "../categories/list-items/item-card/res/items-page.model";
+import { Page } from "../categories/list-items/item-card/res/page.model";
 import { Image } from "./image.model";
 import { ItemDetails } from "./item.model";
 
 @Injectable({providedIn: 'root'})
 export class ItemsService {
   private _cachedItemsRequest: ItemsParamsRequest = {} as ItemsParamsRequest;
-  private _page$ = new BehaviorSubject<ItemsPage>(null);
+  private _page$ = new BehaviorSubject<Page<CatalogItem[]>>(null);
   private pageSize = 6*4;
 
   constructor(private http: HttpClient) {}
@@ -27,7 +27,7 @@ export class ItemsService {
   }
 
   requestLandingPage() {
-    return this.http.get<ItemsPage>(
+    return this.http.get<Page<CatalogItem[]>>(
       environment.backendUrl + `/catalog/items/landing-page`
     ).pipe(tap(page => {
       this._page$.next(page);
@@ -43,7 +43,7 @@ export class ItemsService {
       params = params.append(k,v);
     })
     params = params.append('pageSize', this.pageSize);
-    return this.http.get<ItemsPage>(
+    return this.http.get<Page<CatalogItem[]>>(
       environment.backendUrl + `/catalog/items`,
       {params}
     ).pipe(tap(page => {
@@ -78,7 +78,7 @@ export class ItemsService {
     params = params.append('pageNumber', pageNumber);
     params = params.append('pageSize', this.pageSize);
 
-    return this.http.get<ItemsPage>(
+    return this.http.get<Page<CatalogItem[]>>(
       environment.backendUrl + `/catalog/items`,
       {params: params}
     ).pipe(tap(page => {
@@ -102,7 +102,7 @@ export class ItemsService {
   //   return of(orders);
   // }
 
-  private requestPageImages(page: ItemsPage) {
+  private requestPageImages(page: Page<CatalogItem[]>) {
     page.content.forEach(contentItem => {
       this.requestItemImages(contentItem.id).subscribe(images => {
         const item: CatalogItem | undefined = page.content.find(i => i.id === contentItem.id);

@@ -159,12 +159,15 @@ export class AuthService {
 
     localStorage.setItem("tokenInfo", JSON.stringify(tokenInfo));
 
+    const email = decodedToken.iss.includes('google') ? decodedToken.email : decodedToken.sub.split(':')[2];
+
     const user: User = {
-      name: decodedToken['name'],
-      lastname: decodedToken['lastname'],
-      email: decodedToken['email'],
+      name: decodedToken.name,
+      lastname: decodedToken.lastname,
+      email,
       roles: decodedToken.realm_access?.['roles'] || null,
     }
+    console.log(user);
 
     this.user.set(user);
     let url = window.location.href;

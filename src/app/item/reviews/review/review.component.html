@@ -1,18 +1,20 @@
-<div class="review">
-  <div class="header">
-    <div class="author">{{review.title}}</div>
-    <div class="date-stars">
-      <!-- <span class="date">{{review.date | date}}</span> -->
-      <div class="stars">
-        @for (star of stars; track star.rate) {
-          <div class="star" [ngClass]="{'star-selected': star?.rate <= review?.rating}">
-            <svg width="20" height="20" >
-              <polygon points="10,1 4,19.8 19,7.8 1,7.8 16,19.8"/>
-            </svg>
-          </div>
-        }
-      </div>
-    </div>
+<div class="header">
+  <div class="flex">
+    <button class="edit" mat-mini-fab color="primary" (click)="editReview.emit()"><img src="./assets/icons/edit.svg" alt="edit"/></button>
+    <div class="author">{{review.customer.firstName}} {{review.customer.lastName ? review.customer.lastName : ''}}</div>
   </div>
-  <div class="content">{{review.content}}</div>
+  <div class="date-stars">
+    <div class="stars">
+      @for (star of stars; track star.rate) {
+        <div class="star" [ngClass]="{'star-selected': star?.rate <= review.rating}">
+          <svg width="20" height="20" >
+            <polygon points="10,1 4,19.8 19,7.8 1,7.8 16,19.8"/>
+          </svg>
+        </div>
+      }
+    </div>
+    <span class="date">{{review.createdAt | date}}</span>
+  </div>
 </div>
+<div class="content">{{review.title}}</div>
+<div class="content">{{review.content}}</div>

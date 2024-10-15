@@ -1,28 +1,34 @@
-<div class="header">
-  <div class="author">{{authService.user().name}}</div>
-  <div class="date-stars">
-    <div class="stars">
-      @for (star of stars; track star.rate) {
-        <div class="star" (click)="setRating(star.rate); starX.click()" [ngClass]="{'star-selected': star?.rate <= rating}">
-          <svg width="20" height="20" >
-            <polygon points="10,1 4,19.8 19,7.8 1,7.8 16,19.8"/>
-          </svg>
-          <input [(ngModel)]="rating" type="radio" name="rating" [value]="star.rate" #starX>
-        </div>
-      }
+<form [formGroup]="form">
+  <div class="header">
+    <div class="author">{{authService.user().name}}</div>
+    <div class="date-stars">
+      <div class="stars">
+        @for (star of stars; track star.rate) {
+          <div class="star" (click)="starInput.click()" [ngClass]="{'star-selected': star.rate <= this.form.get('rating').value}" #starX>
+            <svg width="20" height="20">
+              <polygon points="10,1 4,19.8 19,7.8 1,7.8 16,19.8"/>
+            </svg>
+            <input formControlName="rating" type="radio" [value]="star.rate" #starInput>
+          </div>
+        }
+      </div>
     </div>
   </div>
-</div>
-<div class="content">
-  <mat-form-field>
-    <mat-label>Title</mat-label>
-    <textarea matInput [(ngModel)]="title" cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="2"></textarea>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Content</mat-label>
-    <textarea matInput [(ngModel)]="content" cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="10"></textarea>
-  </mat-form-field>
-</div>
-<div class="actions">
-  <button mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
-</div>
+  <div class="content">
+    <mat-form-field>
+      <mat-label>Title</mat-label>
+      <textarea matInput formControlName="title" cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="2"></textarea>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Content</mat-label>
+      <textarea matInput formControlName="content" cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="10"></textarea>
+    </mat-form-field>
+  </div>
+  <div class="actions">
+    @if (review()) {
+      <button mat-raised-button color="primary" (click)="onUpdate()">Update</button>
+    } @else {
+      <button mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
+    }
+  </div>
+</form>

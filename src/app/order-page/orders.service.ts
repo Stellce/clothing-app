@@ -2,6 +2,8 @@ import {HttpClient} from "@angular/common/http";
 import {Injectable} from "@angular/core";
 import {environment} from "../../environments/environment";
 import {OrderReq} from "./order-req.model";
+import {OrderRes} from "./order-res.model";
+import {Page} from "../categories/list-items/item-card/res/page.model";
 
 @Injectable({ providedIn: 'root'})
 export class OrdersService {
@@ -18,6 +20,6 @@ export class OrdersService {
   }
 
   getOrdersForCustomer() {
-    return this.http.get(this.backendUrl + `/orders/customer`);
+    return this.http.get<Page<OrderRes[]>>(this.backendUrl + `/customer`);
   }
 }

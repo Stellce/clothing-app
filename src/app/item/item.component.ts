@@ -34,7 +34,7 @@ import {DialogData} from "../dialogs/dialog/dialog-data.model";
   imports: [BreadcrumbComponent, NgClass, MatButtonModule, ReviewsComponent, CurrencyPipe, MatFormFieldModule, MatInputModule, FormsModule, NgStyle, FieldToTextPipe, AddToFavoritesComponent, MatRipple, InputQuantityComponent]
 })
 export class ItemComponent implements OnInit{
-  item: ItemDetails;
+  item: ItemDetails = null;
   selectedUniqueItem: UniqueItem;
   quantity: number = 1;
   params: { key: string, value: string }[] = [];
@@ -104,7 +104,25 @@ export class ItemComponent implements OnInit{
         }
       });
     }
-    this.ordersService.createOrder(order);
+
+    this.ordersService.createOrder(order).subscribe({
+      next: () => {
+        const dialogData: DialogData = {
+          title: 'Item purchased!',
+          description: 'You will get a notification on email',
+          buttonName: 'Ok'
+        }
+        this.dialog.open(DialogComponent, {data: dialogData});
+      },
+      error: () => {
+        const dialogData: DialogData = {
+          title: 'Something went wrong',
+          description: 'Could not proceed',
+          buttonName: 'Ok'
+        }
+        this.dialog.open(DialogComponent, {data: dialogData});
+      }
+    });
   }
 
   sizeString(size: string): string {

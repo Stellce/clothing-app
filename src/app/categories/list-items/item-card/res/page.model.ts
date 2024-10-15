@@ -1,7 +1,5 @@
-import { CatalogItem } from "../item-card.model"
-
-export interface ItemsPage {
-  content: CatalogItem[]
+export interface Page<T> {
+  content: T
   pageable: Pageable
   last: boolean
   totalElements: number

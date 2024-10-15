@@ -1,17 +1,17 @@
 <div class="breadcrumb-link">
-  <a [routerLink]="links[0].path">&#5130; {{ links[0].name }}</a>
+  <a [routerLink]="firstLink.path">&#5130; {{ firstLink.name }}</a>
 </div>
 <span> / </span>
-@for (link of afterLinks; track link.name; let i = $index) {
+@for (link of links; track link.name; let i = $index) {
   <div class="breadcrumb-links">
-    @if (!isLast(i)) {
+    @if (link.path) {
       <div class="breadcrumb-link">
         <a [routerLink]="link.path">{{link.name | fieldToText}}</a>
       </div>
-    }
-    @if (isLast(i)) {
-      <span>{{link.name | fieldToText}}</span>
     } @else {
+      <span>{{link.name | fieldToText}}</span>
+    }
+    @if (i !== links.length - 1) {
       <span> / </span>
     }
   </div>

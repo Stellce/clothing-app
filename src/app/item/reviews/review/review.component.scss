@@ -1,6 +1,6 @@
 @use "../../../../variables";
 
-.review {
+:host {
   border: 3px solid variables.$dark-theme-background-lighter;
   padding: 20px;
   border-radius: 1rem;
@@ -8,8 +8,13 @@
     display: flex;
     justify-content: space-between;
     padding-bottom: 20px;
+    .flex {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
     .author {
-      font-size: 21px;
+      font-size: 1.25rem;
     }
     .stars {
       display: flex;
@@ -17,7 +22,7 @@
       align-content: center;
     }
     .star-selected svg{
-      fill: yellow !important;
+      fill: yellow;
     }
   }
   .content {

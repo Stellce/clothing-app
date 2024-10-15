@@ -1,18 +1,18 @@
-import { DatePipe, NgClass } from '@angular/common';
-import { Component, Input } from '@angular/core';
-import { Review } from "../review.model";
+import {DatePipe, NgClass} from '@angular/common';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {ReviewRes} from "../res/review-res.model";
+import {MatFabButton, MatMiniFabButton} from "@angular/material/button";
 
 @Component({
     selector: 'app-review',
     templateUrl: './review.component.html',
     styleUrls: ['./review.component.scss'],
     standalone: true,
-    imports: [NgClass, DatePipe]
+  imports: [NgClass, DatePipe, MatFabButton, MatMiniFabButton]
 })
 export class ReviewComponent {
-  @Input()
-  review: Review;
-  rating: number;
+  @Input() review: ReviewRes;
+  @Output() editReview = new EventEmitter<void>();
   stars = [
     {rate: 1},
     {rate: 2},

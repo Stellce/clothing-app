@@ -4,6 +4,9 @@
   border: 3px solid variables.$dark-theme-background-lighter;
   padding: 20px;
   border-radius: 1rem;
+  .red {
+    background: red;
+  }
   .header {
     display: flex;
     justify-content: space-between;
