@@ -133,7 +133,14 @@ export class CartComponent implements OnInit {
           size: cItem.itemSize
         }))
     }
-    this.ordersService.createOrder(order);
+    this.ordersService.createOrder(order).subscribe(() => {
+      const dialogData: DialogData = {
+        title: 'Order created!',
+        description: 'You will get a notification on email',
+        buttonName: 'Ok'
+      }
+      this.dialog.open(DialogComponent, {data: dialogData});
+    });
   }
 
   private loadItems() {

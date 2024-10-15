@@ -1,7 +1,13 @@
 <div class="reviews">
   <div class="header">Reviews</div>
   <div class="body">
-    <app-new-review [itemId]="itemId"></app-new-review>
+    @if (authService.user()) {
+      <app-new-review [itemId]="itemId"></app-new-review>
+    } @else {
+      <div class="review">
+        Please, register or log in to post a review
+      </div>
+    }
     @for (review of reviews; track review) {
       <app-review [review]="review"></app-review>
     }

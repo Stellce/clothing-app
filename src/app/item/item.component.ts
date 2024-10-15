@@ -168,9 +168,10 @@ export class ItemComponent implements OnInit{
         this.item.images = images;
       })
       this.route.queryParamMap.subscribe(params => {
-        this.isCartItem = true;
-        this.quantity = +params.get('quantity');
-        this.selectedUniqueItem = this.item.uniqueItems.find(uItem => uItem.size === params.get('size'));
+        const quantity = +params.get('quantity');
+        if (quantity) this.isCartItem = true;
+        this.quantity = quantity || 1;
+        this.selectedUniqueItem = this.item.uniqueItems.find(uItem => uItem.size === params.get('size')) || this.item.uniqueItems[0];
       })
     });
   }

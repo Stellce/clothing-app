@@ -1,15 +1,23 @@
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { environment } from "../../environments/environment";
-import { Order } from "../item/order.model";
-import { OrderReq } from "./order-req.model";
+import {HttpClient} from "@angular/common/http";
+import {Injectable} from "@angular/core";
+import {environment} from "../../environments/environment";
+import {OrderReq} from "./order-req.model";
 
 @Injectable({ providedIn: 'root'})
 export class OrdersService {
-  backendUrl = environment.backendUrl;
-  orderList: Order[] = [];
+  backendUrl = environment.backendUrl + '/orders';
+
   constructor(private http: HttpClient) {}
+
+  getOrderById(orderId: string) {
+    return this.http.get(this.backendUrl + `/${orderId}`);
+  }
+
   createOrder(orderReq: OrderReq) {
-    return this.http.post(this.backendUrl + '/orders/', orderReq);
+    return this.http.post(this.backendUrl, orderReq);
+  }
+
+  getOrdersForCustomer() {
+    return this.http.get(this.backendUrl + `/orders/customer`);
   }
 }

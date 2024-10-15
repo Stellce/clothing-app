@@ -2,6 +2,7 @@ import {Component, Input} from '@angular/core';
 import {NewReviewComponent} from './new-review/new-review.component';
 import {Review} from "./review.model";
 import {ReviewComponent} from './review/review.component';
+import {AuthService} from "../../auth/auth.service";
 
 @Component({
     selector: 'app-reviews',
@@ -13,4 +14,6 @@ import {ReviewComponent} from './review/review.component';
 export class ReviewsComponent {
   @Input() reviews: Review[];
   @Input() itemId: string;
+
+  constructor(protected authService: AuthService) {}
 }
