@@ -129,6 +129,8 @@ export class ItemComponent implements OnInit{
         order = {...order, customer: {...form.value}}
         addOrder(order);
       })
+    } else {
+      addOrder(order);
     }
 
 
