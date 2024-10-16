@@ -1,4 +1,8 @@
 @use "../../../../../variables";
+
+:host {
+  padding: 1rem;
+}
 .back-button-wrapper {
   max-width: 500px;
   width: 100%;
@@ -10,4 +14,7 @@
 .order-history {
   max-width: 500px;
   margin: 0 auto;
+}
+mat-spinner {
+  margin: auto;
 }

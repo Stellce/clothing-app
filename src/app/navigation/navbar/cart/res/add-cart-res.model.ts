@@ -1,3 +1,4 @@
+import {Image} from "../../../../item/image.model";
 
 export interface AddCartRes {
   id: string
@@ -20,4 +21,5 @@ export interface ItemEntryRes {
   itemPriceAfterDiscount: number
   totalPrice: number
   totalPriceAfterDiscount: number
+  images?: Image[];
 }

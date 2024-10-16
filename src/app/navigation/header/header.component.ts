@@ -1,5 +1,5 @@
 import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {ActivatedRoute, NavigationEnd, Router, RouterLink} from '@angular/router';
+import {NavigationEnd, Router, RouterLink} from '@angular/router';
 import {filter} from 'rxjs';
 import {FieldToTextPipe} from 'src/app/pipes/field-to-text';
 import {NavbarComponent} from '../navbar/navbar.component';

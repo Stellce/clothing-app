@@ -190,7 +190,6 @@ export class AuthService {
       email,
       roles: decodedToken.realm_access?.['roles'] || null,
     }
-    console.log(user);
 
     this.user.set(user);
     let url = window.location.href;
