@@ -12,6 +12,7 @@ export const routes: Routes = [
     {path: 'register', loadComponent: () => import('./auth/register/register.component').then(c => c.RegisterComponent)},
   ]},
   {path: 'activate-account', loadComponent: () => import('./auth/activate/activate.component').then(c => c.ActivateComponent)},
+  {path: 'recover-password', loadComponent: () => import('./auth/password-recovery/password-recovery.component').then(c => c.PasswordRecoveryComponent)},
   {path: 'favorites', loadComponent: () => import('./navigation/navbar/favorites/favorites.component').then(c => c.FavoritesComponent)},
   {path: 'cart', children: [
     {path: '', loadComponent: () => import('./navigation/navbar/cart/cart.component').then(c => c.CartComponent)},

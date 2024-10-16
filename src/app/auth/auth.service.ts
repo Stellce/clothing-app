@@ -125,7 +125,7 @@ export class AuthService {
       .pipe(tap(tokenInfo => this.authUser(tokenInfo)));
   }
 
-  resetPassword() {
+  sendRecoveryEmail() {
     const dialogData: DialogData = {
       title: 'Password reset',
       description: '',
@@ -136,8 +136,31 @@ export class AuthService {
     const dialogRef = this.dialog.open(DialogComponent, {data: dialogData});
 
     dialogRef.afterClosed().subscribe((form: NgForm) => {
-      console.log('result', form.value);
+      const email = form.value.email;
+      if (!email) return;
+      const params = new HttpParams().set('email', email);
+      this.http.post(environment.backendUrl + '/oauth2/users/recover-password', {}, {params}).subscribe({
+        next: () => {
+          const dialogData: DialogData = {
+            title: 'Check your email!',
+            description: 'Recovery password email successfully sent!'
+          }
+          this.dialog.open(DialogComponent, {data: dialogData});
+        },
+        error: () => {
+          const dialogData: DialogData = {
+            title: 'Something went wrong!',
+            description: 'Try again later'
+          }
+          this.dialog.open(DialogComponent, {data: dialogData});
+        }
+      })
     });
+  }
+
+  recoverPassword(password: string, token: string) {
+    const params = new HttpParams().set('token', token).set('password', password);
+    return this.http.post(environment.backendUrl + '//oauth2/users/recover-password', {}, {params});
   }
 
   logout() {

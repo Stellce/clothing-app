@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit{
   }
 
   onPasswordReset() {
-    this.authService.resetPassword();
+    this.authService.sendRecoveryEmail();
   }
 
   private createForm() {
