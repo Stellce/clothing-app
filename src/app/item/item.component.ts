@@ -60,6 +60,13 @@ export class ItemComponent implements OnInit{
   }
 
   addToCart() {
+    const successDialogInvoke = () => {
+      let dialogData: DialogData = {
+        title: 'Item added!',
+        description: 'You can check your cart!'
+      };
+      this.dialog.open(DialogComponent, {data: dialogData});
+    }
     if (this.quantity > this.selectedUniqueItem.quantity) return;
     if (this.authService.user()) {
       this.cartService.addItem({
@@ -74,6 +81,7 @@ export class ItemComponent implements OnInit{
         itemSize: this.selectedUniqueItem.size
       });
     }
+    successDialogInvoke();
   }
 
   orderNow() {
