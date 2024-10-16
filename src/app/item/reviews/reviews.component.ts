@@ -29,7 +29,7 @@ export class ReviewsComponent implements OnInit {
 
   ngOnInit() {
     this.getReviews();
-    this.checkIfPurchased();
+    if (this.authService.user()) this.checkIfPurchased();
   }
 
   getReviews() {

@@ -84,8 +84,28 @@ export class ItemComponent implements OnInit{
     successDialogInvoke();
   }
 
-  orderNow() {
-    const order: OrderReq = {
+  async orderNow() {
+    const addOrder = (orderReq: OrderReq) => {
+      this.ordersService.createOrder(orderReq).subscribe({
+        next: () => {
+          const dialogData: DialogData = {
+            title: 'Item purchased!',
+            description: 'You will get a notification on email',
+            buttonName: 'Ok'
+          }
+          this.dialog.open(DialogComponent, {data: dialogData});
+        },
+        error: () => {
+          const dialogData: DialogData = {
+            title: 'Something went wrong',
+            description: 'Could not proceed',
+            buttonName: 'Ok'
+          }
+          this.dialog.open(DialogComponent, {data: dialogData});
+        }
+      });
+    }
+    let order: OrderReq = {
       itemEntries: [{
         itemId: this.item.id,
         quantity: this.quantity,
@@ -105,32 +125,13 @@ export class ItemComponent implements OnInit{
       }
       const dialogRef: MatDialogRef<DialogComponent, NgForm> = this.dialog.open(DialogComponent, {data: dialogData});
       dialogRef.afterClosed().subscribe(form => {
-        if (form?.value) {
-          order.customer = {
-            ...form.value
-          }
-        }
-      });
+        if (!form.value) return;
+        order = {...order, customer: {...form.value}}
+        addOrder(order);
+      })
     }
 
-    this.ordersService.createOrder(order).subscribe({
-      next: () => {
-        const dialogData: DialogData = {
-          title: 'Item purchased!',
-          description: 'You will get a notification on email',
-          buttonName: 'Ok'
-        }
-        this.dialog.open(DialogComponent, {data: dialogData});
-      },
-      error: () => {
-        const dialogData: DialogData = {
-          title: 'Something went wrong',
-          description: 'Could not proceed',
-          buttonName: 'Ok'
-        }
-        this.dialog.open(DialogComponent, {data: dialogData});
-      }
-    });
+
   }
 
   sizeString(size: string): string {
