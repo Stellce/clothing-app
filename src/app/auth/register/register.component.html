@@ -1,4 +1,4 @@
-@if (isLoading) {
+@if (isLoading()) {
   <div class="center">
     <mat-spinner></mat-spinner>
     <h2>Authenticating...</h2>
@@ -38,7 +38,9 @@
       }
     </mat-form-field>
 
-    <mat-checkbox formControlName="isAgreementConsent" #agreement>I declare that I have read and accept the SpaceFincher Terms & Conditions.<span [style]="{color: 'red'}">*</span>
+    <mat-checkbox formControlName="isAgreementConsent" #agreement>
+      I declare that I have read and accept the SpaceFincher Terms & Conditions.
+      <span [style]="{color: 'red'}">*</span>
     </mat-checkbox>
     @if (!agreement.checked && showError) {
       <mat-error>Please, consent the agreement</mat-error>
@@ -48,15 +50,15 @@
   <div class="additional-actions">
     <a [routerLink]="['/', 'account', 'login']">Login</a>
     <div class="activation-resend">
-      @if (showEmailResend) {
+      @if (showEmailResend()) {
         <span>No email? <a (click)="onActivationResend()">Resend</a></span>
-      } @else if (emailResendTimer) {
+      } @else if (emailResendTimer()) {
         <span>Successfully sent! Next resend available in: </span>
       }
-      @if (emailResendTimer) {
+      @if (emailResendTimer()) {
         <div class="email-timer">
           <div class="loader"></div>
-          <div class="label">{{emailResendTimer}}</div>
+          <div class="label">{{emailResendTimer()}}</div>
         </div>
       }
     </div>
