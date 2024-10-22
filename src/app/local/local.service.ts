@@ -40,6 +40,12 @@ export class LocalService {
     localStorage.setItem("cart", JSON.stringify(cart));
   }
 
+  removeFromCart(itemId: string) {
+    const cart: LocalCartItem[] = this.cartItems;
+    const newCart = cart.filter(i => i.itemId !== itemId);
+    localStorage.setItem("cart", JSON.stringify(newCart));
+  }
+
   get favoritesIds(): string[] {
     return this._favoritesIds = JSON.parse(localStorage.getItem("favorites")) || [];
   }

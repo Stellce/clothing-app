@@ -10,11 +10,8 @@
   .header {
     width: 100%;
     display: flex;
-    justify-content: center;
-    .header-content {
-      width: 100%;
-      max-width: 31rem;
-    }
+    justify-content: space-between;
+    max-width: 31rem;
   }
 
   .cart-item {

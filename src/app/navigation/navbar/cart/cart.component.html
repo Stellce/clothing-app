@@ -1,15 +1,16 @@
-@if (cartItems.length) {
+@if (cartItems().length) {
   <div class="cart">
     <div class="header">
-      <div class="header-content">
-        <mat-checkbox
-          (change)="onSelectAll($event)"
-          [indeterminate]="selectedItemsIds.size > 0 && !(selectedItemsIds.size === cartItems.length)"
-          [checked]="selectedItemsIds.size === cartItems.length"
-        >Select all</mat-checkbox>
-      </div>
+      <mat-checkbox
+        (change)="onSelectAll($event)"
+        [indeterminate]="selectedIds.size > 0 && !(selectedIds.size === cartItems().length)"
+        [checked]="selectedIds.size === cartItems().length"
+      >Select all</mat-checkbox>
+      @if (selectedIds.size) {
+        <button mat-icon-button (click)="onDeleteItems()"><img src="/assets/icons/trash.svg" alt="delete"/></button>
+      }
     </div>
-    @for (cartItem of cartItems; track cartItem.id) {
+    @for (cartItem of cartItems(); track cartItem.id) {
       <div class="cart-item">
         <mat-checkbox (change)="onItemSelect(cartItem, $event.checked)" #itemCheckbox></mat-checkbox>
         <app-item-bar [cartItem]="cartItem"></app-item-bar>
@@ -19,7 +20,7 @@
   <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-card-title>
-        <div class="cost space-between">Total cost: {{totalCost | currency}}</div>
+        <div class="cost space-between">Total cost: {{totalCost() | currency}}</div>
       </mat-card-title>
     </mat-expansion-panel-header>
     <div class="purchase-details">
@@ -34,7 +35,7 @@
   </mat-expansion-panel>
 } @else {
   <div class="center">
-    @if (isLoading) {
+    @if (isLoading()) {
       <div class="center">
         <mat-spinner></mat-spinner>
         <h2>Loading...</h2>
