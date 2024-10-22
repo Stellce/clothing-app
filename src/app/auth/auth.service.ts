@@ -160,7 +160,7 @@ export class AuthService {
 
   recoverPassword(password: string, token: string) {
     const params = new HttpParams().set('token', token).set('password', password);
-    return this.http.post(environment.backendUrl + '//oauth2/users/recover-password', {}, {params});
+    return this.http.post(environment.backendUrl + '/oauth2/users/recover-password', {}, {params});
   }
 
   logout() {

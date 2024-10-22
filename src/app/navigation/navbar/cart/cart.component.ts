@@ -72,7 +72,7 @@ export class CartComponent implements OnInit {
 
   onItemSelect(item: CartItem, isChecked: boolean) {
     this.selectedIds[isChecked ? 'add' : 'delete'](this.authService.user() ? item.id : item.itemId);
-    this.totalCost.update(totalCost => totalCost += (item.itemPriceAfterDiscount * item.quantity * (isChecked ? 1 : -1)));
+    this.totalCost.update(totalCost => totalCost + (item.itemPriceAfterDiscount * item.quantity * (isChecked ? 1 : -1)));
   }
 
   onDeleteItems() {

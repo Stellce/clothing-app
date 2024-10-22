@@ -12,10 +12,10 @@ import {DialogComponent} from "../../dialogs/dialog/dialog.component";
 import {DialogData} from "../../dialogs/dialog/dialog-data.model";
 
 @Component({
-    selector: 'app-login',
-    templateUrl: './login.component.html',
-    styleUrls: ['../shared.scss'],
-    standalone: true,
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['../shared.scss'],
+  standalone: true,
   imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, RouterLink, GoogleLoginButtonComponent]
 })
 export class LoginComponent implements OnInit{

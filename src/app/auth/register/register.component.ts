@@ -42,15 +42,22 @@ export class RegisterComponent implements OnInit {
     this.showError.set(true);
     if(this.form.invalid) return;
     let registerUser: RegisterUser = {
-      firstname: this.form.value.firstname,
-      lastname: this.form.value.lastname,
+      firstName: this.form.value.firstname,
+      lastName: this.form.value.lastname,
       email: this.form.value.email,
       password: this.form.value.password
     }
     console.log(registerUser);
+    this.isLoading.set(true);
     this.authService.register(registerUser).subscribe({
-      next: () => this.showEmailResend.set(true),
-      error: () => this.showEmailResend.set(true)
+      next: () => {
+        this.isLoading.set(false);
+        this.showEmailResend.set(true);
+      },
+      error: () => {
+        this.isLoading.set(true);
+        this.showEmailResend.set(true);
+      }
     });
   }
 
