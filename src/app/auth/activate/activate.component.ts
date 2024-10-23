@@ -3,7 +3,6 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {forkJoin} from 'rxjs';
 import {LocalService} from 'src/app/local/local.service';
-import {CartService} from 'src/app/navigation/navbar/cart/cart.service';
 import {FavoritesService} from 'src/app/navigation/navbar/favorites/favorites.service';
 import {AuthService} from '../auth.service';
 
@@ -22,17 +21,15 @@ export class ActivateComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private localService: LocalService,
-    private favoritesService: FavoritesService,
-    private cartService: CartService
+    private favoritesService: FavoritesService
   ) {}
 
   ngOnInit() {
     this.router.navigate(['/', 'account']);
     this.authService.activateAccount(this.route.snapshot.queryParamMap.get('token')).subscribe({
-      next: res => {
+      next: () => {
         this.title = 'Activation success! You will be redirected in a second';
         setTimeout(() => this.router.navigate(['/', 'account']), 1000);
-        this.uploadCart();
         this.uploadFavorites();
       },
       error: () => this.title = 'Activation link is wrong or expired'
@@ -43,15 +40,5 @@ export class ActivateComponent implements OnInit {
     let itemIds = this.localService.favoritesIds;
     let favoriteItemsAdded$ = itemIds.map(id => this.favoritesService.addItem(id));
     forkJoin(favoriteItemsAdded$).subscribe(res => console.log(res));
-  }
-
-  private uploadCart() {
-    let cart = this.localService.cartItems;
-    let cartItemsAdded$ = cart.map(item => this.cartService.addItem({
-      itemId: item.itemId,
-      quantity: item.quantity,
-      size: item.itemSize
-    }));
-    forkJoin(cartItemsAdded$).subscribe(res => console.log(res));
   }
 }

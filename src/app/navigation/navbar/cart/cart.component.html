@@ -1,4 +1,8 @@
-@if (cartItems().length) {
+@if (!authService.user()) {
+  <div class="center">
+    <h2>You have to <a href="/account/register">register</a> or <a href="/account/login">log in</a> to use cart</h2>
+  </div>
+} @else if (cartItems().length) {
   <div class="cart">
     <div class="header">
       <mat-checkbox

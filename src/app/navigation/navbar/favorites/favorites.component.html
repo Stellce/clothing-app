@@ -1,6 +1,6 @@
-@if (items?.length) {
+@if (items().length) {
   <div class="item-card-list">
-    @for (item of items; track item.id) {
+    @for (item of items(); track item.id) {
       <app-item-card [item]="item"></app-item-card>
     }
   </div>

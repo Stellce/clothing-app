@@ -1,25 +1,25 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, signal, WritableSignal} from '@angular/core';
 import {ItemsService} from "../../../item/items.service";
-import { ItemCardComponent } from '../../../categories/list-items/item-card/item-card.component';
-import { NgStyle } from '@angular/common';
-import { FavoritesService } from './favorites.service';
-import { ItemCard } from 'src/app/categories/list-items/item-card/item-card.model';
-import { LocalService } from 'src/app/local/local.service';
-import { AuthService } from 'src/app/auth/auth.service';
-import { forkJoin } from 'rxjs';
+import {ItemCardComponent} from '../../../categories/list-items/item-card/item-card.component';
+import {NgStyle} from '@angular/common';
+import {FavoritesService} from './favorites.service';
+import {ItemCard} from 'src/app/categories/list-items/item-card/item-card.model';
+import {LocalService} from 'src/app/local/local.service';
+import {AuthService} from 'src/app/auth/auth.service';
+import {forkJoin} from 'rxjs';
 import {ItemDetails} from "../../../item/item.model";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 @Component({
-    selector: 'app-favorites',
-    templateUrl: './favorites.component.html',
-    styleUrls: ['./favorites.component.scss'],
-    standalone: true,
+  selector: 'app-favorites',
+  templateUrl: './favorites.component.html',
+  styleUrls: ['./favorites.component.scss'],
+  standalone: true,
   imports: [ItemCardComponent, NgStyle, MatProgressSpinner]
 })
 export class FavoritesComponent implements OnInit{
-  items: ItemCard[] = null;
-  isLoading: boolean = true;
+  items: WritableSignal<ItemCard[]> = signal<ItemCard[]>([]);
+  isLoading: WritableSignal<boolean> = signal<boolean>(true);
 
   constructor(
     private favoritesService: FavoritesService,
@@ -47,19 +47,19 @@ export class FavoritesComponent implements OnInit{
       });
     }
     const requestItemsImages = () => {
-      this.items.map(item => {
+      this.items().map(item => {
         this.itemService.requestItemImages(item.id).subscribe(images => {
-          this.items.find(i => i.id === item.id).images = images;
+          this.items().find(i => i.id === item.id).images = images;
         });
       })
     }
 
     this.favoritesService.getItems().subscribe(items => {
-      let localItems = this.localService.getFavoritesIds();
+      let localItems = this.localService.favoritesIds;
       const itemsNotAdded = items.length === 0 && localItems.length > 0;
 
-      this.isLoading = false;
-      this.items = items;
+      this.isLoading.set(false);
+      this.items.set(items);
 
       if (itemsNotAdded) addItemsToServer(localItems);
       requestItemsImages();
@@ -67,18 +67,22 @@ export class FavoritesComponent implements OnInit{
   }
 
   private loadLocalItems() {
-    let itemsIds = this.localService.getFavoritesIds();
+    let itemsIds: string[] = this.localService.favoritesIds;
     if (!itemsIds.length) {
-      this.isLoading = false;
-      this.items = [];
+      this.items.set([]);
+      this.isLoading.set(false);
     }
     let items$ = itemsIds.map(itemId => this.itemService.requestItemById(itemId));
     forkJoin<ItemDetails[]>(items$).subscribe(items => {
-      this.items = items;
-      this.isLoading = false;
+      this.items.set(items);
+      this.isLoading.set(false);
       items.forEach((item, index) => {
         this.itemService.requestItemImages(item.id).subscribe(images => {
-          this.items[index].images = images;
+          this.items.update(items => {
+            items[index].images = images;
+            console.log(items);
+            return items;
+          });
         });
       });
     })

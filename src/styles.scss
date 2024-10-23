@@ -61,6 +61,11 @@ body {
   background: variables.$background-primary;
 }
 
+::selection {
+  background: variables.$background-primary;
+  color: white;
+}
+
 .mdc-button__label {
   font-size: 1rem;
 }

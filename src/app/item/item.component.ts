@@ -8,7 +8,6 @@ import {ActivatedRoute} from "@angular/router";
 import {AuthService} from '../auth/auth.service';
 import {BreadcrumbComponent} from '../categories/list-items/breadcrumb/breadcrumb.component';
 import {UniqueItem} from '../categories/list-items/item-card/item-card.model';
-import {LocalService} from '../local/local.service';
 import {CartService} from '../navigation/navbar/cart/cart.service';
 import {FieldToTextPipe} from '../pipes/field-to-text';
 import {Image} from "./image.model";
@@ -23,7 +22,6 @@ import {DialogComponent} from "../dialogs/dialog/dialog.component";
 import {OrdersService} from "../order-page/orders.service";
 import {OrderReq} from "../order-page/order-req.model";
 import {UpdateCartItemReq} from "../navigation/navbar/cart/req/update-cart-req.model";
-import {LocalCartItem} from "../local/local-cart-item.model";
 import {DialogData} from "../dialogs/dialog/dialog-data.model";
 
 @Component({
@@ -45,7 +43,6 @@ export class ItemComponent implements OnInit{
     protected route: ActivatedRoute,
     private cartService: CartService,
     private authService: AuthService,
-    private localService: LocalService,
     private dialog: MatDialog,
     private ordersService: OrdersService
   ) {}
@@ -68,23 +65,17 @@ export class ItemComponent implements OnInit{
       this.dialog.open(DialogComponent, {data: dialogData});
     }
     if (this.quantity > this.selectedUniqueItem.quantity) return;
-    if (this.authService.user()) {
-      this.cartService.addItem({
-        itemId: this.item.id,
-        quantity: this.quantity,
-        size: this.selectedUniqueItem.size
-      });
-    } else {
-      this.localService.addToCart({
-        itemId: this.item.id,
-        quantity: this.quantity,
-        itemSize: this.selectedUniqueItem.size
-      });
-    }
+
+    this.cartService.addItem({
+      itemId: this.item.id,
+      quantity: this.quantity,
+      size: this.selectedUniqueItem.size
+    });
+
     successDialogInvoke();
   }
 
-  async orderNow() {
+  orderNow() {
     const addOrder = (orderReq: OrderReq) => {
       this.ordersService.createOrder(orderReq).subscribe({
         next: () => {
@@ -132,8 +123,6 @@ export class ItemComponent implements OnInit{
     } else {
       addOrder(order);
     }
-
-
   }
 
   sizeString(size: string): string {
@@ -160,26 +149,15 @@ export class ItemComponent implements OnInit{
       }
       this.dialog.open(DialogComponent, {data: dialogData});
     }
-    if (this.authService.user()) {
-      const cartItem: UpdateCartItemReq = {
-        entryId: this.route.snapshot.paramMap.get('id'),
-        quantity: this.quantity,
-        size: this.selectedUniqueItem.size
-      }
-      this.cartService.updateItem(cartItem).subscribe({
-        next: success,
-        error: failure
-      });
-    } else {
-      const localCartItem: LocalCartItem = {
-        itemId: this.item.id,
-        quantity: this.quantity,
-        itemSize: this.selectedUniqueItem.size
-      }
-      this.localService.updateCartItem(localCartItem);
-      success();
+    const cartItem: UpdateCartItemReq = {
+      entryId: this.route.snapshot.paramMap.get('id'),
+      quantity: this.quantity,
+      size: this.selectedUniqueItem.size
     }
-
+    this.cartService.updateItem(cartItem).subscribe({
+      next: success,
+      error: failure
+    });
   }
 
   private requestItem() {
