@@ -22,8 +22,8 @@
     <div class="price">
       @if (item.discount) {
         <span class="old-price">{{item.price | currency}}</span>
+        <span class="discount">{{item.discount | percent}}</span>
       }
-      <span class="discount">{{item.discount | percent}}</span>
       <span class="price-after-discount">{{item.priceAfterDiscount | currency}}</span>
     </div>
   </div>
