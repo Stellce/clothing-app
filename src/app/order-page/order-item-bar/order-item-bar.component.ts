@@ -1,4 +1,4 @@
-import {Component, model, ModelSignal, OnInit} from '@angular/core';
+import {Component, model, ModelSignal, OnInit, signal} from '@angular/core';
 import {OrderRes} from "../order-res.model";
 import {Router, RouterLink} from "@angular/router";
 import {CurrencyPipe, DatePipe, NgStyle} from "@angular/common";
@@ -14,6 +14,7 @@ import {ItemsService} from "../../item/items.service";
 export class OrderItemBarComponent implements OnInit{
   order: ModelSignal<OrderRes> = model.required<OrderRes>();
   selectedImage: string = null;
+  showMoreItems = signal<boolean>(false);
 
   constructor(
     private itemsService: ItemsService,
@@ -40,9 +41,13 @@ export class OrderItemBarComponent implements OnInit{
   onNavigate(event: MouseEvent) {
     const targetElement = event.target as HTMLElement;
 
-    if (targetElement.nodeName !== 'IMG' && targetElement.className !== 'images-carousel') {
+    if (targetElement.nodeName !== 'IMG' && targetElement.className !== 'images-carousel' || this.order().itemEntries.length === 1) {
       this.router.navigate(['/', 'orders', this.order().id]);
     }
+  }
+
+  onShowChange() {
+    this.showMoreItems.update(v => !v);
   }
 
   private setDefaultImage() {

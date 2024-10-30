@@ -53,7 +53,6 @@ export class CartComponent implements OnInit {
     this.totalCost.set(0);
     if (event.checked) {
       this.cartItems().forEach(i => {
-        this.selectedIds.add(i.itemId)
         this.onItemSelect(i, event.checked);
       });
     } else {
@@ -136,7 +135,7 @@ export class CartComponent implements OnInit {
     }
     let order: OrderReq = {
       itemEntries: this.cartItems()
-        .filter(cItem => this.selectedIds.has(cItem.itemId))
+        .filter(cItem => this.selectedIds.has(cItem.id))
         .map(cItem => ({
           itemId: cItem.itemId,
           quantity: cItem.quantity,

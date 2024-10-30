@@ -12,7 +12,7 @@ export class OrdersService {
   constructor(private http: HttpClient) {}
 
   getOrderById(orderId: string) {
-    return this.http.get(this.backendUrl + `/${orderId}`);
+    return this.http.get<OrderRes>(this.backendUrl + `/${orderId}`);
   }
 
   createOrder(orderReq: OrderReq) {

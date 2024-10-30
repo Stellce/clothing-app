@@ -42,9 +42,9 @@ export class ItemComponent implements OnInit{
     private itemsService: ItemsService,
     protected route: ActivatedRoute,
     private cartService: CartService,
-    private authService: AuthService,
     private dialog: MatDialog,
-    private ordersService: OrdersService
+    private ordersService: OrdersService,
+    protected authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -66,13 +66,23 @@ export class ItemComponent implements OnInit{
     }
     if (this.quantity > this.selectedUniqueItem.quantity) return;
 
-    this.cartService.addItem({
-      itemId: this.item.id,
-      quantity: this.quantity,
-      size: this.selectedUniqueItem.size
-    });
-
-    successDialogInvoke();
+    if (this.authService.user()) {
+      this.cartService.addItem({
+        itemId: this.item.id,
+        quantity: this.quantity,
+        size: this.selectedUniqueItem.size
+      }).subscribe({
+        next: () => successDialogInvoke(),
+        error: e => console.error(e)
+      });
+    } else {
+      const dialogData: DialogData = {
+        title: 'Unable to add to cart',
+        description: 'You have to be registered',
+        buttonName: 'Ok'
+      }
+      this.dialog.open(DialogComponent, {data: dialogData});
+    }
   }
 
   orderNow() {

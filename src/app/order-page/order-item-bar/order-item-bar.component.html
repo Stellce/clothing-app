@@ -1,12 +1,16 @@
 <div class="item-bar" (click)="onNavigate($event)">
   <div class="images">
     @if (selectedImage) {
-      <img [src]="'data:image/png;base64,' + selectedImage" alt=""/>
+      <img [src]="'data:image/png;base64,' + selectedImage"
+           [ngStyle]="{cursor: order().itemEntries.length === 1 ? 'pointer' : 'default'}"
+           alt=""/>
       @if (order().itemEntries.length > 1) {
         <div class="images-carousel">
           @for (item of order().itemEntries; track item.id) {
             @if (item.images?.length) {
-              <img [src]="'data:image/png;base64,' + item.images[0].image" [alt]="item.itemName" (click)="selectedImage = item.images[0].image"/>
+              <img [src]="'data:image/png;base64,' + item.images[0].image"
+                   [alt]="item.itemName"
+                   (click)="selectedImage = item.images[0].image"/>
             }
           }
         </div>
@@ -16,11 +20,11 @@
   <div class="names-status">
     <span class="names">
       @for (item of order().itemEntries; track item.id; let i = $index) {
-        @if (i <= 7) {
-          <span>{{item.itemName}}</span>
+        @if (i <= 2 || showMoreItems()) {
+          <span>{{item.itemName}}({{item.itemSize}}) * {{item.quantity}}</span>
         }
-        @if (i === 7) {
-          <span>...</span>
+        @if (i > 2) {
+          <span (click)="onShowChange()">{{ showMoreItems() ? 'less' : 'more' }}</span>
         }
       }
     </span>

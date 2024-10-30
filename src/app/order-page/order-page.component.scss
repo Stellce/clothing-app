@@ -1,0 +1,23 @@
+:host {
+}
+.entries-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+app-item-bar {
+  max-width: 28.5rem;
+  margin: auto;
+}
+
+.order-details {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  padding: 1rem;
+}
+
+.old-price {
+  color: grey;
+  text-decoration: line-through;
+}

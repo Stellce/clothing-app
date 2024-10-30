@@ -4,6 +4,7 @@
   border-radius: 1rem;
   background: none;
   height: 5rem;
+  width: 100%;
   font-size: 1rem;
 
   display: flex;
@@ -45,7 +46,7 @@
     }
 
     .price-count {
-
+      text-align: end;
     }
   }
 }

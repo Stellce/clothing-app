@@ -22,11 +22,13 @@
         <div class="sizes">
           <div class="scroll">
             @for (uniqueItem of item.uniqueItems; track uniqueItem.size) {
-              <div class="size"
-                   matRipple
-                   [ngClass]="{'available': true, 'selected': uniqueItem === selectedUniqueItem}"
-                   (click)="setUniqueItem(uniqueItem)"
-              >{{sizeString(uniqueItem.size)}}</div>
+              @if (uniqueItem.quantity > 0) {
+                <div class="size"
+                     matRipple
+                     [ngClass]="{'available': true, 'selected': uniqueItem === selectedUniqueItem}"
+                     (click)="setUniqueItem(uniqueItem)"
+                >{{sizeString(uniqueItem.size)}}</div>
+              }
             }
           </div>
         </div>
@@ -48,7 +50,10 @@
           @if (isCartItem) {
             <button mat-flat-button color="primary" (click)="onSaveCartItem()">Save cart item</button>
           } @else {
-            <button mat-flat-button color="primary" (click)="addToCart()">Add to cart</button>
+            <button mat-flat-button color="primary" [disabled]="!authService.user()" (click)="addToCart()">Add to cart</button>
+            @if (!authService.user()) {
+              <h2>You have to <a href="/account/register">register</a> or <a href="/account/login">log in</a> to use cart</h2>
+            }
             <button mat-flat-button color="primary" (click)="orderNow()">Order now</button>
           }
         </div>

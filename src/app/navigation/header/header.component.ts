@@ -16,7 +16,7 @@ export class HeaderComponent implements OnInit, OnChanges{
   tabIcon: string;
   isProductPage: boolean = false;
   tabIcons: string[] = [
-    'search', 'account', 'favorites', 'cart'
+    'search', 'account', 'favorites', 'cart', 'orders'
   ]
   location: string = '';
 
