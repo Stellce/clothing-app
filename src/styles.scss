@@ -1,41 +1,26 @@
 @use "@angular/material" as mat;
-@use "sass:map";
 @use 'variables';
-@use 'theme';
+@use 'themes';
 
-:host {
+@include mat.core();
+
+$dark-theme: themes.$dark-theme;
+
+:root {
+  @include mat.all-component-themes($dark-theme);
+  background: mat.get-theme-color($dark-theme, surface);
+  color: mat.get-theme-color($dark-theme, on-surface);
   height: 100%;
-  background: var(--mat-app-background-color);
-  -webkit-tap-highlight-color: transparent;
-  --mat-select-panel-background-color: variables.$surface-container;
-  --mat-form-field-focus-state-layer-opacity: 0;
-  //@include mat.all-component-themes(m3-theme.$dark-theme);
-  //@include mat.all-component-themes(new-theme.$dark-theme);
 }
 
 body {
   margin: 0;
   padding: 0;
-  background: variables.$surface;
-  color: variables.$text-color;
-
-  --mat-form-field-focus-state-layer-opacity: 0;
-}
-
-.dark-theme {
-  @include theme.create-dark-theme();
-}
-
-@media (prefers-color-scheme: light) {
-  .light-theme {
-    @include theme.create-light-theme();
-  }
 }
 
 .mat-typography {
   font-family: "Inter", sans-serif;
   font-size: 1rem;
-  color: variables.$text-color;
 }
 
 ::-webkit-scrollbar {

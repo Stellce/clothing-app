@@ -1,4 +1,4 @@
-@use '../../../../../variables.scss';
+@use '../../../../../variables';
 
 .outlet {
   span:first-child {
@@ -14,7 +14,6 @@
 
 .outlet * {
   text-decoration: none;
-  color: variables.$on-surface;
   min-width: 175px;
 }
 

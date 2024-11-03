@@ -1,0 +1,21 @@
+@use '@angular/material' as mat;
+@use 'themes';
+$theme: themes.$dark-theme;
+
+$surface-container: mat.get-theme-color($theme, surface-container);
+$surface: mat.get-theme-color($theme, surface);
+$theme-background-lighter: mat.get-theme-color($theme, primary, 20);
+$on-surface: mat.get-theme-color($theme, on-surface);
+$background-primary: #383838;
+$background-secondary: #404040;
+$filter-bubble: #A9A9A9;
+$text-color: mat.get-theme-color($theme, on-surface);
+$breadcrumb-hover: #19ccb2;
+$accent-color: mat.get-theme-color($theme, on-surface);
+$accent: mat.get-theme-color($theme, surface-bright);
+$error: mat.get-theme-color($theme, error);
+
+$secondary: mat.get-theme-color($theme, secondary);
+$on-secondary: mat.get-theme-color($theme, on-secondary);
+
+
