@@ -2,17 +2,17 @@
   <img src="assets/icons/logo.svg" alt="logo" height="47" width="26"/>
   <span>SPACE FINCHER</span>
 </div>
-@if (isProductPage) {
+@if (isProductPage()) {
   <div class="genders">
     <a [routerLink]="['/', 'products', 'men']">MEN</a>
     <a [routerLink]="['/', 'products', 'women']">WOMEN</a>
   </div>
 } @else if (tabIcon) {
   <div class="tab-name">
-    {{tabIcon | fieldToText}}
-    <img [src]="'assets/icons/' + tabIcon + '.svg'" [alt]="tabIcon"/>
+    {{tabIcon() | fieldToText}}
+    <img [src]="'assets/icons/' + tabIcon() + '.svg'" [alt]="tabIcon()"/>
   </div>
 } @else {
-  {{location | fieldToText}}
+  {{location() | fieldToText}}
 }
 <app-navbar></app-navbar>

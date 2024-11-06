@@ -33,5 +33,7 @@ export const routes: Routes = [
   ]},
   {path: 'product/:itemId', loadComponent: () => import('./item/item.component').then(c => c.ItemComponent)},
 
-  {path: '**', redirectTo: 'dashboard'}
+  {path: 'admin-panel', loadComponent: () => import('./admin-panel/admin-panel.component').then(c => c.AdminPanelComponent)},
+
+  {path: '**', redirectTo: 'dashboard'},
 ];

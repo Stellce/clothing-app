@@ -28,3 +28,7 @@ div {
     stroke: variables.$on-secondary;
   }
 }
+
+svg path {
+  stroke: variables.$secondary
+}

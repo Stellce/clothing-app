@@ -22,4 +22,8 @@ export class OrdersService {
   getOrdersForCustomer() {
     return this.http.get<Page<OrderRes[]>>(this.backendUrl + `/customer`);
   }
+
+  cancelOrder(orderId: string) {
+    return this.http.delete(this.backendUrl + `/${orderId}`);
+  }
 }

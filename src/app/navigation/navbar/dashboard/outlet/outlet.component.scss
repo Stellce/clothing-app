@@ -1,22 +1,5 @@
 @use '../../../../../variables';
 
-.outlet {
-  span:first-child {
-    padding: 0 0.5rem;
-  }
-}
-
-.outlet {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.outlet * {
-  text-decoration: none;
-  min-width: 175px;
-}
-
 .carousel {
   display: flex;
   gap: 0.5rem;
@@ -24,9 +7,3 @@
   overflow-x: auto;
 }
 
-@media only screen and (max-width: 300px) {
-  .outlet {
-    width: 100vw;
-    width: 100dvw;
-  }
-}

@@ -1,12 +1,9 @@
-<div class="outlet">
-  <span>SEASONAL</span>
-  @if (isLoading) {
-      <mat-spinner></mat-spinner>
-  } @else {
-    <div class="carousel">
-      @for (item of items; track item.id) {
-          <app-item-card [item]="item"></app-item-card>
-      }
-    </div>
-  }
-</div>
+@if (isLoading()) {
+    <mat-spinner></mat-spinner>
+} @else {
+  <div class="carousel">
+    @for (item of items(); track item.id) {
+        <app-item-card [item]="item"></app-item-card>
+    }
+  </div>
+}

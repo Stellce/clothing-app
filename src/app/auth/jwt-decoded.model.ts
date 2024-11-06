@@ -25,5 +25,8 @@ export interface GoogleJwtDecoded extends JwtPayload {
 }
 
 export interface RealmAccess {
-  roles: string[]
+  roles: Role[];
 }
+
+
+type Role = 'CUSTOMER' | 'ADMIN' | 'EMPLOYEE';

@@ -1,4 +1,12 @@
-import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnChanges,
+  OnInit,
+  signal,
+  SimpleChanges,
+  WritableSignal
+} from '@angular/core';
 import {NavigationEnd, Router, RouterLink} from '@angular/router';
 import {filter} from 'rxjs';
 import {FieldToTextPipe} from 'src/app/pipes/field-to-text';
@@ -6,19 +14,20 @@ import {NavbarComponent} from '../navbar/navbar.component';
 import {JsonPipe} from "@angular/common";
 
 @Component({
-    selector: 'app-header',
-    templateUrl: './header.component.html',
-    styleUrls: ['./header.component.scss'],
-    standalone: true,
-  imports: [RouterLink, NavbarComponent, FieldToTextPipe, JsonPipe]
+  selector: 'app-header',
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.scss'],
+  standalone: true,
+  imports: [RouterLink, NavbarComponent, FieldToTextPipe, JsonPipe],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent implements OnInit, OnChanges{
-  tabIcon: string;
-  isProductPage: boolean = false;
+  isProductPage: WritableSignal<boolean> = signal(false);
+  location: WritableSignal<string> = signal<string>('');
+  tabIcon: WritableSignal<string> = signal('');
   tabIcons: string[] = [
-    'search', 'account', 'favorites', 'cart', 'orders'
-  ]
-  location: string = '';
+    'search', 'account', 'favorites', 'cart', 'orders', 'admin-panel'
+  ];
 
   constructor(
     private router: Router
@@ -26,8 +35,8 @@ export class HeaderComponent implements OnInit, OnChanges{
 
   ngOnInit(): void {
     this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe(e => {
-      this.tabIcon = this.tabIcons.find(n => e.url.includes(n.toLowerCase())) || null;
-      this.isProductPage = e.url.includes('product') || e.url.includes('dashboard') || e.url === '/';
+      this.tabIcon.set(this.tabIcons.find(n => e.url.includes(n.toLowerCase())) || null);
+      this.isProductPage.set(e.url.includes('product') || e.url.includes('dashboard') || e.url === '/');
     });
   }
 
@@ -37,8 +46,6 @@ export class HeaderComponent implements OnInit, OnChanges{
 
   private setLocation() {
     const href = window.location.href.split('/');
-    this.location = href[href.length - 1].split('?')[0];
+    this.location.set(href[href.length - 1].split('?')[0]);
   }
-
-  protected readonly window = window;
 }

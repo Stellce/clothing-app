@@ -4,7 +4,7 @@ $theme: themes.$dark-theme;
 
 $surface-container: mat.get-theme-color($theme, surface-container);
 $surface: mat.get-theme-color($theme, surface);
-$theme-background-lighter: mat.get-theme-color($theme, primary, 20);
+$dark-theme-background-lighter: mat.get-theme-color($theme, primary, 20);
 $on-surface: mat.get-theme-color($theme, on-surface);
 $background-primary: #383838;
 $background-secondary: #404040;

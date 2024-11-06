@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core'
 import { NavigationStart, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { filter } from 'rxjs';
 import { NavigationService } from "../navigation.service";
+import {AuthService} from "../../auth/auth.service";
 
 @Component({
     selector: 'app-navbar',
@@ -23,7 +24,8 @@ export class NavbarComponent implements OnInit{
 
   constructor(
     private navigationService: NavigationService,
-    private router: Router
+    private router: Router,
+    protected authService: AuthService
   ) {}
 
   ngOnInit(): void {
