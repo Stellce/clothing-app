@@ -7,7 +7,7 @@
     <a [routerLink]="['/', 'products', 'men']">MEN</a>
     <a [routerLink]="['/', 'products', 'women']">WOMEN</a>
   </div>
-} @else if (tabIcon) {
+} @else if (tabIcon()) {
   <div class="tab-name">
     {{tabIcon() | fieldToText}}
     <img [src]="'assets/icons/' + tabIcon() + '.svg'" [alt]="tabIcon()"/>

@@ -1,17 +1,19 @@
 <div class="reviews">
   <div class="header">Reviews</div>
   <div class="body">
-    @if (authService.user() && isPurchased && !hasOwnReview) {
-      <app-new-review [review]="editableReview" [itemId]="itemId" (updateReviews)="getReviews()"></app-new-review>
+    @if (hasCompletedOrder()) {
+      <app-new-review [review]="editableReview()" [itemId]="itemId()" (updateReviews)="getReviews()"></app-new-review>
     } @else if (!authService.user()) {
-      <div class="review">
-        Please, register or log in to post a review
-      </div>
+      <div class="review">Please, register or log in to post a review</div>
     }
-    @if (reviews?.length > 0) {
-      @for (review of reviews; track review) {
-        <app-review [review]="review" (editReview)="onEditReview(review)"></app-review>
+    @if ((reviews | async)?.length) {
+      @for (review of reviews | async; track review.id) {
+        <app-review [review]="review" (editReview)="editableReview.set(review)"></app-review>
       }
+    } @else if (isLoading()) {
+      <div class="center">
+        <mat-spinner/>
+      </div>
     } @else {
       <h2>There are no reviews yet.</h2>
     }

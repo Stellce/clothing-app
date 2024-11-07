@@ -29,7 +29,7 @@ import {ReviewRes} from "../res/review-res.model";
   imports: [NgClass, MatFormFieldModule, MatInputModule, TextFieldModule, MatButtonModule, ReactiveFormsModule, AsyncPipe]
 })
 export class NewReviewComponent implements OnInit, OnChanges {
-  review = input.required<ReviewRes>();
+  review = input<ReviewRes>();
   @Input() itemId: string;
   @Output() updateReviews = new EventEmitter<void>();
   @ViewChildren('starX') starsRef: QueryList<any>;

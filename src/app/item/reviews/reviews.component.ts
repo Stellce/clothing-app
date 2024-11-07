@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, input, InputSignal, OnInit, signal, WritableSignal} from '@angular/core';
 import {NewReviewComponent} from './new-review/new-review.component';
 import {ReviewComponent} from './review/review.component';
 import {AuthService} from "../../auth/auth.service";
@@ -6,52 +6,50 @@ import {ReviewsService} from "../reviews.service";
 import {ReviewRes} from "./res/review-res.model";
 import {OrdersService} from "../../order-page/orders.service";
 import {AsyncPipe} from "@angular/common";
+import {map, Observable, tap} from "rxjs";
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 @Component({
-    selector: 'app-reviews',
-    templateUrl: './reviews.component.html',
-    styleUrls: ['./reviews.component.scss'],
-    standalone: true,
-  imports: [NewReviewComponent, ReviewComponent, AsyncPipe]
+  selector: 'app-reviews',
+  templateUrl: './reviews.component.html',
+  styleUrls: ['./reviews.component.scss'],
+  standalone: true,
+  imports: [NewReviewComponent, ReviewComponent, AsyncPipe, MatProgressSpinner],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ReviewsComponent implements OnInit {
-  @Input() itemId: string;
-  reviews: ReviewRes[];
-  editableReview: ReviewRes;
-  hasOwnReview: boolean = false;
-  isPurchased: boolean = false;
+  itemId: InputSignal<string> = input.required<string>();
+  reviews: Observable<ReviewRes[]>;
+  editableReview: WritableSignal<ReviewRes> = signal(null);
+  hasCompletedOrder: WritableSignal<boolean> = signal(false);
+  //review allowed when order for this item finished
+  // change order status SQL script: update "order" set status 'COMPLETED' where id = '';
+  isLoading = signal<boolean>(false);
 
   constructor(
     protected authService: AuthService,
     private reviewsService: ReviewsService,
-    private ordersService: OrdersService
+    protected ordersService: OrdersService
   ) {}
 
   ngOnInit() {
     this.getReviews();
-    if (this.authService.user()) this.checkIfPurchased();
+    if (this.authService.user()) {
+      this.ordersService.getOrdersForCustomer().subscribe(ordersPage => {
+        const orders = ordersPage.content;
+        this.hasCompletedOrder.set(orders.some(order => order.itemEntries.some(item => item.id === this.itemId()) && order.status === 'COMPLETED'));
+      })
+    }
   }
 
   getReviews() {
-    this.reviewsService.getReviews(this.itemId).subscribe(reviewsPage => {
-      this.reviews = reviewsPage.content || [];
-      if (!this.reviews.length) return;
-      if (!this.authService.user()) return;
-      const ownReview = this.reviews.find(r => r.customer.email === this.authService.user().email);
-      console.log(this.reviews, this.authService.user().email);
-      if (ownReview) this.hasOwnReview = true;
-    });
-  }
-
-  onEditReview(review: ReviewRes) {
-    this.editableReview = review;
-  }
-
-  checkIfPurchased() {
-    this.ordersService.getOrdersForCustomer().subscribe(ordersPage => {
-      const orders = ordersPage.content;
-      console.log(orders)
-      this.isPurchased = orders.some(order => order.itemEntries.some(item => item.itemId === this.itemId));
-    })
+    this.isLoading.set(true);
+    this.reviews = this.reviewsService.getReviews(this.itemId()).pipe(
+      map(reviewsPage => reviewsPage.content),
+      tap(reviews => {
+        this.editableReview.set(reviews.find(r => r.customer.email === this.authService.user().email));
+        this.isLoading.set(false);
+      })
+    )
   }
 }

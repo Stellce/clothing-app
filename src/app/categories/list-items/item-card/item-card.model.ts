@@ -19,6 +19,7 @@ export interface UniqueItem {
   quantity: number
 }
 
+
 export interface Metadata {
   available: boolean
   onWishList: boolean
