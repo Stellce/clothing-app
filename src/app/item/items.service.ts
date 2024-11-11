@@ -1,8 +1,8 @@
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import {BehaviorSubject, Observable, tap} from "rxjs";
+import {BehaviorSubject, combineLatest, Observable, tap} from "rxjs";
 import { environment } from "../../environments/environment";
-import { CatalogItem } from "../categories/list-items/item-card/item-card.model";
+import {CatalogItem, ItemCard} from "../categories/list-items/item-card/item-card.model";
 import { ItemsParamsRequest } from "../categories/list-items/item-card/req/items-params-request.model";
 import { Page } from "../categories/list-items/item-card/res/page.model";
 import { Image } from "./image.model";
@@ -11,8 +11,8 @@ import { ItemDetails } from "./item.model";
 @Injectable({providedIn: 'root'})
 export class ItemsService {
   private _cachedItemsRequest: ItemsParamsRequest = {} as ItemsParamsRequest;
-  private _page$ = new BehaviorSubject<Page<CatalogItem[]>>(null);
-  private pageSize = 6*4;
+  private _page$: BehaviorSubject<Page<ItemCard[]>> = new BehaviorSubject<Page<ItemCard[]>>(null);
+  private pageSize: number = 6*4;
 
   constructor(private http: HttpClient) {}
 
@@ -29,10 +29,7 @@ export class ItemsService {
   requestLandingPage() {
     return this.http.get<Page<CatalogItem[]>>(
       environment.backendUrl + `/catalog/items/landing-page`
-    ).pipe(tap(page => {
-      this._page$.next(page);
-      this.requestPageImages(page);
-    }));
+    );
   }
 
   requestItems(itemsRequest: ItemsParamsRequest) {
@@ -80,7 +77,7 @@ export class ItemsService {
 
     return this.http.get<Page<CatalogItem[]>>(
       environment.backendUrl + `/catalog/items`,
-      {params: params}
+      {params}
     ).pipe(tap(page => {
       this._page$.next(page);
       this.requestPageImages(page);
@@ -92,16 +89,6 @@ export class ItemsService {
     return this.http.get(environment.backendUrl + '/search', {headers});
   }
 
-
-  // getLastOrder() {
-  //   return of(this.mockOrder);
-  // }
-
-  // requestOrdersHistory() {
-  //   let orders: Order[] = Array(5).fill(this.mockOrder);
-  //   return of(orders);
-  // }
-
   private requestPageImages(page: Page<CatalogItem[]>) {
     page.content.forEach(contentItem => {
       this.requestItemImages(contentItem.id).subscribe(images => {
@@ -109,6 +96,20 @@ export class ItemsService {
         if(item) item.images = images;
         this._page$.next(page);
       });
+    })
+  }
+
+  requestItemsImages(items: CatalogItem[]) {
+    let itemsWithImages = items.map(contentItem =>
+      ({
+        itemId: contentItem.id,
+        images: this.requestItemImages(contentItem.id)
+      })
+    )
+    combineLatest([itemsWithImages]).subscribe({
+      next: res => {
+        console.log("RES: ", res);
+      }
     })
   }
 }

@@ -1,10 +1,19 @@
-import {ChangeDetectionStrategy, Component, OnInit, Signal, signal, viewChildren, WritableSignal} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+  Signal,
+  signal,
+  viewChildren,
+  WritableSignal
+} from '@angular/core';
 import {ItemBarComponent} from '../../../categories/item-bar/item-bar.component';
 import {AsyncPipe, CurrencyPipe, NgStyle} from '@angular/common';
 import {CartService} from './cart.service';
 import {CartItem} from './cart-item.model';
 import {AuthService} from 'src/app/auth/auth.service';
-import {forkJoin, Observable} from 'rxjs';
+import {forkJoin, Observable, Subscription} from 'rxjs';
 import {MatCheckbox, MatCheckboxChange} from "@angular/material/checkbox";
 import {MatDivider} from "@angular/material/divider";
 import {MatExpansionPanel, MatExpansionPanelHeader} from "@angular/material/expansion";
@@ -28,8 +37,9 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
   imports: [ItemBarComponent, AsyncPipe, NgStyle, MatCheckbox, MatDivider, MatExpansionPanel, MatCardTitle, MatExpansionPanelHeader, FieldToTextPipe, CurrencyPipe, MatButton, MatProgressSpinner, MatIconButton],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CartComponent implements OnInit {
+export class CartComponent implements OnInit, OnDestroy {
   cartItems: WritableSignal<CartItem[]> = signal<CartItem[]>([]);
+  cartItemsSub: Subscription;
   selectedIds: Set<string> = new Set<string>();
   totalCost: WritableSignal<number> = signal(0);
   isLoading: WritableSignal<boolean> = signal(true);
@@ -43,18 +53,18 @@ export class CartComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.loadItems();
+    if (this.authService.user()) this.loadItems();
+  }
+
+  ngOnDestroy() {
+    this.cartItemsSub.unsubscribe();
   }
 
   onSelectAll(event: MatCheckboxChange) {
-    this.itemCheckboxes().forEach((i: MatCheckbox) => {
-      i.writeValue(event.checked);
-    });
+    this.itemCheckboxes().forEach((i: MatCheckbox) => i.writeValue(event.checked));
     this.totalCost.set(0);
     if (event.checked) {
-      this.cartItems().forEach(i => {
-        this.onItemSelect(i, event.checked);
-      });
+      this.cartItems().forEach(i => this.onItemSelect(i, event.checked));
     } else {
       this.selectedIds = new Set<string>();
     }
@@ -154,10 +164,15 @@ export class CartComponent implements OnInit {
 
   private loadItems() {
     this.isLoading.set(true);
-
-    this.cartService.getItems().subscribe(loadedItems => {
-      this.cartItems.set(loadedItems);
-      this.isLoading.set(false);
+    this.cartItemsSub = this.cartService.getItems().subscribe({
+      next: loadedItems => {
+        this.cartItems.set(loadedItems);
+        this.isLoading.set(false);
+      },
+      error: error => {
+        console.error(error);
+        this.isLoading.set(false);
+      }
     })
   }
 
