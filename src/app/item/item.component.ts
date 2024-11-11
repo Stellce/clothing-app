@@ -25,10 +25,10 @@ import {UpdateCartItemReq} from "../navigation/navbar/cart/req/update-cart-req.m
 import {DialogData} from "../dialogs/dialog/dialog-data.model";
 
 @Component({
-    selector: 'app-item',
-    templateUrl: './item.component.html',
-    styleUrls: ['./item.component.scss'],
-    standalone: true,
+  selector: 'app-item',
+  templateUrl: './item.component.html',
+  styleUrls: ['./item.component.scss'],
+  standalone: true,
   imports: [BreadcrumbComponent, NgClass, MatButtonModule, ReviewsComponent, CurrencyPipe, MatFormFieldModule, MatInputModule, FormsModule, NgStyle, FieldToTextPipe, AddToFavoritesComponent, MatRipple, InputQuantityComponent]
 })
 export class ItemComponent implements OnInit{
@@ -86,6 +86,8 @@ export class ItemComponent implements OnInit{
   }
 
   orderNow() {
+    const createLoadingDialog = () => this.dialog.open(DialogComponent, {data: {title: "Loading", isLoading: true}, disableClose: true});
+    let loadingDialog = createLoadingDialog();
     const addOrder = (orderReq: OrderReq) => {
       this.ordersService.createOrder(orderReq).subscribe({
         next: () => {
@@ -94,7 +96,9 @@ export class ItemComponent implements OnInit{
             description: 'You will get a notification on email',
             buttonName: 'Ok'
           }
-          this.dialog.open(DialogComponent, {data: dialogData});
+          this.dialog.open(DialogComponent, {data: dialogData}).afterOpened().subscribe({
+            next:() => loadingDialog.close()
+          });
         },
         error: () => {
           const dialogData: DialogData = {
@@ -102,7 +106,9 @@ export class ItemComponent implements OnInit{
             description: 'Could not proceed',
             buttonName: 'Ok'
           }
-          this.dialog.open(DialogComponent, {data: dialogData});
+          this.dialog.open(DialogComponent, {data: dialogData}).afterOpened().subscribe({
+            next:() => loadingDialog.close()
+          });
         }
       });
     }
@@ -125,6 +131,9 @@ export class ItemComponent implements OnInit{
         buttonName: 'Submit'
       }
       const dialogRef: MatDialogRef<DialogComponent, NgForm> = this.dialog.open(DialogComponent, {data: dialogData});
+      dialogRef.afterOpened().subscribe({
+        next:() => loadingDialog.close()
+      });
       dialogRef.afterClosed().subscribe(form => {
         if (!form.value) return;
         order = {...order, customer: {...form.value}}

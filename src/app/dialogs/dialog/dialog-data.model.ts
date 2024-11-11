@@ -1,10 +1,11 @@
 export interface DialogData {
   title: string;
-  description: string;
+  description?: string;
   inputs?: Input[];
   note?: string;
   selects?: Select[];
   buttonName?: string;
+  isLoading?: boolean;
 }
 
 interface Select {

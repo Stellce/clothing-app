@@ -1,31 +1,39 @@
 <div class="dialog">
   <h2 mat-dialog-title>{{data.title}}</h2>
   <mat-dialog-content>
-    <div class="description">{{data.description}}</div>
-    <form #f="ngForm">
-      @for (input of data.inputs; track input.name) {
-        <mat-form-field>
-          <mat-label>{{input.name | fieldToText}}</mat-label>
-          <input matInput ngModel [type]="setInputType(input.name)" [name]="input.name" [value]="input.defaultValue">
-          @if (input.name.includes('password')) {
-            <img [src]="'assets/icons/' + passwordsShown[getPasswordIndex(input.name)].isShown ? 'visibility' : 'visibility_off' + '.svg'" alt="Show/hide password" (click)="turnPasswordShown(input.name)"/>
-          }
-        </mat-form-field>
-      }
-      @for (select of data.selects; track select.name) {
-        <mat-form-field>
-          <mat-label>{{select.name | fieldToText}}</mat-label>
-          <mat-select ngModel [name]="select.name" [(value)]="select.defaultValue">
-            @for (value of select.values; track value) {
-              <mat-option [value]="value">{{value}}</mat-option>
+    @if (data.description) {
+      <div class="description">{{data.description}}</div>
+    }
+    @if (data.isLoading) {
+      <div class="center">
+        <mat-spinner/>
+      </div>
+    } @else {
+      <form #form="ngForm">
+        @for (input of data.inputs; track input.name) {
+          <mat-form-field>
+            <mat-label>{{input.name | fieldToText}}</mat-label>
+            <input matInput ngModel [type]="setInputType(input.name)" [name]="input.name" [value]="input.defaultValue">
+            @if (input.name.includes('password')) {
+              <img [src]="'assets/icons/' + passwordsShown[getPasswordIndex(input.name)].isShown ? 'visibility' : 'visibility_off' + '.svg'" alt="Show/hide password" (click)="turnPasswordShown(input.name)"/>
             }
-          </mat-select>
-        </mat-form-field>
-      }
-    </form>
+          </mat-form-field>
+        }
+        @for (select of data.selects; track select.name) {
+          <mat-form-field>
+            <mat-label>{{select.name | fieldToText}}</mat-label>
+            <mat-select ngModel [name]="select.name" [(value)]="select.defaultValue">
+              @for (value of select.values; track value) {
+                <mat-option [value]="value">{{value}}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        }
+      </form>
+    }
     <p>{{data.note}}</p>
   </mat-dialog-content>
   <mat-dialog-actions>
-    <button mat-raised-button color="primary" [mat-dialog-close]="data.inputs ? f : null">{{data.buttonName || 'Ok'}}</button>
+    <button mat-raised-button color="primary" [mat-dialog-close]="data.inputs ? form() : null">{{data.buttonName || 'Ok'}}</button>
   </mat-dialog-actions>
 </div>

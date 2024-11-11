@@ -1,4 +1,4 @@
-import {Component, OnInit, signal, WritableSignal} from '@angular/core';
+import {Component, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
 import {ItemsService} from "../../../item/items.service";
 import {ItemCardComponent} from '../../../categories/list-items/item-card/item-card.component';
 import {NgStyle} from '@angular/common';
@@ -6,9 +6,12 @@ import {FavoritesService} from './favorites.service';
 import {ItemCard} from 'src/app/categories/list-items/item-card/item-card.model';
 import {LocalService} from 'src/app/local/local.service';
 import {AuthService} from 'src/app/auth/auth.service';
-import {forkJoin} from 'rxjs';
+import {forkJoin, Subscription} from 'rxjs';
 import {ItemDetails} from "../../../item/item.model";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {MatDialog} from "@angular/material/dialog";
+import {DialogData} from "../../../dialogs/dialog/dialog-data.model";
+import {DialogComponent} from "../../../dialogs/dialog/dialog.component";
 
 @Component({
   selector: 'app-favorites',
@@ -17,15 +20,18 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
   standalone: true,
   imports: [ItemCardComponent, NgStyle, MatProgressSpinner]
 })
-export class FavoritesComponent implements OnInit{
+export class FavoritesComponent implements OnInit, OnDestroy {
   items: WritableSignal<ItemCard[]> = signal<ItemCard[]>([]);
+  itemsSub: Subscription;
   isLoading: WritableSignal<boolean> = signal<boolean>(true);
+  message: WritableSignal<string> = signal<string>("");
 
   constructor(
     private favoritesService: FavoritesService,
     private localService: LocalService,
     private authService: AuthService,
-    private itemService: ItemsService
+    private itemService: ItemsService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -34,6 +40,10 @@ export class FavoritesComponent implements OnInit{
     } else {
       this.loadLocalItems();
     }
+  }
+
+  ngOnDestroy() {
+    this.itemsSub?.unsubscribe();
   }
 
   private loadItems() {
@@ -73,18 +83,32 @@ export class FavoritesComponent implements OnInit{
       this.isLoading.set(false);
     }
     let items$ = itemsIds.map(itemId => this.itemService.requestItemById(itemId));
-    forkJoin<ItemDetails[]>(items$).subscribe(items => {
-      this.items.set(items);
-      this.isLoading.set(false);
-      items.forEach((item, index) => {
-        this.itemService.requestItemImages(item.id).subscribe(images => {
-          this.items.update(items => {
-            items[index].images = images;
-            console.log(items);
-            return items;
+    this.itemsSub = forkJoin<ItemDetails[]>(items$).subscribe({
+      next: items => {
+        this.items.set(items);
+        this.isLoading.set(false);
+        items.forEach((item, index) => {
+          this.itemService.requestItemImages(item.id).subscribe(images => {
+            this.items.update(items => {
+              items[index].images = images;
+              console.log(items);
+              return items;
+            });
           });
-        });
-      });
+        })
+      },
+      error: error => {
+        console.error(error);
+        this.items.set([]);
+        this.message.set("Error occurred, could not load favorites. Try again later.");
+        this.isLoading.set(false);
+        const dialogData: DialogData = {
+          title: 'Something went wrong',
+          description: 'Could not load favorites',
+          buttonName: 'Ok'
+        }
+        this.dialog.open(DialogComponent, {data: dialogData});
+      }
     })
   }
 }

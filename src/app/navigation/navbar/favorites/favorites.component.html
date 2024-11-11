@@ -6,13 +6,13 @@
   </div>
 } @else {
   <div class="center">
-    @if (isLoading) {
+    @if (isLoading()) {
       <div class="center">
         <mat-spinner></mat-spinner>
         <h2>Loading...</h2>
       </div>
     } @else {
-      <h2>There are no favorite items yet</h2>
+      <h2>{{message() || "There are no favorite items yet"}}</h2>
     }
   </div>
 }

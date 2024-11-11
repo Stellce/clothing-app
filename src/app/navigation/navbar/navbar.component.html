@@ -56,7 +56,7 @@
 </div>
 
 
-@if (authService.user().roles?.includes('ADMIN')) {
+@if (authService.user()?.roles?.includes('ADMIN')) {
   <div
     title="Admin panel"
     routerLink="admin-panel"
