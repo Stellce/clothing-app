@@ -188,7 +188,7 @@ export class AuthService {
       name: decodedToken.name,
       lastname: decodedToken.lastname,
       email,
-      roles: decodedToken.realm_access?.['roles'] || null,
+      roles: decodedToken.realm_access?.['roles'],
     }
 
     this.user.set(user);

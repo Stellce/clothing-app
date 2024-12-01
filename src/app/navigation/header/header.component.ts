@@ -26,7 +26,7 @@ export class HeaderComponent implements OnInit, OnChanges{
   location: WritableSignal<string> = signal<string>('');
   tabIcon: WritableSignal<string> = signal('');
   tabIcons: string[] = [
-    'search', 'account', 'favorites', 'cart', 'orders', 'admin-panel'
+    'search', 'account', 'favorites', 'cart', 'orders', 'employee-panel'
   ];
 
   constructor(

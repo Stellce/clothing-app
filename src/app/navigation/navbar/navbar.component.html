@@ -56,10 +56,10 @@
 </div>
 
 
-@if (authService.user()?.roles?.includes('ADMIN')) {
+@if (authService.user()?.roles?.includes('EMPLOYEE')) {
   <div
-    title="Admin panel"
-    routerLink="admin-panel"
+    title="Employee panel"
+    routerLink="employee-panel"
     routerLinkActive="selected"
   >
     <svg width="23" height="28" viewBox="0 0 23 28" fill="none" xmlns="http://www.w3.org/2000/svg">

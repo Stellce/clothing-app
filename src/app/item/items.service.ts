@@ -1,12 +1,12 @@
-import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import {BehaviorSubject, combineLatest, Observable, tap} from "rxjs";
-import { environment } from "../../environments/environment";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
+import {Injectable} from "@angular/core";
+import {BehaviorSubject, Observable, tap} from "rxjs";
+import {environment} from "../../environments/environment";
 import {CatalogItem, ItemCard} from "../categories/list-items/item-card/item-card.model";
-import { ItemsParamsRequest } from "../categories/list-items/item-card/req/items-params-request.model";
-import { Page } from "../categories/list-items/item-card/res/page.model";
-import { Image } from "./image.model";
-import { ItemDetails } from "./item.model";
+import {ItemsParamsRequest} from "../categories/list-items/item-card/req/items-params-request.model";
+import {Page} from "../categories/list-items/item-card/res/page.model";
+import {Image} from "./image.model";
+import {ItemDetails} from "./item.model";
 
 @Injectable({providedIn: 'root'})
 export class ItemsService {
@@ -18,12 +18,6 @@ export class ItemsService {
 
   get page$() {
     return this._page$.asObservable();
-  }
-
-  requestSubcategories(category: string) {
-    return this.http.get<{id: string, name: string}[]>(
-      environment.backendUrl + `/catalog/categories/${category}/subcategories`
-    )
   }
 
   requestLandingPage() {
@@ -96,20 +90,6 @@ export class ItemsService {
         if(item) item.images = images;
         this._page$.next(page);
       });
-    })
-  }
-
-  requestItemsImages(items: CatalogItem[]) {
-    let itemsWithImages = items.map(contentItem =>
-      ({
-        itemId: contentItem.id,
-        images: this.requestItemImages(contentItem.id)
-      })
-    )
-    combineLatest([itemsWithImages]).subscribe({
-      next: res => {
-        console.log("RES: ", res);
-      }
     })
   }
 }

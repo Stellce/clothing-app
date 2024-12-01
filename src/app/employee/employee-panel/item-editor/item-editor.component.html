@@ -1,0 +1,120 @@
+@if (isLoading()) {
+  <div class="center">
+    <mat-spinner/>
+  </div>
+} @else {
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <h2>Add new item</h2>
+    <mat-form-field>
+      <mat-label>Gender: </mat-label>
+      <mat-select formControlName="gender">
+        <mat-option [value]="'MEN'">MEN</mat-option>
+        <mat-option [value]="'WOMEN'">WOMEN</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Category: </mat-label>
+      <input matInput formControlName="categoryName" [matAutocomplete]="categoriesAutocomplete"/>
+      <mat-autocomplete #categoriesAutocomplete="matAutocomplete">
+        @for (category of filteredCategoriesNames | async; track category) {
+          <mat-option [value]="category">{{category}}</mat-option>
+        }
+      </mat-autocomplete>
+    </mat-form-field>
+    @if (form.get("categoryName").value && subcategories?.length) {
+      <mat-form-field>
+        <mat-label>Subcategory: </mat-label>
+        <input matInput formControlName="subcategoryName" [matAutocomplete]="subcategoriesAutocomplete"/>
+        <mat-autocomplete #subcategoriesAutocomplete="matAutocomplete">
+          @for (subcategory of filteredSubcategoriesNames | async; track subcategory) {
+            <mat-option [value]="subcategory">{{subcategory}}</mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+    }
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name"/>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description" cdkTextareaAutosize></textarea>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Price</mat-label>
+      <input type="number" matInput formControlName="price"/>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Discount</mat-label>
+      <input type="number" matInput formControlName="discount"/>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Color</mat-label>
+      <input matInput formControlName="color" [matAutocomplete]="colorsAutocomplete"/>
+      <mat-autocomplete #colorsAutocomplete="matAutocomplete">
+        @for (color of filteredColors | async; track color) {
+          <mat-option [value]="color">{{color | fieldToText}}</mat-option>
+        }
+      </mat-autocomplete>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Brand</mat-label>
+      <input matInput formControlName="brandName" [matAutocomplete]="brandsAutocomplete"/>
+      <mat-autocomplete #brandsAutocomplete="matAutocomplete">
+        @for (brand of filteredBrandsNames | async; track brand) {
+          <mat-option [value]="brand">{{brand}}</mat-option>
+        }
+      </mat-autocomplete>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Material</mat-label>
+      <input matInput formControlName="material" [matAutocomplete]="materialsAutocomplete"/>
+      <mat-autocomplete #materialsAutocomplete="matAutocomplete">
+        @for (material of filteredMaterials | async; track material) {
+          <mat-option [value]="material">{{material | fieldToText}}</mat-option>
+        }
+      </mat-autocomplete>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Season</mat-label>
+      <input matInput formControlName="season" [matAutocomplete]="seasonsAutocomplete"/>
+      <mat-autocomplete #seasonsAutocomplete="matAutocomplete">
+        @for (season of filteredSeasons | async; track season) {
+          <mat-option [value]="season | fieldToText">{{season | fieldToText}}</mat-option>
+        }
+      </mat-autocomplete>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Item code</mat-label>
+      <input matInput formControlName="itemCode">
+    </mat-form-field>
+    @if (categoryName.value) {
+      <div class="unique-items" formArrayName="uniqueItems">
+        <h3>Sizes & quantities</h3>
+        @for (uniqueItem of uniqueItems.controls; track uniqueItem; let i = $index) {
+          <div class="add-unique-item" [formGroupName]="i">
+            <mat-form-field>
+              <mat-label>Size</mat-label>
+              <mat-select formControlName="size" (selectionChange)="onSizeSelected($event, i)">
+                @for (size of sizesByCtrlIndex[i]; track size) {
+                  <mat-option [value]="size">{{size}}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Quantity</mat-label>
+              <input type="number" matInput formControlName="quantity"/>
+            </mat-form-field>
+            <button mat-button (click)="onRemoveUniqueItem(i)">
+              <img src="assets/icons/trash.svg" alt="delete"/>
+            </button>
+          </div>
+        }
+        <button mat-button (click)="onAddSizeAndQuantity()">Add unique item</button>
+      </div>
+    } @else {
+      <mat-error>Please, choose category, then you will be able to set sizes and quantities</mat-error>
+    }
+    <button mat-button type="submit">Confirm</button>
+  </form>
+}

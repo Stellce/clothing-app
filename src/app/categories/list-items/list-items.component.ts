@@ -12,6 +12,7 @@ import { ItemCardComponent } from './item-card/item-card.component';
 import { ItemCard } from "./item-card/item-card.model";
 import { ItemsParamsRequest } from "./item-card/req/items-params-request.model";
 import { PaginatorComponent } from './paginator/paginator.component';
+import {CategoriesService} from "../categories.service";
 
 @Component({
     selector: 'app-list-items',
@@ -33,6 +34,7 @@ export class ListItemsComponent implements OnInit{
   };
   constructor(
     private itemsService: ItemsService,
+    private categoriesService: CategoriesService,
     private activatedRoute: ActivatedRoute
   ) {}
 
@@ -52,7 +54,7 @@ export class ListItemsComponent implements OnInit{
     this.itemsParamsRequest.categoryId = params['categoryId'];
 
     this.isLoading = true;
-    this.itemsService.requestSubcategories(this.itemsParamsRequest.categoryId).subscribe(subcategories => {
+    this.categoriesService.requestSubcategories(this.itemsParamsRequest.categoryId).subscribe(subcategories => {
       this.subcategories = subcategories;
     });
     this.requestItems();

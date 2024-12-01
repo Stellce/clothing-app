@@ -1,0 +1,55 @@
+<mat-accordion>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>Landing page</mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-outlet/>
+    <mat-divider/>
+    <h2>Add landing item(s)</h2>
+    <mat-form-field>
+      <mat-label>Ids (id1;id2;id3...)</mat-label>
+      <input matInput [formControl]="addIds">
+    </mat-form-field>
+    <button mat-button (click)="onAddItemsToLandingPage()">Confirm</button>
+    <mat-divider/>
+    <mat-form-field>
+      <mat-label>Ids (id1;id2;id3...)</mat-label>
+      <input matInput [formControl]="deleteIds">
+    </mat-form-field>
+    <button mat-button (click)="onRemoveItemsFromLandingPage()">Confirm</button>
+  </mat-expansion-panel>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>Items</mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Add item</mat-panel-title>
+      </mat-expansion-panel-header>
+      <app-item-editor/>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Edit item</mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-form-field>
+        <mat-label>Item id</mat-label>
+        <input matInput [formControl]="editItemId" />
+      </mat-form-field>
+      <button mat-button (click)="onConfirmEditItemId()">Confirm</button>
+      @if (editItemId.value && isEditItemIdConfirmed) {
+        <app-item-editor [itemId]="editItemId.value"/>
+      }
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Delete item</mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-form-field>
+        <mat-label>Delete item</mat-label>
+        <input matInput [formControl]="deleteItemId"/>
+      </mat-form-field>
+      <button mat-button (click)="onDeleteItem()">Confirm</button>
+    </mat-expansion-panel>
+  </mat-expansion-panel>
+</mat-accordion>

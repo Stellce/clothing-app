@@ -35,6 +35,7 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
   styleUrls: ['./cart.component.scss'],
   standalone: true,
   imports: [ItemBarComponent, AsyncPipe, NgStyle, MatCheckbox, MatDivider, MatExpansionPanel, MatCardTitle, MatExpansionPanelHeader, FieldToTextPipe, CurrencyPipe, MatButton, MatProgressSpinner, MatIconButton],
+  providers: [FieldToTextPipe],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CartComponent implements OnInit, OnDestroy {
@@ -48,8 +49,9 @@ export class CartComponent implements OnInit, OnDestroy {
   constructor(
     private cartService: CartService,
     private dialog: MatDialog,
+    private fieldToTextPipe: FieldToTextPipe,
     public authService: AuthService,
-    public ordersService: OrdersService
+    public ordersService: OrdersService,
   ) {}
 
   ngOnInit() {
@@ -97,7 +99,7 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   onFieldChange(field: string[]) {
-    const text = new FieldToTextPipe().transform(field[0]);
+    const text = this.fieldToTextPipe.transform(field[0]);
     let dialogData: DialogData = {
       title: text,
       description: 'Please, provide a new value',

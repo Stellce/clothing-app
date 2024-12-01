@@ -1,0 +1,138 @@
+import {Component, OnInit} from '@angular/core';
+import {
+  MatAccordion,
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+  MatExpansionPanelTitle
+} from "@angular/material/expansion";
+import {OutletComponent} from "../../navigation/navbar/dashboard/outlet/outlet.component";
+import {MatDivider} from "@angular/material/divider";
+import {MatError, MatFormField, MatLabel} from "@angular/material/form-field";
+import {MatInput} from "@angular/material/input";
+import {MatButton, MatMiniFabButton} from "@angular/material/button";
+import {FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {EmployeeService} from "../employee.service";
+import {DialogData} from "../../dialogs/dialog/dialog-data.model";
+import {DialogComponent} from "../../dialogs/dialog/dialog.component";
+import {MatDialog} from "@angular/material/dialog";
+import {MatOption, MatSelect} from "@angular/material/select";
+import {AsyncPipe} from "@angular/common";
+import {MatAutocomplete, MatAutocompleteTrigger} from "@angular/material/autocomplete";
+import {CdkTextareaAutosize} from "@angular/cdk/text-field";
+import {FieldToTextPipe} from "../../pipes/field-to-text";
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {ItemEditorComponent} from "./item-editor/item-editor.component";
+import {tap} from "rxjs";
+
+@Component({
+  selector: 'app-employee-panel',
+  standalone: true,
+  imports: [
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    OutletComponent,
+    MatDivider,
+    MatFormField,
+    MatInput,
+    MatLabel,
+    MatButton,
+    FormsModule,
+    MatSelect,
+    MatOption,
+    AsyncPipe,
+    ReactiveFormsModule,
+    MatAutocompleteTrigger,
+    MatAutocomplete,
+    CdkTextareaAutosize,
+    FieldToTextPipe,
+    MatError,
+    MatMiniFabButton,
+    MatProgressSpinner,
+    ItemEditorComponent,
+    MatAccordion
+  ],
+  templateUrl: './employee-panel.component.html',
+  styleUrl: './employee-panel.component.scss'
+})
+export class EmployeePanelComponent implements OnInit {
+  addIds: FormControl;
+  deleteIds: FormControl;
+  editItemId: FormControl;
+  isEditItemIdConfirmed: boolean;
+  deleteItemId: FormControl;
+
+  constructor(
+    private employeeService: EmployeeService,
+    private dialog: MatDialog,
+    private fb: FormBuilder
+  ) {}
+
+  ngOnInit() {
+    this.setForms();
+    this.setFormsListeners();
+  }
+
+  onAddItemsToLandingPage() {
+    const ids = this.addIds.value.join(',');
+    this.employeeService.addToLandingPage(ids).subscribe({
+      next: () => {
+        const dialogData: DialogData = {
+          title: 'Items added',
+          description: 'Items were successfully added to landing page',
+          buttonName: 'Ok'
+        }
+        this.dialog.open(DialogComponent, {data: dialogData});
+      },
+      error: () => {
+        const dialogData: DialogData = {
+          title: 'Error',
+          description: 'Something went wrong. Could not add items',
+          buttonName: 'Ok'
+        }
+        this.dialog.open(DialogComponent, {data: dialogData});
+      }
+    });
+  }
+  onRemoveItemsFromLandingPage() {
+    const ids = this.deleteIds.value.join(',');
+    this.employeeService.deleteFromLandingPage(ids).subscribe({
+      next: () => {
+        const dialogData: DialogData = {
+          title: 'Items added',
+          description: 'Items were successfully deleted to landing page',
+          buttonName: 'Ok'
+        }
+        this.dialog.open(DialogComponent, {data: dialogData});
+      },
+      error: () => {
+        const dialogData: DialogData = {
+          title: 'Error',
+          description: 'Something went wrong. Could not delete items',
+          buttonName: 'Ok'
+        }
+        this.dialog.open(DialogComponent, {data: dialogData});
+      }
+    });
+  }
+  onConfirmEditItemId() {
+    this.isEditItemIdConfirmed = true;
+  }
+  onDeleteItem() {
+    this.employeeService.deleteItem(this.deleteItemId.value).subscribe({
+      next: res => {
+        console.log('Item deleted')
+      }
+    });
+  }
+
+  private setForms() {
+    this.addIds = this.fb.control('', Validators.required);
+    this.deleteIds = this.fb.control('', Validators.required);
+    this.editItemId = this.fb.control('', Validators.required);
+    this.deleteItemId = this.fb.control('', Validators.required);
+  }
+  private setFormsListeners() {
+    this.editItemId.valueChanges.pipe(tap(() => this.isEditItemIdConfirmed = false))
+  }
+}
