@@ -1,5 +1,5 @@
 @if (cartItem.images) {
-  <img [src]="'data:image/png;base64,' + cartItem.images[0].image" [alt]="cartItem.itemName" [routerLink]="cartItem.itemId ? cartItem.itemId : ['/', 'product', cartItem.id]">
+  <img [src]="cartItem.images[0].url" [alt]="cartItem.itemName" [routerLink]="cartItem.itemId ? cartItem.itemId : ['/', 'product', cartItem.id]">
 }
 <div class="description-price-count">
   <div class="description">

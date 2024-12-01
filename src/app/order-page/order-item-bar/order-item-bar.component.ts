@@ -52,6 +52,6 @@ export class OrderItemBarComponent implements OnInit{
 
   private setDefaultImage() {
     const images = this.order()?.itemEntries[0]?.images;
-    if (!this.selectedImage && images) this.selectedImage = images[0].image;
+    if (!this.selectedImage && images) this.selectedImage = images[0].url;
   }
 }

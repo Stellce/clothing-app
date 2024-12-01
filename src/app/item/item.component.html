@@ -2,13 +2,13 @@
   <div class="item">
     <app-breadcrumb class="breadcrumb-line" [default]="isCartItem ? [{name: 'Cart', path: ['/', 'cart']}] : null" [itemName]="item.name"></app-breadcrumb>
     <div class="product">
-      @if (item.images) {
+      @if (item.images?.length) {
         <div class="images">
-          <img [src]="'data:image/png;base64,' + item.images[selectedImageIndex].image" [alt]="item.name">
+          <img [src]="item.images[selectedImageIndex].url" [alt]="item.name">
           <app-add-to-favorites [item]="item"/>
           <div class="img-carousel">
             @for (image of item.images; track image.id; let i = $index) {
-              <img [src]="'data:image/png;base64,' + image.image"
+              <img [src]="image.url"
                    [alt]="item.name" (click)="selectedImageIndex = i">
             }
           </div>

@@ -4,7 +4,7 @@
   }
   @if (item().images?.length) {
     <img
-      [src]="'data:image/png;base64,' + item().images[0].image"
+      [src]="item().images[0].url"
       [alt]=item().name
       [routerLink]="getLinkToItem()"/>
   }
@@ -13,7 +13,7 @@
   <div class="images">
     @for (image of item().images; track image.id) {
       <img
-        [src]="'data:image/png;base64,' + image.image"
+        [src]="image.url"
         [alt]="item().name"/>
     }
   </div>

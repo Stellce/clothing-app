@@ -1,16 +1,16 @@
 <div class="item-bar" (click)="onNavigate($event)">
   <div class="images">
     @if (selectedImage) {
-      <img [src]="'data:image/png;base64,' + selectedImage"
+      <img [src]="selectedImage"
            [ngStyle]="{cursor: order().itemEntries.length === 1 ? 'pointer' : 'default'}"
            alt=""/>
       @if (order().itemEntries.length > 1) {
         <div class="images-carousel">
           @for (item of order().itemEntries; track item.id) {
             @if (item.images?.length) {
-              <img [src]="'data:image/png;base64,' + item.images[0].image"
+              <img [src]="item.images[0].url"
                    [alt]="item.itemName"
-                   (click)="selectedImage = item.images[0].image"/>
+                   (click)="selectedImage = item.images[0].url"/>
             }
           }
         </div>
