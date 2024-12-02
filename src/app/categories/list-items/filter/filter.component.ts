@@ -1,32 +1,25 @@
-import {
-  Component,
-  EventEmitter,
-  OnInit,
-  Output,
-  QueryList,
-  ViewChildren,
-  ViewEncapsulation
-} from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { MatButtonModule } from '@angular/material/button';
-import { MatCheckbox, MatCheckboxModule } from "@angular/material/checkbox";
-import { MatChipsModule } from '@angular/material/chips';
-import { MatOptionModule } from '@angular/material/core';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { ActivatedRoute } from "@angular/router";
-import { ItemsService } from "../../../item/items.service";
-import { CategoriesService } from "../../categories.service";
-import { AllowedFilters } from "./allowed-filters.model";
-import { CheckboxComponent } from './checkbox/checkbox.component';
-import { Filter } from "./filter.model";
-import { FilterService } from "./filter.service";
-import { SelectedFilters } from "./selected-filters.model";
+import {Component, EventEmitter, OnInit, Output, QueryList, ViewChildren, ViewEncapsulation} from '@angular/core';
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {MatButtonModule} from '@angular/material/button';
+import {MatCheckbox, MatCheckboxModule} from "@angular/material/checkbox";
+import {MatChipsModule} from '@angular/material/chips';
+import {MatOptionModule} from '@angular/material/core';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {ActivatedRoute} from "@angular/router";
+import {ItemsService} from "../../../item/items.service";
+import {CategoriesService} from "../../categories.service";
+import {AllowedFilters} from "./allowed-filters.model";
+import {CheckboxComponent} from './checkbox/checkbox.component';
+import {Filter} from "./filter.model";
+import {FilterService} from "./filter.service";
+import {SelectedFilters} from "./selected-filters.model";
 import {DialogComponent} from "../../../dialogs/dialog/dialog.component";
 import {DialogData} from "../../../dialogs/dialog/dialog-data.model";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
     selector: 'app-filter',
@@ -48,7 +41,7 @@ export class FilterComponent implements OnInit{
     private itemsService: ItemsService,
     private activatedRoute: ActivatedRoute,
     private categoriesService: CategoriesService,
-    private dialog: MatDividerModule
+    private dialog: MatDialog
   ) {
     this.filters = filterService.allowedFilters;
     this.selectedFilters = filterService.selectedFilters
