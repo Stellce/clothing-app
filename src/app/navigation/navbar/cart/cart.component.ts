@@ -86,10 +86,10 @@ export class CartComponent implements OnInit, OnDestroy {
         this.selectedIds.clear();
         this.loadItems();
       },
-      error: () => {
+      error: err => {
         const dialogData: DialogData = {
           title: 'Something went wrong',
-          description: 'Elements from cart have not deleted',
+          description: `Elements from cart have not deleted. ${err['status'] ? `Error ${err['status']} occurred` : ''}`,
           buttonName: 'Ok'
         }
         this.dialog.open(DialogComponent, {data: dialogData});
@@ -154,13 +154,23 @@ export class CartComponent implements OnInit, OnDestroy {
           size: cItem.itemSize
         }))
     }
-    this.ordersService.createOrder(order).subscribe(() => {
-      const dialogData: DialogData = {
-        title: 'Order created!',
-        description: 'You will get a notification on email',
-        buttonName: 'Ok'
+    this.ordersService.createOrder(order).subscribe({
+      next: () => {
+        const dialogData: DialogData = {
+          title: 'Order created!',
+          description: 'You will get a notification on email',
+          buttonName: 'Ok'
+        }
+        this.dialog.open(DialogComponent, {data: dialogData});
+      },
+      error: err => {
+        const dialogData: DialogData = {
+          title: 'Order creation failed',
+          description: `${err['status'] ? `Error ${err['status']} occurred` : ''}`,
+        }
+        this.dialog.open(DialogComponent, {data: dialogData});
+        console.error(err);
       }
-      this.dialog.open(DialogComponent, {data: dialogData});
     });
   }
 
@@ -171,8 +181,13 @@ export class CartComponent implements OnInit, OnDestroy {
         this.cartItems.set(loadedItems);
         this.isLoading.set(false);
       },
-      error: error => {
-        console.error(error);
+      error: err => {
+        console.error(err);
+        const data: DialogData = {
+          title: 'Items loading failed',
+          description: `${err['status'] ? `Error ${err['status']} occurred` : ''}`
+        }
+        this.dialog.open(DialogComponent, {data});
         this.isLoading.set(false);
       }
     })

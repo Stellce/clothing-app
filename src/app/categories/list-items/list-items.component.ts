@@ -13,6 +13,9 @@ import { ItemCard } from "./item-card/item-card.model";
 import { ItemsParamsRequest } from "./item-card/req/items-params-request.model";
 import { PaginatorComponent } from './paginator/paginator.component';
 import {CategoriesService} from "../categories.service";
+import {DialogData} from "../../dialogs/dialog/dialog-data.model";
+import {DialogComponent} from "../../dialogs/dialog/dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
     selector: 'app-list-items',
@@ -35,7 +38,8 @@ export class ListItemsComponent implements OnInit{
   constructor(
     private itemsService: ItemsService,
     private categoriesService: CategoriesService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -54,8 +58,17 @@ export class ListItemsComponent implements OnInit{
     this.itemsParamsRequest.categoryId = params['categoryId'];
 
     this.isLoading = true;
-    this.categoriesService.requestSubcategories(this.itemsParamsRequest.categoryId).subscribe(subcategories => {
-      this.subcategories = subcategories;
+    this.categoriesService.requestSubcategories(this.itemsParamsRequest.categoryId).subscribe({
+      next: subcategories => {
+        this.subcategories = subcategories;
+      },
+      error: err => {
+        const data: DialogData = {
+          title: `Error on requesting subcategories`,
+          description: `${err['status'] ? `Error ${err['status']} occurred` : ''}`
+        }
+        this.dialog.open(DialogComponent, {data});
+      }
     });
     this.requestItems();
   }
@@ -73,13 +86,22 @@ export class ListItemsComponent implements OnInit{
   }
 
   private requestItems() {
-    this.itemsService.requestItems(this.itemsParamsRequest).subscribe(page => {
-      this.isLoading = false;
-      this.page = {
-        number: page.number,
-        last: page.last
+    this.itemsService.requestItems(this.itemsParamsRequest).subscribe({
+      next: page => {
+        this.isLoading = false;
+        this.page = {
+          number: page.number,
+          last: page.last
+        }
+        this.items = page.content;
+      },
+      error: err => {
+        const data: DialogData = {
+          title: `Error on requesting items`,
+          description: `${err['status'] ? `Error ${err['status']} occurred` : ''}`
+        }
+        this.dialog.open(DialogComponent, {data});
       }
-      this.items = page.content;
     });
   }
 

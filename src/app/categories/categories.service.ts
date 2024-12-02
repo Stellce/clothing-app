@@ -4,6 +4,9 @@ import {BehaviorSubject, map} from "rxjs";
 import {environment} from "../../environments/environment";
 import {Category} from "./category.model";
 import {FieldToTextPipe} from "../pipes/field-to-text";
+import {DialogData} from "../dialogs/dialog/dialog-data.model";
+import {DialogComponent} from "../dialogs/dialog/dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Injectable({providedIn: 'root'})
 export class CategoriesService {
@@ -11,7 +14,8 @@ export class CategoriesService {
 
   constructor(
     private http: HttpClient,
-    private fieldToTextPipe: FieldToTextPipe
+    private fieldToTextPipe: FieldToTextPipe,
+    private dialog: MatDialog
   ) {}
 
   get categoriesList$() {
@@ -21,7 +25,16 @@ export class CategoriesService {
   requestCategories() {
     return this.http.get<Category[]>(
       environment.backendUrl + '/catalog/categories'
-    ).subscribe(categories => this._categoriesList$.next(categories));
+    ).subscribe({
+      next: categories => this._categoriesList$.next(categories),
+      error: err => {
+        const data: DialogData = {
+          title: `Unable to load categories`,
+          description: `${err['status'] ? `Error ${err['status']} occurred` : ''}`
+        }
+        this.dialog.open(DialogComponent, {data});
+      }
+    });
   }
 
   requestCategoriesImages(gender: string) {

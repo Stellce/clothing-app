@@ -6,6 +6,7 @@ import {LocalService} from 'src/app/local/local.service';
 import {ItemCard} from "./item-card.model";
 import {AddToFavoritesComponent} from "../../../item/add-to-favorites/add-to-favorites.component";
 import {ItemsService} from "../../../item/items.service";
+import {DialogData} from "../../../dialogs/dialog/dialog-data.model";
 
 @Component({
   selector: 'app-item-card',
@@ -31,7 +32,13 @@ export class ItemCardComponent implements OnInit {
     }
     if (!this.item().images) {
       this.itemsService.requestItemImages(this.item().id).subscribe({
-        next: images => this.item.update(item => ({...item, images}))
+        next: images => this.item.update(item => ({...item, images})),
+        error: err => {
+          const data: DialogData = {
+            title: `Error on requesting item images`,
+            description: `${err['status'] ? `Error ${err['status']} occurred` : ''}`
+          }
+        }
       });
     }
   }

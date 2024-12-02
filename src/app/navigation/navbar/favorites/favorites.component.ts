@@ -64,15 +64,22 @@ export class FavoritesComponent implements OnInit, OnDestroy {
       })
     }
 
-    this.favoritesService.getItems().subscribe(items => {
-      let localItems = this.localService.favoritesIds;
-      const itemsNotAdded = items.length === 0 && localItems.length > 0;
+    this.favoritesService.getItems().subscribe({
+      next: items => {
+        let localItems = this.localService.favoritesIds;
+        const itemsNotAdded = items.length === 0 && localItems.length > 0;
 
-      this.isLoading.set(false);
-      this.items.set(items);
+        this.isLoading.set(false);
+        this.items.set(items);
 
-      if (itemsNotAdded) addItemsToServer(localItems);
-      requestItemsImages();
+        if (itemsNotAdded) addItemsToServer(localItems);
+        requestItemsImages();
+      },
+      error: err => {
+        this.isLoading.set(false);
+        this.message.set(`Error ${err['status']} occurred`);
+        console.error(err);
+      }
     });
   }
 

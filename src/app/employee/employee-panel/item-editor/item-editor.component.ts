@@ -167,7 +167,7 @@ export class ItemEditorComponent implements OnInit {
         error: err => {
           const data: DialogData = {
             title: 'Cannot add item',
-            description: err
+            description: `${err['status'] ? `Error ${err['status']} occurred` : ''}`
           }
           this.dialog.open(DialogComponent, {data});
           this.isLoading.set(false);
@@ -187,7 +187,7 @@ export class ItemEditorComponent implements OnInit {
         error: err => {
           const data: DialogData = {
             title: 'Cannot update item',
-            description: err
+            description: `${err['status'] ? `Error ${err['status']} occurred` : ''}`
           }
           this.dialog.open(DialogComponent, {data});
           this.isLoading.set(false);

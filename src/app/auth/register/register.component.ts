@@ -10,6 +10,9 @@ import {AuthService} from "../auth.service";
 import {RegisterUser} from "./register-user.model";
 import {GoogleLoginButtonComponent} from "../google-login-button/google-login-button.component";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {DialogData} from "../../dialogs/dialog/dialog-data.model";
+import {DialogComponent} from "../../dialogs/dialog/dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-register',
@@ -32,7 +35,11 @@ export class RegisterComponent implements OnInit {
   protected readonly emailResendTimer: WritableSignal<number> = signal<number>(0);
   protected readonly isLoading: WritableSignal<boolean> = signal<boolean>(false);
 
-  constructor(protected authService: AuthService, private route: ActivatedRoute) {}
+  constructor(
+    protected authService: AuthService,
+    private route: ActivatedRoute,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit() {
     this.checkGoogleAuth();
@@ -54,9 +61,13 @@ export class RegisterComponent implements OnInit {
         this.isLoading.set(false);
         this.showEmailResend.set(true);
       },
-      error: () => {
+      error: err => {
         this.isLoading.set(true);
-        this.showEmailResend.set(true);
+        const data: DialogData = {
+          title: 'Registration failed',
+          description: `${err['status'] ? `Error ${err['status']} occurred` : ''}`
+        }
+        this.dialog.open(DialogComponent, {data});
       }
     });
   }
@@ -78,7 +89,12 @@ export class RegisterComponent implements OnInit {
           }
         }, 1000);
       },
-      error: () => {
+      error: err => {
+        const data: DialogData = {
+          title: `Activation resend went wrong`,
+          description: `${err['status'] ? `Error ${err['status']} occurred` : ''}`
+        }
+        this.dialog.open(DialogComponent, {data});
         this.showEmailResend.set(true);
         this.emailResendTimer.set(0);
       }

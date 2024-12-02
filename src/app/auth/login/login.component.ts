@@ -36,13 +36,13 @@ export class LoginComponent implements OnInit{
     let loginUser: LoginUser = {...this.form.value}
     this.authService.login(loginUser).subscribe({
       next: () => this.isLoading = false,
-      error: () => {
-        const dialogData: DialogData = {
+      error: err => {
+        const data: DialogData = {
           title: 'Unable to log in',
-          description: 'username or password is not valid',
+          description: `Username or password is not valid. ${err['status'] ? `Error ${err['status']} occurred` : ''}`,
           buttonName: 'Ok'
         }
-        this.dialog.open(DialogComponent, {data: dialogData});
+        this.dialog.open(DialogComponent, {data});
         this.isLoading = false;
       }
     });

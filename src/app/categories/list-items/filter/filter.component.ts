@@ -25,6 +25,8 @@ import { CheckboxComponent } from './checkbox/checkbox.component';
 import { Filter } from "./filter.model";
 import { FilterService } from "./filter.service";
 import { SelectedFilters } from "./selected-filters.model";
+import {DialogComponent} from "../../../dialogs/dialog/dialog.component";
+import {DialogData} from "../../../dialogs/dialog/dialog-data.model";
 
 @Component({
     selector: 'app-filter',
@@ -45,7 +47,8 @@ export class FilterComponent implements OnInit{
     public filterService: FilterService,
     private itemsService: ItemsService,
     private activatedRoute: ActivatedRoute,
-    private categoriesService: CategoriesService
+    private categoriesService: CategoriesService,
+    private dialog: MatDividerModule
   ) {
     this.filters = filterService.allowedFilters;
     this.selectedFilters = filterService.selectedFilters
@@ -70,8 +73,17 @@ export class FilterComponent implements OnInit{
         this.filters.sizes = this.filterService.sizesClothes;
       }
     })
-    this.itemsService.requestBrands().subscribe(brands => {
-      this.filters.brands = brands;
+    this.itemsService.requestBrands().subscribe({
+      next: brands => {
+        this.filters.brands = brands;
+      },
+      error: err => {
+        const data: DialogData = {
+          title: `Error on requesting brands`,
+          description: `${err['status'] ? `Error ${err['status']} occurred` : ''}`
+        }
+        this.dialog.open(DialogComponent, {data});
+      }
     });
   }
 

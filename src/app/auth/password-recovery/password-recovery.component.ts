@@ -42,20 +42,20 @@ export class PasswordRecoveryComponent implements OnInit {
     if (this.validatePassword(this.newPassword) && this.token) {
       this.authService.recoverPassword(this.newPassword, this.token).subscribe({
         next: () => {
-          const dialogData: DialogData = {
+          const data: DialogData = {
             title: 'Password successfully changed',
             description: 'You can now log in using it!',
             buttonName: 'Ok'
           }
-          this.dialog.open(DialogComponent, {data: dialogData});
+          this.dialog.open(DialogComponent, {data});
         },
-        error: () => {
-          const dialogData: DialogData = {
+        error: err => {
+          const data: DialogData = {
             title: 'Something went wrong',
-            description: 'Try again later',
+            description: `Try again later. ${err['status'] ? `Error ${err['status']} occurred` : ''}`,
             buttonName: 'Ok'
           }
-          this.dialog.open(DialogComponent, {data: dialogData});
+          this.dialog.open(DialogComponent, {data});
         }
       });
     }

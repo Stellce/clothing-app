@@ -42,9 +42,16 @@ export class AuthService {
     const formData = new FormData();
     formData.append('code', code);
     formData.append('grant_type', 'authorization_code');
-    this.http.post<TokenInfo>(this.googleLoginUrl, formData).subscribe(
-      tokenInfo => this.authUser({...tokenInfo, access_token: tokenInfo.id_token})
-    );
+    this.http.post<TokenInfo>(this.googleLoginUrl, formData).subscribe({
+      next: tokenInfo => this.authUser({...tokenInfo, access_token: tokenInfo.id_token}),
+      error: err => {
+        const data: DialogData = {
+          title: 'Error on login occurred',
+          description: `${err['status'] ? `Error ${err['status']} occurred` : ''}`
+        }
+        this.dialog.open(DialogComponent, {data});
+      }
+    });
   }
 
   autoAuth() {
@@ -147,10 +154,10 @@ export class AuthService {
           }
           this.dialog.open(DialogComponent, {data: dialogData});
         },
-        error: () => {
+        error: err => {
           const dialogData: DialogData = {
             title: 'Something went wrong!',
-            description: 'Try again later'
+            description: `Try again later. ${err['status'] ? `Error ${err['status']} occurred` : ''}`
           }
           this.dialog.open(DialogComponent, {data: dialogData});
         }
@@ -211,7 +218,17 @@ export class AuthService {
         this.refreshGoogleToken();
       } else {
         this.http.post<TokenInfo>(environment.backendUrl + '/oauth2/login/basic', body, options)
-          .subscribe(tokenInfo => this.authUser(tokenInfo));
+          .subscribe({
+            next: tokenInfo => this.authUser(tokenInfo),
+            error: err => {
+              console.error(err);
+              const data: DialogData = {
+                title: 'Session refresh went wrong',
+                description: `${err['status'] ? `Error ${err['status']} occurred` : ''}`
+              }
+              this.dialog.open(DialogComponent, {data});
+            }
+          });
       }
     }, tokenTimeoutInMs - 120_000)
   }

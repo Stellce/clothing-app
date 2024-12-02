@@ -39,6 +39,6 @@ export class ActivateComponent implements OnInit {
   private uploadFavorites() {
     let itemIds = this.localService.favoritesIds;
     let favoriteItemsAdded$ = itemIds.map(id => this.favoritesService.addItem(id));
-    forkJoin(favoriteItemsAdded$).subscribe(res => console.log(res));
+    forkJoin(favoriteItemsAdded$).subscribe(res => console.log('Favorite items added', res));
   }
 }

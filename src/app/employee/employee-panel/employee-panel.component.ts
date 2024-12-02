@@ -77,20 +77,20 @@ export class EmployeePanelComponent implements OnInit {
     const ids = this.addIds.value.join(',');
     this.employeeService.addToLandingPage(ids).subscribe({
       next: () => {
-        const dialogData: DialogData = {
+        const data: DialogData = {
           title: 'Items added',
           description: 'Items were successfully added to landing page',
           buttonName: 'Ok'
         }
-        this.dialog.open(DialogComponent, {data: dialogData});
+        this.dialog.open(DialogComponent, {data});
       },
-      error: () => {
-        const dialogData: DialogData = {
+      error: err => {
+        const data: DialogData = {
           title: 'Error',
-          description: 'Something went wrong. Could not add items',
+          description: `Something went wrong. Could not add items. ${err['status'] ? `Error ${err['status']} occurred` : ''}`,
           buttonName: 'Ok'
         }
-        this.dialog.open(DialogComponent, {data: dialogData});
+        this.dialog.open(DialogComponent, {data});
       }
     });
   }
@@ -105,10 +105,10 @@ export class EmployeePanelComponent implements OnInit {
         }
         this.dialog.open(DialogComponent, {data: dialogData});
       },
-      error: () => {
+      error: err => {
         const dialogData: DialogData = {
           title: 'Error',
-          description: 'Something went wrong. Could not delete items',
+          description: `Something went wrong. Could not delete items. ${err['status'] ? `Error ${err['status']} occurred` : ''}`,
           buttonName: 'Ok'
         }
         this.dialog.open(DialogComponent, {data: dialogData});
@@ -121,7 +121,14 @@ export class EmployeePanelComponent implements OnInit {
   onDeleteItem() {
     this.employeeService.deleteItem(this.deleteItemId.value).subscribe({
       next: res => {
-        console.log('Item deleted')
+        console.log('Item deleted', res)
+      },
+      error: err => {
+        const data: DialogData = {
+          title: 'Unable to delete item',
+          description: `${err['status'] ? `Error ${err['status']} occurred` : ''}`
+        }
+        this.dialog.open(DialogComponent, {data});
       }
     });
   }

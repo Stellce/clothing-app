@@ -6,6 +6,9 @@ import {RouterLink} from '@angular/router';
 import {CartItem} from 'src/app/navigation/navbar/cart/cart-item.model';
 import {ItemsService} from "../../item/items.service";
 import {InputQuantityComponent} from "../../item/input-quantity/input-quantity.component";
+import {DialogData} from "../../dialogs/dialog/dialog-data.model";
+import {MatDialog} from "@angular/material/dialog";
+import {DialogComponent} from "../../dialogs/dialog/dialog.component";
 
 @Component({
   selector: 'app-item-bar',
@@ -18,10 +21,20 @@ export class ItemBarComponent implements OnInit{
   @Input() cartItem: CartItem;
 
   constructor(
-    private itemsService: ItemsService
+    private itemsService: ItemsService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
-    this.itemsService.requestItemImages(this.cartItem.itemId).subscribe(images => this.cartItem.images = images);
+    this.itemsService.requestItemImages(this.cartItem.itemId).subscribe({
+      next: images => this.cartItem.images = images,
+      error: err => {
+        const data: DialogData = {
+          title: `Error on loading images`,
+          description: `${err['status'] ? `Error ${err['status']} occurred` : ''}`
+        }
+        this.dialog.open(DialogComponent, {data});
+      }
+    });
   }
 }
