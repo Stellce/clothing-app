@@ -1,18 +1,18 @@
 import {Component, OnInit} from '@angular/core';
-import {CategoriesService} from "../../../categories/categories.service";
-import {Category} from "../../../categories/category.model";
+import {CategoriesService} from "../../categories/categories.service";
+import {Category} from "../../categories/category.model";
 import { OutletComponent } from './outlet/outlet.component';
 import { RouterLink } from '@angular/router';
 import { UpperCasePipe } from '@angular/common';
 
 @Component({
     selector: 'app-dashboard',
-    templateUrl: './dashboard.component.html',
-    styleUrls: ['./dashboard.component.scss'],
+    templateUrl: './landing.component.html',
+    styleUrls: ['./landing.component.scss'],
     standalone: true,
     imports: [RouterLink, OutletComponent, UpperCasePipe]
 })
-export class DashboardComponent implements OnInit{
+export class LandingComponent implements OnInit{
   categories: Category[];
   randomCategory: Category;
   gender: 'MEN' | 'WOMEN';

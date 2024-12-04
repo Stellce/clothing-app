@@ -6,7 +6,7 @@
     <img [src]="'data:image/png;base64,' + randomCategory.image" alt="">
     <div class="category-name" [routerLink]="['/', 'products', gender, randomCategory.id]">
       <span>MORE ON {{randomCategory.name | uppercase}}</span>
-      <img src="assets/icons/arrow_down.svg" alt="more"/>
+      <img src="../../../assets/icons/arrow_down.svg" alt="more"/>
     </div>
   </div>
 }

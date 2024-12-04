@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { NgForm } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
-import { DialogData } from "../../../dialogs/dialog/dialog-data.model";
-import { DialogComponent } from "../../../dialogs/dialog/dialog.component";
+import { DialogData } from "../../dialogs/dialog/dialog-data.model";
+import { DialogComponent } from "../../dialogs/dialog/dialog.component";
 
 @Injectable({
   providedIn: 'root'

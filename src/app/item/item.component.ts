@@ -8,7 +8,7 @@ import {ActivatedRoute} from "@angular/router";
 import {AuthService} from '../auth/auth.service';
 import {BreadcrumbComponent} from '../categories/list-items/breadcrumb/breadcrumb.component';
 import {UniqueItem} from '../categories/list-items/item-card/item-card.model';
-import {CartService} from '../navigation/navbar/cart/cart.service';
+import {CartService} from '../tabs/cart/cart.service';
 import {FieldToTextPipe} from '../pipes/field-to-text';
 import {Image} from "./image.model";
 import {ItemDetails} from "./item.model";
@@ -21,7 +21,7 @@ import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {DialogComponent} from "../dialogs/dialog/dialog.component";
 import {OrdersService} from "../order-page/orders.service";
 import {OrderReq} from "../order-page/order-req.model";
-import {UpdateCartItemReq} from "../navigation/navbar/cart/req/update-cart-req.model";
+import {UpdateCartItemReq} from "../tabs/cart/req/update-cart-req.model";
 import {DialogData} from "../dialogs/dialog/dialog-data.model";
 
 @Component({

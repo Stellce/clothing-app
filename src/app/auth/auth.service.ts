@@ -177,6 +177,15 @@ export class AuthService {
     this.router.navigate(['/', 'account', 'login']);
   }
 
+  errorsOnPasswordValidation(password: string) {
+    const errorMessages = [];
+    if (password.length < 8) errorMessages.push('Password must be at least 8 characters long');
+    if (!/([A-Z])/.test(password)) errorMessages.push('Password must contain Uppercase letters');
+    if (!/([a-z])/.test(password)) errorMessages.push('Password must contain Lowercase letters');
+    if (!/(?=.*\d)/.test(password)) errorMessages.push('Password must contain digits');
+    return errorMessages;
+  }
+
 
 
   private authUser(tokenInfo: TokenInfo) {

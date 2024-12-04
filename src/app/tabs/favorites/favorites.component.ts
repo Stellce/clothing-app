@@ -1,17 +1,17 @@
 import {Component, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
-import {ItemsService} from "../../../item/items.service";
-import {ItemCardComponent} from '../../../categories/list-items/item-card/item-card.component';
+import {ItemsService} from "../../item/items.service";
+import {ItemCardComponent} from '../../categories/list-items/item-card/item-card.component';
 import {NgStyle} from '@angular/common';
 import {FavoritesService} from './favorites.service';
 import {ItemCard} from 'src/app/categories/list-items/item-card/item-card.model';
 import {LocalService} from 'src/app/local/local.service';
 import {AuthService} from 'src/app/auth/auth.service';
 import {forkJoin, Subscription} from 'rxjs';
-import {ItemDetails} from "../../../item/item.model";
+import {ItemDetails} from "../../item/item.model";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatDialog} from "@angular/material/dialog";
-import {DialogData} from "../../../dialogs/dialog/dialog-data.model";
-import {DialogComponent} from "../../../dialogs/dialog/dialog.component";
+import {DialogData} from "../../dialogs/dialog/dialog-data.model";
+import {DialogComponent} from "../../dialogs/dialog/dialog.component";
 
 @Component({
   selector: 'app-favorites',

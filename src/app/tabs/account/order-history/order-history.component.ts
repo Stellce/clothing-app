@@ -1,10 +1,10 @@
 import {Component, model, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
-import {ItemBarComponent} from '../../../../categories/item-bar/item-bar.component';
+import {ItemBarComponent} from '../../../item/item-bar/item-bar.component';
 import {MatButtonModule} from '@angular/material/button';
-import {OrdersService} from "../../../../order-page/orders.service";
-import {OrderRes} from "../../../../order-page/order-res.model";
-import {OrderItemBarComponent} from "../../../../order-page/order-item-bar/order-item-bar.component";
+import {OrdersService} from "../../../order-page/orders.service";
+import {OrderRes} from "../../../order-page/order-res.model";
+import {OrderItemBarComponent} from "../../../order-page/order-item-bar/order-item-bar.component";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 @Component({

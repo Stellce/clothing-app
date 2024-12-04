@@ -13,27 +13,24 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {DialogData} from "../../dialogs/dialog/dialog-data.model";
 import {DialogComponent} from "../../dialogs/dialog/dialog.component";
 import {MatDialog} from "@angular/material/dialog";
+import {NgStyle} from "@angular/common";
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['../shared.scss'],
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatRadioModule, MatCheckboxModule, MatButtonModule, RouterLink, GoogleLoginButtonComponent, MatProgressSpinner],
+  imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatRadioModule, MatCheckboxModule, MatButtonModule, RouterLink, GoogleLoginButtonComponent, MatProgressSpinner, NgStyle],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RegisterComponent implements OnInit {
-  protected readonly form: FormGroup = new FormGroup({
-    firstname: new FormControl('', Validators.required),
-    lastname: new FormControl('', Validators.required),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', Validators.required),
-    isAgreementConsent: new FormControl('', Validators.required)
-  });
   protected readonly showError: WritableSignal<boolean> = signal<boolean>(false);
   protected readonly showEmailResend: WritableSignal<boolean> = signal<boolean>(true);
   protected readonly emailResendTimer: WritableSignal<number> = signal<number>(0);
   protected readonly isLoading: WritableSignal<boolean> = signal<boolean>(false);
+  protected readonly passwordErrors: WritableSignal<string[]> = signal<string[]>([]);
+  protected readonly isPasswordShown: WritableSignal<boolean> = signal<boolean>(false);
+  form: FormGroup;
 
   constructor(
     protected authService: AuthService,
@@ -42,12 +39,14 @@ export class RegisterComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.setForms();
     this.checkGoogleAuth();
   }
 
   onRegister() {
     this.showError.set(true);
-    if(this.form.invalid) return;
+    this.passwordErrors.set(this.authService.errorsOnPasswordValidation(this.form.controls['password'].value))
+    if(this.form.invalid || this.passwordErrors().length) return;
     let registerUser: RegisterUser = {
       firstName: this.form.value.firstname,
       lastName: this.form.value.lastname,
@@ -63,9 +62,13 @@ export class RegisterComponent implements OnInit {
       },
       error: err => {
         this.isLoading.set(true);
+        const status = err['status'];
+        const description = status === 409 ? 'Email already registered' :
+          status === 400 ? 'Validation failed' :
+          status === 503 ? 'Service unavailable' : '';
         const data: DialogData = {
           title: 'Registration failed',
-          description: `${err['status'] ? `Error ${err['status']} occurred` : ''}`
+          description
         }
         this.dialog.open(DialogComponent, {data});
       }
@@ -99,6 +102,20 @@ export class RegisterComponent implements OnInit {
         this.emailResendTimer.set(0);
       }
     });
+  }
+
+  turnPasswordShown() {
+    this.isPasswordShown.update(isShown => !isShown);
+  }
+
+  private setForms() {
+    this.form = new FormGroup({
+      firstname: new FormControl('', Validators.required),
+      lastname: new FormControl('', Validators.required),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', [Validators.required, Validators.pattern(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/)]),
+      isAgreementConsent: new FormControl('', Validators.required)
+    })
   }
 
   private checkGoogleAuth() {

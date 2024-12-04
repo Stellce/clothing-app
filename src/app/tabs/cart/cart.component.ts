@@ -8,7 +8,7 @@ import {
   viewChildren,
   WritableSignal
 } from '@angular/core';
-import {ItemBarComponent} from '../../../categories/item-bar/item-bar.component';
+import {ItemBarComponent} from '../../item/item-bar/item-bar.component';
 import {AsyncPipe, CurrencyPipe, NgStyle} from '@angular/common';
 import {CartService} from './cart.service';
 import {CartItem} from './cart-item.model';
@@ -18,15 +18,15 @@ import {MatCheckbox, MatCheckboxChange} from "@angular/material/checkbox";
 import {MatDivider} from "@angular/material/divider";
 import {MatExpansionPanel, MatExpansionPanelHeader} from "@angular/material/expansion";
 import {MatCardTitle} from "@angular/material/card";
-import {FieldToTextPipe} from "../../../pipes/field-to-text";
+import {FieldToTextPipe} from "../../pipes/field-to-text";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {DialogData} from "../../../dialogs/dialog/dialog-data.model";
-import {DialogComponent} from "../../../dialogs/dialog/dialog.component";
+import {DialogData} from "../../dialogs/dialog/dialog-data.model";
+import {DialogComponent} from "../../dialogs/dialog/dialog.component";
 import {NgForm} from "@angular/forms";
-import {PurchaseData} from "../../../auth/purchase-data.model";
-import {OrdersService} from "../../../order-page/orders.service";
-import {OrderReq} from "../../../order-page/order-req.model";
+import {PurchaseData} from "../../auth/purchase-data.model";
+import {OrdersService} from "../../order-page/orders.service";
+import {OrderReq} from "../../order-page/order-req.model";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 @Component({

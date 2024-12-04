@@ -39,7 +39,8 @@ export class PasswordRecoveryComponent implements OnInit {
   }
 
   onRecoverPassword() {
-    if (this.validatePassword(this.newPassword) && this.token) {
+    this.errorMessages = this.authService.errorsOnPasswordValidation(this.newPassword)
+    if (!this.errorMessages.length && this.token) {
       this.authService.recoverPassword(this.newPassword, this.token).subscribe({
         next: () => {
           const data: DialogData = {
@@ -59,14 +60,5 @@ export class PasswordRecoveryComponent implements OnInit {
         }
       });
     }
-  }
-
-  private validatePassword(password: string) {
-    this.errorMessages = [];
-    if (password.length < 8) this.errorMessages.push('Password must be at least 8 characters long');
-    if (!/([A-Z])/.test(password)) this.errorMessages.push('Password must contain Uppercase letters');
-    if (!/([a-z])/.test(password)) this.errorMessages.push('Password must contain Lowercase letters');
-    if (!/(?=.*\d)/.test(password)) this.errorMessages.push('Password must contain digits');
-    return !this.errorMessages.length
   }
 }

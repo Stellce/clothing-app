@@ -15,7 +15,9 @@
             <mat-label>{{input.name | fieldToText}}</mat-label>
             <input matInput ngModel [type]="setInputType(input.name)" [name]="input.name" [value]="input.defaultValue">
             @if (input.name.includes('password')) {
-              <img [src]="'assets/icons/' + passwordsShown[getPasswordIndex(input.name)].isShown ? 'visibility' : 'visibility_off' + '.svg'" alt="Show/hide password" (click)="turnPasswordShown(input.name)"/>
+              <button mat-icon-button matSuffix (click)="turnPasswordShown(input.name)">
+                <img [src]="'assets/icons/' + passwordsShown[getPasswordIndex(input.name)].isShown ? 'visibility' : 'visibility_off' + '.svg'" alt="Show/hide password" (click)="turnPasswordShown(input.name)"/>
+              </button>
             }
           </mat-form-field>
         }

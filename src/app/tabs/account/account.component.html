@@ -1,13 +1,13 @@
 <div class="account">
   <div class="header">
     <div class="sec">
-      <img src="assets/icons/account.svg" alt="account"/>
+      <img src="../../../assets/icons/account.svg" alt="account"/>
       @if (authService.user()) {
         <div class="hello">Hello, {{authService.user().name}}</div>
       }
     </div>
     <button mat-icon-button (click)="authService.logout()">
-      <img src="assets/icons/logout.svg" alt="logout"/>
+      <img src="../../../assets/icons/logout.svg" alt="logout"/>
     </button>
   </div>
   <ul>

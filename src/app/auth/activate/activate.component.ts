@@ -3,7 +3,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {forkJoin} from 'rxjs';
 import {LocalService} from 'src/app/local/local.service';
-import {FavoritesService} from 'src/app/navigation/navbar/favorites/favorites.service';
+import {FavoritesService} from 'src/app/tabs/favorites/favorites.service';
 import {AuthService} from '../auth.service';
 
 @Component({

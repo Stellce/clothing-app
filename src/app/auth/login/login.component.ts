@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, signal} from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -21,6 +21,7 @@ import {DialogData} from "../../dialogs/dialog/dialog-data.model";
 export class LoginComponent implements OnInit{
   form: FormGroup;
   isLoading: boolean = false;
+  isPasswordShown = signal<boolean>(false);
 
   constructor(
     public authService: AuthService,
@@ -50,6 +51,10 @@ export class LoginComponent implements OnInit{
 
   onPasswordReset() {
     this.authService.sendRecoveryEmail();
+  }
+
+  turnPasswordShown() {
+    this.isPasswordShown.update(isShown => !isShown);
   }
 
   private createForm() {

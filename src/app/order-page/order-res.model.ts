@@ -1,4 +1,4 @@
-import {ItemEntryRes} from "../navigation/navbar/cart/res/add-cart-res.model";
+import {ItemEntryRes} from "../tabs/cart/res/add-cart-res.model";
 
 export interface OrderRes {
   id: string

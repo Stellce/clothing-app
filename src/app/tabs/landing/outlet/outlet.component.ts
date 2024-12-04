@@ -1,8 +1,8 @@
 import {ChangeDetectionStrategy, Component, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
-import {CatalogItem, ItemCard} from "../../../../categories/list-items/item-card/item-card.model";
-import {Page} from "../../../../categories/list-items/item-card/res/page.model";
-import {ItemsService} from "../../../../item/items.service";
-import {ItemCardComponent} from '../../../../categories/list-items/item-card/item-card.component';
+import {CatalogItem, ItemCard} from "../../../categories/list-items/item-card/item-card.model";
+import {Page} from "../../../categories/list-items/item-card/res/page.model";
+import {ItemsService} from "../../../item/items.service";
+import {ItemCardComponent} from '../../../categories/list-items/item-card/item-card.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {Subscription} from "rxjs";
 

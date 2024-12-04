@@ -1,4 +1,4 @@
-import {Image} from "../../../../item/image.model";
+import {Image} from "../../../item/image.model";
 
 export interface AddCartRes {
   id: string

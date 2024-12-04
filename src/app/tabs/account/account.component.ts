@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
-import { AuthService } from "../../../auth/auth.service";
-import { ItemBarComponent } from '../../../categories/item-bar/item-bar.component';
+import { AuthService } from "../../auth/auth.service";
+import { ItemBarComponent } from '../../item/item-bar/item-bar.component';
 import { AccountService } from "./account.service";
 
 @Component({

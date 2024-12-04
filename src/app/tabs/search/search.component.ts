@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ListItemsComponent } from '../../../categories/list-items/list-items.component';
-import { ItemsService } from "../../../item/items.service";
+import { ListItemsComponent } from '../../categories/list-items/list-items.component';
+import { ItemsService } from "../../item/items.service";
 
 @Component({
     selector: 'app-search',

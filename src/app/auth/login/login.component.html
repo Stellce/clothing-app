@@ -8,10 +8,13 @@
 
   <mat-form-field>
     <mat-label>Password: </mat-label>
-    <input matInput type="password" formControlName="password">
+    <input matInput [type]="isPasswordShown() ? 'text' : 'password'" formControlName="password">
+    <button type="button" mat-icon-button matSuffix (click)="turnPasswordShown()">
+      <img [src]="'assets/icons/' + (!this.isPasswordShown() ? 'visibility' : 'visibility_off') + '.svg'" alt="Show/hide password"/>
+    </button>
   </mat-form-field>
 
-  <button mat-raised-button color="primary">Login</button>
+  <button mat-raised-button color="primary" type="submit">Login</button>
 </form>
 <div class="additional-actions">
   <a [routerLink]="['/', 'account', 'register']">Register</a>

@@ -5,7 +5,7 @@ import {
   MatExpansionPanelHeader,
   MatExpansionPanelTitle
 } from "@angular/material/expansion";
-import {OutletComponent} from "../../navigation/navbar/dashboard/outlet/outlet.component";
+import {OutletComponent} from "../../tabs/landing/outlet/outlet.component";
 import {MatDivider} from "@angular/material/divider";
 import {MatError, MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
