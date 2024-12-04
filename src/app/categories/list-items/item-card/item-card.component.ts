@@ -34,10 +34,7 @@ export class ItemCardComponent implements OnInit {
       this.itemsService.requestItemImages(this.item().id).subscribe({
         next: images => this.item.update(item => ({...item, images})),
         error: err => {
-          const data: DialogData = {
-            title: `Error on requesting item images`,
-            description: `${err['status'] ? `Error ${err['status']} occurred` : ''}`
-          }
+          console.error(err);
         }
       });
     }
@@ -48,7 +45,7 @@ export class ItemCardComponent implements OnInit {
   }
 
   private isOnLocalWishlist(item: ItemCard) {
-    let id = this.localService.favoritesIds.indexOf(item.id);
+    let id = this.localService.favoritesIds?.indexOf(item.id);
     return id !== -1
   }
 

@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit{
       error: err => {
         const data: DialogData = {
           title: 'Unable to log in',
-          description: `Username or password is not valid. ${err['status'] ? `Error ${err['status']} occurred` : ''}`,
+          description: `Username or password is not valid.`,
           buttonName: 'Ok'
         }
         this.dialog.open(DialogComponent, {data});

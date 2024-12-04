@@ -16,7 +16,7 @@ export class OrdersService {
   }
 
   createOrder(orderReq: OrderReq) {
-    return this.http.post(this.backendUrl + '/', orderReq);
+    return this.http.post(this.backendUrl, orderReq);
   }
 
   getOrdersForCustomer() {

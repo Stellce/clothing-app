@@ -47,7 +47,7 @@ export class ReviewsComponent implements OnInit {
     this.reviews = this.reviewsService.getReviews(this.itemId()).pipe(
       map(reviewsPage => reviewsPage.content),
       tap(reviews => {
-        this.editableReview.set(reviews.find(r => r.customer.email === this.authService.user().email));
+        if (this.authService.user()) this.editableReview.set(reviews.find(r => r.customer.email === this.authService.user().email));
         this.isLoading.set(false);
       })
     )
