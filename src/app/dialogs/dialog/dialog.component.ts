@@ -1,10 +1,18 @@
-import {Component, Inject, Signal, viewChild} from '@angular/core';
-import {FormsModule, NgForm} from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MAT_DIALOG_DATA, MatDialogModule } from "@angular/material/dialog";
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { DialogData } from "./dialog-data.model";
+import {Component, Inject, OnInit} from '@angular/core';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
+import {MatButtonModule} from '@angular/material/button';
+import {MAT_DIALOG_DATA, MatDialogModule} from "@angular/material/dialog";
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {DialogData} from "./dialog-data.model";
 import {FieldToTextPipe} from "../../pipes/field-to-text";
 import {MatOption, MatSelect} from "@angular/material/select";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
@@ -14,12 +22,28 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
     templateUrl: './dialog.component.html',
     styleUrls: ['./dialog.component.scss'],
     standalone: true,
-  imports: [MatDialogModule, FormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, FieldToTextPipe, MatSelect, MatOption, MatProgressSpinner]
+  imports: [MatDialogModule, FormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, FieldToTextPipe, MatSelect, MatOption, MatProgressSpinner, ReactiveFormsModule]
 })
-export class DialogComponent {
+export class DialogComponent implements OnInit {
   passwordsShown: {fieldName: string, isShown: boolean}[] = [];
-  form: Signal<NgForm> = viewChild('form')
-  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+  form: FormGroup;
+
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private fb: FormBuilder
+  ) {}
+
+  ngOnInit() {
+    let controls: {[k: string]: AbstractControl} = {};
+    let inputsAndSelectors = [];
+    if (this.data.selects) inputsAndSelectors.push(...this.data.selects);
+    if (this.data.inputs) inputsAndSelectors.push(...this.data.inputs);
+    inputsAndSelectors.forEach(input => {
+      controls[input.name] = new FormControl(input.defaultValue, Validators.required);
+    });
+    this.form = this.fb.group(controls);
+    console.log('newForm: ', this.form);
+  }
 
   setInputType(type: string): string {
     const types = ['email', 'password'];

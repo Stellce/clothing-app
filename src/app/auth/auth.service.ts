@@ -132,12 +132,12 @@ export class AuthService {
       .pipe(tap(tokenInfo => this.authUser(tokenInfo)));
   }
 
-  sendRecoveryEmail() {
+  sendRecoveryEmail(email: string | undefined) {
     const dialogData: DialogData = {
       title: 'Password reset',
       description: '',
       note: 'After clicking “Reset”, you will receive an email with following steps',
-      inputs: [{name: 'email'}],
+      inputs: [{name: 'email', defaultValue: email}],
       buttonName: 'Reset'
     }
     const dialogRef = this.dialog.open(DialogComponent, {data: dialogData});
@@ -155,11 +155,18 @@ export class AuthService {
           this.dialog.open(DialogComponent, {data: dialogData});
         },
         error: err => {
+          const status = err['status'];
+          const description = status === 404
+            ? `Account does not exist`
+            : status === 403
+              ? `Account isn't activated`
+              : `Try again later.`;
           const dialogData: DialogData = {
-            title: 'Something went wrong!',
-            description: `Try again later. ${err['status'] ? `Error ${err['status']} occurred` : ''}`
+            title: `Couldn't log in`,
+            description
           }
           this.dialog.open(DialogComponent, {data: dialogData});
+          console.error(err);
         }
       })
     });

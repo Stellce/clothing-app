@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, OnInit, signal, WritableSignal} from '@angular/core';
-import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatButtonModule} from '@angular/material/button';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -35,7 +35,8 @@ export class RegisterComponent implements OnInit {
   constructor(
     protected authService: AuthService,
     private route: ActivatedRoute,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit() {
@@ -61,7 +62,6 @@ export class RegisterComponent implements OnInit {
         this.showEmailResend.set(true);
       },
       error: err => {
-        this.isLoading.set(true);
         const status = err['status'];
         const description = status === 409 ? 'Email already registered' :
           status === 400 ? 'Validation failed' :
@@ -71,6 +71,7 @@ export class RegisterComponent implements OnInit {
           description
         }
         this.dialog.open(DialogComponent, {data});
+        this.isLoading.set(false);
       }
     });
   }
@@ -95,11 +96,12 @@ export class RegisterComponent implements OnInit {
       error: err => {
         const data: DialogData = {
           title: `Activation resend went wrong`,
-          description: `${err['status'] ? `Error ${err['status']} occurred` : ''}`
+          description: `Try again later`
         }
         this.dialog.open(DialogComponent, {data});
         this.showEmailResend.set(true);
         this.emailResendTimer.set(0);
+        console.error(err);
       }
     });
   }
@@ -109,12 +111,12 @@ export class RegisterComponent implements OnInit {
   }
 
   private setForms() {
-    this.form = new FormGroup({
-      firstname: new FormControl('', Validators.required),
-      lastname: new FormControl('', Validators.required),
-      email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required, Validators.pattern(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/)]),
-      isAgreementConsent: new FormControl('', Validators.required)
+    this.form = this.fb.group({
+      firstname: ['', Validators.required],
+      lastname: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.pattern(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/)]],
+      isAgreementConsent: ['', Validators.required]
     })
   }
 

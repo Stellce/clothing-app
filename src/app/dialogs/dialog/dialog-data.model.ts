@@ -8,13 +8,13 @@ export interface DialogData {
   isLoading?: boolean;
 }
 
-interface Select {
+export interface Select {
   name: string;
   values: string[];
   defaultValue?: string;
 }
 
-interface Input {
+export interface Input {
   name: string;
   defaultValue?: string;
 }

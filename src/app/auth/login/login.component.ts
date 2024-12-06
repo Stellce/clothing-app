@@ -1,11 +1,11 @@
-import {Component, OnInit, signal} from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { RouterLink } from '@angular/router';
-import { AuthService } from "../auth.service";
-import { LoginUser } from "./login-user.model";
+import {ChangeDetectionStrategy, Component, OnInit, signal, WritableSignal} from '@angular/core';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {MatButtonModule} from '@angular/material/button';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {RouterLink} from '@angular/router';
+import {AuthService} from "../auth.service";
+import {LoginUser} from "./login-user.model";
 import {GoogleLoginButtonComponent} from "../google-login-button/google-login-button.component";
 import {MatDialog} from "@angular/material/dialog";
 import {DialogComponent} from "../../dialogs/dialog/dialog.component";
@@ -16,16 +16,18 @@ import {DialogData} from "../../dialogs/dialog/dialog-data.model";
   templateUrl: './login.component.html',
   styleUrls: ['../shared.scss'],
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, RouterLink, GoogleLoginButtonComponent]
+  imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, RouterLink, GoogleLoginButtonComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent implements OnInit{
   form: FormGroup;
-  isLoading: boolean = false;
-  isPasswordShown = signal<boolean>(false);
+  isLoading: WritableSignal<boolean> = signal<boolean>(false);
+  isPasswordShown: WritableSignal<boolean> = signal<boolean>(false);
 
   constructor(
     public authService: AuthService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit() {
@@ -34,9 +36,10 @@ export class LoginComponent implements OnInit{
 
   onLogin() {
     if(this.form.invalid) return;
+    this.isLoading.set(true);
     let loginUser: LoginUser = {...this.form.value}
     this.authService.login(loginUser).subscribe({
-      next: () => this.isLoading = false,
+      next: () => this.isLoading.set(false),
       error: err => {
         const data: DialogData = {
           title: 'Unable to log in',
@@ -44,13 +47,13 @@ export class LoginComponent implements OnInit{
           buttonName: 'Ok'
         }
         this.dialog.open(DialogComponent, {data});
-        this.isLoading = false;
+        this.isLoading.set(false);
       }
     });
   }
 
   onPasswordReset() {
-    this.authService.sendRecoveryEmail();
+    this.authService.sendRecoveryEmail(this.form.value['username']);
   }
 
   turnPasswordShown() {
@@ -58,9 +61,9 @@ export class LoginComponent implements OnInit{
   }
 
   private createForm() {
-    this.form = new FormGroup({
-      username: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', Validators.required),
+    this.form = this.fb.group({
+      username: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
     });
   }
 }
