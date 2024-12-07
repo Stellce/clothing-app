@@ -41,9 +41,11 @@ export class LoginComponent implements OnInit{
     this.authService.login(loginUser).subscribe({
       next: () => this.isLoading.set(false),
       error: err => {
+        const status = err['status'];
+        const description = status === 400 ? `Account is not activated` : `Username or password is not valid.`;
         const data: DialogData = {
           title: 'Unable to log in',
-          description: `Username or password is not valid.`,
+          description,
           buttonName: 'Ok'
         }
         this.dialog.open(DialogComponent, {data});
