@@ -4,7 +4,7 @@
 <div class="order-history">
   @if (isLoading) {
     <mat-spinner></mat-spinner>
-  } @else if (orders() && !isLoading) {
+  } @else if (orders().length) {
     @for (order of orders(); track order.id) {
       <app-order-item-bar [order]="order"></app-order-item-bar>
     }

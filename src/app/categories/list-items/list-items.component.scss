@@ -45,7 +45,7 @@ mat-spinner {
   display: grid;
   max-width: 1600px;
   margin: 10px auto;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   justify-content: center;
   gap: 10px;
   //padding: 0 4%;
@@ -94,12 +94,6 @@ app-paginator {
 
 .mat-mdc-form-field-focus-overlay {
   background-color: rgb(0 0 0 / 87%);
-}
-
-@media screen and (max-width: 1200px) {
-  .cloth-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
 }
 
 @media only screen and (max-width: 960px) {

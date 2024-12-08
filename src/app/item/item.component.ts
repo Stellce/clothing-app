@@ -100,7 +100,7 @@ export class ItemComponent implements OnInit{
             next:() => loadingDialog.close()
           });
         },
-        error: () => {
+        error: err => {
           const dialogData: DialogData = {
             title: 'Something went wrong',
             description: 'Could not proceed',
@@ -109,6 +109,7 @@ export class ItemComponent implements OnInit{
           this.dialog.open(DialogComponent, {data: dialogData}).afterOpened().subscribe({
             next:() => loadingDialog.close()
           });
+          console.error(err);
         }
       });
     }
