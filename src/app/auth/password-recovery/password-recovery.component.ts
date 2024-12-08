@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../auth.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {MatError, MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {FormsModule} from "@angular/forms";
@@ -31,7 +31,8 @@ export class PasswordRecoveryComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private route: ActivatedRoute,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -40,9 +41,17 @@ export class PasswordRecoveryComponent implements OnInit {
 
   onRecoverPassword() {
     this.errorMessages = this.authService.errorsOnPasswordValidation(this.newPassword)
-    if (!this.errorMessages.length && this.token) {
+    if (!this.token) {
+      const data: DialogData = {
+        title: 'Unable to proceed',
+        description: 'Link is expired'
+      }
+      this.dialog.open(DialogComponent, {data});
+      this.router.navigate(['/login']);
+    } else if (!this.errorMessages.length) {
       this.authService.recoverPassword(this.newPassword, this.token).subscribe({
         next: () => {
+          this.router.navigate(['/']);
           const data: DialogData = {
             title: 'Password successfully changed',
             description: 'You can now log in using it!',
@@ -51,6 +60,7 @@ export class PasswordRecoveryComponent implements OnInit {
           this.dialog.open(DialogComponent, {data});
         },
         error: err => {
+          this.router.navigate(['/']);
           const data: DialogData = {
             title: 'Something went wrong',
             description: `Try again later. ${err['status'] ? `Error ${err['status']} occurred` : ''}`,
