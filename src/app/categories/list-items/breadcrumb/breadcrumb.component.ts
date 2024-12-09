@@ -22,13 +22,11 @@ export class BreadcrumbComponent implements OnInit{
   ) {}
 
   ngOnInit() {
-    console.log('before links: ',this.links);
     this.links.push({name: 'Dashboard', path: ['/']});
     if (this.default) this.links = this.default;
     this.setProductLinks();
     this.firstLink = this.links[0];
     this.links.shift();
-    console.log('after links: ',this.links);
   }
 
   private setProductLinks() {
