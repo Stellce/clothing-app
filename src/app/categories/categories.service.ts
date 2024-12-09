@@ -8,6 +8,7 @@ import {FieldToTextPipe} from "../pipes/field-to-text";
 @Injectable({providedIn: 'root'})
 export class CategoriesService {
   private _categoriesList$: BehaviorSubject<Category[]> = new BehaviorSubject(null);
+  private isCategoriesRequestPending: boolean = false;
 
   constructor(
     private http: HttpClient,
@@ -15,14 +16,19 @@ export class CategoriesService {
   ) {}
 
   get categoriesList$() {
-    if(!this._categoriesList$.value) this.requestCategories();
+    if(!this._categoriesList$.value && !this.isCategoriesRequestPending) {
+      this.requestCategories();
+      this.isCategoriesRequestPending = true;
+    }
     return this._categoriesList$.asObservable();
   }
   requestCategories() {
     return this.http.get<Category[]>(
       environment.backendUrl + '/catalog/categories'
     ).subscribe({
-      next: categories => this._categoriesList$.next(categories),
+      next: categories => {
+        this._categoriesList$.next(categories);
+      },
       error: err => {
         console.error(err);
       }

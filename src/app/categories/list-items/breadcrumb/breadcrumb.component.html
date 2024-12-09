@@ -2,9 +2,9 @@
   <a [routerLink]="firstLink.path">&#5130; {{ firstLink.name }}</a>
 </div>
 <span> / </span>
-@for (link of links; track link.name; let i = $index) {
+@for (link of links; track link.path; let i = $index) {
   <div class="breadcrumb-links">
-    @if (link.path) {
+    @if (link.path.length) {
       <div class="breadcrumb-link">
         <a [routerLink]="link.path">{{link.name | fieldToText}}</a>
       </div>

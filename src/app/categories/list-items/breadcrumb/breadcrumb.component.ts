@@ -14,10 +14,7 @@ export class BreadcrumbComponent implements OnInit{
   @Input() default: {name: string, path: string[]}[];
   @Input() itemName: string;
   firstLink: {name: string, path: string[]};
-  links: {name: string, path: string[]}[] = [
-    {name: 'Dashboard', path: ['/']}
-  ];
-  afterLinks: {name: string, path: string[]}[] = null;
+  links: {name: string, path: string[]}[] = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -25,10 +22,13 @@ export class BreadcrumbComponent implements OnInit{
   ) {}
 
   ngOnInit() {
+    console.log('before links: ',this.links);
+    this.links.push({name: 'Dashboard', path: ['/']});
     if (this.default) this.links = this.default;
     this.setProductLinks();
     this.firstLink = this.links[0];
-    this.links = this.links.slice(1);
+    this.links.shift();
+    console.log('after links: ',this.links);
   }
 
   private setProductLinks() {
@@ -40,6 +40,7 @@ export class BreadcrumbComponent implements OnInit{
         name: params.get('gender').toUpperCase(),
         path: [...path]
       });
+
       if (params.has('categoryId')) {
         this.categoriesService.categoriesList$.subscribe(categories => {
           if(!categories) return;
@@ -48,15 +49,18 @@ export class BreadcrumbComponent implements OnInit{
           let categoryName = categories
             .find(category => category.id === categoryId).name;
 
-          path.push(categoryId);
-          this.links.push({
-            name: categoryName!,
-            path: [...path]
-          });
+          if (!this.links.some(link => link.name === categoryName)) {
+            path.push(categoryId);
+            this.links.push({
+              name: categoryName!,
+              path: this.itemName ? [...path] : []
+            });
+          }
+
           if(this.itemName) {
             this.links.push({
               name: this.itemName,
-              path: null
+              path: []
             });
           }
         });
