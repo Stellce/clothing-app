@@ -20,31 +20,31 @@
       </div>
     </div>
   </div>
-  @if (!subcategories && isLoading) {
+  @if (!subcategories() && isLoading()) {
     <mat-spinner></mat-spinner>
   }
-  @if (subcategories.length) {
+  @if (subcategories().length) {
     <mat-tab-group (selectedTabChange)="loadItemsBySubcategory($event)">
-      <mat-tab [label]="subcategories.length > 0 ? 'All' : ''">
-        @if (items?.length == 0 && isLoading) {
+      <mat-tab [label]="subcategories().length > 0 ? 'All' : ''">
+        @if (items()?.length == 0 && isLoading()) {
           <mat-spinner></mat-spinner>
         }
-        @if (items.length) {
+        @if (items().length) {
           <div class="cloth-grid">
-            @for (item of items; track item.id) {
+            @for (item of items(); track item.id) {
               <app-item-card [item]="item" [isBreadcrumbResolved]="true"></app-item-card>
             }
           </div>
         }
       </mat-tab>
-      @for (subcategory of subcategories; track subcategory.id) {
+      @for (subcategory of subcategories(); track subcategory.id) {
         <mat-tab [label]="subcategory.name">
-          @if (items?.length == 0 && isLoading) {
+          @if (items()?.length == 0 && isLoading()) {
             <mat-spinner></mat-spinner>
           }
-          @if (items.length) {
+          @if (items().length) {
             <div class="cloth-grid">
-              @for (item of items; track item.id) {
+              @for (item of items(); track item.id) {
                 <app-item-card [item]="item" [isBreadcrumbResolved]="true"></app-item-card>
               }
             </div>
@@ -53,17 +53,17 @@
       }
     </mat-tab-group>
   } @else {
-    @if (items.length === 0 && isLoading) {
+    @if (items().length === 0 && isLoading()) {
       <mat-spinner></mat-spinner>
     }
-    @if (items.length) {
+    @if (items().length) {
       <div class="cloth-grid">
-        @for (item of items; track item.id) {
+        @for (item of items(); track item.id) {
           <app-item-card [item]="item" [isBreadcrumbResolved]="true"></app-item-card>
         }
       </div>
     }
   }
 
-  <app-paginator [page]="page" (changePage)="changePage($event)"></app-paginator>
+  <app-paginator [page]="page()" (changePage)="changePage($event)"></app-paginator>
 </mat-drawer-container>

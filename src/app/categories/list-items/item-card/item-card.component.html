@@ -1,8 +1,7 @@
 <div class="card" [routerLink]="getLinkToItem()">
-  @if (!item()?.images?.length) {
+  @if (!item().images) {
     <div class="placeholder"></div>
-  }
-  @if (item().images?.length) {
+  } @else {
     <img
       [src]="item().images[0].url"
       [alt]=item().name

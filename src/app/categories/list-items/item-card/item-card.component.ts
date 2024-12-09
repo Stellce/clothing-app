@@ -6,7 +6,6 @@ import {LocalService} from 'src/app/local/local.service';
 import {ItemCard} from "./item-card.model";
 import {AddToFavoritesComponent} from "../../../item/add-to-favorites/add-to-favorites.component";
 import {ItemsService} from "../../../item/items.service";
-import {DialogData} from "../../../dialogs/dialog/dialog-data.model";
 
 @Component({
   selector: 'app-item-card',
@@ -30,14 +29,14 @@ export class ItemCardComponent implements OnInit {
     if (!this.authService.user() && this.isOnLocalWishlist(this.item())) {
       this.item.update(item => ({...item, metadata: {...item.metadata, onWishList: true}}));
     }
-    if (!this.item().images) {
-      this.itemsService.requestItemImages(this.item().id).subscribe({
-        next: images => this.item.update(item => ({...item, images})),
-        error: err => {
-          console.error(err);
-        }
-      });
-    }
+    this.itemsService.requestItemImages(this.item().id).subscribe({
+      next: images => {
+        this.item.update(item => ({...item, images}))
+      },
+      error: err => {
+        console.error(err);
+      }
+    });
   }
 
   getLinkToItem() {
