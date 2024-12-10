@@ -25,5 +25,6 @@ input::-webkit-inner-spin-button {
 }
 
 .error {
+  margin-top: 0.25rem;
   color: variables.$error;
 }
