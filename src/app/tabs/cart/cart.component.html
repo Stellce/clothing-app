@@ -3,20 +3,20 @@
     <h2>You have to <a href="/account/register">register</a> or <a href="/account/login">log in</a> to use cart</h2>
   </div>
 } @else if (cartItems().length) {
+  <div class="header">
+    <mat-checkbox
+      (change)="onSelectAll($event)"
+      [indeterminate]="selectedIds.size > 0 && !(selectedIds.size === cartItems().length)"
+      [checked]="selectedIds.size === cartItems().length"
+    >Select all</mat-checkbox>
+    @if (selectedIds.size) {
+      <button mat-icon-button (click)="onDeleteItems()"><img src="/assets/icons/trash.svg" alt="delete"/></button>
+    }
+  </div>
   <div class="cart">
-    <div class="header">
-      <mat-checkbox
-        (change)="onSelectAll($event)"
-        [indeterminate]="selectedIds.size > 0 && !(selectedIds.size === cartItems().length)"
-        [checked]="selectedIds.size === cartItems().length"
-      >Select all</mat-checkbox>
-      @if (selectedIds.size) {
-        <button mat-icon-button (click)="onDeleteItems()"><img src="/src/assets/icons/trash.svg" alt="delete"/></button>
-      }
-    </div>
     @for (cartItem of cartItems(); track cartItem.id) {
-      <div class="cart-item">
-        <mat-checkbox (change)="onItemSelect(cartItem, $event.checked)" #itemCheckbox></mat-checkbox>
+      <div class="cart-item" (click)="itemCheckbox.change.emit({source: itemCheckbox, checked: !itemCheckbox.checked});itemCheckbox.toggle()">
+        <mat-checkbox (change)="onItemSelect(cartItem, $event.checked)" #itemCheckbox (click)="$event.stopPropagation()"></mat-checkbox>
         <app-item-bar [cartItem]="cartItem"></app-item-bar>
       </div>
     }

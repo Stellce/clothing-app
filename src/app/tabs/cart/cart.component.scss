@@ -1,17 +1,29 @@
 :host {
   min-height: calc(100vh - 67px - 70px - 1rem);
 }
+
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  max-width: 31rem;
+  padding: 0.5rem;
+  margin: auto;
+}
+
 .cart {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1.5rem;
   padding: 0.5rem;
-  .header {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    max-width: 31rem;
+
+  & > *:nth-child(even) {
+    backdrop-filter: brightness(0.8);
+  }
+
+  & > *:hover {
+    backdrop-filter: brightness(1.5);
   }
 
   .cart-item {
@@ -19,6 +31,7 @@
     align-items: center;
     max-width: 31rem;
     width: 100%;
+    border-radius: 1rem;
   }
 
   app-item-bar {
@@ -33,15 +46,18 @@ mat-expansion-panel {
   bottom: 1rem;
   z-index: 2;
   position: fixed;
+
   .purchase-details {
     .detail {
       display: flex;
       justify-content: space-between;
+
       .label {
         & :first-child{
           font-weight: 800;
         }
       }
+
       .edit {
         height: fit-content;
         color: blue;
@@ -59,6 +75,7 @@ mat-expansion-panel {
   .cart {
     margin-bottom: 5rem;
   }
+
   mat-expansion-panel {
     bottom: 70px;
     width: 100%;

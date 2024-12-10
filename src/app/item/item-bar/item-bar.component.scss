@@ -26,6 +26,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 1rem;
 
     .description {
       display: flex;
@@ -42,11 +43,16 @@
       .size {
         flex: 0;
         font-size: 0.75rem;
+        color: #aeaeae;
       }
     }
 
     .price-count {
       text-align: end;
+
+      & > *:first-child {
+        color: #aeaeae;
+      }
     }
   }
 }
