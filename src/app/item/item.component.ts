@@ -23,6 +23,7 @@ import {OrdersService} from "../order-page/orders.service";
 import {OrderReq} from "../order-page/order-req.model";
 import {UpdateCartItemReq} from "../tabs/cart/req/update-cart-req.model";
 import {DialogData} from "../dialogs/dialog/dialog-data.model";
+import {CartItem} from "../tabs/cart/cart-item.model";
 
 @Component({
   selector: 'app-item',
@@ -37,7 +38,17 @@ export class ItemComponent implements OnInit{
   quantity: number = 1;
   params: { key: string, value: string }[] = [];
   selectedImageIndex: number = 0;
-  isCartItem: boolean = false;
+  cartItems: CartItem[] = [];
+  selectedCartItem: CartItem;
+
+  get isFromCart() {
+    return window.location.href.includes('cart');
+  }
+
+  get quantityDiff() {
+    return this.quantity - this.selectedCartItem.quantity
+  }
+
   constructor(
     private itemsService: ItemsService,
     protected route: ActivatedRoute,
@@ -54,10 +65,12 @@ export class ItemComponent implements OnInit{
   setUniqueItem(uniqueItem: UniqueItem) {
     this.selectedUniqueItem = uniqueItem;
     if (this.quantity > uniqueItem.quantity) this.quantity = uniqueItem.quantity;
+    this.selectedCartItem = this.cartItems.find(item => item.itemSize === this.selectedUniqueItem.size);
   }
 
   addToCart() {
     const successDialogInvoke = () => {
+      this.checkIsInCart();
       let dialogData: DialogData = {
         title: 'Item added!',
         description: 'You can check your cart!'
@@ -154,6 +167,7 @@ export class ItemComponent implements OnInit{
 
   onSaveCartItem() {
     const success = () => {
+      this.checkIsInCart();
       const dialogData: DialogData = {
         title: 'Item updated!',
         description: 'Check your cart!',
@@ -170,13 +184,24 @@ export class ItemComponent implements OnInit{
       this.dialog.open(DialogComponent, {data: dialogData});
     }
     const cartItem: UpdateCartItemReq = {
-      entryId: this.route.snapshot.paramMap.get('id'),
+      entryId: this.selectedCartItem.id,
       quantity: this.quantity,
       size: this.selectedUniqueItem.size
     }
     this.cartService.updateItem(cartItem).subscribe({
       next: success,
       error: failure
+    });
+  }
+
+  private checkIsInCart() {
+    this.cartService.getItems().subscribe(items => {
+      if (!items.length) return;
+      console.log('cart items: ', items);
+      this.cartItems = items.filter(item => item.itemId === this.item.id);
+      if (!this.cartItems.length) return;
+      this.selectedCartItem = this.cartItems.find(item => item.itemSize === this.selectedUniqueItem.size);
+      this.quantity = this.selectedCartItem.quantity;
     });
   }
 
@@ -194,12 +219,10 @@ export class ItemComponent implements OnInit{
       this.itemsService.requestItemImages(item.id).subscribe((images: Image[]) => {
         this.item.images = images;
       })
-      this.route.queryParamMap.subscribe(params => {
-        const quantity = +params.get('quantity');
-        if (quantity) this.isCartItem = true;
-        this.quantity = quantity || 1;
-        this.selectedUniqueItem = this.item.uniqueItems.find(uItem => uItem.size === params.get('size')) || this.item.uniqueItems[0];
-      })
+
+      if (this.authService.user()) this.checkIsInCart();
     });
   }
+
+  protected readonly Math = Math;
 }

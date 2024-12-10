@@ -1,6 +1,6 @@
 @if (item) {
   <div class="item">
-    <app-breadcrumb class="breadcrumb-line" [default]="isCartItem ? [{name: 'Cart', path: ['/', 'cart']}] : null" [itemName]="item.name"></app-breadcrumb>
+    <app-breadcrumb class="breadcrumb-line" [default]="isFromCart ? [{name: 'Cart', path: ['/', 'cart']}] : null" [itemName]="item.name"></app-breadcrumb>
     <div class="product">
       @if (item.images?.length) {
         <div class="images">
@@ -47,15 +47,22 @@
           <app-input-quantity [(quantity)]="quantity" [max]="selectedUniqueItem.quantity"/>
         </div>
         <div class="actions">
-          @if (isCartItem) {
-            <button mat-flat-button color="primary" (click)="onSaveCartItem()">Save cart item</button>
+          @if (selectedCartItem?.quantity) {
+            <span>Already added to cart {{selectedCartItem?.quantity}}</span>
+            <button mat-flat-button color="primary" [disabled]="quantity === selectedCartItem.quantity" (click)="onSaveCartItem()">
+              @if (quantity === selectedCartItem.quantity) {
+                <span>Change quantity to update it in a cart</span>
+              } @else {
+                {{quantity > selectedCartItem.quantity ? 'Add' : 'Remove'}} {{Math.abs(quantityDiff)}} {{Math.abs(quantityDiff) > 1 ? 'items' : 'item'}} {{quantityDiff > 0 ? 'to' : 'from'}} cart
+              }
+            </button>
           } @else {
             <button mat-flat-button color="primary" [disabled]="!authService.user()" (click)="addToCart()">Add to cart</button>
             @if (!authService.user()) {
               <h2>You have to <a href="/account/register">register</a> or <a href="/account/login">log in</a> to use cart</h2>
             }
-            <button mat-flat-button color="primary" (click)="orderNow()">Order now</button>
           }
+          <button mat-flat-button color="primary" (click)="orderNow()">Order now</button>
         </div>
       </div>
     </div>
