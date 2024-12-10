@@ -3,9 +3,8 @@ import { loginGuard } from "./auth/auth.guard";
 import {employeeGuard} from "./employee/employee.guard";
 
 export const routes: Routes = [
-  {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
+  {path: '', loadComponent: () => import('./tabs/landing/landing.component').then(c => c.LandingComponent)},
 
-  {path: 'dashboard', loadComponent: () => import('./tabs/landing/landing.component').then(c => c.LandingComponent)},
   {path: 'search', loadComponent: () => import('./tabs/search/search.component').then(c => c.SearchComponent)},
   {path: 'account', children: [
     {path: '', loadComponent: () => import('./tabs/account/account.component').then(c => c.AccountComponent), canActivate: [loginGuard]},
@@ -36,5 +35,5 @@ export const routes: Routes = [
 
   {path: 'employee-panel', canActivate: [employeeGuard], loadComponent: () => import('./employee/employee-panel/employee-panel.component').then(c => c.EmployeePanelComponent)},
 
-  {path: '**', redirectTo: 'dashboard'},
+  {path: '**', redirectTo: ''},
 ];

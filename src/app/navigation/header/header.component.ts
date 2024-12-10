@@ -36,7 +36,7 @@ export class HeaderComponent implements OnInit, OnChanges{
   ngOnInit(): void {
     this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe(e => {
       this.tabIcon.set(this.tabIcons.find(n => e.url.includes(n.toLowerCase())) || null);
-      this.isProductPage.set(e.url.includes('product') || e.url.includes('dashboard') || e.url === '/');
+      this.isProductPage.set(e.url.includes('product') || e.url === '/');
     });
   }
 

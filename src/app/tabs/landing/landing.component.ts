@@ -6,7 +6,7 @@ import { RouterLink } from '@angular/router';
 import { UpperCasePipe } from '@angular/common';
 
 @Component({
-    selector: 'app-dashboard',
+    selector: 'app-landing',
     templateUrl: './landing.component.html',
     styleUrls: ['./landing.component.scss'],
     standalone: true,

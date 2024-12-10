@@ -14,7 +14,7 @@ import {AuthService} from "../../auth/auth.service";
 })
 export class NavbarComponent implements OnInit{
   links = {
-    dashboard: 'Dashboard',
+    landing: 'Landing',
     search: 'Search',
     account: 'Account',
     favorites: 'Favorites',
