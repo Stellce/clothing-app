@@ -7,10 +7,10 @@
 }
 <mat-drawer-container>
   <mat-drawer #drawer mode="over">
-    <app-filter (filter)="filterItems($event)"></app-filter>
+    <app-filter (filter)="filterItems($event)"/>
   </mat-drawer>
   <div class="breadcrumb-line">
-    <app-breadcrumb class="inline-wrapper"></app-breadcrumb>
+    <app-breadcrumb class="inline-wrapper"/>
     <div class="inline-wrapper">
       <div class="filter-bar" matRipple (click)="drawer.toggle()">
         <span>Filter</span>
@@ -20,50 +20,42 @@
       </div>
     </div>
   </div>
-  @if (!subcategories() && isLoading()) {
-    <mat-spinner></mat-spinner>
-  }
   @if (subcategories().length) {
     <mat-tab-group (selectedTabChange)="loadItemsBySubcategory($event)">
       <mat-tab [label]="subcategories().length > 0 ? 'All' : ''">
-        @if (items()?.length == 0 && isLoading()) {
-          <mat-spinner></mat-spinner>
-        }
-        @if (items().length) {
+        @if ((items$ | async)?.length) {
           <div class="cloth-grid">
-            @for (item of items(); track item.id) {
-              <app-item-card [item]="item" [isBreadcrumbResolved]="true"></app-item-card>
+            @for (item of items$ | async; track item.id) {
+              <app-item-card [item]="item" [isBreadcrumbResolved]="true"/>
             }
           </div>
+        } @else if (isLoading()) {
+          <mat-spinner/>
         }
       </mat-tab>
       @for (subcategory of subcategories(); track subcategory.id) {
         <mat-tab [label]="subcategory.name">
-          @if (items()?.length == 0 && isLoading()) {
-            <mat-spinner></mat-spinner>
-          }
-          @if (items().length) {
+          @if ((items$ | async)?.length == 0 && isLoading()) {
+            <mat-spinner/>
+          } @else if((items$ | async)?.length) {
             <div class="cloth-grid">
-              @for (item of items(); track item.id) {
-                <app-item-card [item]="item" [isBreadcrumbResolved]="true"></app-item-card>
+              @for (item of items$ | async; track item.id) {
+                <app-item-card [item]="item" [isBreadcrumbResolved]="true"/>
               }
             </div>
           }
         </mat-tab>
       }
     </mat-tab-group>
-  } @else {
-    @if (items().length === 0 && isLoading()) {
-      <mat-spinner></mat-spinner>
-    }
-    @if (items().length) {
-      <div class="cloth-grid">
-        @for (item of items(); track item.id) {
-          <app-item-card [item]="item" [isBreadcrumbResolved]="true"></app-item-card>
-        }
-      </div>
-    }
+  } @else if ((items$ | async)?.length) {
+    <div class="cloth-grid">
+      @for (item of items$ | async; track item.id) {
+        <app-item-card [item]="item" [isBreadcrumbResolved]="true"/>
+      }
+    </div>
+  } @else if (isLoading()) {
+    <mat-spinner/>
   }
 
-  <app-paginator [page]="page()" (changePage)="changePage($event)"></app-paginator>
+  <app-paginator [page]="page()" (changePage)="changePage($event)"/>
 </mat-drawer-container>

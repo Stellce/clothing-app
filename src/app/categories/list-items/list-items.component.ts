@@ -21,64 +21,43 @@ import {ItemCard} from "./item-card/item-card.model";
 import {ItemsParamsRequest} from "./item-card/req/items-params-request.model";
 import {PaginatorComponent} from './paginator/paginator.component';
 import {CategoriesService} from "../categories.service";
-import {DialogData} from "../../dialogs/dialog/dialog-data.model";
-import {DialogComponent} from "../../dialogs/dialog/dialog.component";
-import {MatDialog} from "@angular/material/dialog";
+import {catchError, map, Observable, tap} from "rxjs";
+import {AsyncPipe} from "@angular/common";
 
 @Component({
-    selector: 'app-list-items',
-    templateUrl: './list-items.component.html',
-    styleUrls: ['./list-items.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    standalone: true,
-    imports: [MatSidenavModule, FilterComponent, BreadcrumbComponent, MatRippleModule, MatProgressSpinnerModule, MatTabsModule, ItemCardComponent, PaginatorComponent],
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'app-list-items$',
+  templateUrl: './list-items.component.html',
+  styleUrls: ['./list-items.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  standalone: true,
+  imports: [MatSidenavModule, FilterComponent, BreadcrumbComponent, MatRippleModule, MatProgressSpinnerModule, MatTabsModule, ItemCardComponent, PaginatorComponent, AsyncPipe],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ListItemsComponent implements OnInit{
+export class ListItemsComponent implements OnInit {
   drawer = viewChild.required<MatDrawer>('drawer');
-  items: WritableSignal<ItemCard[]> = signal<ItemCard[]>([]);
+  items$: Observable<ItemCard[]>;
   subcategories: WritableSignal<{id: string; name: string}[]> = signal<{id: string; name: string}[]>([]);
   itemsParamsRequest: ItemsParamsRequest = {} as ItemsParamsRequest;
   isLoading: WritableSignal<boolean> = signal<boolean>(false);
   page: WritableSignal<{number: number, last: boolean}> = signal<{number: number, last: boolean}>({number: 0, last: false});
+
   constructor(
     private itemsService: ItemsService,
     private categoriesService: CategoriesService,
-    private activatedRoute: ActivatedRoute,
-    private dialog: MatDialog
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    this.itemsService.page$.subscribe(page => {
-      if(!page) return;
-      this.isLoading.set(false);
-      this.items.set(page.content);
-      this.page.set({ number: page.number, last: page.last });
-    });
-
-    let params = this.activatedRoute.snapshot.params;
-    this.itemsParamsRequest.gender = params['gender'];
-    this.itemsParamsRequest.categoryId = params['categoryId'];
-
     this.isLoading.set(true);
-    this.categoriesService.requestSubcategories(this.itemsParamsRequest.categoryId).subscribe({
-      next: subcategories => {
-        this.subcategories.set(subcategories);
-      },
-      error: err => {
-        const data: DialogData = {
-          title: `Error on requesting subcategories`,
-          description: `${err['status'] ? `Error ${err['status']} occurred` : ''}`
-        }
-        this.dialog.open(DialogComponent, {data});
-      }
-    });
+    this.setPageUpdateListener();
+    this.setItemsParamsRequest();
+    this.setSubcategories();
     this.requestItems();
   }
 
   loadItemsBySubcategory(event: MatTabChangeEvent) {
     this.isLoading.set(true);
-    this.items.set([]);
+    this.items$ = null;
     if(event.tab.textLabel === 'All') return this.requestItems();
     let subcategory = this.subcategories()
       .find(subcategory =>
@@ -88,24 +67,8 @@ export class ListItemsComponent implements OnInit{
     this.requestItems();
   }
 
-  private requestItems() {
-    this.itemsService.requestItems(this.itemsParamsRequest).subscribe({
-      next: page => {
-        this.isLoading.set(false);
-        this.page.set({ number: page.number, last: page.last });
-        this.items.set(page.content);
-      },
-      error: err => {
-        const data: DialogData = {
-          title: `Error on requesting items`,
-          description: `${err['status'] ? `Error ${err['status']} occurred` : ''}`
-        }
-        this.dialog.open(DialogComponent, {data});
-      }
-    });
-  }
-
   filterItems(filter: Filter) {
+    this.isLoading.set(true);
     let itemsRequest: ItemsParamsRequest = {
       ...this.itemsParamsRequest,
       ...filter
@@ -115,9 +78,43 @@ export class ListItemsComponent implements OnInit{
   }
 
   changePage(pageNumber: number) {
-    this.itemsService.changePage(pageNumber).subscribe(page => {
-      this.items.set(page.content);
+    this.isLoading.set(true);
+    this.itemsService.changePage(pageNumber).subscribe();
+  }
+
+  private setPageUpdateListener() {
+    this.items$ = this.itemsService.page$.pipe(tap(page => {
       this.page.set({ number: page.number, last: page.last });
+      this.isLoading.set(false);
+    }), map(page => page.content));
+  }
+
+  private setSubcategories() {
+    if (!this.itemsParamsRequest.categoryId) return;
+    this.categoriesService.requestSubcategories(this.itemsParamsRequest.categoryId).subscribe({
+      next: subcategories => {
+        this.subcategories.set(subcategories);
+      },
+      error: err => {
+        console.error('Error on requesting subcategories', err);
+      }
     });
+  }
+
+  private setItemsParamsRequest() {
+    let params = this.activatedRoute.snapshot.params;
+    this.itemsParamsRequest.gender = params['gender'];
+    this.itemsParamsRequest.categoryId = params['categoryId'];
+  }
+
+  private requestItems() {
+    this.itemsService.requestItems(this.itemsParamsRequest).pipe(
+      catchError(
+        (err, caught) => {
+        console.error('Error on requesting items$', err);
+        return caught;
+        }
+      )
+    ).subscribe();
   }
 }
