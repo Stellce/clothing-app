@@ -1,6 +1,6 @@
-import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {Injectable} from "@angular/core";
-import {BehaviorSubject, Observable, tap} from "rxjs";
+import {BehaviorSubject, filter, Observable, tap} from "rxjs";
 import {environment} from "../../environments/environment";
 import {CatalogItem, ItemCard} from "../categories/list-items/item-card/item-card.model";
 import {ItemsParamsRequest} from "../categories/list-items/item-card/req/items-params-request.model";
@@ -10,15 +10,15 @@ import {ItemDetails} from "./item.model";
 
 @Injectable({providedIn: 'root'})
 export class ItemsService {
-  private _cachedItemsRequest: ItemsParamsRequest = {} as ItemsParamsRequest;
+  private _cachedItemsRequest: ItemsParamsRequest = null;
   private _page$: BehaviorSubject<Page<ItemCard[]>> = new BehaviorSubject<Page<ItemCard[]>>(null);
   private pageSize: number = 6*4;
 
-  constructor(private http: HttpClient) {}
-
   get page$() {
-    return this._page$.asObservable();
+    return this._page$.asObservable().pipe(filter(page => !!page));
   }
+
+  constructor(private http: HttpClient) {}
 
   requestLandingPage() {
     return this.http.get<Page<CatalogItem[]>>(
@@ -39,8 +39,7 @@ export class ItemsService {
       {params}
     ).pipe(tap(page => {
       this._page$.next(page);
-      this.requestPageImages(page);
-    }))
+    }));
   }
 
   requestItemImages(itemId: string): Observable<Image[]> {
@@ -65,7 +64,7 @@ export class ItemsService {
     let params = new HttpParams();
     Object.entries(this._cachedItemsRequest).forEach(([k,v]) => {
       if(v) params = params.append(k, v);
-    })
+    });
     params = params.append('pageNumber', pageNumber);
     params = params.append('pageSize', this.pageSize);
 
@@ -74,22 +73,17 @@ export class ItemsService {
       {params}
     ).pipe(tap(page => {
       this._page$.next(page);
-      this.requestPageImages(page);
     }));
   }
 
-  search(search: string) {
-    let headers = new HttpHeaders().append('search', search);
-    return this.http.get(environment.backendUrl + '/search', {headers});
-  }
-
-  private requestPageImages(page: Page<CatalogItem[]>) {
-    page.content.forEach(contentItem => {
-      this.requestItemImages(contentItem.id).subscribe(images => {
-        const item: CatalogItem | undefined = page.content.find(i => i.id === contentItem.id);
-        if(item) item.images = images;
-        this._page$.next(page);
-      });
-    })
+  search(searchPattern: string) {
+    let params = new HttpParams();
+    params = params.append('searchPattern', searchPattern)
+    return this.http.get<Page<CatalogItem[]>>(
+      environment.backendUrl + '/catalog/items',
+      {params}
+    ).pipe(tap(page => {
+      this._page$.next(page);
+    }));
   }
 }
