@@ -13,9 +13,15 @@
   margin-bottom: 16px;
   img {
     width: 100%;
+  }
+  .dark-bottom-gradient-image::after {
+    content: "";
+    display: block;
+    height: 100%;
     position: absolute;
-    left: 0;
-    top: -20px;
+    top: 0;
+    width: 200%;
+    background: linear-gradient(0deg, rgba(20, 19, 19, 1) 0%, rgba(0, 0, 0, 0) 100%);
   }
   .category-name {
     position: absolute;
@@ -47,14 +53,10 @@
 .outlet {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  padding: 1rem;
-
-  span:first-child {
-    margin-top: 50px;
-    margin-bottom: 25px;
-    padding: 0 0.5rem;
-  }
+  gap: 1.5rem;
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+  padding: 0 1.5rem;
 }
 
 
