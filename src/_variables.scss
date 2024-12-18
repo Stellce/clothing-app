@@ -1,5 +1,9 @@
 @use '@angular/material' as mat;
 @use 'themes';
+
+$navbar-height: 67px;
+$header-height: 70px;
+
 $theme: themes.$dark-theme;
 
 $surface-container: mat.get-theme-color($theme, surface-container);

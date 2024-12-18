@@ -13,6 +13,10 @@ $dark-theme: themes.$dark-theme;
   height: 100%;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -95,4 +99,6 @@ mat-form-field .mdc-text-field--filled:not(.mdc-text-field--disabled) {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 0 2rem;
+  box-sizing: border-box;
 }

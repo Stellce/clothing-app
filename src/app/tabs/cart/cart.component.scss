@@ -1,5 +1,7 @@
+@use "../../../variables";
+
 :host {
-  min-height: calc(100vh - 67px - 70px - 1rem);
+  min-height: calc(100vh - var(variables.$navbar-height) - var(variables.$header-height) - 1rem);
 }
 
 .header {

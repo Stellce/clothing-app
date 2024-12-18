@@ -1,3 +1,5 @@
+@use "../variables";
+
 * {
   margin: 0;
   padding: 0;
@@ -7,7 +9,7 @@ main {
   margin: 0 auto;
   overflow: hidden;
   max-width: 1600px;
-  padding-bottom: 67px;
+  padding-bottom: variables.$navbar-height;
 }
 
 app-navbar {
@@ -15,7 +17,7 @@ app-navbar {
 
   z-index: 999;
   width: 100vw;
-  height: 67px;
+  height: variables.$navbar-height;
   position: fixed;
   bottom: 0;
   left: 0;
