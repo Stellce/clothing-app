@@ -59,7 +59,7 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.cartItemsSub.unsubscribe();
+    this.cartItemsSub?.unsubscribe();
   }
 
   onSelectAll(event: MatCheckboxChange) {

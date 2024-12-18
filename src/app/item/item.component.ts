@@ -1,5 +1,5 @@
 import {CurrencyPipe, NgClass, NgStyle} from '@angular/common';
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormsModule, NgForm} from "@angular/forms";
 import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -24,6 +24,7 @@ import {OrderReq} from "../order-page/order-req.model";
 import {UpdateCartItemReq} from "../tabs/cart/req/update-cart-req.model";
 import {DialogData} from "../dialogs/dialog/dialog-data.model";
 import {CartItem} from "../tabs/cart/cart-item.model";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-item',
@@ -32,7 +33,7 @@ import {CartItem} from "../tabs/cart/cart-item.model";
   standalone: true,
   imports: [BreadcrumbComponent, NgClass, MatButtonModule, ReviewsComponent, CurrencyPipe, MatFormFieldModule, MatInputModule, FormsModule, NgStyle, FieldToTextPipe, AddToFavoritesComponent, MatRipple, InputQuantityComponent]
 })
-export class ItemComponent implements OnInit{
+export class ItemComponent implements OnInit, OnDestroy {
   item: ItemDetails = null;
   selectedUniqueItem: UniqueItem;
   quantity: number = 1;
@@ -40,6 +41,7 @@ export class ItemComponent implements OnInit{
   selectedImageIndex: number = 0;
   cartItems: CartItem[] = [];
   selectedCartItem: CartItem;
+  dialogSubscription: Subscription;
 
   get isFromCart() {
     return window.location.href.includes('cart');
@@ -86,7 +88,15 @@ export class ItemComponent implements OnInit{
         size: this.selectedUniqueItem.size
       }).subscribe({
         next: () => successDialogInvoke(),
-        error: e => console.error(e)
+        error: e => {
+          console.error(e);
+          const dialogData: DialogData = {
+            title: 'Unable to add to cart',
+            description: 'Service unavailable. Try again later',
+            buttonName: 'Ok'
+          }
+          this.dialog.open(DialogComponent, {data: dialogData});
+        }
       });
     } else {
       const dialogData: DialogData = {
@@ -148,7 +158,7 @@ export class ItemComponent implements OnInit{
       dialogRef.afterOpened().subscribe({
         next:() => loadingDialog.close()
       });
-      dialogRef.afterClosed().subscribe(form => {
+      this.dialogSubscription = dialogRef.afterClosed().subscribe(form => {
         if (!form.value) return;
         order = {...order, customer: {...form.value}}
         addOrder(order);
@@ -192,6 +202,10 @@ export class ItemComponent implements OnInit{
       next: success,
       error: failure
     });
+  }
+
+  ngOnDestroy() {
+    this.dialogSubscription?.unsubscribe();
   }
 
   private checkIsInCart() {

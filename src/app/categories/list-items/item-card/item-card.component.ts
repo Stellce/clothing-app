@@ -1,11 +1,21 @@
 import {CurrencyPipe, NgStyle, PercentPipe} from '@angular/common';
-import {ChangeDetectionStrategy, Component, input, InputSignal, model, ModelSignal, OnInit} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  InputSignal,
+  model,
+  ModelSignal,
+  OnDestroy,
+  OnInit
+} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {AuthService} from 'src/app/auth/auth.service';
 import {LocalService} from 'src/app/local/local.service';
 import {ItemCard} from "./item-card.model";
 import {AddToFavoritesComponent} from "../../../item/add-to-favorites/add-to-favorites.component";
 import {ItemsService} from "../../../item/items.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-item-card',
@@ -15,9 +25,10 @@ import {ItemsService} from "../../../item/items.service";
   imports: [RouterLink, PercentPipe, CurrencyPipe, NgStyle, AddToFavoritesComponent],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ItemCardComponent implements OnInit {
+export class ItemCardComponent implements OnInit, OnDestroy {
   item: ModelSignal<ItemCard> = model.required<ItemCard>();
   isBreadcrumbResolved: InputSignal<boolean> = input();
+  imagesSubscription: Subscription;
 
   constructor(
     private localService: LocalService,
@@ -29,7 +40,7 @@ export class ItemCardComponent implements OnInit {
     if (!this.authService.user() && this.isOnLocalWishlist(this.item())) {
       this.item.update(item => ({...item, metadata: {...item.metadata, onWishList: true}}));
     }
-    this.itemsService.requestItemImages(this.item().id).subscribe({
+    this.imagesSubscription = this.itemsService.requestItemImages(this.item().id).subscribe({
       next: images => {
         this.item.update(item => ({...item, images}))
       },
@@ -37,6 +48,10 @@ export class ItemCardComponent implements OnInit {
         console.error(err);
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.imagesSubscription?.unsubscribe();
   }
 
   getLinkToItem() {
