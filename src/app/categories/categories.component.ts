@@ -1,11 +1,10 @@
-import { LowerCasePipe, UpperCasePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ActivatedRoute, RouterLink } from "@angular/router";
-import { CategoriesService } from "./categories.service";
-import { Category } from "./category.model";
-import { BreadcrumbComponent } from './list-items/breadcrumb/breadcrumb.component';
-import {DialogData} from "../dialogs/dialog/dialog-data.model";
+import {LowerCasePipe, UpperCasePipe} from '@angular/common';
+import {Component, OnInit} from '@angular/core';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {ActivatedRoute, RouterLink} from "@angular/router";
+import {CategoriesService} from "./categories.service";
+import {Category} from "./category.model";
+import {BreadcrumbComponent} from './list-items/breadcrumb/breadcrumb.component';
 
 @Component({
     selector: 'app-categories',

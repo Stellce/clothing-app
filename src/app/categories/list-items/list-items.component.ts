@@ -25,7 +25,7 @@ import {catchError, map, Observable, tap} from "rxjs";
 import {AsyncPipe} from "@angular/common";
 
 @Component({
-  selector: 'app-list-items$',
+  selector: 'app-list-items',
   templateUrl: './list-items.component.html',
   styleUrls: ['./list-items.component.scss'],
   encapsulation: ViewEncapsulation.None,
@@ -111,7 +111,7 @@ export class ListItemsComponent implements OnInit {
     this.itemsService.requestItems(this.itemsParamsRequest).pipe(
       catchError(
         (err, caught) => {
-        console.error('Error on requesting items$', err);
+        console.error('Error on requesting items', err);
         return caught;
         }
       )

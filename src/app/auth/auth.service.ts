@@ -6,8 +6,8 @@ import {Router} from "@angular/router";
 import {jwtDecode} from "jwt-decode";
 import {catchError, Observable, of, switchMap, tap} from 'rxjs';
 import {environment} from 'src/environments/environment';
-import {DialogData} from "../dialogs/dialog/dialog-data.model";
-import {DialogComponent} from "../dialogs/dialog/dialog.component";
+import {DialogData} from "../shared/dialog/dialog-data.model";
+import {DialogComponent} from "../shared/dialog/dialog.component";
 import {GoogleJwtDecoded, JwtDecoded} from "./jwt-decoded.model";
 import {LoginUser} from "./login/login-user.model";
 import {RefreshTokenReq} from "./refresh-token-req.model";
@@ -47,9 +47,10 @@ export class AuthService {
       error: err => {
         const data: DialogData = {
           title: 'Error on login occurred',
-          description: `${err['status'] ? `Error ${err['status']} occurred` : ''}`
+          description: `Please, try again later`
         }
         this.dialog.open(DialogComponent, {data});
+        console.error(err['status'], err);
       }
     });
   }
@@ -78,7 +79,7 @@ export class AuthService {
     }), catchError(() => {
       let dialogData: DialogData = {
         title: 'Registration failed!',
-        description: ''
+        description: 'Please, try again later'
       };
       this.dialog.open(DialogComponent, {data: dialogData});
       return of('something happened');
@@ -136,7 +137,7 @@ export class AuthService {
     const dialogData: DialogData = {
       title: 'Password reset',
       description: '',
-      note: 'After clicking “Reset”, you will receive an email with following steps',
+      note: 'After clicking “Reset”, you will receive an email with next steps',
       inputs: [{name: 'email', defaultValue: email}],
       buttonName: 'Reset'
     }
@@ -168,7 +169,7 @@ export class AuthService {
           this.dialog.open(DialogComponent, {data: dialogData});
           console.error(err);
         }
-      })
+      });
     });
   }
 
@@ -237,16 +238,16 @@ export class AuthService {
           .subscribe({
             next: tokenInfo => this.authUser(tokenInfo),
             error: err => {
-              console.error(err);
+              console.error(err['status'], err);
               const data: DialogData = {
                 title: 'Session refresh went wrong',
-                description: `${err['status'] ? `Error ${err['status']} occurred` : ''}`
+                description: `Please, try to login again. Your session will be inactive in 2 minutes`
               }
               this.dialog.open(DialogComponent, {data});
             }
           });
       }
-    }, tokenTimeoutInMs - 120_000)
+    }, tokenTimeoutInMs - 120_000);
   }
 
   private setAutoLogout(tokenTimeoutInMs: number) {

@@ -10,8 +10,8 @@ import {AuthService} from "../auth.service";
 import {RegisterUser} from "./register-user.model";
 import {GoogleLoginButtonComponent} from "../google-login-button/google-login-button.component";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
-import {DialogData} from "../../dialogs/dialog/dialog-data.model";
-import {DialogComponent} from "../../dialogs/dialog/dialog.component";
+import {DialogData} from "../../shared/dialog/dialog-data.model";
+import {DialogComponent} from "../../shared/dialog/dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {NgStyle} from "@angular/common";
 

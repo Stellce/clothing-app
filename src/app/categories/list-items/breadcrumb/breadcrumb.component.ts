@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from "@angular/router";
 import { CategoriesService } from "../../categories.service";
-import {FieldToTextPipe} from "../../../pipes/field-to-text";
+import {FieldToTextPipe} from "../../../shared/pipes/field-to-text";
 
 @Component({
     selector: 'app-breadcrumb',

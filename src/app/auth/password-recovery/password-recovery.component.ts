@@ -5,8 +5,8 @@ import {MatError, MatFormField, MatLabel, MatSuffix} from "@angular/material/for
 import {MatInput} from "@angular/material/input";
 import {FormsModule} from "@angular/forms";
 import {MatButton, MatIconButton} from "@angular/material/button";
-import {DialogData} from "../../dialogs/dialog/dialog-data.model";
-import {DialogComponent} from "../../dialogs/dialog/dialog.component";
+import {DialogData} from "../../shared/dialog/dialog-data.model";
+import {DialogComponent} from "../../shared/dialog/dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 
 @Component({

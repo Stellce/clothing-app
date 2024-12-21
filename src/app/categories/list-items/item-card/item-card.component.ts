@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {AuthService} from 'src/app/auth/auth.service';
-import {LocalService} from 'src/app/local/local.service';
+import {LocalService} from 'src/app/shared/local/local.service';
 import {ItemCard} from "./item-card.model";
 import {AddToFavoritesComponent} from "../../../item/add-to-favorites/add-to-favorites.component";
 import {ItemsService} from "../../../item/items.service";

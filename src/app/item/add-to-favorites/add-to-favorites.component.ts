@@ -1,7 +1,7 @@
 import {Component, model, ModelSignal, signal, WritableSignal} from '@angular/core';
 import {AuthService} from "../../auth/auth.service";
 import {FavoritesService} from "../../tabs/favorites/favorites.service";
-import {LocalService} from "../../local/local.service";
+import {LocalService} from "../../shared/local/local.service";
 import {NgStyle} from "@angular/common";
 import {ItemCard} from "../../categories/list-items/item-card/item-card.model";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";

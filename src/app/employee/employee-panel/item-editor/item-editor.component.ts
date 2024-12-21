@@ -15,10 +15,10 @@ import {MatAutocomplete, MatAutocompleteTrigger} from "@angular/material/autocom
 import {MatInput} from "@angular/material/input";
 import {AsyncPipe} from "@angular/common";
 import {CdkTextareaAutosize} from "@angular/cdk/text-field";
-import {FieldToTextPipe} from "../../../pipes/field-to-text";
+import {FieldToTextPipe} from "../../../shared/pipes/field-to-text";
 import {MatButton} from "@angular/material/button";
-import {DialogComponent} from "../../../dialogs/dialog/dialog.component";
-import {DialogData} from "../../../dialogs/dialog/dialog-data.model";
+import {DialogComponent} from "../../../shared/dialog/dialog.component";
+import {DialogData} from "../../../shared/dialog/dialog-data.model";
 
 @Component({
   selector: 'app-item-editor',

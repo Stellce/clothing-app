@@ -13,7 +13,7 @@ import {MAT_DIALOG_DATA, MatDialogModule} from "@angular/material/dialog";
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {DialogData} from "./dialog-data.model";
-import {FieldToTextPipe} from "../../pipes/field-to-text";
+import {FieldToTextPipe} from "../pipes/field-to-text";
 import {MatOption, MatSelect} from "@angular/material/select";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 

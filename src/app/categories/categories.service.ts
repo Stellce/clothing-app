@@ -3,7 +3,7 @@ import {Injectable} from "@angular/core";
 import {BehaviorSubject, map} from "rxjs";
 import {environment} from "../../environments/environment";
 import {Category} from "./category.model";
-import {FieldToTextPipe} from "../pipes/field-to-text";
+import {FieldToTextPipe} from "../shared/pipes/field-to-text";
 
 @Injectable({providedIn: 'root'})
 export class CategoriesService {

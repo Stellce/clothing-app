@@ -2,7 +2,7 @@ import {CommonModule} from '@angular/common';
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {forkJoin} from 'rxjs';
-import {LocalService} from 'src/app/local/local.service';
+import {LocalService} from 'src/app/shared/local/local.service';
 import {FavoritesService} from 'src/app/tabs/favorites/favorites.service';
 import {AuthService} from '../auth.service';
 

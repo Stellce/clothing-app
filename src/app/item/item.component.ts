@@ -9,7 +9,7 @@ import {AuthService} from '../auth/auth.service';
 import {BreadcrumbComponent} from '../categories/list-items/breadcrumb/breadcrumb.component';
 import {UniqueItem} from '../categories/list-items/item-card/item-card.model';
 import {CartService} from '../tabs/cart/cart.service';
-import {FieldToTextPipe} from '../pipes/field-to-text';
+import {FieldToTextPipe} from '../shared/pipes/field-to-text';
 import {Image} from "./image.model";
 import {ItemDetails} from "./item.model";
 import {ItemsService} from "./items.service";
@@ -18,11 +18,11 @@ import {AddToFavoritesComponent} from "./add-to-favorites/add-to-favorites.compo
 import {MatRipple} from "@angular/material/core";
 import {InputQuantityComponent} from "./input-quantity/input-quantity.component";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {DialogComponent} from "../dialogs/dialog/dialog.component";
+import {DialogComponent} from "../shared/dialog/dialog.component";
 import {OrdersService} from "../order-page/orders.service";
 import {OrderReq} from "../order-page/order-req.model";
 import {UpdateCartItemReq} from "../tabs/cart/req/update-cart-req.model";
-import {DialogData} from "../dialogs/dialog/dialog-data.model";
+import {DialogData} from "../shared/dialog/dialog-data.model";
 import {CartItem} from "../tabs/cart/cart-item.model";
 import {Subscription} from "rxjs";
 

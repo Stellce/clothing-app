@@ -4,14 +4,14 @@ import {ItemCardComponent} from '../../categories/list-items/item-card/item-card
 import {NgStyle} from '@angular/common';
 import {FavoritesService} from './favorites.service';
 import {ItemCard} from 'src/app/categories/list-items/item-card/item-card.model';
-import {LocalService} from 'src/app/local/local.service';
+import {LocalService} from 'src/app/shared/local/local.service';
 import {AuthService} from 'src/app/auth/auth.service';
 import {forkJoin, Subscription} from 'rxjs';
 import {ItemDetails} from "../../item/item.model";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatDialog} from "@angular/material/dialog";
-import {DialogData} from "../../dialogs/dialog/dialog-data.model";
-import {DialogComponent} from "../../dialogs/dialog/dialog.component";
+import {DialogData} from "../../shared/dialog/dialog-data.model";
+import {DialogComponent} from "../../shared/dialog/dialog.component";
 
 @Component({
   selector: 'app-favorites',

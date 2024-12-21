@@ -17,8 +17,8 @@ import {CheckboxComponent} from './checkbox/checkbox.component';
 import {Filter} from "./filter.model";
 import {FilterService} from "./filter.service";
 import {SelectedFilters} from "./selected-filters.model";
-import {DialogComponent} from "../../../dialogs/dialog/dialog.component";
-import {DialogData} from "../../../dialogs/dialog/dialog-data.model";
+import {DialogComponent} from "../../../shared/dialog/dialog.component";
+import {DialogData} from "../../../shared/dialog/dialog-data.model";
 import {MatDialog} from "@angular/material/dialog";
 
 @Component({
