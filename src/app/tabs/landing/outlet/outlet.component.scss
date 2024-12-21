@@ -6,7 +6,13 @@
   flex: 1;
   overflow-x: auto;
 
-  & > * {
+  app-item-card {
+    width: 60%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  app-item-card {
     width: 30%;
   }
 }
