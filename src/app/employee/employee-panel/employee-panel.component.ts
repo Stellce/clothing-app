@@ -22,7 +22,10 @@ import {CdkTextareaAutosize} from "@angular/cdk/text-field";
 import {FieldToTextPipe} from "../../shared/pipes/field-to-text";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {ItemEditorComponent} from "./item-editor/item-editor.component";
-import {tap} from "rxjs";
+import {finalize, tap} from "rxjs";
+import {ItemsTableComponent} from "./items-table/items-table.component";
+import {DialogService} from "../../shared/dialog/dialog.service";
+import {ItemsService} from "../../item/items.service";
 
 @Component({
   selector: 'app-employee-panel',
@@ -50,7 +53,8 @@ import {tap} from "rxjs";
     MatMiniFabButton,
     MatProgressSpinner,
     ItemEditorComponent,
-    MatAccordion
+    MatAccordion,
+    ItemsTableComponent
   ],
   templateUrl: './employee-panel.component.html',
   styleUrl: './employee-panel.component.scss'
@@ -65,7 +69,9 @@ export class EmployeePanelComponent implements OnInit {
   constructor(
     private employeeService: EmployeeService,
     private dialog: MatDialog,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private dialogService: DialogService,
+    private itemsService: ItemsService
   ) {}
 
   ngOnInit() {
@@ -74,28 +80,34 @@ export class EmployeePanelComponent implements OnInit {
   }
 
   onAddItemsToLandingPage() {
-    const ids = this.addIds.value.join(',');
-    this.employeeService.addToLandingPage(ids).subscribe({
-      next: () => {
-        const data: DialogData = {
-          title: 'Items added',
-          description: 'Items were successfully added to landing page',
-          buttonName: 'Ok'
+    const ids = this.addIds.value;
+    const loadingDialog = this.dialogService.createLoadingDialog();
+    this.employeeService.addToLandingPage(ids)
+      .pipe(finalize(() => {
+        loadingDialog.close();
+        this.itemsService.requestLandingPage().subscribe();
+      }))
+      .subscribe({
+        next: () => {
+          const data: DialogData = {
+            title: 'Items added',
+            description: 'Items were successfully added to landing page',
+            buttonName: 'Ok'
+          }
+          this.dialog.open(DialogComponent, {data});
+        },
+        error: err => {
+          const data: DialogData = {
+            title: 'Error',
+            description: `Could not add items. ${err['status'] ? `Error ${err['status']} occurred` : ''}`,
+            buttonName: 'Ok'
+          }
+          this.dialog.open(DialogComponent, {data});
         }
-        this.dialog.open(DialogComponent, {data});
-      },
-      error: err => {
-        const data: DialogData = {
-          title: 'Error',
-          description: `Something went wrong. Could not add items. ${err['status'] ? `Error ${err['status']} occurred` : ''}`,
-          buttonName: 'Ok'
-        }
-        this.dialog.open(DialogComponent, {data});
-      }
-    });
+      });
   }
   onRemoveItemsFromLandingPage() {
-    const ids = this.deleteIds.value.join(',');
+    const ids = this.deleteIds.value;
     this.employeeService.deleteFromLandingPage(ids).subscribe({
       next: () => {
         const dialogData: DialogData = {
@@ -108,7 +120,7 @@ export class EmployeePanelComponent implements OnInit {
       error: err => {
         const dialogData: DialogData = {
           title: 'Error',
-          description: `Something went wrong. Could not delete items. ${err['status'] ? `Error ${err['status']} occurred` : ''}`,
+          description: `Could not delete items. ${err['status'] ? `Error ${err['status']} occurred` : ''}`,
           buttonName: 'Ok'
         }
         this.dialog.open(DialogComponent, {data: dialogData});
@@ -121,7 +133,12 @@ export class EmployeePanelComponent implements OnInit {
   onDeleteItem() {
     this.employeeService.deleteItem(this.deleteItemId.value).subscribe({
       next: res => {
-        console.log('Item deleted', res)
+        console.log('Item deleted', res);
+        const data: DialogData = {
+          title: 'Done',
+          description: 'Item successfully deleted'
+        }
+        this.dialog.open(DialogComponent, {data});
       },
       error: err => {
         const data: DialogData = {

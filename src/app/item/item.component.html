@@ -34,6 +34,12 @@
         </div>
         <div class="parameters">
           <span>Parameters</span>
+          @if (authService.user().roles.includes('EMPLOYEE') || authService.user().roles.includes('ADMIN')) {
+            <div class="param space-between">
+              <span>id:</span>
+              <span>{{item.id}} <button mat-icon-button [cdkCopyToClipboard]="item.id" (cdkCopyToClipboardCopied)="onItemIdCopy()"><img src="assets/icons/copy.svg" alt="copy"/></button></span>
+            </div>
+          }
           {{item.description}}
           @for (param of params; track param.key) {
             <div class="param space-between">

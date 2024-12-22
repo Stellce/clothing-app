@@ -5,13 +5,14 @@
     </mat-expansion-panel-header>
     <app-outlet/>
     <mat-divider/>
-    <h2>Add landing item(s)</h2>
+    <h2>Add landing items (comma-separated)</h2>
     <mat-form-field>
       <mat-label>Ids (id1;id2;id3...)</mat-label>
       <input matInput [formControl]="addIds">
     </mat-form-field>
     <button mat-button (click)="onAddItemsToLandingPage()">Confirm</button>
     <mat-divider/>
+    <h2>Remove landing items (comma-separated)</h2>
     <mat-form-field>
       <mat-label>Ids (id1;id2;id3...)</mat-label>
       <input matInput [formControl]="deleteIds">

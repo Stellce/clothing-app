@@ -25,13 +25,14 @@ import {UpdateCartItemReq} from "../tabs/cart/req/update-cart-req.model";
 import {DialogData} from "../shared/dialog/dialog-data.model";
 import {CartItem} from "../tabs/cart/cart-item.model";
 import {Subscription} from "rxjs";
+import {CdkCopyToClipboard} from "@angular/cdk/clipboard";
 
 @Component({
   selector: 'app-item',
   templateUrl: './item.component.html',
   styleUrls: ['./item.component.scss'],
   standalone: true,
-  imports: [BreadcrumbComponent, NgClass, MatButtonModule, ReviewsComponent, CurrencyPipe, MatFormFieldModule, MatInputModule, FormsModule, NgStyle, FieldToTextPipe, AddToFavoritesComponent, MatRipple, InputQuantityComponent]
+  imports: [BreadcrumbComponent, NgClass, MatButtonModule, ReviewsComponent, CurrencyPipe, MatFormFieldModule, MatInputModule, FormsModule, NgStyle, FieldToTextPipe, AddToFavoritesComponent, MatRipple, InputQuantityComponent, CdkCopyToClipboard]
 })
 export class ItemComponent implements OnInit, OnDestroy {
   item: ItemDetails = null;
@@ -206,6 +207,14 @@ export class ItemComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.dialogSubscription?.unsubscribe();
+  }
+
+  onItemIdCopy() {
+    const data: DialogData = {
+      title: 'Copied!',
+      description: 'Id successfully copied to clipboard'
+    }
+    this.dialog.open(DialogComponent, {data});
   }
 
   private checkIsInCart() {
