@@ -10,6 +10,7 @@ import {GoogleLoginButtonComponent} from "../google-login-button/google-login-bu
 import {MatDialog} from "@angular/material/dialog";
 import {DialogComponent} from "../../shared/dialog/dialog.component";
 import {DialogData} from "../../shared/dialog/dialog-data.model";
+import {finalize} from "rxjs";
 
 @Component({
   selector: 'app-login',
@@ -38,8 +39,8 @@ export class LoginComponent implements OnInit{
     if(this.form.invalid) return;
     this.isLoading.set(true);
     let loginUser: LoginUser = {...this.form.value}
-    this.authService.login(loginUser).subscribe({
-      next: () => this.isLoading.set(false),
+    this.authService.login(loginUser).pipe(finalize(() => this.isLoading.set(false))).subscribe({
+      next: () => {},
       error: err => {
         const status = err['status'];
         const description = status === 400 ? `Account is not activated` : `Username or password is not valid.`;
@@ -49,13 +50,12 @@ export class LoginComponent implements OnInit{
           buttonName: 'Ok'
         }
         this.dialog.open(DialogComponent, {data});
-        this.isLoading.set(false);
       }
     });
   }
 
   onPasswordReset() {
-    this.authService.sendRecoveryEmail(this.form.value['username']);
+    this.authService.sendPasswordRecovery(this.form.value['username']);
   }
 
   turnPasswordShown() {

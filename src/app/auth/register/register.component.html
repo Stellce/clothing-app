@@ -45,23 +45,23 @@
       I declare that I have read and accept the SpaceFincher Terms & Conditions.
       <span [style]="{color: 'red'}">*</span>
     </mat-checkbox>
-    @if (!agreement.checked && showError) {
+    @if (!agreement.checked && checkAgreement()) {
       <mat-error>Please, consent the agreement</mat-error>
     }
-    <button mat-raised-button color="primary">Register</button>
+    <button mat-raised-button>Register</button>
   </form>
   <div class="additional-actions">
     <a [routerLink]="['/', 'account', 'login']">Login</a>
     <div class="activation-resend">
       @if (showEmailResend()) {
         <span>No email? <a (click)="onActivationResend()">Resend</a></span>
-      } @else if (emailResendTimer()) {
-        <span>Successfully sent! Next resend available in: </span>
+      } @else if (emailResendTimeout()) {
+        <span>Resend available in: </span>
       }
-      @if (emailResendTimer()) {
+      @if (emailResendTimeout()) {
         <div class="email-timer">
-          <div class="loader"></div>
-          <div class="label">{{emailResendTimer()}}</div>
+          <mat-progress-spinner [diameter]="48" [value]="emailSpinnerValue()"/>
+          <div class="label">{{Math.round(emailResendTimeout() / 1000)}}</div>
         </div>
       }
     </div>

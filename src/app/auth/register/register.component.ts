@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnInit, signal, WritableSignal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, OnInit, signal, WritableSignal} from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatButtonModule} from '@angular/material/button';
 import {MatCheckboxModule} from '@angular/material/checkbox';
@@ -14,6 +14,7 @@ import {DialogData} from "../../shared/dialog/dialog-data.model";
 import {DialogComponent} from "../../shared/dialog/dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {NgStyle} from "@angular/common";
+import {finalize} from "rxjs";
 
 @Component({
   selector: 'app-register',
@@ -24,12 +25,13 @@ import {NgStyle} from "@angular/common";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RegisterComponent implements OnInit {
-  protected readonly showError: WritableSignal<boolean> = signal<boolean>(false);
-  protected readonly showEmailResend: WritableSignal<boolean> = signal<boolean>(true);
-  protected readonly emailResendTimer: WritableSignal<number> = signal<number>(0);
-  protected readonly isLoading: WritableSignal<boolean> = signal<boolean>(false);
-  protected readonly passwordErrors: WritableSignal<string[]> = signal<string[]>([]);
-  protected readonly isPasswordShown: WritableSignal<boolean> = signal<boolean>(false);
+  checkAgreement: WritableSignal<boolean> = signal<boolean>(false);
+  showEmailResend: WritableSignal<boolean> = signal<boolean>(false);
+  emailResendTimeout: WritableSignal<number> = signal<number>(0);
+  emailSpinnerValue = computed(() => this.emailResendTimeout() / 150);
+  isLoading: WritableSignal<boolean> = signal<boolean>(false);
+  passwordErrors: WritableSignal<string[]> = signal<string[]>([]);
+  isPasswordShown: WritableSignal<boolean> = signal<boolean>(false);
   form: FormGroup;
 
   constructor(
@@ -45,7 +47,7 @@ export class RegisterComponent implements OnInit {
   }
 
   onRegister() {
-    this.showError.set(true);
+    this.checkAgreement.set(true);
     this.passwordErrors.set(this.authService.errorsOnPasswordValidation(this.form.controls['password'].value))
     if(this.form.invalid || this.passwordErrors().length) return;
     let registerUser: RegisterUser = {
@@ -54,16 +56,15 @@ export class RegisterComponent implements OnInit {
       email: this.form.value.email,
       password: this.form.value.password
     }
-    console.log(registerUser);
+    console.log('user to register: ', registerUser);
     this.isLoading.set(true);
-    this.authService.register(registerUser).subscribe({
+    this.authService.register(registerUser).pipe(finalize(() => this.isLoading.set(false))).subscribe({
       next: () => {
-        this.isLoading.set(false);
         this.showEmailResend.set(true);
       },
       error: err => {
         const status = err['status'];
-        const description = status === 409 ? 'Email already registered' :
+        const description = status === 409 ? 'Email is already registered' :
           status === 400 ? 'Validation failed' :
           status === 503 ? 'Service unavailable' : '';
         const data: DialogData = {
@@ -71,39 +72,45 @@ export class RegisterComponent implements OnInit {
           description
         }
         this.dialog.open(DialogComponent, {data});
-        this.isLoading.set(false);
       }
     });
   }
 
   onActivationResend() {
-    this.authService.activationResend(this.form.value.email).subscribe({
-      next: () => {
-        if (this.emailResendTimer) return;
-
-        this.emailResendTimer.set(15);
-        this.showEmailResend.set(false);
-
-        let interval = setInterval(() => {
-          if (this.emailResendTimer) {
-            this.emailResendTimer.update(time => time--);
-          } else {
-            clearInterval(interval);
-            this.showEmailResend.set(true);
+    this.authService.activationResend(this.form.value.email)
+      .pipe(finalize(() => this.isLoading.set(false)))
+      .subscribe({
+        next: () => {
+          const data: DialogData = {
+            title: 'Activation resent',
+            description: 'Check your email'
           }
-        }, 1000);
-      },
-      error: err => {
-        const data: DialogData = {
-          title: `Activation resend went wrong`,
-          description: `Try again later`
+          this.dialog.open(DialogComponent, {data});
+
+          if (this.emailResendTimeout()) return;
+
+          this.emailResendTimeout.set(15_000);
+          this.showEmailResend.set(false);
+
+          const interval = setInterval(() => {
+            if (this.emailResendTimeout()) {
+              this.emailResendTimeout.update(time => time - 100);
+            } else {
+              clearInterval(interval);
+              this.showEmailResend.set(true);
+            }
+          }, 100);
+        },
+        error: err => {
+          const data: DialogData = {
+            title: `Activation resend went wrong`,
+            description: `Try again later`
+          }
+          this.dialog.open(DialogComponent, {data});
+          this.showEmailResend.set(true);
+          this.emailResendTimeout.set(0);
         }
-        this.dialog.open(DialogComponent, {data});
-        this.showEmailResend.set(true);
-        this.emailResendTimer.set(0);
-        console.error(err);
-      }
-    });
+      });
   }
 
   turnPasswordShown() {
@@ -126,4 +133,6 @@ export class RegisterComponent implements OnInit {
     this.isLoading.set(true);
     this.authService.loginGoogle(code);
   }
+
+  protected readonly Math = Math;
 }

@@ -1,10 +1,10 @@
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Injectable, signal, WritableSignal} from '@angular/core';
 import {NgForm} from "@angular/forms";
-import {MatDialog} from "@angular/material/dialog";
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {Router} from "@angular/router";
 import {jwtDecode} from "jwt-decode";
-import {catchError, Observable, of, switchMap, tap} from 'rxjs';
+import {finalize, firstValueFrom, Observable, switchMap, tap} from 'rxjs';
 import {environment} from 'src/environments/environment';
 import {DialogData} from "../shared/dialog/dialog-data.model";
 import {DialogComponent} from "../shared/dialog/dialog.component";
@@ -15,6 +15,7 @@ import {RegisterUser} from "./register/register-user.model";
 import {TokenInfo} from "./token-info.model";
 import {User} from "./user.model";
 import {PurchaseData} from "./purchase-data.model";
+import {DialogService} from "../shared/dialog/dialog.service";
 
 @Injectable({
   providedIn: 'root'
@@ -31,11 +32,13 @@ export class AuthService {
 
   user: WritableSignal<User> = signal<User>(null);
   tokenInfo: WritableSignal<TokenInfo> = signal<TokenInfo>(null);
+  passwordRecoveryTimeout = 0;
 
   constructor(
     private http: HttpClient,
     private router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private dialogService: DialogService
   ) {}
 
   loginGoogle(code: string) {
@@ -76,13 +79,6 @@ export class AuthService {
         description: 'Please, check your email'
       };
       this.dialog.open(DialogComponent, {data: dialogData});
-    }), catchError(() => {
-      let dialogData: DialogData = {
-        title: 'Registration failed!',
-        description: 'Please, try again later'
-      };
-      this.dialog.open(DialogComponent, {data: dialogData});
-      return of('something happened');
     }));
   }
 
@@ -93,11 +89,10 @@ export class AuthService {
       return this.http.post(environment.backendUrl + '/oauth2/registration/customer/resend-email', {}, {params})
     }
 
-    if (email) return resend(email);
     let dialogData: DialogData = {
       title: 'Please, provide your email',
       description: 'You will receive a new email with an activation link',
-      inputs: [{name: 'email'}],
+      inputs: [{name: 'email', defaultValue: email}],
       buttonName: 'Resend'
     }
     const dialogRef = this.dialog.open(DialogComponent, {data: dialogData});
@@ -133,22 +128,56 @@ export class AuthService {
       .pipe(tap(tokenInfo => this.authUser(tokenInfo)));
   }
 
-  sendRecoveryEmail(email: string | undefined) {
-    const dialogData: DialogData = {
-      title: 'Password reset',
-      description: '',
-      note: 'After clicking “Reset”, you will receive an email with next steps',
-      inputs: [{name: 'email', defaultValue: email}],
-      buttonName: 'Reset'
+  async sendPasswordRecovery(defaultEmail: string | undefined) {
+    if (this.passwordRecoveryTimeout) {
+      const data: DialogData = {
+        title: 'Password recovery',
+        description: `Password recovery will be available in ${this.passwordRecoveryTimeout} seconds`
+      }
+      this.dialog.open(DialogComponent, {data});
+      return;
     }
-    const dialogRef = this.dialog.open(DialogComponent, {data: dialogData});
 
-    dialogRef.afterClosed().subscribe((form: NgForm) => {
-      const email = form.value.email;
-      if (!email) return;
-      const params = new HttpParams().set('email', email);
-      this.http.post(environment.backendUrl + '/oauth2/users/recover-password', {}, {params}).subscribe({
+    const askForEmail = async () => {
+      const dialogData: DialogData = {
+        title: 'Password reset',
+        note: 'After clicking “Reset”, you will receive an email with next steps',
+        inputs: [{name: 'email', defaultValue: defaultEmail}],
+        buttonName: 'Reset'
+      }
+      const dialogRef = this.dialog.open(DialogComponent, {data: dialogData});
+      const form: NgForm = await firstValueFrom(dialogRef.afterClosed())
+      return form?.value?.email;
+    }
+    const setLoadingIfNotRespondedInMs = (ms: number) => {
+      setTimeout(() => {
+        if (!responded) {
+          loadingDialog = this.dialogService.createLoadingDialog();
+        }
+      }, ms);
+    }
+
+    const email: string = await askForEmail();
+    if (!email) return;
+
+    let loadingDialog: MatDialogRef<DialogComponent> = null;
+    let responded = false;
+    setLoadingIfNotRespondedInMs(300);
+
+    const params = new HttpParams().set('email', email);
+    this.http.post(environment.backendUrl + '/oauth2/users/recover-password', {}, {params})
+      .pipe(finalize(() => {
+        responded = true;
+        loadingDialog?.close();
+      }))
+      .subscribe({
         next: () => {
+          this.passwordRecoveryTimeout = 15;
+          const interval = setInterval(() => {
+            if (this.passwordRecoveryTimeout) this.passwordRecoveryTimeout--;
+            else clearInterval(interval);
+          }, 1000);
+
           const dialogData: DialogData = {
             title: 'Check your email!',
             description: 'Recovery password email successfully sent!'
@@ -160,17 +189,15 @@ export class AuthService {
           const description = status === 404
             ? `Account does not exist`
             : status === 403
-              ? `Account isn't activated`
+              ? `Account is not activated`
               : `Try again later.`;
           const dialogData: DialogData = {
-            title: `Couldn't log in`,
+            title: `Cannot recover password`,
             description
           }
           this.dialog.open(DialogComponent, {data: dialogData});
-          console.error(err);
         }
       });
-    });
   }
 
   recoverPassword(password: string, token: string) {

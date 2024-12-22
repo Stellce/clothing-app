@@ -1,12 +1,12 @@
 <div class="back-button-wrapper">
-  <button mat-icon-button (click)="navigateBack()"><img src="../../../../assets/icons/arrow_back.svg" alt="back"/></button>
+  <button mat-icon-button (click)="navigateBack()"><img src="assets/icons/arrow_back.svg" alt="back"/></button>
 </div>
 <div class="order-history">
   @if (isLoading) {
-    <mat-spinner></mat-spinner>
+    <mat-spinner/>
   } @else if (orders().length) {
     @for (order of orders(); track order.id) {
-      <app-order-item-bar [order]="order"></app-order-item-bar>
+      <app-order-item-bar [order]="order"/>
     }
   } @else {
     <h2>You have not purchased any items yet.</h2>

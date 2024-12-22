@@ -4,10 +4,10 @@ import {
   Component,
   input,
   InputSignal,
-  model,
-  ModelSignal,
   OnDestroy,
-  OnInit
+  OnInit,
+  signal,
+  WritableSignal
 } from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {AuthService} from 'src/app/auth/auth.service';
@@ -26,7 +26,8 @@ import {Subscription} from "rxjs";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ItemCardComponent implements OnInit, OnDestroy {
-  item: ModelSignal<ItemCard> = model.required<ItemCard>();
+  itemWithoutImages: InputSignal<ItemCard> = input.required<ItemCard>();
+  item: WritableSignal<ItemCard> = signal<ItemCard>(null);
   isBreadcrumbResolved: InputSignal<boolean> = input();
   imagesSubscription: Subscription;
 
@@ -37,17 +38,21 @@ export class ItemCardComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    if (!this.authService.user() && this.isOnLocalWishlist(this.item())) {
-      this.item.update(item => ({...item, metadata: {...item.metadata, onWishList: true}}));
-    }
+    this.item.set(this.itemWithoutImages());
     this.imagesSubscription = this.itemsService.requestItemImages(this.item().id).subscribe({
       next: images => {
-        this.item.update(item => ({...item, images}))
+        this.item.update(item => ({...item, images}));
       },
       error: err => {
         console.error(err);
       }
     });
+    if (!this.authService.user() && this.isOnLocalWishlist(this.item())) {
+      this.item.update(item => {
+        item.metadata.onWishList = true;
+        return item;
+      });
+    }
   }
 
   ngOnDestroy() {

@@ -42,7 +42,7 @@ export class DialogComponent implements OnInit {
       controls[input.name] = new FormControl(input.defaultValue, Validators.required);
     });
     this.form = this.fb.group(controls);
-    console.log('newForm: ', this.form);
+    console.log('Dialog form values: ', this.form.value);
   }
 
   setInputType(type: string): string {

@@ -1,7 +1,7 @@
 @if (items().length) {
   <div class="item-card-list">
     @for (item of items(); track item.id) {
-      <app-item-card [item]="item"></app-item-card>
+      <app-item-card [itemWithoutImages]="item"></app-item-card>
     }
   </div>
 } @else {

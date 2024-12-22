@@ -16,6 +16,9 @@ export class LandingComponent implements OnInit{
   categories: Category[];
   randomCategory: Category;
   gender: 'MEN' | 'WOMEN';
+  get randomCategoryImageBg() {
+    return `url("data:image/png;base64,${this.randomCategory.image}")`;
+  };
   constructor(
     private categoriesService: CategoriesService
   ) {}

@@ -3,7 +3,7 @@
 } @else {
   <div class="carousel">
     @for (item of items(); track item.id) {
-      <app-item-card [item]="item"/>
+      <app-item-card [itemWithoutImages]="item"/>
     }
   </div>
 }

@@ -1,5 +1,5 @@
 import {CommonModule} from '@angular/common';
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit, signal, WritableSignal} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {forkJoin} from 'rxjs';
 import {LocalService} from 'src/app/shared/local/local.service';
@@ -11,10 +11,11 @@ import {AuthService} from '../auth.service';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './activate.component.html',
-  styleUrls: ['./activate.component.scss']
+  styleUrls: ['./activate.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ActivateComponent implements OnInit {
-  title: string = 'Activating account...';
+  title: WritableSignal<string> = signal<string>('Activating account...');
 
   constructor(
     private authService: AuthService,
@@ -28,11 +29,11 @@ export class ActivateComponent implements OnInit {
     this.router.navigate(['/', 'account']);
     this.authService.activateAccount(this.route.snapshot.queryParamMap.get('token')).subscribe({
       next: () => {
-        this.title = 'Activation success! You will be redirected in a second';
+        this.title.set('Activation success! You will be redirected in a second');
         setTimeout(() => this.router.navigate(['/', 'account']), 1000);
         this.uploadFavorites();
       },
-      error: () => this.title = 'Activation link is wrong or expired'
+      error: () => this.title.set('Activation link is wrong or expired')
     });
   }
 
