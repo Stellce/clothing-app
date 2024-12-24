@@ -1,4 +1,4 @@
-import {Component, model, ModelSignal, signal, WritableSignal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, model, ModelSignal, signal, WritableSignal} from '@angular/core';
 import {AuthService} from "../../auth/auth.service";
 import {FavoritesService} from "../../tabs/favorites/favorites.service";
 import {LocalService} from "../../shared/local/local.service";
@@ -11,7 +11,8 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
   standalone: true,
   imports: [NgStyle, MatProgressSpinner],
   templateUrl: './add-to-favorites.component.html',
-  styleUrl: './add-to-favorites.component.scss'
+  styleUrl: './add-to-favorites.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddToFavoritesComponent {
   item: ModelSignal<ItemCard> = model.required<ItemCard>();

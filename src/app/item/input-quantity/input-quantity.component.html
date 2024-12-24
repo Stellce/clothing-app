@@ -1,10 +1,10 @@
 <div class="flex-col">
   <div>
-    <button mat-mini-fab [disabled]="quantity === min" (click)="changeQuantity(-1)">-</button>
-    <input type="number" [ngStyle]="{width: input.value.toString().length + 'ch'}" [(ngModel)]="quantity" [min]="min" [max]="max" #input (ngModelChange)="forbidIllegalQuantity($event, input)">
-    <button mat-mini-fab [disabled]="quantity === max" (click)="changeQuantity(1)">+</button>
+    <button mat-mini-fab [disabled]="quantity === min()" (click)="changeQuantity(-1)">-</button>
+    <input type="number" [ngStyle]="{width: input.value.toString().length + 1 + 'ch'}" [(ngModel)]="quantity" [min]="min()" [max]="max()" #input (ngModelChange)="forbidIllegalQuantity($event, input)">
+    <button mat-mini-fab [disabled]="quantity === max()" (click)="changeQuantity(1)">+</button>
   </div>
-  @if (+input.value > max || +input.value < min) {
+  @if (+input.value > max() || +input.value < min()) {
     <span class="error">Entered value is wrong</span>
   }
 </div>

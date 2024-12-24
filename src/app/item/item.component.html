@@ -1,31 +1,31 @@
-@if (item) {
+@if (item()) {
   <div class="item">
-    <app-breadcrumb class="breadcrumb-line" [default]="isFromCart ? [{name: 'Cart', path: ['/', 'cart']}] : null" [itemName]="item.name"></app-breadcrumb>
+    <app-breadcrumb class="breadcrumb-line" [default]="isFromCart() ? [{name: 'Cart', path: ['/', 'cart']}] : null" [itemName]="item().name"/>
     <div class="product">
-      @if (item.images?.length) {
+      @if (item().images?.length) {
         <div class="images">
-          <img [src]="item.images[selectedImageIndex].url" [alt]="item.name">
-          <app-add-to-favorites [item]="item"/>
+          <img [src]="item().images[selectedImageIndex()].url" [alt]="item().name">
+          <app-add-to-favorites [item]="item()"/>
           <div class="img-carousel">
-            @for (image of item.images; track image.id; let i = $index) {
+            @for (image of item().images; track image.id; let i = $index) {
               <img [src]="image.url"
-                   [alt]="item.name" (click)="selectedImageIndex = i">
+                   [alt]="item().name" (click)="selectedImageIndex.set(i)">
             }
           </div>
         </div>
       }
       <div class="description">
         <div class="product-name space-between">
-          <span>{{item.name}}</span>
-          <span>{{item.price | currency}}</span>
+          <span>{{item().name}}</span>
+          <span>{{item().price | currency}}</span>
         </div>
         <div class="sizes">
           <div class="scroll">
-            @for (uniqueItem of item.uniqueItems; track uniqueItem.size) {
+            @for (uniqueItem of item().uniqueItems; track uniqueItem.size) {
               @if (uniqueItem.quantity > 0) {
                 <div class="size"
                      matRipple
-                     [ngClass]="{'available': true, 'selected': uniqueItem === selectedUniqueItem}"
+                     [ngClass]="{'available': true, 'selected': uniqueItem === selectedUniqueItem()}"
                      (click)="setUniqueItem(uniqueItem)"
                 >{{sizeString(uniqueItem.size)}}</div>
               }
@@ -34,32 +34,32 @@
         </div>
         <div class="parameters">
           <span>Parameters</span>
-          @if (authService.user().roles.includes('EMPLOYEE') || authService.user().roles.includes('ADMIN')) {
+          @if (authService.user()?.roles?.includes('EMPLOYEE') || authService.user()?.roles?.includes('ADMIN')) {
             <div class="param space-between">
               <span>id:</span>
-              <span>{{item.id}} <button mat-icon-button [cdkCopyToClipboard]="item.id" (cdkCopyToClipboardCopied)="onItemIdCopy()"><img src="assets/icons/copy.svg" alt="copy"/></button></span>
+              <span>{{item().id}} <button mat-icon-button [cdkCopyToClipboard]="item().id" (cdkCopyToClipboardCopied)="onItemIdCopy()"><img src="assets/icons/copy.svg" alt="copy"/></button></span>
             </div>
           }
-          {{item.description}}
-          @for (param of params; track param.key) {
+          {{item().description}}
+          @for (param of params(); track param['key']) {
             <div class="param space-between">
-              <span>{{param.key + ":" | fieldToText}}</span>
-              <span>{{param.value}}</span>
+              <span>{{param['key'] + ":" | fieldToText}}</span>
+              <span>{{param['value']}}</span>
             </div>
           }
         </div>
         <div class="quantity space-between">
-          <span>Quantity (max: {{selectedUniqueItem.quantity}}):</span>
-          <app-input-quantity [(quantity)]="quantity" [max]="selectedUniqueItem.quantity"/>
+          <span>Quantity (max: {{selectedUniqueItem().quantity}}):</span>
+          <app-input-quantity [(quantity)]="quantity" [max]="selectedUniqueItem().quantity"/>
         </div>
         <div class="actions">
-          @if (selectedCartItem?.quantity) {
-            <span>Already added to cart {{selectedCartItem?.quantity}}</span>
-            <button mat-flat-button color="primary" [disabled]="quantity === selectedCartItem.quantity" (click)="onSaveCartItem()">
-              @if (quantity === selectedCartItem.quantity) {
+          @if (selectedCartItem()?.quantity) {
+            <span>Already added to cart {{selectedCartItem()?.quantity}}</span>
+            <button mat-flat-button color="primary" [disabled]="quantity() === selectedCartItem().quantity" (click)="onSaveCartItem()">
+              @if (quantity() === selectedCartItem().quantity) {
                 <span>Change quantity to update it in a cart</span>
               } @else {
-                {{quantity > selectedCartItem.quantity ? 'Add' : 'Remove'}} {{Math.abs(quantityDiff)}} {{Math.abs(quantityDiff) > 1 ? 'items' : 'item'}} {{quantityDiff > 0 ? 'to' : 'from'}} cart
+                {{quantity() > selectedCartItem().quantity ? 'Add' : 'Remove'}} {{Math.abs(quantityDiff())}} {{Math.abs(quantityDiff()) > 1 ? 'items' : 'item'}} {{quantityDiff() > 0 ? 'to' : 'from'}} cart
               }
             </button>
           } @else {
@@ -73,5 +73,5 @@
       </div>
     </div>
   </div>
-  <app-reviews [itemId]="item.id"></app-reviews>
+  <app-reviews [itemId]="item().id"></app-reviews>
 }

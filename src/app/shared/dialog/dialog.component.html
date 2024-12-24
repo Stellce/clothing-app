@@ -16,7 +16,7 @@
             <input matInput [formControlName]="input.name" [type]="setInputType(input.name)">
             @if (input.name.includes('password')) {
               <button mat-icon-button matSuffix (click)="turnPasswordShown(input.name)">
-                <img [src]="'assets/icons/' + passwordsShown[getPasswordIndex(input.name)].isShown ? 'visibility' : 'visibility_off' + '.svg'" alt="Show/hide password" (click)="turnPasswordShown(input.name)"/>
+                <img [src]="'assets/icons/' + shownPasswords()[getPasswordIndex(input.name)].isShown ? 'visibility' : 'visibility_off' + '.svg'" alt="Show/hide password" (click)="turnPasswordShown(input.name)"/>
               </button>
             }
           </mat-form-field>

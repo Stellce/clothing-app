@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Inject, OnInit, signal, WritableSignal} from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -16,16 +16,18 @@ import {DialogData} from "./dialog-data.model";
 import {FieldToTextPipe} from "../pipes/field-to-text";
 import {MatOption, MatSelect} from "@angular/material/select";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {Password} from "./password.model";
 
 @Component({
-    selector: 'app-dialog',
-    templateUrl: './dialog.component.html',
-    styleUrls: ['./dialog.component.scss'],
-    standalone: true,
-  imports: [MatDialogModule, FormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, FieldToTextPipe, MatSelect, MatOption, MatProgressSpinner, ReactiveFormsModule]
+  selector: 'app-dialog',
+  templateUrl: './dialog.component.html',
+  styleUrls: ['./dialog.component.scss'],
+  standalone: true,
+  imports: [MatDialogModule, FormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, FieldToTextPipe, MatSelect, MatOption, MatProgressSpinner, ReactiveFormsModule],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DialogComponent implements OnInit {
-  passwordsShown: {fieldName: string, isShown: boolean}[] = [];
+  shownPasswords: WritableSignal<Password[]> = signal<Password[]>([]);
   form: FormGroup;
 
   constructor(
@@ -52,10 +54,13 @@ export class DialogComponent implements OnInit {
 
   turnPasswordShown(fieldName: string): void {
     let passwordIndex = this.getPasswordIndex(fieldName);
-    this.passwordsShown[passwordIndex].isShown = !this.passwordsShown[passwordIndex].isShown;
+    this.shownPasswords.update(passwords => {
+      passwords[passwordIndex].isShown = !passwords[passwordIndex].isShown;
+      return passwords;
+    });
   }
 
   getPasswordIndex(fieldName: string): number {
-    return this.passwordsShown.findIndex(pass => pass.fieldName === fieldName)
+    return this.shownPasswords().findIndex(pass => pass.fieldName === fieldName);
   }
 }

@@ -1,5 +1,5 @@
-import {Component, OnInit, signal, WritableSignal} from '@angular/core';
-import { OrdersService } from "./orders.service";
+import {ChangeDetectionStrategy, Component, OnInit, signal, WritableSignal} from '@angular/core';
+import {OrdersService} from "./orders.service";
 import {ActivatedRoute} from "@angular/router";
 import {OrderRes} from "./order-res.model";
 import {OrderItemBarComponent} from "./order-item-bar/order-item-bar.component";
@@ -22,7 +22,8 @@ import {CurrencyPipe} from "@angular/common";
     MatDivider,
     CurrencyPipe
   ],
-  standalone: true
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OrderPageComponent implements OnInit{
   order: WritableSignal<OrderRes> = signal<OrderRes>(null);
@@ -37,7 +38,7 @@ export class OrderPageComponent implements OnInit{
     const orderId = this.route.snapshot.paramMap.get('orderId');
     this.ordersService.getOrderById(orderId).subscribe(order => {
       this.isLoading.set(false);
-      this.order.set(order);
+      this.order.set({...order});
     })
   }
 }

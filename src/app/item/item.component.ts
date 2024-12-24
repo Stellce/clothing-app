@@ -1,10 +1,10 @@
 import {CurrencyPipe, NgClass, NgStyle} from '@angular/common';
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
 import {FormsModule, NgForm} from "@angular/forms";
 import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Params} from "@angular/router";
 import {AuthService} from '../auth/auth.service';
 import {BreadcrumbComponent} from '../categories/list-items/breadcrumb/breadcrumb.component';
 import {UniqueItem} from '../categories/list-items/item-card/item-card.model';
@@ -32,25 +32,21 @@ import {CdkCopyToClipboard} from "@angular/cdk/clipboard";
   templateUrl: './item.component.html',
   styleUrls: ['./item.component.scss'],
   standalone: true,
-  imports: [BreadcrumbComponent, NgClass, MatButtonModule, ReviewsComponent, CurrencyPipe, MatFormFieldModule, MatInputModule, FormsModule, NgStyle, FieldToTextPipe, AddToFavoritesComponent, MatRipple, InputQuantityComponent, CdkCopyToClipboard]
+  imports: [BreadcrumbComponent, NgClass, MatButtonModule, ReviewsComponent, CurrencyPipe, MatFormFieldModule, MatInputModule, FormsModule, NgStyle, FieldToTextPipe, AddToFavoritesComponent, MatRipple, InputQuantityComponent, CdkCopyToClipboard],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ItemComponent implements OnInit, OnDestroy {
-  item: ItemDetails = null;
-  selectedUniqueItem: UniqueItem;
-  quantity: number = 1;
-  params: { key: string, value: string }[] = [];
-  selectedImageIndex: number = 0;
-  cartItems: CartItem[] = [];
-  selectedCartItem: CartItem;
+  item: WritableSignal<ItemDetails> = signal<ItemDetails>(null);
+  selectedUniqueItem: WritableSignal<UniqueItem> = signal<UniqueItem>(null);
+  quantity: WritableSignal<number> = signal<number>(1);
+  params: WritableSignal<Params[]> = signal<Params[]>([]);
+  selectedImageIndex: WritableSignal<number> = signal<number>(0);
+  cartItems: WritableSignal<CartItem[]> = signal<CartItem[]>([]);
+  selectedCartItem: WritableSignal<CartItem> = signal<CartItem>(null);
   dialogSubscription: Subscription;
+  quantityDiff = computed(() => this.quantity() - this.selectedCartItem().quantity);
 
-  get isFromCart() {
-    return window.location.href.includes('cart');
-  }
-
-  get quantityDiff() {
-    return this.quantity - this.selectedCartItem.quantity
-  }
+  isFromCart = computed(() => window.location.href.includes('cart'));
 
   constructor(
     private itemsService: ItemsService,
@@ -66,9 +62,9 @@ export class ItemComponent implements OnInit, OnDestroy {
   }
 
   setUniqueItem(uniqueItem: UniqueItem) {
-    this.selectedUniqueItem = uniqueItem;
-    if (this.quantity > uniqueItem.quantity) this.quantity = uniqueItem.quantity;
-    this.selectedCartItem = this.cartItems.find(item => item.itemSize === this.selectedUniqueItem.size);
+    this.selectedUniqueItem.set(uniqueItem);
+    if (this.quantity() > uniqueItem.quantity) this.quantity.set(uniqueItem.quantity);
+    this.selectedCartItem.set(this.cartItems().find(item => item.itemSize === this.selectedUniqueItem().size));
   }
 
   addToCart() {
@@ -80,13 +76,13 @@ export class ItemComponent implements OnInit, OnDestroy {
       };
       this.dialog.open(DialogComponent, {data: dialogData});
     }
-    if (this.quantity > this.selectedUniqueItem.quantity) return;
+    if (this.quantity() > this.selectedUniqueItem().quantity) return;
 
     if (this.authService.user()) {
       this.cartService.addItem({
-        itemId: this.item.id,
-        quantity: this.quantity,
-        size: this.selectedUniqueItem.size
+        itemId: this.item().id,
+        quantity: this.quantity(),
+        size: this.selectedUniqueItem().size
       }).subscribe({
         next: () => successDialogInvoke(),
         error: e => {
@@ -139,9 +135,9 @@ export class ItemComponent implements OnInit, OnDestroy {
     }
     let order: OrderReq = {
       itemEntries: [{
-        itemId: this.item.id,
-        quantity: this.quantity,
-        size: this.selectedUniqueItem.size
+        itemId: this.item().id,
+        quantity: this.quantity(),
+        size: this.selectedUniqueItem().size
       }]
     };
     if (!this.authService.user()) {
@@ -195,9 +191,9 @@ export class ItemComponent implements OnInit, OnDestroy {
       this.dialog.open(DialogComponent, {data: dialogData});
     }
     const cartItem: UpdateCartItemReq = {
-      entryId: this.selectedCartItem.id,
-      quantity: this.quantity,
-      size: this.selectedUniqueItem.size
+      entryId: this.selectedCartItem().id,
+      quantity: this.quantity(),
+      size: this.selectedUniqueItem().size
     }
     this.cartService.updateItem(cartItem).subscribe({
       next: success,
@@ -221,10 +217,10 @@ export class ItemComponent implements OnInit, OnDestroy {
     this.cartService.getItems().subscribe(items => {
       if (!items.length) return;
       console.log('cart items: ', items);
-      this.cartItems = items.filter(item => item.itemId === this.item.id);
+      this.cartItems.set(items.filter(item => item.itemId === this.item().id))
       if (!this.cartItems.length) return;
-      this.selectedCartItem = this.cartItems.find(item => item.itemSize === this.selectedUniqueItem.size);
-      this.quantity = this.selectedCartItem.quantity;
+      this.selectedCartItem.set(this.cartItems().find(item => item.itemSize === this.selectedUniqueItem().size));
+      this.quantity.set(this.selectedCartItem().quantity);
     });
   }
 
@@ -232,15 +228,17 @@ export class ItemComponent implements OnInit, OnDestroy {
     const itemId = this.route.snapshot.paramMap.get("itemId");
     this.itemsService.requestItemById(itemId).subscribe((item: ItemDetails) => {
       if(!item) return;
-      this.item = item;
-      this.selectedUniqueItem = item.uniqueItems.find(i => i.quantity > 0);
-      this.item.params = {
-        color: this.item.color,
-        brand: this.item.brand
+      this.item.set(item);
+      this.selectedUniqueItem.set(item.uniqueItems.find(i => i.quantity > 0));
+      this.item().params = {
+        color: this.item().color,
+        brand: this.item().brand
       };
-      Object.entries(this.item.params).forEach(([key, value]) => this.params.push({key, value}))
+      Object.entries(this.item().params).forEach(([key, value]) => {
+        this.params.update(params => [...params, {key, value}])
+      });
       this.itemsService.requestItemImages(item.id).subscribe((images: Image[]) => {
-        this.item.images = images;
+        this.item().images = images;
       })
 
       if (this.authService.user()) this.checkIsInCart();

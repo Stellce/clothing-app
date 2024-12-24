@@ -1,7 +1,7 @@
 <div class="item-bar" (click)="onNavigate($event)">
   <div class="images">
-    @if (selectedImage) {
-      <img [src]="selectedImage"
+    @if (selectedImage()) {
+      <img [src]="selectedImage()"
            [ngStyle]="{cursor: order().itemEntries.length === 1 ? 'pointer' : 'default'}"
            alt=""/>
       @if (order().itemEntries.length > 1) {
@@ -10,7 +10,7 @@
             @if (item.images?.length) {
               <img [src]="item.images[0].url"
                    [alt]="item.itemName"
-                   (click)="selectedImage = item.images[0].url"/>
+                   (click)="selectedImage.set(item.images[0].url)"/>
             }
           }
         </div>
@@ -29,7 +29,7 @@
       }
     </span>
     <span class="status" [ngStyle]="{color: getDeliveryColor(order().status)}">
-      <span>{{order().status}}</span>
+      <span>{{order().status | fieldToText}}</span>
     </span>
   </div>
   <div class="price-date">

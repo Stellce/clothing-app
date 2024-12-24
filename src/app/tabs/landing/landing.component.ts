@@ -1,23 +1,24 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit, signal, WritableSignal} from '@angular/core';
 import {CategoriesService} from "../../categories/categories.service";
 import {Category} from "../../categories/category.model";
-import { OutletComponent } from './outlet/outlet.component';
-import { RouterLink } from '@angular/router';
-import { UpperCasePipe } from '@angular/common';
+import {OutletComponent} from './outlet/outlet.component';
+import {RouterLink} from '@angular/router';
+import {UpperCasePipe} from '@angular/common';
 
 @Component({
-    selector: 'app-landing',
-    templateUrl: './landing.component.html',
-    styleUrls: ['./landing.component.scss'],
-    standalone: true,
-    imports: [RouterLink, OutletComponent, UpperCasePipe]
+  selector: 'app-landing',
+  templateUrl: './landing.component.html',
+  styleUrls: ['./landing.component.scss'],
+  standalone: true,
+  imports: [RouterLink, OutletComponent, UpperCasePipe],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LandingComponent implements OnInit{
-  categories: Category[];
-  randomCategory: Category;
+  categories: WritableSignal<Category[]> = signal<Category[]>(null);
+  randomCategory: WritableSignal<Category> = signal<Category>(null);
   gender: 'MEN' | 'WOMEN';
   get randomCategoryImageBg() {
-    return `url("data:image/png;base64,${this.randomCategory.image}")`;
+    return `url("data:image/png;base64,${this.randomCategory().image}")`;
   };
   constructor(
     private categoriesService: CategoriesService
@@ -26,9 +27,9 @@ export class LandingComponent implements OnInit{
   ngOnInit() {
     this.categoriesService.categoriesList$.subscribe(categories => {
       if(!categories) return;
-      this.randomCategory = categories[this.getRandomIntTo(categories.length)];
+      this.randomCategory.set(categories[this.getRandomIntTo(categories.length)]);
       this.gender = this.getRandomGender();
-      this.setCategoryImage(this.gender, this.randomCategory.id);
+      this.setCategoryImage(this.gender, this.randomCategory().id);
     });
   }
 
@@ -43,7 +44,7 @@ export class LandingComponent implements OnInit{
 
   private setCategoryImage(gender: string, categoryId: string) {
     this.categoriesService.requestCategoriesImages(gender).subscribe(categoriesImages => {
-      this.randomCategory.image = categoriesImages[categoryId];
+      this.randomCategory.update(category => ({...category, image: categoriesImages[categoryId]}));
     });
   }
 

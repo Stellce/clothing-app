@@ -1,12 +1,12 @@
-@if (!randomCategory?.image) {
+@if (!randomCategory()?.image) {
     <div class="img-placeholder"></div>
 } @else {
   <div class="image">
     <div class="dark-bottom-gradient-image">
       <div class="category-image" [style]="{'background-image': randomCategoryImageBg}"></div>
     </div>
-    <div class="category-name" [routerLink]="['/', 'products', gender, randomCategory.id]">
-      <span>MORE ON {{randomCategory.name | uppercase}}</span>
+    <div class="category-name" [routerLink]="['/', 'products', gender, randomCategory().id]">
+      <span>MORE ON {{randomCategory().name | uppercase}}</span>
       <img src="assets/icons/arrow_down.svg" alt="more"/>
     </div>
   </div>

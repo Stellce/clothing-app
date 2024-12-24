@@ -2,11 +2,11 @@
   @if (order().itemEntries.length > 1) {
     <mat-expansion-panel>
       <mat-expansion-panel-header>
-        <app-item-bar [cartItem]="order().itemEntries[0]"/>
+        <app-item-bar [cartItem]="order().itemEntries[0]" [disabled]="true"/>
       </mat-expansion-panel-header>
       <div class="entries-list">
         @for (itemEntry of order().itemEntries.slice(1); track itemEntry.id) {
-          <app-item-bar [cartItem]="itemEntry"/>
+          <app-item-bar [cartItem]="itemEntry" [disabled]="true"/>
         }
       </div>
     </mat-expansion-panel>
@@ -15,12 +15,18 @@
   }
   <mat-divider/>
   <div class="order-details">
-    <span>Total cost:</span><span class="old-price">{{order().totalPrice | currency}}</span><span>{{order().totalPriceAfterDiscount | currency}}</span>
+    <span>Total cost:</span>
+    <span>
+      @if (order().totalPrice > order().totalPriceAfterDiscount) {
+        <span class="old-price">{{order().totalPrice | currency}}</span>
+      }
+      {{order().totalPriceAfterDiscount | currency}}
+    </span>
     <span>Date:</span><span>{{order().createdAt}}</span>
     <span>Order ref:</span><span>{{order().id}}</span>
     <span>Status:</span><span>{{order().status}}</span>
     <span>Delivery address: </span><span>st. ExampleStreet, 12/3 45-678, ExmpleCity, ExampleWoiwodeship</span>
-    <span>Estimated delivery time: </span><span>01/01/2025</span>
+    <span>Delivery time: </span><span>01/01/2025</span>
     <span>Delivery method: </span><span>Courier</span>
     <span>Payment method: </span><span>Card</span>
     <span>Wishes: </span><span>Fragile</span>

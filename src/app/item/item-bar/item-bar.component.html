@@ -1,17 +1,17 @@
-@if (cartItem.images) {
-  <img [src]="cartItem.images[0].url" [alt]="cartItem.itemName" [routerLink]="cartItem.itemId ? cartItem.itemId : ['/', 'product', cartItem.id]">
+@if (cartItem().images) {
+  <img [src]="cartItem().images[0].url" [alt]="cartItem().itemName" [class.disabled]="disabled()" [routerLink]="cartItem().itemId ? cartItem().itemId : ['/', 'product', cartItem().id]">
 }
 <div class="description-price-count">
   <div class="description">
-    <div class="name" [routerLink]="cartItem.itemId" [queryParams]="{size: cartItem.itemSize, quantity: cartItem.quantity, id: cartItem.id}">{{cartItem.itemName}}</div>
-    <div class="size">size: {{cartItem.itemSize}}</div>
+    <div class="name" [class.disabled]="disabled()" [routerLink]="cartItem().itemId" [queryParams]="{size: cartItem().itemSize, quantity: cartItem().quantity, id: cartItem().id}">{{cartItem().itemName}}</div>
+    <div class="size">size: {{cartItem().itemSize}}</div>
   </div>
   <div class="price-count">
     <div>
-      {{cartItem.quantity}} x {{cartItem.itemPriceAfterDiscount | currency}}
+      {{cartItem().quantity}} x {{cartItem().itemPriceAfterDiscount | currency}}
     </div>
     <div>
-      {{cartItem.totalPriceAfterDiscount | currency}}
+      {{cartItem().totalPriceAfterDiscount | currency}}
     </div>
   </div>
 </div>

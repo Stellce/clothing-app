@@ -2,7 +2,7 @@
   <button mat-icon-button (click)="navigateBack()"><img src="assets/icons/arrow_back.svg" alt="back"/></button>
 </div>
 <div class="order-history">
-  @if (isLoading) {
+  @if (isLoading()) {
     <mat-spinner/>
   } @else if (orders().length) {
     @for (order of orders(); track order.id) {

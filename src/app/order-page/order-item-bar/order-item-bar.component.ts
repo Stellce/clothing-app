@@ -1,20 +1,22 @@
-import {Component, model, ModelSignal, OnInit, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, model, ModelSignal, OnInit, signal, WritableSignal} from '@angular/core';
 import {OrderRes} from "../order-res.model";
 import {Router, RouterLink} from "@angular/router";
 import {CurrencyPipe, DatePipe, NgStyle} from "@angular/common";
 import {ItemsService} from "../../item/items.service";
+import {FieldToTextPipe} from "../../shared/pipes/field-to-text";
 
 @Component({
   selector: 'app-order-item-bar',
   standalone: true,
-  imports: [RouterLink, NgStyle, DatePipe, CurrencyPipe],
+  imports: [RouterLink, NgStyle, DatePipe, CurrencyPipe, FieldToTextPipe],
   templateUrl: './order-item-bar.component.html',
-  styleUrl: './order-item-bar.component.scss'
+  styleUrl: './order-item-bar.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OrderItemBarComponent implements OnInit{
   order: ModelSignal<OrderRes> = model.required<OrderRes>();
-  selectedImage: string = null;
-  showMoreItems = signal<boolean>(false);
+  selectedImage: WritableSignal<string> = signal<string>(null);
+  showMoreItems: WritableSignal<boolean> = signal<boolean>(false);
 
   constructor(
     private itemsService: ItemsService,
@@ -52,6 +54,6 @@ export class OrderItemBarComponent implements OnInit{
 
   private setDefaultImage() {
     const images = this.order()?.itemEntries[0]?.images;
-    if (!this.selectedImage && images) this.selectedImage = images[0].url;
+    if (!this.selectedImage() && images) this.selectedImage.set(images[0].url);
   }
 }

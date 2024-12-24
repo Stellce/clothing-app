@@ -1,5 +1,15 @@
 import {CurrencyPipe, DatePipe, NgStyle} from '@angular/common';
-import {Component, Input, OnInit} from '@angular/core';
+import {
+  booleanAttribute,
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  Input,
+  InputSignal,
+  model,
+  ModelSignal,
+  OnInit
+} from '@angular/core';
 import {MatMiniFabButton} from '@angular/material/button';
 import {MatError} from '@angular/material/form-field';
 import {RouterLink} from '@angular/router';
@@ -15,26 +25,20 @@ import {DialogComponent} from "../../shared/dialog/dialog.component";
   templateUrl: './item-bar.component.html',
   styleUrls: ['./item-bar.component.scss'],
   standalone: true,
-  imports: [RouterLink, NgStyle, CurrencyPipe, DatePipe, MatMiniFabButton, MatError, InputQuantityComponent]
+  imports: [RouterLink, NgStyle, CurrencyPipe, DatePipe, MatMiniFabButton, MatError, InputQuantityComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ItemBarComponent implements OnInit{
-  @Input() cartItem: CartItem;
+export class ItemBarComponent implements OnInit {
+  cartItem: ModelSignal<CartItem> = model.required<CartItem>();
+  disabled: InputSignal<boolean> = input<boolean>(false);
 
   constructor(
-    private itemsService: ItemsService,
-    private dialog: MatDialog
+    private itemsService: ItemsService
   ) {}
 
   ngOnInit(): void {
-    this.itemsService.requestItemImages(this.cartItem.itemId).subscribe({
-      next: images => this.cartItem.images = images,
-      error: err => {
-        const data: DialogData = {
-          title: `Error on loading images`,
-          description: `${err['status'] ? `Error ${err['status']} occurred` : ''}`
-        }
-        this.dialog.open(DialogComponent, {data});
-      }
+    this.itemsService.requestItemImages(this.cartItem().itemId).subscribe({
+      next: images => this.cartItem.update(item => ({...item, images}))
     });
   }
 }
