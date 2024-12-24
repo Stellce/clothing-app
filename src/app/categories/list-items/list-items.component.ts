@@ -1,7 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  OnInit,
+  OnInit, Signal,
   signal,
   viewChild,
   ViewEncapsulation,
@@ -23,6 +23,8 @@ import {PaginatorComponent} from './paginator/paginator.component';
 import {CategoriesService} from "../categories.service";
 import {catchError, map, Observable, tap} from "rxjs";
 import {AsyncPipe} from "@angular/common";
+import {toSignal} from "@angular/core/rxjs-interop";
+import {Subcategory} from "../subcategory.model";
 
 @Component({
   selector: 'app-list-items',
@@ -35,8 +37,8 @@ import {AsyncPipe} from "@angular/common";
 })
 export class ListItemsComponent implements OnInit {
   drawer = viewChild.required<MatDrawer>('drawer');
-  items$: Observable<ItemCard[]>;
-  subcategories: WritableSignal<{id: string; name: string}[]> = signal<{id: string; name: string}[]>([]);
+  items: Signal<ItemCard[]>;
+  subcategories: Signal<Subcategory[]>;
   itemsParamsRequest: ItemsParamsRequest = {} as ItemsParamsRequest;
   isLoading: WritableSignal<boolean> = signal<boolean>(false);
   page: WritableSignal<{number: number, last: boolean}> = signal<{number: number, last: boolean}>({number: 0, last: false});
@@ -45,11 +47,13 @@ export class ListItemsComponent implements OnInit {
     private itemsService: ItemsService,
     private categoriesService: CategoriesService,
     private activatedRoute: ActivatedRoute
-  ) {}
+  ) {
+    this.setPageUpdateListener();
+    this.subcategories = toSignal(this.categoriesService.subcategoriesList$);
+  }
 
   ngOnInit() {
     this.isLoading.set(true);
-    this.setPageUpdateListener();
     this.setItemsParamsRequest();
     this.setSubcategories();
     this.requestItems();
@@ -57,7 +61,6 @@ export class ListItemsComponent implements OnInit {
 
   loadItemsBySubcategory(event: MatTabChangeEvent) {
     this.isLoading.set(true);
-    this.items$ = null;
     if(event.tab.textLabel === 'All') return this.requestItems();
     let subcategory = this.subcategories()
       .find(subcategory =>
@@ -83,22 +86,16 @@ export class ListItemsComponent implements OnInit {
   }
 
   private setPageUpdateListener() {
-    this.items$ = this.itemsService.page$.pipe(tap(page => {
+    this.items = toSignal(this.itemsService.page$.pipe(map(page => {
       this.page.set({ number: page.number, last: page.last });
       this.isLoading.set(false);
-    }), map(page => page.content));
+      return page.content;
+    })));
   }
 
   private setSubcategories() {
     if (!this.itemsParamsRequest.categoryId) return;
-    this.categoriesService.requestSubcategories(this.itemsParamsRequest.categoryId).subscribe({
-      next: subcategories => {
-        this.subcategories.set(subcategories);
-      },
-      error: err => {
-        console.error('Error on requesting subcategories', err);
-      }
-    });
+    this.categoriesService.requestSubcategories(this.itemsParamsRequest.categoryId);
   }
 
   private setItemsParamsRequest() {

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, OnInit, Signal, signal, WritableSignal} from '@angular/core';
 import {
   MatAccordion,
   MatExpansionPanel,
@@ -26,6 +26,7 @@ import {finalize, tap} from "rxjs";
 import {ItemsTableComponent} from "./items-table/items-table.component";
 import {DialogService} from "../../shared/dialog/dialog.service";
 import {ItemsService} from "../../item/items.service";
+import {toSignal} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-employee-panel',
@@ -57,13 +58,15 @@ import {ItemsService} from "../../item/items.service";
     ItemsTableComponent
   ],
   templateUrl: './employee-panel.component.html',
-  styleUrl: './employee-panel.component.scss'
+  styleUrl: './employee-panel.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EmployeePanelComponent implements OnInit {
   addIds: FormControl;
   deleteIds: FormControl;
   editItemId: FormControl;
-  isEditItemIdConfirmed: boolean;
+  editItemIdValue: Signal<string>;
+  isEditItemIdConfirmed: WritableSignal<boolean> = signal(false);
   deleteItemId: FormControl;
 
   constructor(
@@ -72,11 +75,13 @@ export class EmployeePanelComponent implements OnInit {
     private fb: FormBuilder,
     private dialogService: DialogService,
     private itemsService: ItemsService
-  ) {}
+  ) {
+    this.setForms();
+
+    this.editItemIdValue = toSignal(this.editItemId.valueChanges.pipe(tap(() => this.isEditItemIdConfirmed.set(false))));
+  }
 
   ngOnInit() {
-    this.setForms();
-    this.setFormsListeners();
   }
 
   onAddItemsToLandingPage() {
@@ -128,7 +133,8 @@ export class EmployeePanelComponent implements OnInit {
     });
   }
   onConfirmEditItemId() {
-    this.isEditItemIdConfirmed = true;
+    this.isEditItemIdConfirmed.set(true);
+    console.log('confirmed, editItemIdValue: ', this.editItemIdValue());
   }
   onDeleteItem() {
     this.employeeService.deleteItem(this.deleteItemId.value).subscribe({
@@ -155,8 +161,5 @@ export class EmployeePanelComponent implements OnInit {
     this.deleteIds = this.fb.control('', Validators.required);
     this.editItemId = this.fb.control('', Validators.required);
     this.deleteItemId = this.fb.control('', Validators.required);
-  }
-  private setFormsListeners() {
-    this.editItemId.valueChanges.pipe(tap(() => this.isEditItemIdConfirmed = false))
   }
 }

@@ -1,7 +1,18 @@
-import {Component, Input, OnInit, signal, WritableSignal} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  Injector,
+  input, InputSignal,
+  OnInit,
+  Signal,
+  signal,
+  WritableSignal
+} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Category} from "../../../categories/category.model";
-import {map, Observable, startWith, tap} from "rxjs";
+import {map, startWith} from "rxjs";
 import {CategoriesService} from "../../../categories/categories.service";
 import {EmployeeService} from "../../employee.service";
 import {ItemsService} from "../../../item/items.service";
@@ -19,6 +30,8 @@ import {FieldToTextPipe} from "../../../shared/pipes/field-to-text";
 import {MatButton} from "@angular/material/button";
 import {DialogComponent} from "../../../shared/dialog/dialog.component";
 import {DialogData} from "../../../shared/dialog/dialog-data.model";
+import {toSignal} from "@angular/core/rxjs-interop";
+import {Subcategory} from "../../../categories/subcategory.model";
 
 @Component({
   selector: 'app-item-editor',
@@ -40,35 +53,39 @@ import {DialogData} from "../../../shared/dialog/dialog-data.model";
     MatLabel
   ],
   templateUrl: './item-editor.component.html',
-  styleUrl: './item-editor.component.scss'
+  styleUrl: './item-editor.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ItemEditorComponent implements OnInit {
-  @Input() itemId: string;
+  itemId: InputSignal<string> = input<string>();
 
-  mode: 'create' | 'update' = 'create';
+  mode: Signal<'create' | 'update'> = computed(() => this.itemId() ? 'update' : 'create');
+  title: Signal<string> = computed(() => this.mode() === 'create' ? 'Add new item' : 'Edit item');
 
   form: FormGroup;
 
-  categories: Category[];
-  categoriesNames: string[];
-  filteredCategoriesNames: Observable<string[]>;
+  categories: Signal<Category[]> = signal<Category[]>(null);
+  categoriesNames: Signal<string[]>;
+  categoryNameValue: Signal<string>;
+  filteredCategoriesNames: Signal<string[]> = signal<string[]>(null);
 
-  subcategories: {id: string, name: string}[];
-  subcategoriesNames: string[];
-  filteredSubcategoriesNames: Observable<string[]>;
+  subcategories: Signal<Subcategory[]> = signal<Subcategory[]>(null);
+  subcategoriesNames: Signal<string[]> = signal<string[]>(null);
+  subcategoryNameValue: Signal<string>;
+  filteredSubcategoriesNames: Signal<string[]> = signal<string[]>(null);
 
   colors: string[] = ['BLACK', 'WHITE', 'RED', 'YELLOW', 'GREEN', 'BLUE', 'VIOLET', 'GREY', 'MULTI'];
-  filteredColors: Observable<string[]>;
+  filteredColors: Signal<string[]> = signal<string[]>(null);
 
   brands: {id: string, name: string}[];
   brandsNames: string[];
-  filteredBrandsNames: Observable<string[]>;
+  filteredBrandsNames: Signal<string[]> = signal<string[]>(null);
 
   materials: string[] = ['DENIM', 'LEATHER', 'WOOL', 'COTTON', 'ARTIFICIAL_LEATHER', 'SYNTHETICS'];
-  filteredMaterials: Observable<string[]>;
+  filteredMaterials: Signal<string[]> = signal<string[]>(null);
 
   seasons: string[] = ['WINTER', 'SPRING', 'AUTUMN', 'SUMMER', 'MULTISEASON'];
-  filteredSeasons: Observable<string[]>;
+  filteredSeasons: Signal<string[]> = signal<string[]>(null);
 
   clothSizes: string[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'XXXXL'];
   _shoesSizes: string[];
@@ -76,6 +93,8 @@ export class ItemEditorComponent implements OnInit {
   sizesByCtrlIndex: string[][] = [];
 
   isLoading: WritableSignal<boolean> = signal<boolean>(false);
+
+  injector = inject(Injector);
 
   get shoesSizes() {
     if (this._shoesSizes.length !== 17) {
@@ -88,10 +107,10 @@ export class ItemEditorComponent implements OnInit {
   get uniqueItems() {
     return this.form.get('uniqueItems') as FormArray;
   }
-  get categoryName() {
+  get categoryNameCtrl() {
     return this.form.get('categoryName');
   }
-  get subcategoryName() {
+  get subcategoryNameCtrl() {
     return this.form.get('subcategoryName');
   }
 
@@ -101,14 +120,40 @@ export class ItemEditorComponent implements OnInit {
     private itemsService: ItemsService,
     private dialog: MatDialog,
     private fb: FormBuilder
-  ) {}
+  ) {
+    this.setForm();
+    this.setFormListeners();
+
+    this.categories = toSignal(this.categoriesService.categoriesList$);
+    this.categoriesNames = computed(() => this.categories()?.map(c => c.name));
+    this.categoryNameValue = toSignal(this.categoryNameCtrl.valueChanges);
+    this.filteredCategoriesNames = computed(() => {
+      const category = this.categories()?.find(c => c.name === this.categoryNameValue());
+      if (category) {
+        this.setSizesByCategory(category.name);
+        this.categoriesService.requestSubcategories(category.id);
+      }
+      return this._filter(this.categoryNameValue() || '', this.categoriesNames())
+    });
+
+    this.subcategories = toSignal(this.categoriesService.subcategoriesList$);
+    this.subcategoriesNames = computed(() => this.subcategories().map(c => c.name));
+    this.subcategoryNameValue = toSignal(this.subcategoryNameCtrl.valueChanges);
+    this.filteredSubcategoriesNames = computed(() => this._filter(this.subcategoryNameValue() || '', this.subcategoriesNames()));
+    computed(() => {
+      if (this.subcategories().length === 0 && this.subcategoryNameCtrl.hasValidator(Validators.required)) {
+        this.subcategoryNameCtrl.removeValidators(Validators.required);
+        this.subcategoryNameCtrl.updateValueAndValidity();
+      }
+      if (this.subcategories().length > 0 && !this.subcategoryNameCtrl.hasValidator(Validators.required)) {
+        this.subcategoryNameCtrl.addValidators(Validators.required);
+        this.subcategoryNameCtrl.updateValueAndValidity();
+      }
+    });
+  }
 
   ngOnInit() {
-    this.mode = this.itemId ? 'update' : 'create';
-
-    this.setForm();
-    if (this.mode === 'update') this.patchForm();
-    this.setFormListeners();
+    if (this.mode() === 'update') this.patchForm();
   }
 
   onAddSizeAndQuantity() {
@@ -133,13 +178,12 @@ export class ItemEditorComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(`form is ${this.form.valid ? 'valid' : 'invalid'}`, this.form);
     if (!this.form.valid) return;
     this.isLoading.set(true);
     const item: CreateItem = {
       gender: this.form.value.gender.toUpperCase(),
-      categoryId: this.categories.find(c => c.name.toUpperCase() === this.form.value.categoryName.toUpperCase()).id,
-      subcategoryId: this.subcategories.find(c => c.name.toUpperCase() === this.form.value.subcategoryName.toUpperCase())?.id || '',
+      categoryId: this.categories().find(c => c.name.toUpperCase() === this.form.value.categoryName.toUpperCase()).id,
+      subcategoryId: this.subcategories().find(c => c.name.toUpperCase() === this.form.value.subcategoryName.toUpperCase())?.id || '',
       name: this.form.value.name.toUpperCase(),
       description: this.form.value.description.toUpperCase(),
       price: this.form.value.price,
@@ -151,11 +195,9 @@ export class ItemEditorComponent implements OnInit {
       itemCode: this.form.value.itemCode,
       uniqueItems: this.form.value.uniqueItems.map((uniqueItem: UniqueItem) => ({size: uniqueItem.size.toUpperCase(), quantity: uniqueItem.quantity}))
     }
-    console.log('item: ', item);
-    if (this.mode === 'create') {
+    if (this.mode() === 'create') {
       this.employeeService.createItem(item).subscribe({
         next: res => {
-          console.log('item added, res: ', res);
           const data: DialogData = {
             title: 'Done',
             description: 'Item have been added'
@@ -174,9 +216,8 @@ export class ItemEditorComponent implements OnInit {
         }
       });
     } else {
-      this.employeeService.updateItem(this.itemId, item).subscribe({
+      this.employeeService.updateItem(this.itemId(), item).subscribe({
         next: res => {
-          console.log('item updated, res: ', res);
           const data: DialogData = {
             title: 'Item updated'
           }
@@ -219,58 +260,26 @@ export class ItemEditorComponent implements OnInit {
     }));
   }
   private setFormListeners() {
-    this.categoriesService.categoriesList$.subscribe(categories => {
-      if (!categories) return;
-      this.categories = categories;
-      this.categoriesNames = categories.map(c => c.name);
-      this.filteredCategoriesNames = this.categoryName.valueChanges.pipe(
-        startWith(''),
-        map(value => this._filter(value || '', this.categoriesNames)),
-        tap(() => {
-          const categoryName = this.categoryName.value;
-          const category = categories?.find(c => c.name === categoryName);
-          if (!category) return;
-          this.setSizesByCategory(categoryName);
-          this.categoriesService.requestSubcategories(category.id).subscribe(subcategories => {
-            this.subcategories = subcategories;
-            this.subcategoriesNames = subcategories.map(sc => sc.name);
-            this.filteredSubcategoriesNames = this.form.get("subcategoryName").valueChanges.pipe(
-              startWith(''),
-              map(value => this._filter(value || '', this.subcategoriesNames)),
-            );
-            if (subcategories.length === 0 && this.subcategoryName.hasValidator(Validators.required)) {
-              this.subcategoryName.removeValidators(Validators.required);
-              this.subcategoryName.updateValueAndValidity();
-            }
-            if (subcategories.length > 0 && !this.subcategoryName.hasValidator(Validators.required)) {
-              this.subcategoryName.addValidators(Validators.required);
-              this.subcategoryName.updateValueAndValidity();
-            }
-            console.log('updated validity', this.subcategoryName);
-          })
-        })
-      );
-    });
-    this.filteredColors = this.form.get("color").valueChanges.pipe(
+    this.filteredColors = toSignal(this.form.get("color").valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value || '', this.colors))
-    );
+    ), {injector: this.injector});
     this.itemsService.requestBrands().subscribe(brands => {
       this.brands = brands;
       this.brandsNames = brands.map(b => b.name);
-      this.filteredBrandsNames = this.form.get("brandName").valueChanges.pipe(
+      this.filteredBrandsNames = toSignal(this.form.get("brandName").valueChanges.pipe(
         startWith(''),
         map(value => this._filter(value || '', this.brandsNames)),
-      )
+      ), {injector: this.injector});
     });
-    this.filteredMaterials = this.form.get("material").valueChanges.pipe(
+    this.filteredMaterials = toSignal(this.form.get("material").valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value || '', this.materials))
-    );
-    this.filteredSeasons = this.form.get("season").valueChanges.pipe(
+    ), {injector: this.injector});
+    this.filteredSeasons = toSignal(this.form.get("season").valueChanges.pipe(
       startWith(''),
       map((value => this._filter(value || '', this.seasons)))
-    );
+    ), {injector: this.injector});
   }
   private setSizesByCategory(categoryName: string) {
     this.sizes = categoryName === 'SHOES' || categoryName === 'SOCKS' ? this.shoesSizes : this.clothSizes;
@@ -278,10 +287,9 @@ export class ItemEditorComponent implements OnInit {
       ctrl.reset();
       this.sizesByCtrlIndex[index] = [...this.sizes];
     });
-    console.log('sizes set: ', this.sizesByCtrlIndex);
   }
   private patchForm() {
-    this.itemsService.requestItemById(this.itemId).subscribe(item => {
+    this.itemsService.requestItemById(this.itemId()).subscribe(item => {
       item.uniqueItems.forEach((v, i) => i < item.uniqueItems.length ? this.addUniqueItem() : '');
       this.form.patchValue({...item, brandName: item.brand});
     })

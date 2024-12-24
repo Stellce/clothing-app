@@ -38,8 +38,8 @@
         <input matInput [formControl]="editItemId" />
       </mat-form-field>
       <button mat-button (click)="onConfirmEditItemId()">Confirm</button>
-      @if (editItemId.value && isEditItemIdConfirmed) {
-        <app-item-editor [itemId]="editItemId.value"/>
+      @if (editItemIdValue() && isEditItemIdConfirmed()) {
+        <app-item-editor [itemId]="editItemIdValue()"/>
       }
     </mat-expansion-panel>
     <mat-expansion-panel>

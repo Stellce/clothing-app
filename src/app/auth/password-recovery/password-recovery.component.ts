@@ -1,4 +1,4 @@
-import {Component, OnInit, signal, WritableSignal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit, signal, WritableSignal} from '@angular/core';
 import {AuthService} from "../auth.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MatError, MatFormField, MatLabel, MatSuffix} from "@angular/material/form-field";
@@ -23,7 +23,8 @@ import {MatDialog} from "@angular/material/dialog";
         MatSuffix
     ],
   templateUrl: './password-recovery.component.html',
-  styleUrl: './password-recovery.component.scss'
+  styleUrl: './password-recovery.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PasswordRecoveryComponent implements OnInit {
   newPassword: string = '';

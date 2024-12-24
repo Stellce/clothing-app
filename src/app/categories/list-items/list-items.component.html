@@ -20,12 +20,12 @@
       </div>
     </div>
   </div>
-  @if (subcategories().length) {
+  @if (subcategories()?.length) {
     <mat-tab-group (selectedTabChange)="loadItemsBySubcategory($event)">
       <mat-tab [label]="subcategories().length > 0 ? 'All' : ''">
-        @if ((items$ | async)?.length) {
+        @if ((items())?.length) {
           <div class="cloth-grid">
-            @for (item of items$ | async; track item.id) {
+            @for (item of items(); track item.id) {
               <app-item-card [itemWithoutImages]="item" [isBreadcrumbResolved]="true"/>
             }
           </div>
@@ -35,11 +35,11 @@
       </mat-tab>
       @for (subcategory of subcategories(); track subcategory.id) {
         <mat-tab [label]="subcategory.name">
-          @if ((items$ | async)?.length == 0 && isLoading()) {
+          @if ((items())?.length == 0 && isLoading()) {
             <mat-spinner/>
-          } @else if((items$ | async)?.length) {
+          } @else if((items())?.length) {
             <div class="cloth-grid">
-              @for (item of items$ | async; track item.id) {
+              @for (item of items(); track item.id) {
                 <app-item-card [itemWithoutImages]="item" [isBreadcrumbResolved]="true"/>
               }
             </div>
@@ -47,9 +47,9 @@
         </mat-tab>
       }
     </mat-tab-group>
-  } @else if ((items$ | async)?.length) {
+  } @else if ((items())?.length) {
     <div class="cloth-grid">
-      @for (item of items$ | async; track item.id) {
+      @for (item of items(); track item.id) {
         <app-item-card [itemWithoutImages]="item" [isBreadcrumbResolved]="true"/>
       }
     </div>
