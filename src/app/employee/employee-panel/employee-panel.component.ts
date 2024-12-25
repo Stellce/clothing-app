@@ -23,7 +23,6 @@ import {FieldToTextPipe} from "../../shared/pipes/field-to-text";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {ItemEditorComponent} from "./item-editor/item-editor.component";
 import {finalize, tap} from "rxjs";
-import {ItemsTableComponent} from "./items-table/items-table.component";
 import {DialogService} from "../../shared/dialog/dialog.service";
 import {ItemsService} from "../../item/items.service";
 import {toSignal} from "@angular/core/rxjs-interop";
@@ -53,8 +52,7 @@ import {toSignal} from "@angular/core/rxjs-interop";
         MatMiniFabButton,
         MatProgressSpinner,
         ItemEditorComponent,
-        MatAccordion,
-        ItemsTableComponent
+        MatAccordion
     ],
     templateUrl: './employee-panel.component.html',
     styleUrl: './employee-panel.component.scss',
