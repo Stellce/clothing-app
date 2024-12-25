@@ -1,4 +1,11 @@
+@use '../../../variables';
+
 :host {
-  display: block;
-  padding: 1.25rem;
+  @include variables.desktop-side-padding();
+}
+
+@media (max-width: 768px) {
+  :host {
+    @include variables.mobile-side-padding();
+  }
 }

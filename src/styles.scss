@@ -102,3 +102,8 @@ mat-form-field .mdc-text-field--filled:not(.mdc-text-field--disabled) {
   padding: 0 2rem;
   box-sizing: border-box;
 }
+
+.disabled {
+  pointer-events: none;
+  cursor: default;
+}

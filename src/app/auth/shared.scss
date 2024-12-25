@@ -1,5 +1,9 @@
 @use "../../variables";
 
+:host {
+  @include variables.desktop-side-padding();
+}
+
 .header {
   display: flex;
   align-items: center;
@@ -83,14 +87,8 @@ form {
   }
 }
 
-@keyframes rotate {
-  100%   {transform: rotate(360deg)}
-}
-
-@keyframes prixClipFix {
-    0%   {clip-path:polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)}
-    25%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)}
-    50%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}
-    75%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 100%)}
-    100% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 0)}
+@media (max-width: 768px) {
+  :host {
+    @include variables.mobile-side-padding();
+  }
 }

@@ -1,5 +1,9 @@
 @use "../../../../variables";
 
+:host {
+  flex: 0 0 auto;
+}
+
 .card {
   display: flex;
   flex-direction: column;
@@ -13,11 +17,12 @@
     border-radius: 4px;
     object-fit: cover;
     display: block;
+    aspect-ratio: 4/3;
   }
 
   .red-overlay {
     width: 100%;
-    aspect-ratio: 1.33333333333333;
+    aspect-ratio: 4/3;
     position: absolute;
     left: 0;
     top: 0;

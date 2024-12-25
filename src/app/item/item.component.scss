@@ -1,5 +1,9 @@
 @use "../../variables";
 
+:host {
+  @include variables.desktop-side-padding();
+}
+
 .item {
   font-size: 1rem;
   display: flex;
@@ -18,7 +22,6 @@
 
       img {
         width: 100%;
-        //max-width: 876px;
         border-radius: 0.5rem;
       }
 
@@ -136,6 +139,9 @@
 }
 
 @media screen and (max-width: 876px) {
+  :host {
+    @include variables.mobile-side-padding();
+  }
   .product {
     flex-direction: column;
 

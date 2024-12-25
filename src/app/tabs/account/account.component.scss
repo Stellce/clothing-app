@@ -1,10 +1,13 @@
 @use "../../../variables";
 
+:host {
+  @include variables.desktop-side-padding();
+}
+
 .account {
   max-width: 500px;
   margin: 0 auto;
   padding: 0 5px;
-
 
   .item-bars-list {
     padding: 0.5rem;
@@ -30,5 +33,11 @@
   li {
     margin: 20px 0;
     cursor: pointer;
+  }
+}
+
+@media (max-width: 768px) {
+  :host {
+    @include variables.desktop-side-padding();
   }
 }

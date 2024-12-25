@@ -30,7 +30,6 @@ import {Subcategory} from "../subcategory.model";
   selector: 'app-list-items',
   templateUrl: './list-items.component.html',
   styleUrls: ['./list-items.component.scss'],
-  encapsulation: ViewEncapsulation.None,
   standalone: true,
   imports: [MatSidenavModule, FilterComponent, BreadcrumbComponent, MatRippleModule, MatProgressSpinnerModule, MatTabsModule, ItemCardComponent, PaginatorComponent, AsyncPipe],
   changeDetection: ChangeDetectionStrategy.OnPush

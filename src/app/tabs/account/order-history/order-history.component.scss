@@ -1,7 +1,7 @@
 @use "../../../../variables";
 
 :host {
-  padding: 1rem;
+  @include variables.desktop-side-padding();
 }
 .back-button-wrapper {
   max-width: 500px;
@@ -17,4 +17,10 @@
 }
 mat-spinner {
   margin: auto;
+}
+
+@media (max-width: 768px) {
+  :host {
+    @include variables.mobile-side-padding();
+  }
 }

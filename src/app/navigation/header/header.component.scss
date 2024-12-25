@@ -1,15 +1,14 @@
 @use "../../../variables";
 
 :host {
+  @include variables.desktop-side-padding();
   max-width: 1600px;
   height: 70px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 2fr 5fr 2fr;
   align-items: center;
-  justify-items: center;
   background: variables.$surface;
-  padding: 0 1.25rem 0 4%;
   font-size: 1.25rem;
 }
 
@@ -45,6 +44,7 @@ app-navbar {
   font-size: 2.25rem;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   img {
     width: 2.5rem;
@@ -54,21 +54,11 @@ app-navbar {
 
 @media screen and (max-width: 768px) {
   :host {
+    @include variables.mobile-side-padding();
     display: flex;
     justify-content: center;
   }
-  .logo {
+  .logo, app-navbar {
     display: none;
-    width: 0;
-    position: absolute;
-    left: -999px;
-    top: -999px;
-  }
-  app-navbar {
-    display: none;
-    width: 0;
-    position: absolute;
-    left: -999px;
-    top: -999px;
   }
 }

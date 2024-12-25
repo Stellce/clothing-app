@@ -1,9 +1,23 @@
+@use '../../variables';
+
 :host {
+  @include variables.desktop-side-padding();
 }
 .entries-list {
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+mat-expansion-panel {
+  margin: 1rem 0;
+}
+
+mat-expansion-panel-header {
+  min-height: 5rem;
 }
 
 app-item-bar {
@@ -14,10 +28,17 @@ app-item-bar {
 .order-details {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  padding: 1rem;
+  padding: 2rem 1rem;
+  gap: 1rem;
 }
 
 .old-price {
   color: grey;
   text-decoration: line-through;
+}
+
+@media (max-width: 768px) {
+  :host {
+    @include variables.mobile-side-padding();
+  }
 }

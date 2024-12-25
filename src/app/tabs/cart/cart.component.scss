@@ -1,9 +1,5 @@
 @use "../../../variables";
 
-:host {
-  min-height: calc(100vh - var(variables.$navbar-height) - var(variables.$header-height) - 1rem);
-}
-
 .header {
   width: 100%;
   display: flex;
@@ -44,7 +40,7 @@
 
 mat-expansion-panel {
   width: 350px;
-  right: 0;
+  right: variables.$desktop-side-padding;
   bottom: 1rem;
   z-index: 2;
   position: fixed;
@@ -81,6 +77,7 @@ mat-expansion-panel {
   mat-expansion-panel {
     bottom: 70px;
     width: 100%;
+    right: 0;
   }
 }
 

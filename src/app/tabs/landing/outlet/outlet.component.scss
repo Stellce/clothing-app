@@ -7,13 +7,12 @@
   overflow-x: auto;
 
   app-item-card {
-    width: 30%;
+    width: 277px;
   }
 }
 
-@media only screen and (max-width: 768px) {
+@media (min-width: 768px) {
   .carousel app-item-card {
-    width: 60%;
+    width: 316px;
   }
 }
-

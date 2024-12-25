@@ -30,3 +30,14 @@
     }
   }
 }
+
+app-list-items {
+  @include variables.desktop-side-padding();
+}
+
+@media (max-width: 768px) {
+
+  app-list-items {
+    @include variables.mobile-side-padding();
+  }
+}

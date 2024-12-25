@@ -1,5 +1,9 @@
 @use "../../../variables";
 
+:host {
+  @include variables.desktop-side-padding();
+}
+
 h1, h2, h3, h4, h5, h6 {
   margin: 0;
 }
@@ -48,7 +52,6 @@ mat-spinner {
   grid-template-columns: repeat(4, 1fr);
   justify-content: center;
   gap: 10px;
-  //padding: 0 4%;
 }
 
 app-paginator {
@@ -102,7 +105,10 @@ app-paginator {
   }
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 768px) {
+  :host {
+    @include variables.mobile-side-padding();
+  }
   .filter-bar {
     display: none;
   }

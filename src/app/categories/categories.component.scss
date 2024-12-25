@@ -1,5 +1,9 @@
 @use "../../variables";
 
+:host {
+  @include variables.desktop-side-padding();
+}
+
 mat-spinner {
   position: absolute;
   left: calc(50% - 50px);
@@ -73,7 +77,10 @@ mat-spinner {
   }
 }
 
-@media only screen and (max-width: 600px) {
+@media (max-width: 768px) {
+  :host {
+    @include variables.mobile-side-padding();
+  }
   .categories-list {
     grid-template-columns: repeat(2, 1fr);
   }

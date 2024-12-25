@@ -1,18 +1,17 @@
-<div class="categories">
-  <app-breadcrumb class="breadcrumb-line"/>
-  @if (isLoading()) {
-    <mat-spinner/>
-  } @else if (categories()) {
-    <div class="categories-list">
-      @for (category of categories(); track category.id) {
-        <a class="category" [routerLink]="category.id | lowercase">
-          @if (category.image) {
-            <div class="dark-bottom-gradient"></div>
-            <img class="category-image" [src]="'data:image/png;base64,' + category.image" [alt]="category">
-          }
-          <span>{{category.name | uppercase}}</span>
-        </a>
-      }
-    </div>
-  }
-</div>
+<app-breadcrumb class="breadcrumb-line"/>
+@if (isLoading()) {
+  <mat-spinner/>
+} @else if (categories()) {
+  <div class="categories-list">
+    @for (category of categories(); track category.id) {
+      <a class="category" [routerLink]="category.id | lowercase">
+        @if (category.image) {
+          <div class="dark-bottom-gradient"></div>
+          <img class="category-image" [src]="'data:image/png;base64,' + category.image" [alt]="category">
+        }
+        <span>{{category.name | uppercase}}</span>
+      </a>
+    }
+  </div>
+}
+

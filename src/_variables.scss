@@ -4,6 +4,21 @@
 $navbar-height: 67px;
 $header-height: 70px;
 
+$mobile-side-padding: 1rem;
+$desktop-side-padding: 2rem;
+
+@mixin mobile-side-padding() {
+  display: block;
+  padding-left: $mobile-side-padding;
+  padding-right: $mobile-side-padding;
+}
+
+@mixin desktop-side-padding() {
+  display: block;
+  padding-left: $desktop-side-padding;
+  padding-right: $desktop-side-padding;
+}
+
 $theme: themes.$dark-theme;
 
 $surface-container: mat.get-theme-color($theme, surface-container);
