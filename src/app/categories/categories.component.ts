@@ -1,12 +1,10 @@
 import {LowerCasePipe, UpperCasePipe} from '@angular/common';
-import {ChangeDetectionStrategy, Component, computed, OnInit, Signal, signal, WritableSignal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit, Signal, signal, WritableSignal} from '@angular/core';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {ActivatedRoute, Params, RouterLink} from "@angular/router";
 import {CategoriesService} from "./categories.service";
 import {Category} from "./category.model";
 import {BreadcrumbComponent} from './list-items/breadcrumb/breadcrumb.component';
-import {toSignal} from "@angular/core/rxjs-interop";
-import {map, take, tap} from "rxjs";
 
 @Component({
     selector: 'app-categories',

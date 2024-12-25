@@ -1,24 +1,11 @@
 import {CurrencyPipe, DatePipe, NgStyle} from '@angular/common';
-import {
-  booleanAttribute,
-  ChangeDetectionStrategy,
-  Component,
-  input,
-  Input,
-  InputSignal,
-  model,
-  ModelSignal,
-  OnInit
-} from '@angular/core';
+import {ChangeDetectionStrategy, Component, input, InputSignal, model, ModelSignal, OnInit} from '@angular/core';
 import {MatMiniFabButton} from '@angular/material/button';
 import {MatError} from '@angular/material/form-field';
 import {RouterLink} from '@angular/router';
 import {CartItem} from 'src/app/tabs/cart/cart-item.model';
 import {ItemsService} from "../items.service";
 import {InputQuantityComponent} from "../input-quantity/input-quantity.component";
-import {DialogData} from "../../shared/dialog/dialog-data.model";
-import {MatDialog} from "@angular/material/dialog";
-import {DialogComponent} from "../../shared/dialog/dialog.component";
 
 @Component({
   selector: 'app-item-bar',

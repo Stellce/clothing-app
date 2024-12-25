@@ -1,12 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  OnInit, Signal,
-  signal,
-  viewChild,
-  ViewEncapsulation,
-  WritableSignal
-} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit, Signal, signal, viewChild, WritableSignal} from '@angular/core';
 import {MatRippleModule} from '@angular/material/core';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatDrawer, MatSidenavModule} from "@angular/material/sidenav";
@@ -21,7 +13,7 @@ import {ItemCard} from "./item-card/item-card.model";
 import {ItemsParamsRequest} from "./item-card/req/items-params-request.model";
 import {PaginatorComponent} from './paginator/paginator.component';
 import {CategoriesService} from "../categories.service";
-import {catchError, map, Observable, tap} from "rxjs";
+import {catchError, map} from "rxjs";
 import {AsyncPipe} from "@angular/common";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {Subcategory} from "../subcategory.model";

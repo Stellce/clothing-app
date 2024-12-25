@@ -1,6 +1,6 @@
 import {
   ChangeDetectionStrategy,
-  Component, computed,
+  Component,
   input,
   Input,
   InputSignal,

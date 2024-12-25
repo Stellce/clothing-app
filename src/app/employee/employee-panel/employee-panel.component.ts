@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, computed, OnInit, Signal, signal, WritableSignal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit, Signal, signal, WritableSignal} from '@angular/core';
 import {
   MatAccordion,
   MatExpansionPanel,
