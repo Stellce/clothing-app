@@ -17,12 +17,11 @@ import {NgStyle} from "@angular/common";
 import {finalize} from "rxjs";
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['../shared.scss'],
-  standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatRadioModule, MatCheckboxModule, MatButtonModule, RouterLink, GoogleLoginButtonComponent, MatProgressSpinner, NgStyle],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-register',
+    templateUrl: './register.component.html',
+    styleUrls: ['../shared.scss'],
+    imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatRadioModule, MatCheckboxModule, MatButtonModule, RouterLink, GoogleLoginButtonComponent, MatProgressSpinner, NgStyle],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RegisterComponent implements OnInit {
   checkAgreement: WritableSignal<boolean> = signal<boolean>(false);

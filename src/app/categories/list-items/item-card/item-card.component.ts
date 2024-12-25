@@ -18,12 +18,11 @@ import {ItemsService} from "../../../item/items.service";
 import {Subscription} from "rxjs";
 
 @Component({
-  selector: 'app-item-card',
-  templateUrl: './item-card.component.html',
-  styleUrls: ['./item-card.component.scss'],
-  standalone: true,
-  imports: [RouterLink, PercentPipe, CurrencyPipe, NgStyle, AddToFavoritesComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-item-card',
+    templateUrl: './item-card.component.html',
+    styleUrls: ['./item-card.component.scss'],
+    imports: [RouterLink, PercentPipe, CurrencyPipe, NgStyle, AddToFavoritesComponent],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ItemCardComponent implements OnInit, OnDestroy {
   itemWithoutImages: InputSignal<ItemCard> = input.required<ItemCard>();

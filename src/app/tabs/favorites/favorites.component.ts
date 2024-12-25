@@ -14,12 +14,11 @@ import {DialogData} from "../../shared/dialog/dialog-data.model";
 import {DialogComponent} from "../../shared/dialog/dialog.component";
 
 @Component({
-  selector: 'app-favorites',
-  templateUrl: './favorites.component.html',
-  styleUrls: ['./favorites.component.scss'],
-  standalone: true,
-  imports: [ItemCardComponent, NgStyle, MatProgressSpinner],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-favorites',
+    templateUrl: './favorites.component.html',
+    styleUrls: ['./favorites.component.scss'],
+    imports: [ItemCardComponent, NgStyle, MatProgressSpinner],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FavoritesComponent implements OnInit, OnDestroy {
   items: WritableSignal<ItemCard[]> = signal<ItemCard[]>([]);

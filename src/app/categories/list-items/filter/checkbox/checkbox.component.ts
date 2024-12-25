@@ -13,7 +13,6 @@ import { NgClass, NgStyle } from '@angular/common';
             multi: true
         }
     ],
-    standalone: true,
     imports: [FormsModule, NgClass, NgStyle]
 })
 export class CheckboxComponent implements ControlValueAccessor {

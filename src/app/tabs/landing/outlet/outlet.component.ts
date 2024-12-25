@@ -8,12 +8,11 @@ import {AsyncPipe} from "@angular/common";
 import {toSignal} from "@angular/core/rxjs-interop";
 
 @Component({
-  selector: 'app-outlet',
-  templateUrl: './outlet.component.html',
-  styleUrls: ['./outlet.component.scss'],
-  standalone: true,
-  imports: [MatProgressSpinnerModule, ItemCardComponent, AsyncPipe],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-outlet',
+    templateUrl: './outlet.component.html',
+    styleUrls: ['./outlet.component.scss'],
+    imports: [MatProgressSpinnerModule, ItemCardComponent, AsyncPipe],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OutletComponent {
   items: Signal<ItemCard[]>;

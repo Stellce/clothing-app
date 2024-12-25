@@ -6,12 +6,11 @@ import {RouterLink} from '@angular/router';
 import {UpperCasePipe} from '@angular/common';
 
 @Component({
-  selector: 'app-landing',
-  templateUrl: './landing.component.html',
-  styleUrls: ['./landing.component.scss'],
-  standalone: true,
-  imports: [RouterLink, OutletComponent, UpperCasePipe],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-landing',
+    templateUrl: './landing.component.html',
+    styleUrls: ['./landing.component.scss'],
+    imports: [RouterLink, OutletComponent, UpperCasePipe],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LandingComponent implements OnInit{
   categories: WritableSignal<Category[]> = signal<Category[]>(null);

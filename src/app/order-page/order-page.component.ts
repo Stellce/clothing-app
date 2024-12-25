@@ -10,20 +10,19 @@ import {MatDivider} from "@angular/material/divider";
 import {CurrencyPipe} from "@angular/common";
 
 @Component({
-  selector: 'app-order-page',
-  templateUrl: './order-page.component.html',
-  styleUrls: ['./order-page.component.scss'],
-  imports: [
-    OrderItemBarComponent,
-    ItemBarComponent,
-    MatExpansionPanel,
-    MatExpansionPanelHeader,
-    MatProgressSpinner,
-    MatDivider,
-    CurrencyPipe
-  ],
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-order-page',
+    templateUrl: './order-page.component.html',
+    styleUrls: ['./order-page.component.scss'],
+    imports: [
+        OrderItemBarComponent,
+        ItemBarComponent,
+        MatExpansionPanel,
+        MatExpansionPanelHeader,
+        MatProgressSpinner,
+        MatDivider,
+        CurrencyPipe
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OrderPageComponent implements OnInit{
   order: WritableSignal<OrderRes> = signal<OrderRes>(null);

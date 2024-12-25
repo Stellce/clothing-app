@@ -7,8 +7,7 @@ import {MatFabButton, MatMiniFabButton} from "@angular/material/button";
     selector: 'app-review',
     templateUrl: './review.component.html',
     styleUrls: ['./review.component.scss'],
-    standalone: true,
-  imports: [NgClass, DatePipe, MatFabButton, MatMiniFabButton]
+    imports: [NgClass, DatePipe, MatFabButton, MatMiniFabButton]
 })
 export class ReviewComponent {
   @Input() review: ReviewRes;

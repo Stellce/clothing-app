@@ -10,7 +10,6 @@ import {BreadcrumbComponent} from './list-items/breadcrumb/breadcrumb.component'
     selector: 'app-categories',
     templateUrl: './categories.component.html',
     styleUrls: ['./categories.component.scss'],
-    standalone: true,
     imports: [BreadcrumbComponent, MatProgressSpinnerModule, RouterLink, UpperCasePipe, LowerCasePipe],
     changeDetection: ChangeDetectionStrategy.OnPush
 })

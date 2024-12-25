@@ -7,8 +7,7 @@ import {FieldToTextPipe} from "../../../shared/pipes/field-to-text";
     selector: 'app-breadcrumb',
     templateUrl: './breadcrumb.component.html',
     styleUrls: ['./breadcrumb.component.scss'],
-    standalone: true,
-  imports: [RouterLink, FieldToTextPipe]
+    imports: [RouterLink, FieldToTextPipe]
 })
 export class BreadcrumbComponent implements OnInit{
   @Input() default: {name: string, path: string[]}[];

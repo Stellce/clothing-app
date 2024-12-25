@@ -10,12 +10,11 @@ import {map, Observable, tap} from "rxjs";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 @Component({
-  selector: 'app-reviews',
-  templateUrl: './reviews.component.html',
-  styleUrls: ['./reviews.component.scss'],
-  standalone: true,
-  imports: [NewReviewComponent, ReviewComponent, AsyncPipe, MatProgressSpinner],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-reviews',
+    templateUrl: './reviews.component.html',
+    styleUrls: ['./reviews.component.scss'],
+    imports: [NewReviewComponent, ReviewComponent, AsyncPipe, MatProgressSpinner],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ReviewsComponent implements OnInit {
   itemId: InputSignal<string> = input.required<string>();

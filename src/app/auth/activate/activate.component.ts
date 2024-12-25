@@ -7,12 +7,11 @@ import {FavoritesService} from 'src/app/tabs/favorites/favorites.service';
 import {AuthService} from '../auth.service';
 
 @Component({
-  selector: 'app-activate',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './activate.component.html',
-  styleUrls: ['./activate.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-activate',
+    imports: [CommonModule],
+    templateUrl: './activate.component.html',
+    styleUrls: ['./activate.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ActivateComponent implements OnInit {
   title: WritableSignal<string> = signal<string>('Activating account...');

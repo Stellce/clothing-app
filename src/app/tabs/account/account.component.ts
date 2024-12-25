@@ -6,12 +6,11 @@ import {ItemBarComponent} from '../../item/item-bar/item-bar.component';
 import {AccountService} from "./account.service";
 
 @Component({
-  selector: 'app-account',
-  templateUrl: './account.component.html',
-  styleUrls: ['./account.component.scss'],
-  standalone: true,
-  imports: [MatButtonModule, ItemBarComponent, RouterLink],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-account',
+    templateUrl: './account.component.html',
+    styleUrls: ['./account.component.scss'],
+    imports: [MatButtonModule, ItemBarComponent, RouterLink],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AccountComponent {
   constructor(

@@ -8,12 +8,11 @@ import {OrderItemBarComponent} from "../../../order-page/order-item-bar/order-it
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 @Component({
-  selector: 'app-order-history',
-  templateUrl: './order-history.component.html',
-  styleUrls: ['./order-history.component.scss'],
-  standalone: true,
-  imports: [MatButtonModule, ItemBarComponent, OrderItemBarComponent, MatProgressSpinner],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-order-history',
+    templateUrl: './order-history.component.html',
+    styleUrls: ['./order-history.component.scss'],
+    imports: [MatButtonModule, ItemBarComponent, OrderItemBarComponent, MatProgressSpinner],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OrderHistoryComponent implements OnInit {
   orders = model.required<OrderRes[]>();

@@ -5,7 +5,6 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
     selector: 'app-paginator',
     templateUrl: './paginator.component.html',
     styleUrls: ['./paginator.component.scss'],
-    standalone: true,
     imports: [NgClass]
 })
 export class PaginatorComponent {

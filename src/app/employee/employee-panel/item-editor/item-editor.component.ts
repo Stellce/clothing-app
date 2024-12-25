@@ -34,27 +34,26 @@ import {toSignal} from "@angular/core/rxjs-interop";
 import {Subcategory} from "../../../categories/subcategory.model";
 
 @Component({
-  selector: 'app-item-editor',
-  standalone: true,
-  imports: [
-    MatProgressSpinner,
-    ReactiveFormsModule,
-    MatFormField,
-    MatSelect,
-    MatOption,
-    MatAutocomplete,
-    MatInput,
-    MatAutocompleteTrigger,
-    AsyncPipe,
-    CdkTextareaAutosize,
-    FieldToTextPipe,
-    MatButton,
-    MatError,
-    MatLabel
-  ],
-  templateUrl: './item-editor.component.html',
-  styleUrl: './item-editor.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-item-editor',
+    imports: [
+        MatProgressSpinner,
+        ReactiveFormsModule,
+        MatFormField,
+        MatSelect,
+        MatOption,
+        MatAutocomplete,
+        MatInput,
+        MatAutocompleteTrigger,
+        AsyncPipe,
+        CdkTextareaAutosize,
+        FieldToTextPipe,
+        MatButton,
+        MatError,
+        MatLabel
+    ],
+    templateUrl: './item-editor.component.html',
+    styleUrl: './item-editor.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ItemEditorComponent implements OnInit {
   itemId: InputSignal<string> = input<string>();

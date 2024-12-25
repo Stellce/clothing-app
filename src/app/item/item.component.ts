@@ -28,12 +28,11 @@ import {Subscription} from "rxjs";
 import {CdkCopyToClipboard} from "@angular/cdk/clipboard";
 
 @Component({
-  selector: 'app-item',
-  templateUrl: './item.component.html',
-  styleUrls: ['./item.component.scss'],
-  standalone: true,
-  imports: [BreadcrumbComponent, NgClass, MatButtonModule, ReviewsComponent, CurrencyPipe, MatFormFieldModule, MatInputModule, FormsModule, NgStyle, FieldToTextPipe, AddToFavoritesComponent, MatRipple, InputQuantityComponent, CdkCopyToClipboard],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-item',
+    templateUrl: './item.component.html',
+    styleUrls: ['./item.component.scss'],
+    imports: [BreadcrumbComponent, NgClass, MatButtonModule, ReviewsComponent, CurrencyPipe, MatFormFieldModule, MatInputModule, FormsModule, NgStyle, FieldToTextPipe, AddToFavoritesComponent, MatRipple, InputQuantityComponent, CdkCopyToClipboard],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ItemComponent implements OnInit, OnDestroy {
   item: WritableSignal<ItemDetails> = signal<ItemDetails>(null);

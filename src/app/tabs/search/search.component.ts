@@ -4,12 +4,11 @@ import {ListItemsComponent} from '../../categories/list-items/list-items.compone
 import {ItemsService} from "../../item/items.service";
 
 @Component({
-  selector: 'app-search',
-  templateUrl: './search.component.html',
-  styleUrls: ['./search.component.scss'],
-  standalone: true,
-  imports: [FormsModule, ListItemsComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-search',
+    templateUrl: './search.component.html',
+    styleUrls: ['./search.component.scss'],
+    imports: [FormsModule, ListItemsComponent],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchComponent {
   search: string = '';

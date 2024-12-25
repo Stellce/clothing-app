@@ -17,17 +17,16 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgStyle} from "@angular/common";
 
 @Component({
-  selector: 'app-input-quantity',
-  standalone: true,
-  imports: [
-    MatMiniFabButton,
-    ReactiveFormsModule,
-    FormsModule,
-    NgStyle
-  ],
-  templateUrl: './input-quantity.component.html',
-  styleUrl: './input-quantity.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-input-quantity',
+    imports: [
+        MatMiniFabButton,
+        ReactiveFormsModule,
+        FormsModule,
+        NgStyle
+    ],
+    templateUrl: './input-quantity.component.html',
+    styleUrl: './input-quantity.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InputQuantityComponent implements OnChanges {
   private _quantity: WritableSignal<number> = signal(0);

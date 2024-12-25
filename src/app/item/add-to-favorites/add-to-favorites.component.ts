@@ -7,12 +7,11 @@ import {ItemCard} from "../../categories/list-items/item-card/item-card.model";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 @Component({
-  selector: 'app-add-to-favorites',
-  standalone: true,
-  imports: [NgStyle, MatProgressSpinner],
-  templateUrl: './add-to-favorites.component.html',
-  styleUrl: './add-to-favorites.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-add-to-favorites',
+    imports: [NgStyle, MatProgressSpinner],
+    templateUrl: './add-to-favorites.component.html',
+    styleUrl: './add-to-favorites.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddToFavoritesComponent {
   item: ModelSignal<ItemCard> = model.required<ItemCard>();

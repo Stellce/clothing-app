@@ -25,8 +25,7 @@ import {ReviewRes} from "../res/review-res.model";
     selector: 'app-new-review',
     templateUrl: './new-review.component.html',
     styleUrls: ['./new-review.component.scss'],
-    standalone: true,
-  imports: [NgClass, MatFormFieldModule, MatInputModule, TextFieldModule, MatButtonModule, ReactiveFormsModule, AsyncPipe]
+    imports: [NgClass, MatFormFieldModule, MatInputModule, TextFieldModule, MatButtonModule, ReactiveFormsModule, AsyncPipe]
 })
 export class NewReviewComponent implements OnInit, OnChanges {
   review = input<ReviewRes>();

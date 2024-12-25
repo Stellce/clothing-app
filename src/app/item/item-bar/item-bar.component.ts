@@ -8,12 +8,11 @@ import {ItemsService} from "../items.service";
 import {InputQuantityComponent} from "../input-quantity/input-quantity.component";
 
 @Component({
-  selector: 'app-item-bar',
-  templateUrl: './item-bar.component.html',
-  styleUrls: ['./item-bar.component.scss'],
-  standalone: true,
-  imports: [RouterLink, NgStyle, CurrencyPipe, DatePipe, MatMiniFabButton, MatError, InputQuantityComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-item-bar',
+    templateUrl: './item-bar.component.html',
+    styleUrls: ['./item-bar.component.scss'],
+    imports: [RouterLink, NgStyle, CurrencyPipe, DatePipe, MatMiniFabButton, MatError, InputQuantityComponent],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ItemBarComponent implements OnInit {
   cartItem: ModelSignal<CartItem> = model.required<CartItem>();

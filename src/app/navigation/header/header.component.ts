@@ -14,12 +14,11 @@ import {NavbarComponent} from '../navbar/navbar.component';
 import {JsonPipe} from "@angular/common";
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'],
-  standalone: true,
-  imports: [RouterLink, NavbarComponent, FieldToTextPipe, JsonPipe],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.scss'],
+    imports: [RouterLink, NavbarComponent, FieldToTextPipe, JsonPipe],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent implements OnInit, OnChanges{
   isProductPage: WritableSignal<boolean> = signal(false);

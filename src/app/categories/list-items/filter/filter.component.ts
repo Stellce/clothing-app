@@ -26,7 +26,6 @@ import {MatDialog} from "@angular/material/dialog";
     templateUrl: './filter.component.html',
     styleUrls: ['./filter.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     imports: [FormsModule, ReactiveFormsModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatChipsModule, MatSelectModule, MatOptionModule, MatExpansionModule, MatCheckboxModule, MatDividerModule, CheckboxComponent]
 })
 export class FilterComponent implements OnInit{

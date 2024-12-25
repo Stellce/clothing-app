@@ -6,12 +6,11 @@ import {ItemsService} from "../../item/items.service";
 import {FieldToTextPipe} from "../../shared/pipes/field-to-text";
 
 @Component({
-  selector: 'app-order-item-bar',
-  standalone: true,
-  imports: [RouterLink, NgStyle, DatePipe, CurrencyPipe, FieldToTextPipe],
-  templateUrl: './order-item-bar.component.html',
-  styleUrl: './order-item-bar.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-order-item-bar',
+    imports: [RouterLink, NgStyle, DatePipe, CurrencyPipe, FieldToTextPipe],
+    templateUrl: './order-item-bar.component.html',
+    styleUrl: './order-item-bar.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OrderItemBarComponent implements OnInit{
   order: ModelSignal<OrderRes> = model.required<OrderRes>();

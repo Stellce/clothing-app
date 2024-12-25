@@ -19,12 +19,11 @@ import {toSignal} from "@angular/core/rxjs-interop";
 import {Subcategory} from "../subcategory.model";
 
 @Component({
-  selector: 'app-list-items',
-  templateUrl: './list-items.component.html',
-  styleUrls: ['./list-items.component.scss'],
-  standalone: true,
-  imports: [MatSidenavModule, FilterComponent, BreadcrumbComponent, MatRippleModule, MatProgressSpinnerModule, MatTabsModule, ItemCardComponent, PaginatorComponent, AsyncPipe],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-list-items',
+    templateUrl: './list-items.component.html',
+    styleUrls: ['./list-items.component.scss'],
+    imports: [MatSidenavModule, FilterComponent, BreadcrumbComponent, MatRippleModule, MatProgressSpinnerModule, MatTabsModule, ItemCardComponent, PaginatorComponent, AsyncPipe],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ListItemsComponent implements OnInit {
   drawer = viewChild.required<MatDrawer>('drawer');

@@ -29,37 +29,36 @@ import {ItemsService} from "../../item/items.service";
 import {toSignal} from "@angular/core/rxjs-interop";
 
 @Component({
-  selector: 'app-employee-panel',
-  standalone: true,
-  imports: [
-    MatExpansionPanel,
-    MatExpansionPanelHeader,
-    MatExpansionPanelTitle,
-    OutletComponent,
-    MatDivider,
-    MatFormField,
-    MatInput,
-    MatLabel,
-    MatButton,
-    FormsModule,
-    MatSelect,
-    MatOption,
-    AsyncPipe,
-    ReactiveFormsModule,
-    MatAutocompleteTrigger,
-    MatAutocomplete,
-    CdkTextareaAutosize,
-    FieldToTextPipe,
-    MatError,
-    MatMiniFabButton,
-    MatProgressSpinner,
-    ItemEditorComponent,
-    MatAccordion,
-    ItemsTableComponent
-  ],
-  templateUrl: './employee-panel.component.html',
-  styleUrl: './employee-panel.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-employee-panel',
+    imports: [
+        MatExpansionPanel,
+        MatExpansionPanelHeader,
+        MatExpansionPanelTitle,
+        OutletComponent,
+        MatDivider,
+        MatFormField,
+        MatInput,
+        MatLabel,
+        MatButton,
+        FormsModule,
+        MatSelect,
+        MatOption,
+        AsyncPipe,
+        ReactiveFormsModule,
+        MatAutocompleteTrigger,
+        MatAutocomplete,
+        CdkTextareaAutosize,
+        FieldToTextPipe,
+        MatError,
+        MatMiniFabButton,
+        MatProgressSpinner,
+        ItemEditorComponent,
+        MatAccordion,
+        ItemsTableComponent
+    ],
+    templateUrl: './employee-panel.component.html',
+    styleUrl: './employee-panel.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EmployeePanelComponent implements OnInit {
   addIds: FormControl;

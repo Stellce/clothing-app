@@ -10,8 +10,7 @@ import {DialogComponent} from "../../shared/dialog/dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 
 @Component({
-  selector: 'app-password-recovery',
-  standalone: true,
+    selector: 'app-password-recovery',
     imports: [
         MatFormField,
         MatInput,
@@ -22,9 +21,9 @@ import {MatDialog} from "@angular/material/dialog";
         MatIconButton,
         MatSuffix
     ],
-  templateUrl: './password-recovery.component.html',
-  styleUrl: './password-recovery.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    templateUrl: './password-recovery.component.html',
+    styleUrl: './password-recovery.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PasswordRecoveryComponent implements OnInit {
   newPassword: string = '';
