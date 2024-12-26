@@ -80,7 +80,6 @@ export class FilterComponent implements OnInit{
   }
 
   onSubmitFilter() {
-    console.log('form', this.form);
     let priceRange = this.form.value['priceTo'] ?
       [this.form.value['priceFrom'] || 0, this.form.value['priceTo']].join(",") : '';
     let filter: Filter = {
@@ -95,7 +94,6 @@ export class FilterComponent implements OnInit{
 
   changeFilter(filterType: 'colors' | 'brands' | 'seasons' | 'materials', changeTo: string) {
     const filterIndex = this.selectedFilters[filterType]?.indexOf(changeTo);
-    // console.log('filterIndex', filterIndex);
     const NOT_FOUND = -1;
     filterIndex === NOT_FOUND ?
       this.selectedFilters[filterType].push(changeTo) :
