@@ -11,13 +11,12 @@ import {NavigationEnd, Router, RouterLink} from '@angular/router';
 import {filter} from 'rxjs';
 import {FieldToTextPipe} from 'src/app/shared/pipes/field-to-text';
 import {NavbarComponent} from '../navbar/navbar.component';
-import {JsonPipe} from "@angular/common";
 
 @Component({
     selector: 'app-header',
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.scss'],
-    imports: [RouterLink, NavbarComponent, FieldToTextPipe, JsonPipe],
+    imports: [RouterLink, NavbarComponent, FieldToTextPipe],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent implements OnInit, OnChanges{

@@ -1,5 +1,5 @@
 import {TextFieldModule} from '@angular/cdk/text-field';
-import {AsyncPipe, NgClass} from '@angular/common';
+import {NgClass} from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -25,7 +25,7 @@ import {ReviewRes} from "../res/review-res.model";
     selector: 'app-new-review',
     templateUrl: './new-review.component.html',
     styleUrls: ['./new-review.component.scss'],
-    imports: [NgClass, MatFormFieldModule, MatInputModule, TextFieldModule, MatButtonModule, ReactiveFormsModule, AsyncPipe]
+    imports: [NgClass, MatFormFieldModule, MatInputModule, TextFieldModule, MatButtonModule, ReactiveFormsModule]
 })
 export class NewReviewComponent implements OnInit, OnChanges {
   review = input<ReviewRes>();

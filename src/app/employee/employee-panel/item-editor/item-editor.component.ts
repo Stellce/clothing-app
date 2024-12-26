@@ -24,7 +24,6 @@ import {UniqueItem} from "../../../categories/list-items/item-card/item-card.mod
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatAutocomplete, MatAutocompleteTrigger} from "@angular/material/autocomplete";
 import {MatInput} from "@angular/material/input";
-import {AsyncPipe} from "@angular/common";
 import {CdkTextareaAutosize} from "@angular/cdk/text-field";
 import {FieldToTextPipe} from "../../../shared/pipes/field-to-text";
 import {MatButton} from "@angular/material/button";
@@ -44,7 +43,6 @@ import {Subcategory} from "../../../categories/subcategory.model";
         MatAutocomplete,
         MatInput,
         MatAutocompleteTrigger,
-        AsyncPipe,
         CdkTextareaAutosize,
         FieldToTextPipe,
         MatButton,

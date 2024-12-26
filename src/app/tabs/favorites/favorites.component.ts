@@ -1,7 +1,6 @@
 import {ChangeDetectionStrategy, Component, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
 import {ItemsService} from "../../item/items.service";
 import {ItemCardComponent} from '../../categories/list-items/item-card/item-card.component';
-import {NgStyle} from '@angular/common';
 import {FavoritesService} from './favorites.service';
 import {ItemCard} from 'src/app/categories/list-items/item-card/item-card.model';
 import {LocalService} from 'src/app/shared/local/local.service';
@@ -17,7 +16,7 @@ import {DialogComponent} from "../../shared/dialog/dialog.component";
     selector: 'app-favorites',
     templateUrl: './favorites.component.html',
     styleUrls: ['./favorites.component.scss'],
-    imports: [ItemCardComponent, NgStyle, MatProgressSpinner],
+    imports: [ItemCardComponent, MatProgressSpinner],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FavoritesComponent implements OnInit, OnDestroy {

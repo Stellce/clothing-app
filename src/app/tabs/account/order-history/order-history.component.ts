@@ -1,6 +1,5 @@
 import {ChangeDetectionStrategy, Component, model, OnInit, signal, WritableSignal} from '@angular/core';
 import {Location} from '@angular/common';
-import {ItemBarComponent} from '../../../item/item-bar/item-bar.component';
 import {MatButtonModule} from '@angular/material/button';
 import {OrdersService} from "../../../order-page/orders.service";
 import {OrderRes} from "../../../order-page/order-res.model";
@@ -11,7 +10,7 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
     selector: 'app-order-history',
     templateUrl: './order-history.component.html',
     styleUrls: ['./order-history.component.scss'],
-    imports: [MatButtonModule, ItemBarComponent, OrderItemBarComponent, MatProgressSpinner],
+    imports: [MatButtonModule, OrderItemBarComponent, MatProgressSpinner],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OrderHistoryComponent implements OnInit {

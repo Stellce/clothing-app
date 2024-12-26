@@ -7,20 +7,14 @@ import {
 } from "@angular/material/expansion";
 import {OutletComponent} from "../../tabs/landing/outlet/outlet.component";
 import {MatDivider} from "@angular/material/divider";
-import {MatError, MatFormField, MatLabel} from "@angular/material/form-field";
+import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
-import {MatButton, MatMiniFabButton} from "@angular/material/button";
+import {MatButton} from "@angular/material/button";
 import {FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {EmployeeService} from "../employee.service";
 import {DialogData} from "../../shared/dialog/dialog-data.model";
 import {DialogComponent} from "../../shared/dialog/dialog.component";
 import {MatDialog} from "@angular/material/dialog";
-import {MatOption, MatSelect} from "@angular/material/select";
-import {AsyncPipe} from "@angular/common";
-import {MatAutocomplete, MatAutocompleteTrigger} from "@angular/material/autocomplete";
-import {CdkTextareaAutosize} from "@angular/cdk/text-field";
-import {FieldToTextPipe} from "../../shared/pipes/field-to-text";
-import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {ItemEditorComponent} from "./item-editor/item-editor.component";
 import {finalize, tap} from "rxjs";
 import {DialogService} from "../../shared/dialog/dialog.service";
@@ -40,17 +34,7 @@ import {toSignal} from "@angular/core/rxjs-interop";
         MatLabel,
         MatButton,
         FormsModule,
-        MatSelect,
-        MatOption,
-        AsyncPipe,
         ReactiveFormsModule,
-        MatAutocompleteTrigger,
-        MatAutocomplete,
-        CdkTextareaAutosize,
-        FieldToTextPipe,
-        MatError,
-        MatMiniFabButton,
-        MatProgressSpinner,
         ItemEditorComponent,
         MatAccordion
     ],
