@@ -57,7 +57,6 @@ export class NewReviewComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['review'].currentValue) {
-      console.log(this.starsRef);
       this.form.patchValue({
         title: this.review().title,
         content: this.review().content,

@@ -54,7 +54,6 @@ export class RegisterComponent implements OnInit {
       email: this.form.value.email,
       password: this.form.value.password
     }
-    console.log('user to register: ', registerUser);
     this.isLoading.set(true);
     this.authService.register(registerUser).pipe(finalize(() => this.isLoading.set(false))).subscribe({
       next: () => {

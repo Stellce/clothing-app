@@ -115,12 +115,10 @@ export class EmployeePanelComponent implements OnInit {
   }
   onConfirmEditItemId() {
     this.isEditItemIdConfirmed.set(true);
-    console.log('confirmed, editItemIdValue: ', this.editItemIdValue());
   }
   onDeleteItem() {
     this.employeeService.deleteItem(this.deleteItemId.value).subscribe({
       next: res => {
-        console.log('Item deleted', res);
         const data: DialogData = {
           title: 'Done',
           description: 'Item successfully deleted'

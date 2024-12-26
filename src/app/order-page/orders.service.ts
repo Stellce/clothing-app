@@ -16,7 +16,6 @@ export class OrdersService {
   }
 
   createOrder(orderReq: OrderReq) {
-    console.log('orderReq: ', orderReq);
     return this.http.post(this.ordersUrl + '/', orderReq);
   }
 

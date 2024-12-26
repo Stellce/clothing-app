@@ -1,5 +1,5 @@
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
-import {Injectable, signal, WritableSignal} from '@angular/core';
+import {afterNextRender, inject, Injectable, Injector, signal, WritableSignal} from '@angular/core';
 import {NgForm} from "@angular/forms";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {Router} from "@angular/router";
@@ -33,6 +33,7 @@ export class AuthService {
   user: WritableSignal<User> = signal<User>(null);
   tokenInfo: WritableSignal<TokenInfo> = signal<TokenInfo>(null);
   passwordRecoveryTimeout = 0;
+  private injector = inject(Injector);
 
   constructor(
     private http: HttpClient,
@@ -208,7 +209,9 @@ export class AuthService {
   logout() {
     this.user.set(null);
     this.tokenInfo.set(null);
-    localStorage?.removeItem("tokenInfo");
+    afterNextRender(() => {
+      localStorage?.removeItem("tokenInfo");
+    }, {injector: this.injector});
     this.router.navigate(['/', 'account', 'login']);
   }
 
@@ -231,7 +234,9 @@ export class AuthService {
     this.setTokenRefresh(tokenTimeoutInMs);
     this.setAutoLogout(tokenTimeoutInMs);
 
-    localStorage?.setItem("tokenInfo", JSON.stringify(tokenInfo));
+    afterNextRender(() => {
+      localStorage?.setItem("tokenInfo", JSON.stringify(tokenInfo));
+    }, {injector: this.injector});
 
     const email = decodedToken.iss.includes('google') ? decodedToken.email : decodedToken.sub.split(':')[2];
 

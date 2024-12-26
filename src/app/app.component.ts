@@ -1,5 +1,5 @@
 import {HttpClient} from '@angular/common/http';
-import {Component, OnInit} from '@angular/core';
+import {afterNextRender, Component, OnInit} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {AuthService} from "./auth/auth.service";
 import {HeaderComponent} from './navigation/header/header.component';
@@ -12,13 +12,13 @@ import {NavbarComponent} from './navigation/navbar/navbar.component';
     imports: [HeaderComponent, RouterOutlet, NavbarComponent],
     providers: [HttpClient]
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
 
   constructor(
     private authService: AuthService
-  ) {}
-
-  ngOnInit() {
-    this.authService.autoAuth();
+  ) {
+    afterNextRender(() => {
+      this.authService.autoAuth();
+    })
   }
 }

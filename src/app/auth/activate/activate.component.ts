@@ -1,5 +1,13 @@
 import {CommonModule} from '@angular/common';
-import {ChangeDetectionStrategy, Component, OnInit, signal, WritableSignal} from '@angular/core';
+import {
+  afterNextRender,
+  ChangeDetectionStrategy,
+  Component, inject,
+  Injector,
+  OnInit,
+  signal,
+  WritableSignal
+} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {forkJoin} from 'rxjs';
 import {LocalService} from 'src/app/shared/local/local.service';
@@ -15,6 +23,7 @@ import {AuthService} from '../auth.service';
 })
 export class ActivateComponent implements OnInit {
   title: WritableSignal<string> = signal<string>('Activating account...');
+  private injector = inject(Injector);
 
   constructor(
     private authService: AuthService,
@@ -37,8 +46,10 @@ export class ActivateComponent implements OnInit {
   }
 
   private uploadFavorites() {
-    let itemIds = this.localService.favoritesIds;
-    let favoriteItemsAdded$ = itemIds.map(id => this.favoritesService.addItem(id));
-    forkJoin(favoriteItemsAdded$).subscribe(res => console.log('Favorite items added', res));
+    afterNextRender(() => {
+      let itemIds = this.localService.favoritesIds;
+      let favoriteItemsAdded$ = itemIds.map(id => this.favoritesService.addItem(id));
+      forkJoin(favoriteItemsAdded$).subscribe();
+    }, {injector: this.injector});
   }
 }
