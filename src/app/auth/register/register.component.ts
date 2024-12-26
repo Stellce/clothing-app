@@ -13,14 +13,13 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {DialogData} from "../../shared/dialog/dialog-data.model";
 import {DialogComponent} from "../../shared/dialog/dialog.component";
 import {MatDialog} from "@angular/material/dialog";
-import {NgStyle} from "@angular/common";
 import {finalize} from "rxjs";
 
 @Component({
     selector: 'app-register',
     templateUrl: './register.component.html',
     styleUrls: ['../shared.scss'],
-    imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatRadioModule, MatCheckboxModule, MatButtonModule, RouterLink, GoogleLoginButtonComponent, MatProgressSpinner, NgStyle],
+    imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatRadioModule, MatCheckboxModule, MatButtonModule, RouterLink, GoogleLoginButtonComponent, MatProgressSpinner],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RegisterComponent implements OnInit {

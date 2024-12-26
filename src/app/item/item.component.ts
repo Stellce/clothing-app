@@ -1,4 +1,4 @@
-import {CurrencyPipe, NgClass, NgStyle} from '@angular/common';
+import {CurrencyPipe, NgClass} from '@angular/common';
 import {ChangeDetectionStrategy, Component, computed, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
 import {FormsModule, NgForm} from "@angular/forms";
 import {MatButtonModule} from '@angular/material/button';
@@ -31,7 +31,7 @@ import {CdkCopyToClipboard} from "@angular/cdk/clipboard";
     selector: 'app-item',
     templateUrl: './item.component.html',
     styleUrls: ['./item.component.scss'],
-    imports: [BreadcrumbComponent, NgClass, MatButtonModule, ReviewsComponent, CurrencyPipe, MatFormFieldModule, MatInputModule, FormsModule, NgStyle, FieldToTextPipe, AddToFavoritesComponent, MatRipple, InputQuantityComponent, CdkCopyToClipboard],
+    imports: [BreadcrumbComponent, NgClass, MatButtonModule, ReviewsComponent, CurrencyPipe, MatFormFieldModule, MatInputModule, FormsModule, FieldToTextPipe, AddToFavoritesComponent, MatRipple, InputQuantityComponent, CdkCopyToClipboard],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ItemComponent implements OnInit, OnDestroy {
