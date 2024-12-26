@@ -1,7 +1,8 @@
 import {CurrencyPipe, NgStyle, PercentPipe} from '@angular/common';
 import {
+  afterNextRender,
   ChangeDetectionStrategy,
-  Component,
+  Component, inject, Injector,
   input,
   InputSignal,
   OnDestroy,
@@ -29,6 +30,7 @@ export class ItemCardComponent implements OnInit, OnDestroy {
   item: WritableSignal<ItemCard> = signal<ItemCard>(null);
   isBreadcrumbResolved: InputSignal<boolean> = input();
   imagesSubscription: Subscription;
+  private injector = inject(Injector);
 
   constructor(
     private localService: LocalService,
@@ -46,12 +48,14 @@ export class ItemCardComponent implements OnInit, OnDestroy {
         console.error(err);
       }
     });
-    if (!this.authService.user() && this.isOnLocalWishlist(this.item())) {
-      this.item.update(item => {
-        item.metadata.onWishList = true;
-        return item;
-      });
-    }
+    afterNextRender(() => {
+      if (!this.authService.user() && this.isOnLocalWishlist(this.item())) {
+        this.item.update(item => {
+          item.metadata.onWishList = true;
+          return item;
+        });
+      }
+    }, {injector: this.injector});
   }
 
   ngOnDestroy() {

@@ -1,4 +1,12 @@
-import {ChangeDetectionStrategy, Component, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
+import {
+  afterNextRender,
+  ChangeDetectionStrategy,
+  Component, inject, Injector,
+  OnDestroy,
+  OnInit,
+  signal,
+  WritableSignal
+} from '@angular/core';
 import {ItemsService} from "../../item/items.service";
 import {ItemCardComponent} from '../../categories/list-items/item-card/item-card.component';
 import {FavoritesService} from './favorites.service';
@@ -24,6 +32,7 @@ export class FavoritesComponent implements OnInit, OnDestroy {
   itemsSub: Subscription;
   isLoading: WritableSignal<boolean> = signal<boolean>(true);
   message: WritableSignal<string> = signal<string>("");
+  private injector = inject(Injector);
 
   constructor(
     private favoritesService: FavoritesService,
@@ -34,11 +43,13 @@ export class FavoritesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    if (this.authService.user()) {
-      this.loadItems();
-    } else {
-      this.loadLocalItems();
-    }
+    afterNextRender(() => {
+      if (this.authService.user()) {
+        this.loadItems();
+      } else {
+        this.loadLocalItems();
+      }
+    }, {injector: this.injector});
   }
 
   ngOnDestroy() {
@@ -50,10 +61,7 @@ export class FavoritesComponent implements OnInit, OnDestroy {
       let favoritesIdsUploading$ = localItems.map(lItemId => {
         return this.favoritesService.addItem(lItemId);
       });
-      forkJoin(favoritesIdsUploading$).subscribe({
-        next: () => console.log('Favorite Items uploaded'),
-        error: e => console.log(e)
-      });
+      forkJoin(favoritesIdsUploading$).subscribe();
     }
     const requestItemsImages = () => {
       this.items().map(item => {
@@ -83,38 +91,39 @@ export class FavoritesComponent implements OnInit, OnDestroy {
   }
 
   private loadLocalItems() {
-    let itemsIds: string[] = this.localService.favoritesIds;
-    if (!itemsIds.length) {
-      this.items.set([]);
-      this.isLoading.set(false);
-    }
-    let items$ = itemsIds.map(itemId => this.itemService.requestItemById(itemId));
-    this.itemsSub = forkJoin<ItemDetails[]>(items$).subscribe({
-      next: items => {
-        this.items.set(items);
-        this.isLoading.set(false);
-        items.forEach((item, index) => {
-          this.itemService.requestItemImages(item.id).subscribe(images => {
-            this.items.update(items => {
-              items[index].images = images;
-              console.log(items);
-              return items;
-            });
-          });
-        })
-      },
-      error: error => {
-        console.error(error);
+    afterNextRender(() => {
+      let itemsIds: string[] = this.localService.favoritesIds;
+      if (!itemsIds.length) {
         this.items.set([]);
-        this.message.set("Error occurred, could not load favorites. Try again later.");
         this.isLoading.set(false);
-        const dialogData: DialogData = {
-          title: 'Something went wrong',
-          description: 'Could not load favorites',
-          buttonName: 'Ok'
-        }
-        this.dialog.open(DialogComponent, {data: dialogData});
       }
-    })
+      let items$ = itemsIds.map(itemId => this.itemService.requestItemById(itemId));
+      this.itemsSub = forkJoin<ItemDetails[]>(items$).subscribe({
+        next: items => {
+          this.items.set(items);
+          this.isLoading.set(false);
+          items.forEach((item, index) => {
+            this.itemService.requestItemImages(item.id).subscribe(images => {
+              this.items.update(items => {
+                items[index].images = images;
+                return items;
+              });
+            });
+          })
+        },
+        error: error => {
+          console.error(error);
+          this.items.set([]);
+          this.message.set("Error occurred, could not load favorites. Try again later.");
+          this.isLoading.set(false);
+          const dialogData: DialogData = {
+            title: 'Something went wrong',
+            description: 'Could not load favorites',
+            buttonName: 'Ok'
+          }
+          this.dialog.open(DialogComponent, {data: dialogData});
+        }
+      })
+    }, {injector: this.injector});
   }
 }

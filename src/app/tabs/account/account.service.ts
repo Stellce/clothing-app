@@ -19,10 +19,6 @@ export class AccountService {
       inputs: [{name: 'promocode'}],
       buttonName: 'Submit'
     }
-    const dialogRef = this.dialog.open(DialogComponent, {data: dialogData});
-
-    dialogRef.afterClosed().subscribe((form: NgForm) => {
-      if (form?.value) console.log('promo', form.value);
-    });
+    this.dialog.open(DialogComponent, {data: dialogData});
   }
 }
