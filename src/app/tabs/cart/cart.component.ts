@@ -9,13 +9,12 @@ import {
   WritableSignal
 } from '@angular/core';
 import {ItemBarComponent} from '../../item/item-bar/item-bar.component';
-import {AsyncPipe, CurrencyPipe, NgStyle} from '@angular/common';
+import {CurrencyPipe} from '@angular/common';
 import {CartService} from './cart.service';
 import {CartItem} from './cart-item.model';
 import {AuthService} from 'src/app/auth/auth.service';
 import {forkJoin, Observable, Subscription} from 'rxjs';
 import {MatCheckbox, MatCheckboxChange} from "@angular/material/checkbox";
-import {MatDivider} from "@angular/material/divider";
 import {MatExpansionPanel, MatExpansionPanelHeader} from "@angular/material/expansion";
 import {MatCardTitle} from "@angular/material/card";
 import {FieldToTextPipe} from "../../shared/pipes/field-to-text";
@@ -33,7 +32,7 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
     selector: 'app-cart',
     templateUrl: './cart.component.html',
     styleUrls: ['./cart.component.scss'],
-    imports: [ItemBarComponent, AsyncPipe, NgStyle, MatCheckbox, MatDivider, MatExpansionPanel, MatCardTitle, MatExpansionPanelHeader, FieldToTextPipe, CurrencyPipe, MatButton, MatProgressSpinner, MatIconButton],
+    imports: [ItemBarComponent, MatCheckbox, MatExpansionPanel, MatCardTitle, MatExpansionPanelHeader, FieldToTextPipe, CurrencyPipe, MatButton, MatProgressSpinner, MatIconButton],
     providers: [FieldToTextPipe],
     changeDetection: ChangeDetectionStrategy.OnPush
 })

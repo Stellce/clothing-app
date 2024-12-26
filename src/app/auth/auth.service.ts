@@ -59,14 +59,14 @@ export class AuthService {
   }
 
   autoAuth() {
-    let tokenInfo: TokenInfo = JSON.parse(localStorage.getItem("tokenInfo"));
+    let tokenInfo: TokenInfo = JSON.parse(localStorage?.getItem("tokenInfo"));
     if (!tokenInfo) return;
     let decodedToken = jwtDecode(tokenInfo.access_token);
     let tokenTimeoutInMs = decodedToken.exp * 1000 - (new Date()).getTime();
     if (tokenTimeoutInMs > 0) {
       this.authUser(tokenInfo);
     } else {
-      localStorage.removeItem("tokenInfo");
+      localStorage?.removeItem("tokenInfo");
       this.tokenInfo.set(null);
       this.user.set(null);
     }
@@ -208,7 +208,7 @@ export class AuthService {
   logout() {
     this.user.set(null);
     this.tokenInfo.set(null);
-    localStorage.removeItem("tokenInfo");
+    localStorage?.removeItem("tokenInfo");
     this.router.navigate(['/', 'account', 'login']);
   }
 
@@ -231,7 +231,7 @@ export class AuthService {
     this.setTokenRefresh(tokenTimeoutInMs);
     this.setAutoLogout(tokenTimeoutInMs);
 
-    localStorage.setItem("tokenInfo", JSON.stringify(tokenInfo));
+    localStorage?.setItem("tokenInfo", JSON.stringify(tokenInfo));
 
     const email = decodedToken.iss.includes('google') ? decodedToken.email : decodedToken.sub.split(':')[2];
 

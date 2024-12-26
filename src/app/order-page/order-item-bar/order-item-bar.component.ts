@@ -1,13 +1,13 @@
 import {ChangeDetectionStrategy, Component, model, ModelSignal, OnInit, signal, WritableSignal} from '@angular/core';
 import {OrderRes} from "../order-res.model";
-import {Router, RouterLink} from "@angular/router";
+import {Router} from "@angular/router";
 import {CurrencyPipe, DatePipe, NgStyle} from "@angular/common";
 import {ItemsService} from "../../item/items.service";
 import {FieldToTextPipe} from "../../shared/pipes/field-to-text";
 
 @Component({
     selector: 'app-order-item-bar',
-    imports: [RouterLink, NgStyle, DatePipe, CurrencyPipe, FieldToTextPipe],
+    imports: [NgStyle, DatePipe, CurrencyPipe, FieldToTextPipe],
     templateUrl: './order-item-bar.component.html',
     styleUrl: './order-item-bar.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush

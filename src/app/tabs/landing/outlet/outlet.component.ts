@@ -4,14 +4,13 @@ import {ItemsService} from "../../../item/items.service";
 import {ItemCardComponent} from '../../../categories/list-items/item-card/item-card.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {finalize, map} from "rxjs";
-import {AsyncPipe} from "@angular/common";
 import {toSignal} from "@angular/core/rxjs-interop";
 
 @Component({
     selector: 'app-outlet',
     templateUrl: './outlet.component.html',
     styleUrls: ['./outlet.component.scss'],
-    imports: [MatProgressSpinnerModule, ItemCardComponent, AsyncPipe],
+    imports: [MatProgressSpinnerModule, ItemCardComponent],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OutletComponent {

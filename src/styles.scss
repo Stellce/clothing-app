@@ -9,9 +9,11 @@ $dark-theme: themes.$dark-theme;
 
 :root {
   @include mat.all-component-themes($dark-theme);
-  background: mat.get-theme-color($dark-theme, surface);
-  color: mat.get-theme-color($dark-theme, on-surface);
-  height: 100%;
+  & {
+    background: mat.get-theme-color($dark-theme, surface);
+    color: mat.get-theme-color($dark-theme, on-surface);
+    height: 100%;
+  }
 }
 
 * {
