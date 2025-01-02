@@ -31,6 +31,7 @@ import {DialogComponent} from "../../../shared/dialog/dialog.component";
 import {DialogData} from "../../../shared/dialog/dialog-data.model";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {Subcategory} from "../../../categories/subcategory.model";
+import {Image} from "../../../item/image.model";
 
 @Component({
     selector: 'app-item-editor',
@@ -55,6 +56,8 @@ import {Subcategory} from "../../../categories/subcategory.model";
 })
 export class ItemEditorComponent implements OnInit {
   itemId: InputSignal<string> = input<string>();
+  images: WritableSignal<Image[]> = signal<Image[]>(null);
+  selectedImage: WritableSignal<Image> = signal<Image>(null);
 
   mode: Signal<'create' | 'update'> = computed(() => this.itemId() ? 'update' : 'create');
   title: Signal<string> = computed(() => this.mode() === 'create' ? 'Add new item' : 'Edit item');
@@ -151,6 +154,13 @@ export class ItemEditorComponent implements OnInit {
 
   ngOnInit() {
     if (this.mode() === 'update') this.patchForm();
+
+    if (this.itemId()) {
+      this.itemsService.requestItemImages(this.itemId()).subscribe(images => {
+        this.images.set(images);
+        this.selectedImage.set(images[0]);
+      });
+    }
   }
 
   onAddSizeAndQuantity() {

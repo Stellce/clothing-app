@@ -4,5 +4,5 @@ import {AuthService} from "../auth/auth.service";
 
 export const employeeGuard: CanActivateFn = () => {
   const authService = inject(AuthService);
-  return authService.user().roles && (authService.user().roles.includes('EMPLOYEE') || authService.user().roles?.includes('ADMIN'));
+  return !!(authService.user()?.roles?.includes('EMPLOYEE') || authService.user()?.roles?.includes('ADMIN'));
 }
