@@ -5,6 +5,14 @@
 } @else {
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <h2>{{ title() }}</h2>
+    <div class="images">
+      <img [src]="selectedImage()?.url"/>
+      <div class="img-carousel">
+        @for (image of images(); track image.id) {
+          <img [src]="image?.url" (click)="selectedImage.set(image)"/>
+        }
+      </div>
+    </div>
     <mat-form-field>
       <mat-label>Gender: </mat-label>
       <mat-select formControlName="gender">
@@ -105,12 +113,12 @@
               <mat-label>Quantity</mat-label>
               <input type="number" matInput formControlName="quantity"/>
             </mat-form-field>
-            <button mat-button (click)="onRemoveUniqueItem(i)">
+            <button mat-button type="button" (click)="onRemoveUniqueItem(i)">
               <img src="assets/icons/trash.svg" alt="delete"/>
             </button>
           </div>
         }
-        <button mat-button (click)="onAddSizeAndQuantity()">Add unique item</button>
+        <button mat-button type="button" (click)="onAddSizeAndQuantity()">Add unique item</button>
       </div>
     } @else {
       <mat-error>Please, choose category, then you will be able to set sizes and quantities</mat-error>

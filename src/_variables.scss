@@ -19,6 +19,20 @@ $desktop-side-padding: 2rem;
   padding-right: $desktop-side-padding;
 }
 
+@mixin img-carousel() {
+  height: 100px;
+  display: flex;
+  overflow: auto;
+  gap: 0.5rem;
+  margin: 0.5rem;
+
+  img {
+    height: calc(100% - 5px);
+    width: auto;
+    cursor: pointer;
+  }
+}
+
 $theme: themes.$dark-theme;
 
 $surface-container: mat.get-theme-color($theme, surface-container);
