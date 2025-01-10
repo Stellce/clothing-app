@@ -8,7 +8,7 @@
     }
     @if ((reviews | async)?.length) {
       @for (review of reviews | async; track review.id) {
-        <app-review [review]="review" (editReview)="editableReview.set(review)"></app-review>
+        <app-review [review]="review" (editReview)="editReview(review)"></app-review>
       }
     } @else if (isLoading()) {
       <div class="center">

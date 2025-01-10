@@ -51,4 +51,8 @@ export class ReviewsComponent implements OnInit {
       })
     )
   }
+
+  editReview(review: ReviewRes) {
+    this.editableReview.set(review);
+  }
 }
