@@ -12,11 +12,51 @@ input::-webkit-inner-spin-button {
 }
 
 .images {
-  img {
-    width: 100%;
+  .image {
+    position: relative;
+    img {
+      width: 100%;
+    }
+    .delete-image {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+    }
   }
   .img-carousel {
     @include variables.img-carousel();
+    .add-image {
+      width: auto;
+      height: 100%;
+      & span:first-child{
+        font-size: 5rem;
+        line-height: 5rem;
+        margin-top: -20px;
+      }
+    }
+  }
+}
+
+.add-image {
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 1rem;
+  background: variables.$background-primary;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: variables.$on-surface;
+  user-select: none;
+  cursor: pointer;
+  & span:first-child{
+    font-size: 10rem;
+    line-height: 10rem;
+    margin-top: -30px;
+  }
+  input {
+    visibility: hidden;
+    height: 0;
   }
 }
 
