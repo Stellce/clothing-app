@@ -2,11 +2,11 @@ import {CurrencyPipe, NgStyle, PercentPipe} from '@angular/common';
 import {
   afterNextRender,
   ChangeDetectionStrategy,
-  Component, inject, Injector,
+  Component, computed, inject, Injector,
   input,
   InputSignal,
   OnDestroy,
-  OnInit,
+  OnInit, Signal,
   signal,
   WritableSignal
 } from '@angular/core';
@@ -31,12 +31,19 @@ export class ItemCardComponent implements OnInit, OnDestroy {
   isBreadcrumbResolved: InputSignal<boolean> = input();
   imagesSubscription: Subscription;
   private injector = inject(Injector);
+  linkToItem: Signal<string[]> = signal([]);
 
   constructor(
     private localService: LocalService,
     private authService: AuthService,
     private itemsService: ItemsService
-  ) {}
+  ) {
+    afterNextRender(() => {
+      this.linkToItem = computed(() =>
+        window.location.href.includes('product') ? [this.item().id] : ['/', 'product', this.item().id]
+      );
+    })
+  }
 
   ngOnInit(): void {
     this.item.set(this.itemWithoutImages());
@@ -60,10 +67,6 @@ export class ItemCardComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.imagesSubscription?.unsubscribe();
-  }
-
-  getLinkToItem() {
-    return this.isBreadcrumbResolved() ? [this.item().id] : ['/', 'product', this.item().id];
   }
 
   private isOnLocalWishlist(item: ItemCard) {
