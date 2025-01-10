@@ -39,6 +39,10 @@ export class OrderItemBarComponent implements OnInit{
     return 'cyan';
   }
 
+  selectImage(imageUrl: string) {
+    this.selectedImage.set(imageUrl);
+  }
+
   onNavigate(event: MouseEvent) {
     const targetElement = event.target as HTMLElement;
 

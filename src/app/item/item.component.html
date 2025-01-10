@@ -9,7 +9,7 @@
           <div class="img-carousel">
             @for (image of item().images; track image.id; let i = $index) {
               <img [src]="image.url"
-                   [alt]="item().name" (click)="selectedImageIndex.set(i)">
+                   [alt]="item().name" (click)="selectImageIndex(i)">
             }
           </div>
         </div>
@@ -52,24 +52,26 @@
           <span>Quantity (max: {{selectedUniqueItem().quantity}}):</span>
           <app-input-quantity [(quantity)]="quantity" [max]="selectedUniqueItem().quantity"/>
         </div>
-        <div class="actions">
-          @if (selectedCartItem()?.quantity) {
-            <span>Already added to cart {{selectedCartItem()?.quantity}}</span>
-            <button mat-flat-button color="primary" [disabled]="quantity() === selectedCartItem().quantity" (click)="onSaveCartItem()">
-              @if (quantity() === selectedCartItem().quantity) {
-                <span>Change quantity to update it in a cart</span>
-              } @else {
-                {{quantity() > selectedCartItem().quantity ? 'Add' : 'Remove'}} {{Math.abs(quantityDiff())}} {{Math.abs(quantityDiff()) > 1 ? 'items' : 'item'}} {{quantityDiff() > 0 ? 'to' : 'from'}} cart
+        @if (!authService.user()?.roles?.includes('ADMIN') && !authService.user()?.roles?.includes('EMPLOYEE')) {
+          <div class="actions">
+            @if (selectedCartItem()?.quantity) {
+              <span>Already added to cart {{selectedCartItem()?.quantity}}</span>
+              <button mat-flat-button color="primary" [disabled]="quantity() === selectedCartItem().quantity" (click)="onSaveCartItem()">
+                @if (quantity() === selectedCartItem().quantity) {
+                  <span>Change quantity to update it in a cart</span>
+                } @else {
+                  {{quantity() > selectedCartItem().quantity ? 'Add' : 'Remove'}} {{Math.abs(quantityDiff())}} {{Math.abs(quantityDiff()) > 1 ? 'items' : 'item'}} {{quantityDiff() > 0 ? 'to' : 'from'}} cart
+                }
+              </button>
+            } @else {
+              <button mat-flat-button color="primary" [disabled]="!authService.user()" (click)="addToCart()">Add to cart</button>
+              @if (!authService.user()) {
+                <h2>You have to <a href="/account/register">register</a> or <a href="/account/login">log in</a> to use cart</h2>
               }
-            </button>
-          } @else {
-            <button mat-flat-button color="primary" [disabled]="!authService.user()" (click)="addToCart()">Add to cart</button>
-            @if (!authService.user()) {
-              <h2>You have to <a href="/account/register">register</a> or <a href="/account/login">log in</a> to use cart</h2>
             }
-          }
-          <button mat-flat-button color="primary" (click)="orderNow()">Order now</button>
-        </div>
+            <button mat-flat-button color="primary" (click)="orderNow()">Order now</button>
+          </div>
+        }
       </div>
     </div>
   </div>

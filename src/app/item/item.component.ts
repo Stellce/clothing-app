@@ -1,5 +1,15 @@
 import {CurrencyPipe, NgClass} from '@angular/common';
-import {ChangeDetectionStrategy, Component, computed, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
+import {
+  afterNextRender,
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  OnDestroy,
+  OnInit,
+  Signal,
+  signal,
+  WritableSignal
+} from '@angular/core';
 import {FormsModule, NgForm} from "@angular/forms";
 import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -43,9 +53,9 @@ export class ItemComponent implements OnInit, OnDestroy {
   cartItems: WritableSignal<CartItem[]> = signal<CartItem[]>([]);
   selectedCartItem: WritableSignal<CartItem> = signal<CartItem>(null);
   dialogSubscription: Subscription;
-  quantityDiff = computed(() => this.quantity() - this.selectedCartItem().quantity);
+  quantityDiff: Signal<number> = computed(() => this.quantity() - this.selectedCartItem().quantity);
 
-  isFromCart = computed(() => window.location.href.includes('cart'));
+  isFromCart: Signal<boolean> = signal(false);
 
   constructor(
     private itemsService: ItemsService,
@@ -54,10 +64,18 @@ export class ItemComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private ordersService: OrdersService,
     protected authService: AuthService
-  ) {}
+  ) {
+    afterNextRender(() => {
+      this.isFromCart = computed(() => window.location.href.includes('cart'));
+    })
+  }
 
   ngOnInit() {
     this.requestItem();
+  }
+
+  selectImageIndex(i: number) {
+    this.selectedImageIndex.set(i);
   }
 
   setUniqueItem(uniqueItem: UniqueItem) {
