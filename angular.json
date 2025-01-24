@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "cloth-app": {
+    "spacefincher-frontend": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -18,7 +18,7 @@
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": {
-              "base": "dist/cloth-app"
+              "base": "dist/spacefincher-frontend"
             },
             "index": "src/index.html",
             "polyfills": [
@@ -69,10 +69,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "cloth-app:build:production"
+              "buildTarget": "spacefincher-frontend:build:production"
             },
             "development": {
-              "buildTarget": "cloth-app:build:development"
+              "buildTarget": "spacefincher-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -80,7 +80,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "cloth-app:build"
+            "buildTarget": "spacefincher-frontend:build"
           }
         },
         "test": {
