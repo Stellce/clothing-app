@@ -9,7 +9,6 @@ import {AddCartRes} from "./res/add-cart-res.model";
 @Injectable({ providedIn: 'root' })
 export class CartService {
   private cartUrl = environment.backendUrl + '/orders/cart';
-  cartItems: CartItem[];
   constructor(private http: HttpClient) {}
 
   getItems() {

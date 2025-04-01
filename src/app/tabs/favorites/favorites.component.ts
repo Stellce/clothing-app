@@ -19,6 +19,7 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatDialog} from "@angular/material/dialog";
 import {DialogData} from "../../shared/dialog/dialog-data.model";
 import {DialogComponent} from "../../shared/dialog/dialog.component";
+import {Platform} from "@angular/cdk/platform";
 
 @Component({
     selector: 'app-favorites',
@@ -39,17 +40,17 @@ export class FavoritesComponent implements OnInit, OnDestroy {
     private localService: LocalService,
     private authService: AuthService,
     private itemService: ItemsService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private platform: Platform,
   ) {}
 
   ngOnInit() {
-    afterNextRender(() => {
-      if (this.authService.user()) {
-        this.loadItems();
-      } else {
-        this.loadLocalItems();
-      }
-    }, {injector: this.injector});
+    if (!this.platform.isBrowser) return;
+    if (this.authService.user()) {
+      this.loadItems();
+    } else {
+      this.loadLocalItems();
+    }
   }
 
   ngOnDestroy() {

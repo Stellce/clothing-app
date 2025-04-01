@@ -6,8 +6,10 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
+    "watch-prod": "ng build --watch --configuration production",
     "test": "ng test",
-    "serve:ssr": "node dist/spacefincher-frontend/server/server.mjs"
+    "serve:ssr": "node dist/spacefincher-frontend/server/server.mjs",
+    "mock-server": "node json-server/server.js"
   },
   "private": true,
   "dependencies": {
@@ -23,7 +25,7 @@
     "@angular/platform-server": "^19.0.5",
     "@angular/router": "^19.0.5",
     "@angular/ssr": "^19.0.6",
-    "express": "^4.18.2",
+    "express": "^4.21.2",
     "jwt-decode": "^4.0.0",
     "rxjs": "~7.8.1",
     "tslib": "^2.7.0",
@@ -36,6 +38,7 @@
     "@types/express": "^4.17.17",
     "@types/jasmine": "~5.1.4",
     "@types/node": "^18.18.0",
+    "cors": "^2.8.5",
     "jasmine-core": "~5.2.0",
     "karma": "~6.4.4",
     "karma-chrome-launcher": "~3.2.0",

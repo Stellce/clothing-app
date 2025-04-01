@@ -123,7 +123,8 @@ export class ItemComponent implements OnInit, OnDestroy {
   }
 
   orderNow() {
-    const createLoadingDialog = () => this.dialog.open(DialogComponent, {data: {title: "Loading", isLoading: true}, disableClose: true});
+    const createLoadingDialog = () =>
+      this.dialog.open(DialogComponent, {data: {title: "Loading", isLoading: true}, disableClose: true});
     let loadingDialog = createLoadingDialog();
     const addOrder = (orderReq: OrderReq) => {
       this.ordersService.createOrder(orderReq).subscribe({
@@ -172,10 +173,12 @@ export class ItemComponent implements OnInit, OnDestroy {
       dialogRef.afterOpened().subscribe({
         next:() => loadingDialog.close()
       });
-      this.dialogSubscription = dialogRef.afterClosed().subscribe(form => {
-        if (!form.value) return;
-        order = {...order, customer: {...form.value}}
-        addOrder(order);
+      this.dialogSubscription = dialogRef.afterClosed().subscribe({
+        next: form => {
+          if (!form?.value) return;
+          order = {...order, customer: {...form.value}}
+          addOrder(order);
+        }, error: console.log
       })
     } else {
       addOrder(order);
@@ -242,6 +245,7 @@ export class ItemComponent implements OnInit, OnDestroy {
 
   private requestItem() {
     const itemId = this.route.snapshot.paramMap.get("itemId");
+    if (!itemId) return;
     this.itemsService.requestItemById(itemId).subscribe((item: ItemDetails) => {
       if(!item) return;
       this.item.set(item);

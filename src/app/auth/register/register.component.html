@@ -1,7 +1,6 @@
 @if (isLoading()) {
-  <div class="center">
-    <mat-spinner></mat-spinner>
-    <h2>Authenticating...</h2>
+  <div class="center" style="height: 100vh">
+    <mat-spinner/>
   </div>
 } @else {
   <form [formGroup]="form" (ngSubmit)="onRegister()">
@@ -41,11 +40,11 @@
       }
     </mat-form-field>
 
-    <mat-checkbox formControlName="isAgreementConsent" #agreement>
+    <mat-checkbox formControlName="isAgreementConsent">
       I declare that I have read and accept the SpaceFincher Terms & Conditions.
       <span [style]="{color: 'red'}">*</span>
     </mat-checkbox>
-    @if (!agreement.checked && checkAgreement()) {
+    @if (showAgreementError()) {
       <mat-error>Please, consent the agreement</mat-error>
     }
     <button mat-raised-button>Register</button>

@@ -9,7 +9,7 @@ import {
   Validators
 } from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
-import {MAT_DIALOG_DATA, MatDialogModule} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from "@angular/material/dialog";
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {DialogData} from "./dialog-data.model";
@@ -31,6 +31,7 @@ export class DialogComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    public dialogRef: MatDialogRef<DialogComponent>,
     private fb: FormBuilder
   ) {}
 
@@ -40,7 +41,9 @@ export class DialogComponent implements OnInit {
     if (this.data.selects) inputsAndSelectors.push(...this.data.selects);
     if (this.data.inputs) inputsAndSelectors.push(...this.data.inputs);
     inputsAndSelectors.forEach(input => {
-      controls[input.name] = new FormControl(input.defaultValue, Validators.required);
+      const validators = [Validators.required];
+      if (input.name === 'email') validators.push(Validators.email);
+      controls[input.name] = new FormControl(input.defaultValue, validators);
     });
     this.form = this.fb.group(controls);
   }
@@ -60,5 +63,14 @@ export class DialogComponent implements OnInit {
 
   getPasswordIndex(fieldName: string): number {
     return this.shownPasswords().findIndex(pass => pass.fieldName === fieldName);
+  }
+
+  onCloseDialog() {
+    if (this.form) {
+      if (this.form.invalid) return;
+      this.dialogRef.close(this.form);
+    } else {
+      this.dialogRef.close();
+    }
   }
 }
