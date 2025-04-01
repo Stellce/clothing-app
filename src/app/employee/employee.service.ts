@@ -81,7 +81,7 @@ export class EmployeeService {
   }
 
   updateItem(itemId: string, item: CreateItem) {
-    return this.http.post<ItemDetails>(environment.backendUrl + '/catalog/items/' + itemId, item).pipe(tap({
+    return this.http.put<ItemDetails>(environment.backendUrl + '/catalog/items/' + itemId, item).pipe(tap({
       next: () => {
         const data: DialogData = {
           title: 'Item updated'

@@ -42,7 +42,7 @@ testem.log
 Thumbs.db
 
 # Prod files
-/src/environments/environment.prod.ts
+/src/environments
 
 # Test files
 /src/assets/test

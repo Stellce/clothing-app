@@ -16,7 +16,10 @@
             <input matInput [formControlName]="input.name" [type]="setInputType(input.name)">
             @if (input.name.includes('password')) {
               <button mat-icon-button matSuffix (click)="turnPasswordShown(input.name)">
-                <img [src]="'assets/icons/' + shownPasswords()[getPasswordIndex(input.name)].isShown ? 'visibility' : 'visibility_off' + '.svg'" alt="Show/hide password" (click)="turnPasswordShown(input.name)"/>
+                <img
+                  [src]="'assets/icons/' + shownPasswords()[getPasswordIndex(input.name)].isShown ?
+                  'visibility' : 'visibility_off' + '.svg'" alt="Show/hide password" (click)="turnPasswordShown(input.name)"
+                />
               </button>
             }
           </mat-form-field>
@@ -36,6 +39,8 @@
     <p>{{data.note}}</p>
   </mat-dialog-content>
   <mat-dialog-actions>
-    <button mat-raised-button color="primary" [mat-dialog-close]="data.inputs || data.selects ? form : null">{{data.buttonName || 'Ok'}}</button>
+    <button mat-raised-button color="primary" (click)="onCloseDialog()" [type]="form ? 'submit' : 'button'">
+      {{data.buttonName || 'Ok'}}
+    </button>
   </mat-dialog-actions>
 </div>

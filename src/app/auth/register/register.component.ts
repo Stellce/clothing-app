@@ -23,7 +23,7 @@ import {finalize} from "rxjs";
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RegisterComponent implements OnInit {
-  checkAgreement: WritableSignal<boolean> = signal<boolean>(false);
+  showAgreementError: WritableSignal<boolean> = signal<boolean>(false);
   showEmailResend: WritableSignal<boolean> = signal<boolean>(false);
   emailResendTimeout: WritableSignal<number> = signal<number>(0);
   emailSpinnerValue = computed(() => this.emailResendTimeout() / 150);
@@ -45,7 +45,7 @@ export class RegisterComponent implements OnInit {
   }
 
   onRegister() {
-    this.checkAgreement.set(true);
+    this.showAgreementError.set(!this.form.controls['isAgreementConsent'].value);
     this.passwordErrors.set(this.authService.errorsOnPasswordValidation(this.form.controls['password'].value))
     if(this.form.invalid || this.passwordErrors().length) return;
     let registerUser: RegisterUser = {
@@ -120,7 +120,7 @@ export class RegisterComponent implements OnInit {
       lastname: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.pattern(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/)]],
-      isAgreementConsent: ['', Validators.required]
+      isAgreementConsent: ['', Validators.requiredTrue]
     })
   }
 
