@@ -23,7 +23,6 @@ app.use((err, req, res, next) => {
     },
   });
 });
-// app.options('*', cors());
 
 function resolveEndpoints(prevRoute, json, forced) {
   for (let newRoute in json) {
@@ -56,12 +55,15 @@ app.listen(port, () => {
 })
 
 function addEndpoint(route, data) {
-  const queryParams = data['queryParams']
+  const queryParams = data['queryParams'];
   const method = data['method'] || 'get';
+  const status = data['resStatusCode'];
+  if (data['method']) data = data['data'];
   app[method](route, (req, res) => {
     const reqParams = Object.entries(req.query).map(([key, value]) => ({ key, value }))
 
     if (queryParams) data = queryParams[reqParams[0].key][reqParams[0].value];
+    if (status) res.status(status);
     res.send(data);
   })
   if (!queryParams) console.log(`\t${method.toUpperCase()}: ${route}`);

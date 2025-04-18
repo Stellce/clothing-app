@@ -1,7 +1,13 @@
 {
   "oauth2": {
     "registration": {
-      "customer": {},
+      "customer": {
+        "method": "post",
+        "data": {
+          "resStatusCode": 201
+        },
+        "url": true
+       },
       "customer/resend-email": {},
       "customer/activate-account": {
         "access_token": "sample_token",
@@ -11,19 +17,22 @@
         "token_type": "Bearer",
         "not-before-policy": 0,
         "session_state": "sample_session",
-        "scope": "openid profile"
+        "scope": "openid profile",
+        "url": true
       }
     },
     "login": {
       "basic": {
         "method": "post",
-        "access_token":"eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJlUktVWG10TFhKMHBBNkxBS29aWko1ZlU0VDhCdmxKdERCb3pXanFFdnhjIn0.eyJleHAiOjE3NDM0NTk5MTMsImlhdCI6MTc0MzQ1OTYxMywianRpIjoiNjAxMGMxOTQtMjAwMC00NjFiLWFiZjUtZTQxNTc5MTk0Zjk5IiwiaXNzIjoiaHR0cDovL2tleWNsb2FrOjg0MDAva2V5Y2xvYWsvcmVhbG1zL2UtY29tbWVyY2UiLCJzdWIiOiJmOjEwNTc2MmY5LWE4ZWItNGEyYi1hOGIxLTY0OGI5N2I2NzE5NDpqYW5lLmRvZUBleGFtcGxlLmNvbSIsInR5cCI6IkJlYXJlciIsImF6cCI6ImVjb21tZXJjZS1hcGkiLCJzZXNzaW9uX3N0YXRlIjoiMGZhMjFmZmQtMWM2OS00N2EzLWI5MWItMjFmYjQxZTc0MzVjIiwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIkNVU1RPTUVSIl19LCJzY29wZSI6InByb2ZpbGUiLCJzaWQiOiIwZmEyMWZmZC0xYzY5LTQ3YTMtYjkxYi0yMWZiNDFlNzQzNWMiLCJuYW1lIjoiSmFuZSIsInByZWZlcnJlZF91c2VybmFtZSI6ImphbmUuZG9lQGV4YW1wbGUuY29tIiwiZ2l2ZW5fbmFtZSI6IkphbmUifQ.plR8qoszW3br2rNbHZyQwr6gKwcBsIDCuXOXcO1XIjUQdqrRYFYVLx34QVyZ4p8SB0CGiECnYTyev-9-K0MX2NsNhSMz7hsdAd2loHnw2RxR56aoDOnUz1SBSKRtqRzLFqyGq4qqbnpHnNVTTP6yIIi61yZIFKANepYbBM3W1CU49yvRgWLVnpdqiLULFl8h-rn8yDZHWXP_aBAKHCkgxqIu1VK1Me63w2QkZUSsZxCqcg7gw84skNneHJQP91fdpQGepFZx5_Nr2-gwhcjgMbDG5glxD2BR5Si7yHgAtNcFHOfbpzkAbJcHh17NSRkHfzWbdKALfxDEgVPny4GcBg","expires_in":300,"refresh_expires_in":1800,"refresh_token":"eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIwZDkwY2JkNy03MTY0LTQyY2MtODhlMi1kMjE1ZTc5YWU4ZWEifQ.eyJleHAiOjE3NDM0NjE0MTMsImlhdCI6MTc0MzQ1OTYxMywianRpIjoiZDA1M2JkZWYtN2EwMy00ZDBiLWIwNzQtODQzNmVmYWUxMTFhIiwiaXNzIjoiaHR0cDovL2tleWNsb2FrOjg0MDAva2V5Y2xvYWsvcmVhbG1zL2UtY29tbWVyY2UiLCJhdWQiOiJodHRwOi8va2V5Y2xvYWs6ODQwMC9rZXljbG9hay9yZWFsbXMvZS1jb21tZXJjZSIsInN1YiI6ImY6MTA1NzYyZjktYThlYi00YTJiLWE4YjEtNjQ4Yjk3YjY3MTk0OmphbmUuZG9lQGV4YW1wbGUuY29tIiwidHlwIjoiUmVmcmVzaCIsImF6cCI6ImVjb21tZXJjZS1hcGkiLCJzZXNzaW9uX3N0YXRlIjoiMGZhMjFmZmQtMWM2OS00N2EzLWI5MWItMjFmYjQxZTc0MzVjIiwic2NvcGUiOiJwcm9maWxlIiwic2lkIjoiMGZhMjFmZmQtMWM2OS00N2EzLWI5MWItMjFmYjQxZTc0MzVjIn0.WumFcSOC3cMK7t2N68SyDzHbRr8SaY3vgYvquB8l9IY","token_type":"Bearer","not-before-policy":0,"session_state":"0fa21ffd-1c69-47a3-b91b-21fb41e7435c","scope":"profile"
+        "data": {"access_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE3MzgzMzAyODUsImV4cCI6MjA1OTMwNjI4NSwiYXVkIjoiIiwic3ViIjoiamFuZS5kb2VAZXhhbXBsZS5jb20iLCJnaXZlbl9uYW1lIjoiSmFuZSIsInByZWZlcnJlZF91c2VybmFtZSI6ImphbmUuZG9lQGV4YW1wbGUuY29tIiwibmFtZSI6IkphbmUifQ.izSvlR4QB26eZ6H9flVHWnSHIlVWU7W3PrfNbDdvVy8","expires_in":300,"refresh_expires_in":1800,"refresh_token":"eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIwZDkwY2JkNy03MTY0LTQyY2MtODhlMi1kMjE1ZTc5YWU4ZWEifQ.eyJleHAiOjE3NDM0NjE0MTMsImlhdCI6MTc0MzQ1OTYxMywianRpIjoiZDA1M2JkZWYtN2EwMy00ZDBiLWIwNzQtODQzNmVmYWUxMTFhIiwiaXNzIjoiaHR0cDovL2tleWNsb2FrOjg0MDAva2V5Y2xvYWsvcmVhbG1zL2UtY29tbWVyY2UiLCJhdWQiOiJodHRwOi8va2V5Y2xvYWs6ODQwMC9rZXljbG9hay9yZWFsbXMvZS1jb21tZXJjZSIsInN1YiI6ImY6MTA1NzYyZjktYThlYi00YTJiLWE4YjEtNjQ4Yjk3YjY3MTk0OmphbmUuZG9lQGV4YW1wbGUuY29tIiwidHlwIjoiUmVmcmVzaCIsImF6cCI6ImVjb21tZXJjZS1hcGkiLCJzZXNzaW9uX3N0YXRlIjoiMGZhMjFmZmQtMWM2OS00N2EzLWI5MWItMjFmYjQxZTc0MzVjIiwic2NvcGUiOiJwcm9maWxlIiwic2lkIjoiMGZhMjFmZmQtMWM2OS00N2EzLWI5MWItMjFmYjQxZTc0MzVjIn0.WumFcSOC3cMK7t2N68SyDzHbRr8SaY3vgYvquB8l9IY","token_type":"Bearer","not-before-policy":0,"session_state":"0fa21ffd-1c69-47a3-b91b-21fb41e7435c","scope":"profile", "old": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJlUktVWG10TFhKMHBBNkxBS29aWko1ZlU0VDhCdmxKdERCb3pXanFFdnhjIn0.eyJleHAiOjE3NDM0NTk5MTMsImlhdCI6MTc0MzQ1OTYxMywianRpIjoiNjAxMGMxOTQtMjAwMC00NjFiLWFiZjUtZTQxNTc5MTk0Zjk5IiwiaXNzIjoiaHR0cDovL2tleWNsb2FrOjg0MDAva2V5Y2xvYWsvcmVhbG1zL2UtY29tbWVyY2UiLCJzdWIiOiJmOjEwNTc2MmY5LWE4ZWItNGEyYi1hOGIxLTY0OGI5N2I2NzE5NDpqYW5lLmRvZUBleGFtcGxlLmNvbSIsInR5cCI6IkJlYXJlciIsImF6cCI6ImVjb21tZXJjZS1hcGkiLCJzZXNzaW9uX3N0YXRlIjoiMGZhMjFmZmQtMWM2OS00N2EzLWI5MWItMjFmYjQxZTc0MzVjIiwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIkNVU1RPTUVSIl19LCJzY29wZSI6InByb2ZpbGUiLCJzaWQiOiIwZmEyMWZmZC0xYzY5LTQ3YTMtYjkxYi0yMWZiNDFlNzQzNWMiLCJuYW1lIjoiSmFuZSIsInByZWZlcnJlZF91c2VybmFtZSI6ImphbmUuZG9lQGV4YW1wbGUuY29tIiwiZ2l2ZW5fbmFtZSI6IkphbmUifQ.plR8qoszW3br2rNbHZyQwr6gKwcBsIDCuXOXcO1XIjUQdqrRYFYVLx34QVyZ4p8SB0CGiECnYTyev-9-K0MX2NsNhSMz7hsdAd2loHnw2RxR56aoDOnUz1SBSKRtqRzLFqyGq4qqbnpHnNVTTP6yIIi61yZIFKANepYbBM3W1CU49yvRgWLVnpdqiLULFl8h-rn8yDZHWXP_aBAKHCkgxqIu1VK1Me63w2QkZUSsZxCqcg7gw84skNneHJQP91fdpQGepFZx5_Nr2-gwhcjgMbDG5glxD2BR5Si7yHgAtNcFHOfbpzkAbJcHh17NSRkHfzWbdKALfxDEgVPny4GcBg"}
       },
       "google": {
         "method": "post",
-        "access_token": "google_token",
-        "expires_in": 3600,
-        "token_type": "Bearer"
+        "data": {
+          "access_token": "google_token",
+          "expires_in": 3600,
+          "token_type": "Bearer"
+        }
       },
       "eachAsEndpoint": true
     },
@@ -642,7 +651,7 @@
       ":item/images": [
         {
           "id": "49ddc271-dc37-4955-8c6f-ee8290a3b23c",
-          "url": "https://res.cloudinary.com/dnhvuiyt4/image/upload/v1743377313/gf0xotq9qq4v1ejchnru.png"
+          "url": "http://localhost:4200/assets/mock_product.png"
         }
       ],
       "landing-page": {
@@ -657,19 +666,27 @@
   "orders": {
     "": {
       "method": "post",
-      "id":"1f2b4cc0-f51d-45d0-b325-59f42d59082c","itemEntries":[{"id":"eb770936-9854-4868-a886-575a4b585d5d","itemId":"390c01cf-d5db-40fb-9a6e-dad02ccd872e","itemName":"Sweaters 28","itemSize":"S","quantity":1,"discount":0.0,"itemPrice":47.99,"itemPriceAfterDiscount":47.99,"totalPrice":47.99,"totalPriceAfterDiscount":47.99},{"id":"78b3e10c-c502-4ba8-9a5a-ba2520fc171e","itemId":"df694bcf-117b-446e-ba68-c5eab425f1d7","itemName":"Shorts 68","itemSize":"S","quantity":1,"discount":0.0,"itemPrice":51.99,"itemPriceAfterDiscount":51.99,"totalPrice":51.99,"totalPriceAfterDiscount":51.99}],"createdAt":"2025-04-01T17:49:07.14276196","totalPrice":99.98,"totalPriceAfterDiscount":99.98,"status":"ACCEPTED","number":"20250401_4515225"
+      "data": {"id":"1f2b4cc0-f51d-45d0-b325-59f42d59082c","itemEntries":[{"id":"eb770936-9854-4868-a886-575a4b585d5d","itemId":"390c01cf-d5db-40fb-9a6e-dad02ccd872e","itemName":"Sweaters 28","itemSize":"S","quantity":1,"discount":0.0,"itemPrice":47.99,"itemPriceAfterDiscount":47.99,"totalPrice":47.99,"totalPriceAfterDiscount":47.99},{"id":"78b3e10c-c502-4ba8-9a5a-ba2520fc171e","itemId":"df694bcf-117b-446e-ba68-c5eab425f1d7","itemName":"Shorts 68","itemSize":"S","quantity":1,"discount":0.0,"itemPrice":51.99,"itemPriceAfterDiscount":51.99,"totalPrice":51.99,"totalPriceAfterDiscount":51.99}],"createdAt":"2025-04-01T17:49:07.14276196","totalPrice":99.98,"totalPriceAfterDiscount":99.98,"status":"ACCEPTED","number":"20250401_4515225"}
     },
-    ":orderId": {"id":"1f2b4cc0-f51d-45d0-b325-59f42d59082c","itemEntries":[{"id":"eb770936-9854-4868-a886-575a4b585d5d","itemId":"390c01cf-d5db-40fb-9a6e-dad02ccd872e","itemName":"Sweaters 28","itemSize":"S","quantity":1,"discount":0.0,"itemPrice":47.99,"itemPriceAfterDiscount":47.99,"totalPrice":47.99,"totalPriceAfterDiscount":47.99},{"id":"78b3e10c-c502-4ba8-9a5a-ba2520fc171e","itemId":"df694bcf-117b-446e-ba68-c5eab425f1d7","itemName":"Shorts 68","itemSize":"S","quantity":1,"discount":0.0,"itemPrice":51.99,"itemPriceAfterDiscount":51.99,"totalPrice":51.99,"totalPriceAfterDiscount":51.99}],"delivery":{},"createdAt":"2025-04-01T17:49:07.142762","totalPrice":99.98,"totalPriceAfterDiscount":99.98,"number":"20250401_4515225","status":"ACCEPTED"},
     "customer": {"content":[{"id":"f72d6693-75a3-470c-b017-628a61fc6f1c","itemEntries":[{"id":"36986509-cf30-443e-82c1-7fe176fedbba","itemId":"df694bcf-117b-446e-ba68-c5eab425f1d7","itemName":"Shorts 68","itemSize":"S","quantity":1,"discount":0.0,"itemPrice":51.99,"itemPriceAfterDiscount":51.99,"totalPrice":51.99,"totalPriceAfterDiscount":51.99},{"id":"d5618e53-756d-487c-b878-8e73e07c46ef","itemId":"d41d3ab8-4236-49c8-b769-2c4f68eeb590","itemName":"Trousers 74","itemSize":"XL","quantity":2,"discount":0.0,"itemPrice":87.99,"itemPriceAfterDiscount":87.99,"totalPrice":175.98,"totalPriceAfterDiscount":175.98},{"id":"ff808fe6-9c98-4998-8a5a-0cae0036dcbe","itemId":"9f4840f2-7891-4019-930b-5502726d5f89","itemName":"Sweaters 46","itemSize":"M","quantity":1,"discount":0.1,"itemPrice":59.99,"itemPriceAfterDiscount":53.99,"totalPrice":59.99,"totalPriceAfterDiscount":53.99},{"id":"df4406ff-365d-4878-9f30-15ec157ed4dd","itemId":"8cad22b4-9396-4365-83d5-d749fb5f84a0","itemName":"Shirts 24","itemSize":"XXL","quantity":1,"discount":0.0,"itemPrice":78.99,"itemPriceAfterDiscount":78.99,"totalPrice":78.99,"totalPriceAfterDiscount":78.99}],"createdAt":"2025-03-30T12:51:26.116577","totalPrice":100.0,"totalPriceAfterDiscount":100.0,"status":"COMPLETED","number":"20241026-4548974"},{"id":"1f2b4cc0-f51d-45d0-b325-59f42d59082c","itemEntries":[{"id":"eb770936-9854-4868-a886-575a4b585d5d","itemId":"390c01cf-d5db-40fb-9a6e-dad02ccd872e","itemName":"Sweaters 28","itemSize":"S","quantity":1,"discount":0.0,"itemPrice":47.99,"itemPriceAfterDiscount":47.99,"totalPrice":47.99,"totalPriceAfterDiscount":47.99},{"id":"78b3e10c-c502-4ba8-9a5a-ba2520fc171e","itemId":"df694bcf-117b-446e-ba68-c5eab425f1d7","itemName":"Shorts 68","itemSize":"S","quantity":1,"discount":0.0,"itemPrice":51.99,"itemPriceAfterDiscount":51.99,"totalPrice":51.99,"totalPriceAfterDiscount":51.99}],"createdAt":"2025-04-01T17:49:07.142762","totalPrice":99.98,"totalPriceAfterDiscount":99.98,"status":"ACCEPTED","number":"20250401_4515225"}],"pageable":{"sort":[],"offset":0,"pageNumber":0,"pageSize":10,"unpaged":false,"paged":true},"totalPages":1,"totalElements":2,"last":true,"size":10,"number":0,"sort":[],"numberOfElements":2,"first":true,"empty":false},
+    "cart":
+    ":orderId": {"id":"1f2b4cc0-f51d-45d0-b325-59f42d59082c","itemEntries":[{"id":"eb770936-9854-4868-a886-575a4b585d5d","itemId":"390c01cf-d5db-40fb-9a6e-dad02ccd872e","itemName":"Sweaters 28","itemSize":"S","quantity":1,"discount":0.0,"itemPrice":47.99,"itemPriceAfterDiscount":47.99,"totalPrice":47.99,"totalPriceAfterDiscount":47.99},{"id":"78b3e10c-c502-4ba8-9a5a-ba2520fc171e","itemId":"df694bcf-117b-446e-ba68-c5eab425f1d7","itemName":"Shorts 68","itemSize":"S","quantity":1,"discount":0.0,"itemPrice":51.99,"itemPriceAfterDiscount":51.99,"totalPrice":51.99,"totalPriceAfterDiscount":51.99}],"delivery":{},"createdAt":"2025-04-01T17:49:07.142762","totalPrice":99.98,"totalPriceAfterDiscount":99.98,"number":"20250401_4515225","status":"ACCEPTED"},
     "eachAsEndpoint": true
   },
   "reviews": {
     "": {"content":[],"pageable":{"sort":[],"offset":0,"pageNumber":0,"pageSize":10,"paged":true,"unpaged":false},"totalPages":0,"totalElements":0,"last":true,"size":10,"number":0,"sort":[],"numberOfElements":0,"first":true,"empty":true},
     "eachAsEndpoint": true
   },
-  "cart": [],
   "customers": {
-    "wishlist": []
+    "wishlist": {
+      "": {
+        "method": "post",
+        "data": {
+          "resStatusCode": 201
+        }
+      },
+      "eachAsEndpoint": true
+    }
   }
 }
 
