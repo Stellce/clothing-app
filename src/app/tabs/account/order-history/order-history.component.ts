@@ -14,7 +14,7 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OrderHistoryComponent implements OnInit {
-  orders = model.required<OrderRes[]>();
+  orders = signal<OrderRes[]>(null);
   isLoading: WritableSignal<boolean> = signal<boolean>(true);
 
   constructor(private ordersService: OrdersService, private location: Location) {}

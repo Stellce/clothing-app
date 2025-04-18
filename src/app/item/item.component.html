@@ -1,6 +1,10 @@
 @if (item()) {
   <div class="item">
-    <app-breadcrumb class="breadcrumb-line" [default]="isFromCart() ? [{name: 'Cart', path: ['/', 'cart']}] : null" [itemName]="item().name"/>
+    <app-breadcrumb
+      class="breadcrumb-line"
+      [default]="isFromCart() ? [{name: 'Cart', path: ['/', 'cart']}] : null"
+      [itemName]="item().name"
+    />
     <div class="product">
       @if (item().images?.length) {
         <div class="images">
@@ -8,8 +12,7 @@
           <app-add-to-favorites [item]="item()"/>
           <div class="img-carousel">
             @for (image of item().images; track image.id; let i = $index) {
-              <img [src]="image.url"
-                   [alt]="item().name" (click)="selectImageIndex(i)">
+              <img [src]="image.url" [alt]="item().name" (click)="selectImageIndex(i)">
             }
           </div>
         </div>
@@ -75,5 +78,7 @@
       </div>
     </div>
   </div>
-  <app-reviews [itemId]="item().id"></app-reviews>
+  @defer {
+    <app-reviews [itemId]="item().id"/>
+  }
 }
