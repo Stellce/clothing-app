@@ -60,10 +60,11 @@ export class RegisterComponent implements OnInit {
         this.showEmailResend.set(true);
       },
       error: err => {
+        console.log(err);
         const status = err['status'];
         const description = status === 409 ? 'Email is already registered' :
           status === 400 ? 'Validation failed' :
-          status === 503 ? 'Service unavailable' : '';
+          status === 503 ? 'Service unavailable' : status;
         const data: DialogData = {
           title: 'Registration failed',
           description

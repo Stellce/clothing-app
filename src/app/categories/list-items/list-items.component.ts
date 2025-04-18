@@ -97,8 +97,8 @@ export class ListItemsComponent implements OnInit {
     this.itemsService.requestItems(this.itemsParamsRequest).pipe(
       catchError(
         (err, caught) => {
-        console.error('Error on requesting items', err);
-        return caught;
+          console.error('Error on requesting items', err);
+          return caught;
         }
       )
     ).subscribe();

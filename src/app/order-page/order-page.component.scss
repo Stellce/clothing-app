@@ -25,6 +25,10 @@ app-item-bar {
   margin: auto;
 }
 
+mat-divider {
+  margin: 1rem;
+}
+
 .order-details {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
