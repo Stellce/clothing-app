@@ -12,7 +12,7 @@ import {FieldToTextPipe} from "../../../shared/pipes/field-to-text";
 export class BreadcrumbComponent implements OnInit{
   @Input() default: {name: string, path: string[]}[];
   @Input() itemName: string;
-  firstLink: {name: string, path: string[]};
+  homeLink: {name: string, path: string[]};
   links: {name: string, path: string[]}[] = [];
 
   constructor(
@@ -22,21 +22,31 @@ export class BreadcrumbComponent implements OnInit{
 
   ngOnInit() {
     this.links.push({name: 'Landing', path: ['/']});
-    if (this.default) this.links = this.default;
+    if (this.default && this.default.length) this.links = this.default;
     this.setProductLinks();
-    this.firstLink = this.links[0];
+    this.homeLink = this.links[0];
     this.links.shift();
   }
 
   private setProductLinks() {
     this.activatedRoute.paramMap.subscribe(params => {
-      if(!params.get('gender')) return;
+      const gender = params.get('gender');
 
-      let path: string[] = ['/', 'products', params.get('gender')];
-      this.links.push({
-        name: params.get('gender').toUpperCase(),
+      if(!gender) return;
+
+      let path: string[] = ['/', 'products', gender];
+      const genderLink = {
+        name: gender.toUpperCase(),
         path: [...path]
-      });
+      };
+
+      const genderLinkIndex = this.links.findIndex(l => ['MEN', 'WOMEN'].includes(l.name.toUpperCase()));
+
+      if (genderLinkIndex !== -1) {
+        this.links[genderLinkIndex] = genderLink;
+      } else {
+        this.links.push(genderLink);
+      }
 
       if (params.has('categoryId')) {
         this.categoriesService.categoriesList$.subscribe(categories => {
