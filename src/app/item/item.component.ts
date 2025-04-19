@@ -233,7 +233,7 @@ export class ItemComponent implements OnInit, OnDestroy {
     this.cartService.getItems().subscribe(items => {
       if (!items.length) return;
       this.cartItems.set(items.filter(item => item.itemId === this.item().id))
-      if (!this.cartItems.length) return;
+      if (!this.cartItems().length) return;
       this.selectedCartItem.set(this.cartItems().find(item => item.itemSize === this.selectedUniqueItem().size));
       this.quantity.set(this.selectedCartItem().quantity);
     });
