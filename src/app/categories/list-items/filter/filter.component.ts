@@ -34,9 +34,9 @@ export class FilterComponent implements OnInit{
   filters: AllowedFilters;
   form: FormGroup;
   selectedFilters: SelectedFilters;
-  // resetCheckboxes = false;
+
   constructor(
-    public filterService: FilterService,
+    protected filterService: FilterService,
     private itemsService: ItemsService,
     private activatedRoute: ActivatedRoute,
     private categoriesService: CategoriesService,

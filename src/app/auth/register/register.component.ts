@@ -45,16 +45,18 @@ export class RegisterComponent implements OnInit {
   }
 
   onRegister() {
-    this.showAgreementError.set(!this.form.controls['isAgreementConsent'].value);
-    this.passwordErrors.set(this.authService.errorsOnPasswordValidation(this.form.controls['password'].value))
-    if(this.form.invalid || this.passwordErrors().length) return;
+    this.isLoading.set(true);
+    if(this.form.invalid || this.passwordErrors().length) {
+      this.showAgreementError.set(!this.form.controls['isAgreementConsent'].value);
+      this.passwordErrors.set(this.authService.errorsOnPasswordValidation(this.form.controls['password'].value));
+      this.isLoading.set(false);
+    }
     let registerUser: RegisterUser = {
       firstName: this.form.value.firstname,
       lastName: this.form.value.lastname,
       email: this.form.value.email,
       password: this.form.value.password
     }
-    this.isLoading.set(true);
     this.authService.register(registerUser).pipe(finalize(() => this.isLoading.set(false))).subscribe({
       next: () => {
         this.showEmailResend.set(true);

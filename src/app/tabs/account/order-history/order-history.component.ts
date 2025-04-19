@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, model, OnInit, signal, WritableSignal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit, signal, WritableSignal} from '@angular/core';
 import {Location} from '@angular/common';
 import {MatButtonModule} from '@angular/material/button';
 import {OrdersService} from "../../../order-page/orders.service";

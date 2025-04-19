@@ -1,7 +1,14 @@
 export interface PurchaseData {
-  deliveryAddress: string;
-  deliveryMethod: string;
-  paymentMethod: string;
-  discountCode: string;
-  wishes: string;
+  deliveryAddress: PurchaseProp;
+  deliveryMethod: PurchaseProp;
+  paymentMethod: PurchaseProp;
+  discountCode: PurchaseProp;
+  wishes: PurchaseProp;
+}
+
+interface PurchaseProp {
+  placeholder: string;
+  value: string;
+  isEditable: boolean;
+  allowEmpty: boolean;
 }

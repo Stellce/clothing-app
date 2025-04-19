@@ -36,6 +36,9 @@ import {DialogData} from "../shared/dialog/dialog-data.model";
 import {CartItem} from "../tabs/cart/cart-item.model";
 import {Subscription} from "rxjs";
 import {CdkCopyToClipboard} from "@angular/cdk/clipboard";
+import {PurchaseData} from "../auth/purchase-data.model";
+import {PurchaseService} from "./purchase.service";
+import {DialogService} from "../shared/dialog/dialog.service";
 
 @Component({
     selector: 'app-item',
@@ -62,8 +65,11 @@ export class ItemComponent implements OnInit, OnDestroy {
     protected route: ActivatedRoute,
     private cartService: CartService,
     private dialog: MatDialog,
+    private dialogService: DialogService,
     private ordersService: OrdersService,
-    protected authService: AuthService
+    protected authService: AuthService,
+    private purchaseService: PurchaseService,
+    private fieldToText: FieldToTextPipe
   ) {
     afterNextRender(() => {
       this.isFromCart = computed(() => window.location.href.includes('cart'));
@@ -85,14 +91,6 @@ export class ItemComponent implements OnInit, OnDestroy {
   }
 
   addToCart() {
-    const successDialogInvoke = () => {
-      this.checkIsInCart();
-      let dialogData: DialogData = {
-        title: 'Item added!',
-        description: 'You can check your cart!'
-      };
-      this.dialog.open(DialogComponent, {data: dialogData});
-    }
     if (this.quantity() > this.selectedUniqueItem().quantity) return;
 
     if (this.authService.user()) {
@@ -101,7 +99,15 @@ export class ItemComponent implements OnInit, OnDestroy {
         quantity: this.quantity(),
         size: this.selectedUniqueItem().size
       }).subscribe({
-        next: () => successDialogInvoke(),
+        next: () => {
+          this.checkIsInCart();
+          let dialogData: DialogData = {
+            title: 'Item added!',
+            description: 'You can check your cart!'
+          };
+          this.dialog.open(DialogComponent, {data: dialogData});
+          this.requestItem();
+        },
         error: e => {
           console.error(e);
           const dialogData: DialogData = {
@@ -123,34 +129,8 @@ export class ItemComponent implements OnInit, OnDestroy {
   }
 
   orderNow() {
-    const createLoadingDialog = () =>
-      this.dialog.open(DialogComponent, {data: {title: "Loading", isLoading: true}, disableClose: true});
-    let loadingDialog = createLoadingDialog();
-    const addOrder = (orderReq: OrderReq) => {
-      this.ordersService.createOrder(orderReq).subscribe({
-        next: () => {
-          const dialogData: DialogData = {
-            title: 'Item purchased!',
-            description: 'You will get a notification on email',
-            buttonName: 'Ok'
-          }
-          this.dialog.open(DialogComponent, {data: dialogData}).afterOpened().subscribe({
-            next:() => loadingDialog.close()
-          });
-        },
-        error: err => {
-          const dialogData: DialogData = {
-            title: 'Something went wrong',
-            description: 'Could not proceed',
-            buttonName: 'Ok'
-          }
-          this.dialog.open(DialogComponent, {data: dialogData}).afterOpened().subscribe({
-            next:() => loadingDialog.close()
-          });
-          console.error(err);
-        }
-      });
-    }
+    const loadingDialog = this.dialogService.createLoadingDialog();
+
     let order: OrderReq = {
       itemEntries: [{
         itemId: this.item().id,
@@ -158,37 +138,53 @@ export class ItemComponent implements OnInit, OnDestroy {
         size: this.selectedUniqueItem().size
       }]
     };
-    if (!this.authService.user()) {
-      let dialogData = {
-        title: 'User data',
-        description: 'You are not authenticated, you can login, register, or fill these fields',
-        inputs: [
-          {name: 'firstName'},
-          {name: 'lastName'},
-          {name: 'email'},
-        ],
-        buttonName: 'Submit'
-      }
-      const dialogRef: MatDialogRef<DialogComponent, NgForm> = this.dialog.open(DialogComponent, {data: dialogData});
-      dialogRef.afterOpened().subscribe({
-        next:() => loadingDialog.close()
-      });
-      this.dialogSubscription = dialogRef.afterClosed().subscribe({
-        next: form => {
-          if (!form?.value) return;
-          order = {...order, customer: {...form.value}}
-          addOrder(order);
-        }, error: console.log
-      })
-    } else {
-      addOrder(order);
+
+    if (this.authService.user()) {
+      this.ordersService.addOrder(order, loadingDialog);
+      return;
     }
+
+    const dialogData: DialogData = {
+      title: 'Order details',
+      description: 'You are not logged in. Please log in, register, or fill in the following fields.',
+      inputs: [
+        {name: 'firstName'},
+        {name: 'lastName'},
+        {name: 'email'},
+      ],
+      selects: [],
+      buttonName: 'Submit',
+      note: ''
+    }
+
+    for (const propKey in this.purchaseService.purchaseData()) {
+      const prop = this.purchaseService.purchaseData()[propKey as keyof PurchaseData];
+      if (prop.isEditable) {
+        dialogData.inputs.push(
+          {name: propKey, defaultValue: prop.value || prop.placeholder, allowEmpty: prop.allowEmpty}
+        );
+      } else {
+        const str = `${this.fieldToText.transform(propKey)}: ${prop.placeholder}\n`;
+        dialogData.note += str || '';
+      }
+    }
+
+    const dialogRef: MatDialogRef<DialogComponent, NgForm> = this.dialog.open(DialogComponent, {data: dialogData});
+    dialogRef.afterOpened().subscribe(() => loadingDialog.close());
+    this.dialogSubscription = dialogRef.afterClosed().subscribe({
+      next: form => {
+        if (!form || !form?.value || !form?.valid) return;
+        order = {...order, customer: {...form.value}}
+        this.ordersService.addOrder(order);
+        this.requestItem();
+      }, error: console.log
+    });
   }
 
   sizeString(size: string): string {
-    let split = size.split("X");
-    let splitNoEmpty = split.filter(Boolean).toString();
-    let numOfXes = split.length - splitNoEmpty.length;
+    const split = size.split("X");
+    const splitNoEmpty = split.filter(Boolean).toString();
+    const numOfXes = split.length - splitNoEmpty.length;
     return size.length > 2 ? numOfXes + "X" + splitNoEmpty : size;
   }
 
@@ -225,7 +221,7 @@ export class ItemComponent implements OnInit, OnDestroy {
     this.dialogSubscription?.unsubscribe();
   }
 
-  onItemIdCopy() {
+  protected onItemIdCopy() {
     const data: DialogData = {
       title: 'Copied!',
       description: 'Id successfully copied to clipboard'
@@ -246,19 +242,23 @@ export class ItemComponent implements OnInit, OnDestroy {
   private requestItem() {
     const itemId = this.route.snapshot.paramMap.get("itemId");
     if (!itemId) return;
+    this.item.set(null);
+    this.params.set([]);
     this.itemsService.requestItemById(itemId).subscribe((item: ItemDetails) => {
       if(!item) return;
       this.item.set(item);
       this.selectedUniqueItem.set(item.uniqueItems.find(i => i.quantity > 0));
-      this.item().params = {
-        color: this.item().color,
-        brand: this.item().brand
-      };
+      this.item.update(item => ({
+        ...item, params: {
+          color: this.item().color,
+          brand: this.item().brand
+        }
+      }));
       Object.entries(this.item().params).forEach(([key, value]) => {
         this.params.update(params => [...params, {key, value}])
       });
       this.itemsService.requestItemImages(item.id).subscribe((images: Image[]) => {
-        this.item().images = images;
+        this.item.update(item => ({...item, images}));
       })
 
       if (this.authService.user()) this.checkIsInCart();

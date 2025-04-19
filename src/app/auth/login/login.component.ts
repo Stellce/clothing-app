@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit{
   isPasswordShown: WritableSignal<boolean> = signal<boolean>(false);
 
   constructor(
-    public authService: AuthService,
+    protected authService: AuthService,
     private dialog: MatDialog,
     private fb: FormBuilder
   ) {}

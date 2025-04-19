@@ -13,7 +13,7 @@ import {AccountService} from "./account.service";
 })
 export class AccountComponent {
   constructor(
-    public authService: AuthService,
-    public accountService: AccountService
+    protected authService: AuthService,
+    protected accountService: AccountService
   ) {}
 }
