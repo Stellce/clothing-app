@@ -63,7 +63,7 @@ export class CartComponent implements OnInit, OnDestroy {
     this.cartItemsSub?.unsubscribe();
   }
 
-  onSelectAll(event: MatCheckboxChange) {
+  protected onSelectAll(event: MatCheckboxChange) {
     this.itemCheckboxes().forEach((i: MatCheckbox) => i.writeValue(event.checked));
     this.totalCost.set(0);
     if (event.checked) {
@@ -73,12 +73,12 @@ export class CartComponent implements OnInit, OnDestroy {
     }
   }
 
-  onItemSelect(item: CartItem, isChecked: boolean) {
+  protected onItemSelect(item: CartItem, isChecked: boolean) {
     this.selectedIds[isChecked ? 'add' : 'delete'](item.id);
     this.totalCost.update(totalCost => totalCost + (item.itemPriceAfterDiscount * item.quantity * (isChecked ? 1 : -1)));
   }
 
-  onDeleteItems() {
+  protected onDeleteItems() {
     this.isLoading.set(true);
     const removeEntries$: Observable<Object>[] = [];
     this.selectedIds.forEach(entryId => removeEntries$.push(this.cartService.removeEntry(entryId)));
@@ -86,6 +86,7 @@ export class CartComponent implements OnInit, OnDestroy {
       next: () => {
         this.selectedIds.clear();
         this.loadItems();
+        this.cdr.detectChanges();
       },
       error: err => {
         const dialogData: DialogData = {
@@ -95,16 +96,17 @@ export class CartComponent implements OnInit, OnDestroy {
         }
         this.dialog.open(DialogComponent, {data: dialogData});
         this.loadItems();
+        this.cdr.detectChanges();
       }
     })
   }
 
-  onFieldChange(field: string[]) {
+  protected onFieldChange(field: string[]) {
     const text = this.fieldToTextPipe.transform(field[0]);
 
     const prop = this.purchaseService.purchaseData()[field[0] as keyof PurchaseData];
     const defaultValue = prop.value || prop.placeholder;
-    let dialogData: DialogData = {
+    const dialogData: DialogData = {
       title: text,
       description: 'Please, provide a new value',
       inputs: [{name: field[0], defaultValue}],
@@ -124,7 +126,7 @@ export class CartComponent implements OnInit, OnDestroy {
     });
   }
 
-  onBuy() {
+  protected onBuy() {
     if (!this.authService.user()) {
       const dialogData: DialogData = {
         title: 'Cannot buy',
@@ -134,7 +136,7 @@ export class CartComponent implements OnInit, OnDestroy {
       this.dialog.open(DialogComponent, {data: dialogData});
       return;
     }
-    let order: OrderReq = {
+    const order: OrderReq = {
       itemEntries: this.cartItems()
         .filter(cItem => this.selectedIds.has(cItem.id))
         .map(cItem => ({
@@ -179,7 +181,7 @@ export class CartComponent implements OnInit, OnDestroy {
         this.dialog.open(DialogComponent, {data});
         this.isLoading.set(false);
       }
-    })
+    });
   }
 
   protected readonly Object = Object;
