@@ -42,7 +42,7 @@ export class NewReviewComponent implements OnInit, OnChanges {
   ]
 
   constructor(
-    public authService: AuthService,
+    protected authService: AuthService,
     private reviewsService: ReviewsService,
     private formBuilder: FormBuilder
   ) {}

@@ -7,8 +7,11 @@
           "resStatusCode": 201
         },
         "url": true
-       },
-      "customer/resend-email": {},
+      },
+      "customer/resend-email": {
+        "resStatusCode": 200,
+        "url": true
+      },
       "customer/activate-account": {
         "access_token": "sample_token",
         "expires_in": 3600,
@@ -38,6 +41,81 @@
     },
     "users": {
       "recover-password": {}
+    }
+  },
+  "orders": {
+    "": {
+      "method": "post",
+      "data": {"id":"1f2b4cc0-f51d-45d0-b325-59f42d59082c","itemEntries":[{"id":"eb770936-9854-4868-a886-575a4b585d5d","itemId":"390c01cf-d5db-40fb-9a6e-dad02ccd872e","itemName":"Sweaters 28","itemSize":"S","quantity":1,"discount":0.0,"itemPrice":47.99,"itemPriceAfterDiscount":47.99,"totalPrice":47.99,"totalPriceAfterDiscount":47.99},{"id":"78b3e10c-c502-4ba8-9a5a-ba2520fc171e","itemId":"df694bcf-117b-446e-ba68-c5eab425f1d7","itemName":"Shorts 68","itemSize":"S","quantity":1,"discount":0.0,"itemPrice":51.99,"itemPriceAfterDiscount":51.99,"totalPrice":51.99,"totalPriceAfterDiscount":51.99}],"createdAt":"2025-04-01T17:49:07.14276196","totalPrice":99.98,"totalPriceAfterDiscount":99.98,"status":"ACCEPTED","number":"20250401_4515225"}
+    },
+    "customer": {"content":[{"id":"f72d6693-75a3-470c-b017-628a61fc6f1c","itemEntries":[{"id":"36986509-cf30-443e-82c1-7fe176fedbba","itemId":"df694bcf-117b-446e-ba68-c5eab425f1d7","itemName":"Shorts 68","itemSize":"S","quantity":1,"discount":0.0,"itemPrice":51.99,"itemPriceAfterDiscount":51.99,"totalPrice":51.99,"totalPriceAfterDiscount":51.99},{"id":"d5618e53-756d-487c-b878-8e73e07c46ef","itemId":"d41d3ab8-4236-49c8-b769-2c4f68eeb590","itemName":"Trousers 74","itemSize":"XL","quantity":2,"discount":0.0,"itemPrice":87.99,"itemPriceAfterDiscount":87.99,"totalPrice":175.98,"totalPriceAfterDiscount":175.98},{"id":"ff808fe6-9c98-4998-8a5a-0cae0036dcbe","itemId":"9f4840f2-7891-4019-930b-5502726d5f89","itemName":"Sweaters 46","itemSize":"M","quantity":1,"discount":0.1,"itemPrice":59.99,"itemPriceAfterDiscount":53.99,"totalPrice":59.99,"totalPriceAfterDiscount":53.99},{"id":"df4406ff-365d-4878-9f30-15ec157ed4dd","itemId":"8cad22b4-9396-4365-83d5-d749fb5f84a0","itemName":"Shirts 24","itemSize":"XXL","quantity":1,"discount":0.0,"itemPrice":78.99,"itemPriceAfterDiscount":78.99,"totalPrice":78.99,"totalPriceAfterDiscount":78.99}],"createdAt":"2025-03-30T12:51:26.116577","totalPrice":100.0,"totalPriceAfterDiscount":100.0,"status":"COMPLETED","number":"20241026-4548974"},{"id":"1f2b4cc0-f51d-45d0-b325-59f42d59082c","itemEntries":[{"id":"eb770936-9854-4868-a886-575a4b585d5d","itemId":"390c01cf-d5db-40fb-9a6e-dad02ccd872e","itemName":"Sweaters 28","itemSize":"S","quantity":1,"discount":0.0,"itemPrice":47.99,"itemPriceAfterDiscount":47.99,"totalPrice":47.99,"totalPriceAfterDiscount":47.99},{"id":"78b3e10c-c502-4ba8-9a5a-ba2520fc171e","itemId":"df694bcf-117b-446e-ba68-c5eab425f1d7","itemName":"Shorts 68","itemSize":"S","quantity":1,"discount":0.0,"itemPrice":51.99,"itemPriceAfterDiscount":51.99,"totalPrice":51.99,"totalPriceAfterDiscount":51.99}],"createdAt":"2025-04-01T17:49:07.142762","totalPrice":99.98,"totalPriceAfterDiscount":99.98,"status":"ACCEPTED","number":"20250401_4515225"}],"pageable":{"sort":[],"offset":0,"pageNumber":0,"pageSize":10,"unpaged":false,"paged":true},"totalPages":1,"totalElements":2,"last":true,"size":10,"number":0,"sort":[],"numberOfElements":2,"first":true,"empty":false},
+
+    "cart": {
+      "content": [
+        {
+          "id": "0",
+          "itemEntries": [
+            "id": "0",
+            "itemId": "0",
+            "itemName": "Sweater 21",
+            "itemSize": "S",
+            "quantity": 1,
+            "discount": 0.0,
+            "itemPrice": 27.99,
+            "itemPriceAfterDiscount": 27.99,
+            "totalPrice": 27.99,
+            "totalPriceAfterDiscount": 27.99,
+            "images": Image[]
+          ],
+          "createdAt": "2025-01-01",
+          "totalPrice": 356,
+          "totalPriceAfterDiscount": 356,
+          "status": "ACCEPTED",
+          "number": 1
+        }
+      ],
+      "pageable": {
+        "sort": [],
+        "offset": 0,
+        "pageNumber": 0,
+        "pageSize": 10,
+        "unpaged": false,
+        "paged": true
+      },
+      "totalPages": 51,
+      "totalElements": 508,
+      "last": false,
+      "size": 10,
+      "number": 0,
+      "sort": [],
+      "numberOfElements": 10,
+      "first": true,
+      "empty": false
+    },
+
+    ":orderId": {"id":"1f2b4cc0-f51d-45d0-b325-59f42d59082c","itemEntries":[{"id":"eb770936-9854-4868-a886-575a4b585d5d","itemId":"390c01cf-d5db-40fb-9a6e-dad02ccd872e","itemName":"Sweaters 28","itemSize":"S","quantity":1,"discount":0.0,"itemPrice":47.99,"itemPriceAfterDiscount":47.99,"totalPrice":47.99,"totalPriceAfterDiscount":47.99},{"id":"78b3e10c-c502-4ba8-9a5a-ba2520fc171e","itemId":"df694bcf-117b-446e-ba68-c5eab425f1d7","itemName":"Shorts 68","itemSize":"S","quantity":1,"discount":0.0,"itemPrice":51.99,"itemPriceAfterDiscount":51.99,"totalPrice":51.99,"totalPriceAfterDiscount":51.99}],"delivery":{},"createdAt":"2025-04-01T17:49:07.142762","totalPrice":99.98,"totalPriceAfterDiscount":99.98,"number":"20250401_4515225","status":"ACCEPTED"},
+
+    "eachAsEndpoint": true
+  },
+  "reviews": {
+    "": {"content":[],"pageable":{"sort":[],"offset":0,"pageNumber":0,"pageSize":10,"paged":true,"unpaged":false},"totalPages":0,"totalElements":0,"last":true,"size":10,"number":0,"sort":[],"numberOfElements":0,"first":true,"empty":true},
+    "eachAsEndpoint": true
+  },
+  "customers": {
+    "wishlist": {
+      "": {
+        "method": "post",
+        "data": {
+          "resStatusCode": 201
+        }
+      },
+      "": {
+        "method": "get",
+        "data": {
+          "urlArr": []
+        }
+      },
+      "eachAsEndpoint": true
     }
   },
   "catalog": {
@@ -661,31 +739,6 @@
     },
     "brands": {
     "urlArr": [{"id":"9e527ff4-af9a-4c0e-88be-12bff827c877","name":"SoleCraft Co."},{"id":"26f7679f-2e79-4d62-bdfd-601534e312e1","name":"LegLoom"},{"id":"8a5e1bb2-60a2-4c88-ac03-388285b4ca38","name":"CozyKnits"},{"id":"3e0cb534-958c-405b-837d-951167589173","name":"Headline"},{"id":"401552c6-0a78-4d82-9917-9711f88b71c3","name":"ArtistryThreads"}]
-    }
-  },
-  "orders": {
-    "": {
-      "method": "post",
-      "data": {"id":"1f2b4cc0-f51d-45d0-b325-59f42d59082c","itemEntries":[{"id":"eb770936-9854-4868-a886-575a4b585d5d","itemId":"390c01cf-d5db-40fb-9a6e-dad02ccd872e","itemName":"Sweaters 28","itemSize":"S","quantity":1,"discount":0.0,"itemPrice":47.99,"itemPriceAfterDiscount":47.99,"totalPrice":47.99,"totalPriceAfterDiscount":47.99},{"id":"78b3e10c-c502-4ba8-9a5a-ba2520fc171e","itemId":"df694bcf-117b-446e-ba68-c5eab425f1d7","itemName":"Shorts 68","itemSize":"S","quantity":1,"discount":0.0,"itemPrice":51.99,"itemPriceAfterDiscount":51.99,"totalPrice":51.99,"totalPriceAfterDiscount":51.99}],"createdAt":"2025-04-01T17:49:07.14276196","totalPrice":99.98,"totalPriceAfterDiscount":99.98,"status":"ACCEPTED","number":"20250401_4515225"}
-    },
-    "customer": {"content":[{"id":"f72d6693-75a3-470c-b017-628a61fc6f1c","itemEntries":[{"id":"36986509-cf30-443e-82c1-7fe176fedbba","itemId":"df694bcf-117b-446e-ba68-c5eab425f1d7","itemName":"Shorts 68","itemSize":"S","quantity":1,"discount":0.0,"itemPrice":51.99,"itemPriceAfterDiscount":51.99,"totalPrice":51.99,"totalPriceAfterDiscount":51.99},{"id":"d5618e53-756d-487c-b878-8e73e07c46ef","itemId":"d41d3ab8-4236-49c8-b769-2c4f68eeb590","itemName":"Trousers 74","itemSize":"XL","quantity":2,"discount":0.0,"itemPrice":87.99,"itemPriceAfterDiscount":87.99,"totalPrice":175.98,"totalPriceAfterDiscount":175.98},{"id":"ff808fe6-9c98-4998-8a5a-0cae0036dcbe","itemId":"9f4840f2-7891-4019-930b-5502726d5f89","itemName":"Sweaters 46","itemSize":"M","quantity":1,"discount":0.1,"itemPrice":59.99,"itemPriceAfterDiscount":53.99,"totalPrice":59.99,"totalPriceAfterDiscount":53.99},{"id":"df4406ff-365d-4878-9f30-15ec157ed4dd","itemId":"8cad22b4-9396-4365-83d5-d749fb5f84a0","itemName":"Shirts 24","itemSize":"XXL","quantity":1,"discount":0.0,"itemPrice":78.99,"itemPriceAfterDiscount":78.99,"totalPrice":78.99,"totalPriceAfterDiscount":78.99}],"createdAt":"2025-03-30T12:51:26.116577","totalPrice":100.0,"totalPriceAfterDiscount":100.0,"status":"COMPLETED","number":"20241026-4548974"},{"id":"1f2b4cc0-f51d-45d0-b325-59f42d59082c","itemEntries":[{"id":"eb770936-9854-4868-a886-575a4b585d5d","itemId":"390c01cf-d5db-40fb-9a6e-dad02ccd872e","itemName":"Sweaters 28","itemSize":"S","quantity":1,"discount":0.0,"itemPrice":47.99,"itemPriceAfterDiscount":47.99,"totalPrice":47.99,"totalPriceAfterDiscount":47.99},{"id":"78b3e10c-c502-4ba8-9a5a-ba2520fc171e","itemId":"df694bcf-117b-446e-ba68-c5eab425f1d7","itemName":"Shorts 68","itemSize":"S","quantity":1,"discount":0.0,"itemPrice":51.99,"itemPriceAfterDiscount":51.99,"totalPrice":51.99,"totalPriceAfterDiscount":51.99}],"createdAt":"2025-04-01T17:49:07.142762","totalPrice":99.98,"totalPriceAfterDiscount":99.98,"status":"ACCEPTED","number":"20250401_4515225"}],"pageable":{"sort":[],"offset":0,"pageNumber":0,"pageSize":10,"unpaged":false,"paged":true},"totalPages":1,"totalElements":2,"last":true,"size":10,"number":0,"sort":[],"numberOfElements":2,"first":true,"empty":false},
-    "cart":
-    ":orderId": {"id":"1f2b4cc0-f51d-45d0-b325-59f42d59082c","itemEntries":[{"id":"eb770936-9854-4868-a886-575a4b585d5d","itemId":"390c01cf-d5db-40fb-9a6e-dad02ccd872e","itemName":"Sweaters 28","itemSize":"S","quantity":1,"discount":0.0,"itemPrice":47.99,"itemPriceAfterDiscount":47.99,"totalPrice":47.99,"totalPriceAfterDiscount":47.99},{"id":"78b3e10c-c502-4ba8-9a5a-ba2520fc171e","itemId":"df694bcf-117b-446e-ba68-c5eab425f1d7","itemName":"Shorts 68","itemSize":"S","quantity":1,"discount":0.0,"itemPrice":51.99,"itemPriceAfterDiscount":51.99,"totalPrice":51.99,"totalPriceAfterDiscount":51.99}],"delivery":{},"createdAt":"2025-04-01T17:49:07.142762","totalPrice":99.98,"totalPriceAfterDiscount":99.98,"number":"20250401_4515225","status":"ACCEPTED"},
-    "eachAsEndpoint": true
-  },
-  "reviews": {
-    "": {"content":[],"pageable":{"sort":[],"offset":0,"pageNumber":0,"pageSize":10,"paged":true,"unpaged":false},"totalPages":0,"totalElements":0,"last":true,"size":10,"number":0,"sort":[],"numberOfElements":0,"first":true,"empty":true},
-    "eachAsEndpoint": true
-  },
-  "customers": {
-    "wishlist": {
-      "": {
-        "method": "post",
-        "data": {
-          "resStatusCode": 201
-        }
-      },
-      "eachAsEndpoint": true
     }
   }
 }

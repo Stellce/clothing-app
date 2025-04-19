@@ -1,5 +1,5 @@
 import {
-  ChangeDetectionStrategy,
+  ChangeDetectionStrategy, ChangeDetectorRef,
   Component,
   OnDestroy,
   OnInit,
@@ -27,6 +27,7 @@ import {PurchaseData} from "../../auth/purchase-data.model";
 import {OrdersService} from "../../order-page/orders.service";
 import {OrderReq} from "../../order-page/order-req.model";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {PurchaseService} from "../../item/purchase.service";
 
 @Component({
     selector: 'app-cart',
@@ -48,8 +49,10 @@ export class CartComponent implements OnInit, OnDestroy {
     private cartService: CartService,
     private dialog: MatDialog,
     private fieldToTextPipe: FieldToTextPipe,
-    public authService: AuthService,
-    public ordersService: OrdersService,
+    protected authService: AuthService,
+    protected ordersService: OrdersService,
+    protected purchaseService: PurchaseService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -98,38 +101,26 @@ export class CartComponent implements OnInit, OnDestroy {
 
   onFieldChange(field: string[]) {
     const text = this.fieldToTextPipe.transform(field[0]);
+
+    const prop = this.purchaseService.purchaseData()[field[0] as keyof PurchaseData];
+    const defaultValue = prop.value || prop.placeholder;
     let dialogData: DialogData = {
       title: text,
       description: 'Please, provide a new value',
-      inputs: [{name: field[0], defaultValue: this.authService.purchaseData()[field[0] as keyof PurchaseData]}],
+      inputs: [{name: field[0], defaultValue}],
       buttonName: 'Set'
-    }
-
-    if (field[0] === 'deliveryMethod') {
-      dialogData = {
-        ...dialogData,
-        inputs: [],
-        selects: [
-          {name: 'Delivery Method', values: ['Parcel locker', 'Courier'], defaultValue: this.authService.purchaseData()[field[0]]}
-        ]
-      }
-    } else if (field[0] === 'paymentMethod') {
-      dialogData = {
-        ...dialogData,
-        inputs: [],
-        selects: [
-          {name: field[0], values: ['Visa', 'MasterCard'], defaultValue: this.authService.purchaseData()[field[0]]}
-        ]
-      }
     }
 
     const dialogRef: MatDialogRef<DialogComponent, NgForm> = this.dialog.open(DialogComponent, {data: dialogData});
 
     dialogRef.afterClosed().subscribe((form: NgForm) => {
-      if (form?.value) this.authService.purchaseData.update(purchaseData => {
-        purchaseData[field[0] as keyof typeof purchaseData] = form.value[field[0]];
-        return purchaseData;
-      });
+      if (form?.value) {
+        this.purchaseService.purchaseData.update(purchaseData => {
+          purchaseData[field[0] as keyof PurchaseData] = form.value[field[0]];
+          return purchaseData;
+        });
+        this.cdr.detectChanges();
+      }
     });
   }
 

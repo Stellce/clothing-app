@@ -31,6 +31,9 @@ import {toSignal} from "@angular/core/rxjs-interop";
 import {Subcategory} from "../../../categories/subcategory.model";
 import {Image} from "../../../item/image.model";
 import {ItemEditorForm, ItemEditorFormControls, ToFormControls} from "./item-editor-form.model";
+import {DialogData} from "../../../shared/dialog/dialog-data.model";
+import {DialogComponent} from "../../../shared/dialog/dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
     selector: 'app-item-editor',
@@ -119,7 +122,8 @@ export class ItemEditorComponent implements OnInit {
     private categoriesService: CategoriesService,
     private employeeService: EmployeeService,
     private itemsService: ItemsService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private dialog: MatDialog
   ) {
     this.setForm();
     this.setFormListeners();
@@ -241,6 +245,16 @@ export class ItemEditorComponent implements OnInit {
           next: () => {
             this.form.reset();
             this.images.set([]);
+          },
+          error: (err) => {
+            let description = ``;
+            if (err['status']) description += `Error ${err['status']} occurred`;
+            if (err['message']) description += err['message'];
+            const data: DialogData = {
+              title: 'Error loading image',
+              description
+            }
+            this.dialog.open(DialogComponent, {data});
           }
         });
     } else {

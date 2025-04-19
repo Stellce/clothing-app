@@ -1,14 +1,13 @@
-import { Injectable } from '@angular/core';
-import { NgForm } from "@angular/forms";
-import { MatDialog } from "@angular/material/dialog";
-import { DialogData } from "../../shared/dialog/dialog-data.model";
-import { DialogComponent } from "../../shared/dialog/dialog.component";
+import {Injectable} from '@angular/core';
+import {MatDialog} from "@angular/material/dialog";
+import {DialogData} from "../../shared/dialog/dialog-data.model";
+import {DialogComponent} from "../../shared/dialog/dialog.component";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
-
+  promocode: string = '';
   constructor(public dialog: MatDialog) { }
 
   enterPromocode() {
@@ -19,6 +18,7 @@ export class AccountService {
       inputs: [{name: 'promocode'}],
       buttonName: 'Submit'
     }
-    this.dialog.open(DialogComponent, {data: dialogData});
+    this.dialog.open(DialogComponent, {data: dialogData}).afterClosed()
+      .subscribe(result => this.promocode = result);
   }
 }

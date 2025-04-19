@@ -14,20 +14,12 @@ import {RefreshTokenReq} from "./refresh-token-req.model";
 import {RegisterUser} from "./register/register-user.model";
 import {TokenInfo} from "./token-info.model";
 import {User} from "./user.model";
-import {PurchaseData} from "./purchase-data.model";
 import {DialogService} from "../shared/dialog/dialog.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  purchaseData: WritableSignal<PurchaseData> = signal({
-    deliveryAddress: 'st. ExampleStreet, 12/3 45-678, ExmpleCity, ExampleWoiwodeship',
-    deliveryMethod: 'Parcel locker',
-    paymentMethod: 'Card',
-    discountCode: '2547',
-    wishes: 'Fragile'
-  });
   googleLoginUrl = environment.backendUrl + '/oauth2/login/google';
 
   user: WritableSignal<User> = signal<User>(null);
@@ -248,8 +240,10 @@ export class AuthService {
     }
 
     this.user.set(user);
-    let url = window.location.href;
-    if(url.includes('register') || url.includes('login')) this.router.navigate(['/', 'account']);
+    afterNextRender(() => {
+      let url = window.location.href;
+      if(url.includes('register') || url.includes('login')) this.router.navigate(['/', 'account']);
+    }, {injector: this.injector});
   }
 
   private setTokenRefresh(tokenTimeoutInMs: number) {

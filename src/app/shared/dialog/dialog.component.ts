@@ -12,7 +12,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from "@angular/material/dialog";
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
-import {DialogData} from "./dialog-data.model";
+import {Control, DialogData} from "./dialog-data.model";
 import {FieldToTextPipe} from "../pipes/field-to-text";
 import {MatOption, MatSelect} from "@angular/material/select";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
@@ -36,16 +36,17 @@ export class DialogComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    let controls: {[k: string]: AbstractControl} = {};
-    let inputsAndSelectors = [];
-    if (this.data.selects) inputsAndSelectors.push(...this.data.selects);
-    if (this.data.inputs) inputsAndSelectors.push(...this.data.inputs);
-    inputsAndSelectors.forEach(input => {
-      const validators = [Validators.required];
+    const formControls: {[k: string]: AbstractControl} = {};
+    const controls: Control[] = [];
+    if (this.data.selects) controls.push(...this.data.selects);
+    if (this.data.inputs) controls.push(...this.data.inputs);
+    controls.forEach(input => {
+      const validators = [];
+      if (!input.allowEmpty) validators.push(Validators.required);
       if (input.name === 'email') validators.push(Validators.email);
-      controls[input.name] = new FormControl(input.defaultValue, validators);
+      formControls[input.name] = new FormControl(input.defaultValue, validators);
     });
-    this.form = this.fb.group(controls);
+    this.form = this.fb.group(formControls);
   }
 
   setInputType(type: string): string {
@@ -65,7 +66,7 @@ export class DialogComponent implements OnInit {
     return this.shownPasswords().findIndex(pass => pass.fieldName === fieldName);
   }
 
-  onCloseDialog() {
+  onCloseDialog(): void {
     if (this.form) {
       if (this.form.invalid) return;
       this.dialogRef.close(this.form);
