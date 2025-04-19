@@ -118,9 +118,10 @@ export class CartComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe((form: NgForm) => {
       if (form?.value) {
         this.purchaseService.purchaseData.update(purchaseData => {
-          purchaseData[field[0] as keyof PurchaseData] = form.value[field[0]];
+          purchaseData[field[0] as keyof PurchaseData].value = form.value[field[0]];
           return purchaseData;
         });
+        console.log(this.purchaseService.purchaseData());
         this.cdr.detectChanges();
       }
     });

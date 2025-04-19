@@ -1,4 +1,4 @@
-import {Injectable, signal, WritableSignal} from '@angular/core';
+import {computed, Injectable, signal, WritableSignal} from '@angular/core';
 import {PurchaseData} from "../auth/purchase-data.model";
 
 @Injectable({
@@ -12,14 +12,12 @@ export class PurchaseService {
     discountCode: {placeholder: '', value: '', isEditable: true, allowEmpty: true},
     wishes: {placeholder: '', value: '', isEditable: true, allowEmpty: true}
   });
-  constructor() { }
-
-  isPurchaseDataValid(): boolean {
+  isPurchaseDataValid = computed(() => {
     let isValid = true;
     for (const key in this.purchaseData()) {
       const ctrl = this.purchaseData()[key as keyof PurchaseData];
       if (!ctrl.allowEmpty && !ctrl.value) isValid = false;
     }
     return isValid;
-  }
+  });
 }

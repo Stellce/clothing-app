@@ -31,11 +31,13 @@
       @for (field of Object.entries(purchaseService.purchaseData()); track field[0]) {
         <div class="detail">
           <div class="label"><span>{{field[0] | fieldToText}}: </span><span>{{field[1].value || field[1].placeholder}}</span></div>
-          <div class="edit" (click)="onFieldChange(field)">set</div>
+          @if (field[1].isEditable) {
+            <div class="edit" (click)="onFieldChange(field)">set</div>
+          }
         </div>
       }
     </div>
-    <button mat-flat-button (click)="onBuy()" [disabled]="authService">Buy</button>
+    <button mat-flat-button (click)="onBuy()" [disabled]="purchaseService.isPurchaseDataValid()">Buy</button>
   </mat-expansion-panel>
 } @else {
   <div class="center">
