@@ -51,8 +51,7 @@ export class CartComponent implements OnInit, OnDestroy {
     private fieldToTextPipe: FieldToTextPipe,
     protected authService: AuthService,
     protected ordersService: OrdersService,
-    protected purchaseService: PurchaseService,
-    private cdr: ChangeDetectorRef
+    protected purchaseService: PurchaseService
   ) {}
 
   ngOnInit() {
@@ -86,7 +85,6 @@ export class CartComponent implements OnInit, OnDestroy {
       next: () => {
         this.selectedIds.clear();
         this.loadItems();
-        this.cdr.detectChanges();
       },
       error: err => {
         const dialogData: DialogData = {
@@ -96,7 +94,6 @@ export class CartComponent implements OnInit, OnDestroy {
         }
         this.dialog.open(DialogComponent, {data: dialogData});
         this.loadItems();
-        this.cdr.detectChanges();
       }
     })
   }
@@ -105,24 +102,25 @@ export class CartComponent implements OnInit, OnDestroy {
     const text = this.fieldToTextPipe.transform(field[0]);
 
     const prop = this.purchaseService.purchaseData()[field[0] as keyof PurchaseData];
-    const defaultValue = prop.value || prop.placeholder;
+    const defaultValue = prop.value;
+    const note = prop.placeholder ?? `E.g.: ${prop.placeholder}`;
     const dialogData: DialogData = {
       title: text,
-      description: 'Please, provide a new value',
+      description: 'Please, provide a new value\n',
       inputs: [{name: field[0], defaultValue}],
-      buttonName: 'Set'
-    }
+      buttonName: 'Set',
+      note
+    };
 
     const dialogRef: MatDialogRef<DialogComponent, NgForm> = this.dialog.open(DialogComponent, {data: dialogData});
 
     dialogRef.afterClosed().subscribe((form: NgForm) => {
       if (form?.value) {
         this.purchaseService.purchaseData.update(purchaseData => {
+          purchaseData = {...purchaseData};
           purchaseData[field[0] as keyof PurchaseData].value = form.value[field[0]];
           return purchaseData;
         });
-        console.log(this.purchaseService.purchaseData());
-        this.cdr.detectChanges();
       }
     });
   }

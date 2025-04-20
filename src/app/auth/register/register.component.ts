@@ -50,6 +50,7 @@ export class RegisterComponent implements OnInit {
       this.showAgreementError.set(!this.form.controls['isAgreementConsent'].value);
       this.passwordErrors.set(this.authService.errorsOnPasswordValidation(this.form.controls['password'].value));
       this.isLoading.set(false);
+      return;
     }
     let registerUser: RegisterUser = {
       firstName: this.form.value.firstname,

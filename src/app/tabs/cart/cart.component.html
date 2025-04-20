@@ -37,7 +37,7 @@
         </div>
       }
     </div>
-    <button mat-flat-button (click)="onBuy()" [disabled]="purchaseService.isPurchaseDataValid()">Buy</button>
+    <button mat-flat-button (click)="onBuy()" [disabled]="!selectedIds.size || !purchaseService.isPurchaseDataValid()">Buy</button>
   </mat-expansion-panel>
 } @else {
   <div class="center">

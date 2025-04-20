@@ -16,7 +16,9 @@ export class PurchaseService {
     let isValid = true;
     for (const key in this.purchaseData()) {
       const ctrl = this.purchaseData()[key as keyof PurchaseData];
-      if (!ctrl.allowEmpty && !ctrl.value) isValid = false;
+      if (!ctrl.allowEmpty && !ctrl.value) {
+        isValid = false;
+      }
     }
     return isValid;
   });
