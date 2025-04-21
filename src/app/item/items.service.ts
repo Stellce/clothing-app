@@ -45,7 +45,7 @@ export class ItemsService {
   requestItemImages(itemId: string): Observable<Image[]> {
     return this.http.get<Image[]>(
       environment.backendUrl + `/catalog/items/${itemId}/images`
-    );
+    ).pipe(filter(Boolean));
   }
 
   requestItemById(itemId: string) {
