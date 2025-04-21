@@ -8,7 +8,7 @@ export interface ItemDetails extends ItemCard {
   description: string;
   itemCode: string;
   reviews: ReviewReq[];
-  similarItems: null;
+  similarItems: string[];
   params?: ItemParams;
 }
 

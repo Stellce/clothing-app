@@ -15,7 +15,7 @@ export interface ItemEditorForm {
   material: string,
   price: number,
   name: string,
-  season: string,
+  season: string
 }
 
 export type ToFormControls<T> = {

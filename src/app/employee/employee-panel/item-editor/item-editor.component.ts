@@ -1,12 +1,12 @@
 import {
+  AfterViewChecked,
   ChangeDetectionStrategy,
   Component,
   computed,
   inject,
   Injector,
   input,
-  InputSignal,
-  OnInit,
+  InputSignal, OnInit,
   Signal,
   signal,
   WritableSignal
@@ -57,7 +57,7 @@ import {MatDialog} from "@angular/material/dialog";
     styleUrl: './item-editor.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ItemEditorComponent implements OnInit {
+export class ItemEditorComponent implements OnInit, AfterViewChecked {
   itemId: InputSignal<string> = input<string>();
 
   images: WritableSignal<Image[]> = signal<Image[]>([]);
@@ -95,6 +95,8 @@ export class ItemEditorComponent implements OnInit {
   _shoesSizes: string[];
   sizes: string[];
   sizesByCtrlIndex: string[][] = [];
+
+  isFormPatched: boolean = false;
 
   isLoading: WritableSignal<boolean> = signal<boolean>(false);
 
@@ -158,12 +160,17 @@ export class ItemEditorComponent implements OnInit {
 
   ngOnInit() {
     if (this.mode() === 'update') {
-      this.patchForm();
       this.loadImages();
     }
   }
 
-  onDeleteImage() {
+  ngAfterViewChecked() {
+    if (this.mode() === 'update' && !this.isFormPatched) {
+      this.patchForm();
+    }
+  }
+
+  protected onDeleteImage() {
     const filterSelectedImage = () => {
       this.images.update(images => images.filter(image => image.id !== this.selectedImage().id));
       this.selectedImage.set(this.images()[0]);
@@ -178,11 +185,11 @@ export class ItemEditorComponent implements OnInit {
     }
   }
 
-  selectImage(image: Image) {
+  protected selectImage(image: Image) {
     this.selectedImage.set(image);
   }
 
-  onImagePicked(event: Event) {
+  protected onImagePicked(event: Event) {
     const files = Array.from((event.target as HTMLInputElement).files);
     this.form.patchValue({images: [...this.form.get('images').value, ...files]});
     this.form.get('images').updateValueAndValidity();
@@ -195,7 +202,7 @@ export class ItemEditorComponent implements OnInit {
     files.forEach(file => reader.readAsDataURL(file));
   }
 
-  onAddSizeAndQuantity() {
+  protected onAddSizeAndQuantity() {
     const filterSizesOutOfSelectedOnes = () => {
       return [...this.sizes].filter(size => this.uniqueItems.controls.every(ctrl => {
         return ctrl.value.size !== size;
@@ -205,18 +212,18 @@ export class ItemEditorComponent implements OnInit {
     this.addUniqueItem();
     this.sizesByCtrlIndex[this.uniqueItems.controls.length - 1] = filterSizesOutOfSelectedOnes();
   }
-  onRemoveUniqueItem(index: number) {
+  protected onRemoveUniqueItem(index: number) {
     this.uniqueItems.removeAt(index);
   }
 
-  onSizeSelected(e: MatSelectChange, invokedCtrlId: number) {
+  protected onSizeSelected(e: MatSelectChange, invokedCtrlId: number) {
     const selectedSize = e.value;
     this.sizesByCtrlIndex = this.sizesByCtrlIndex.map((sizes, index) => {
       return index !== invokedCtrlId ? [...this.sizes].filter(s => s !== selectedSize) : sizes
     });
   }
 
-  onSubmit() {
+  protected onSubmit() {
     if (!this.form.valid) return;
     this.isLoading.set(true);
     const item: CreateItem = {
@@ -325,12 +332,12 @@ export class ItemEditorComponent implements OnInit {
       }
 
       this.images.set(item.images);
-      console.log(document.getElementsByClassName('add-unique-item'));
       const itemWithoutImages: Omit<ItemDetails, 'images'> = item;
-      const patchValue: Omit<ItemEditorForm, 'images' | 'subcategoryName' | 'material' | 'season'> =
-        {...itemWithoutImages, brandName: itemWithoutImages.brand, categoryName: itemWithoutImages.category.name}
+      const patchValue: Omit<ItemEditorForm, 'images' | 'subcategoryName' | 'material' | 'season'> & {uniqueItems: UniqueItem[]} =
+        {...itemWithoutImages, brandName: itemWithoutImages.brand, categoryName: itemWithoutImages.category.name, uniqueItems: itemWithoutImages.uniqueItems};
       this.form.patchValue(patchValue);
-    })
+      this.isFormPatched = true;
+    });
   }
   private _filter(value: string, array: string[]) {
     const filterValue = value.toLowerCase();
