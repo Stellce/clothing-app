@@ -102,7 +102,7 @@ export class RegisterComponent implements OnInit {
             }
           }, 100);
         },
-        error: err => {
+        error: () => {
           const data: DialogData = {
             title: `Activation resend went wrong`,
             description: `Try again later`

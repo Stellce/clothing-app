@@ -98,11 +98,22 @@
             text-align: right;
           }
         }
+
+        .description {
+          text-align: justify;
+        }
       }
 
       .space-between {
         display: flex;
         justify-content: space-between;
+      }
+
+      .id-param {
+        span {
+          display: flex;
+          align-items: center;
+        }
       }
 
       .quantity {

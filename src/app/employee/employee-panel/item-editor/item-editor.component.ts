@@ -284,12 +284,12 @@ export class ItemEditorComponent implements OnInit, AfterViewChecked {
       subcategoryName: [''],
       name: ['', Validators.required],
       description: ['', Validators.required],
-      price: [0, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
-      discount: [0, [Validators.pattern(/^[0-9]+$/)]],
+      price: [0, [Validators.required, Validators.pattern(/^[0-9.]*$/)]],
+      discount: [0, [Validators.pattern(/^[0-9.]+$/)]],
       color: ['', Validators.required],
       brandName: ['', Validators.required],
-      material: [''],
-      season: [''],
+      material: ['', Validators.required],
+      season: ['', Validators.required],
       itemCode: ['', Validators.required],
       uniqueItems: this.fb.array([this.fb.group({
         size: ['', Validators.required],
@@ -331,8 +331,6 @@ export class ItemEditorComponent implements OnInit, AfterViewChecked {
       for (let i = this.uniqueItems.length; i < item.uniqueItems.length; i++) {
         this.addUniqueItem();
       }
-
-      this.images.set(item.images || []);
       const itemWithoutImages: Omit<ItemDetails, 'images'> = item;
       const patchValue: Omit<ItemEditorForm, 'images' | 'subcategoryName' | 'material' | 'season'> & {uniqueItems: UniqueItem[]} =
         {...itemWithoutImages, brandName: itemWithoutImages.brand, categoryName: itemWithoutImages.category.name, uniqueItems: itemWithoutImages.uniqueItems};

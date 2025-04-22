@@ -34,22 +34,21 @@ export class ActivateComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.router.navigate(['/', 'account']);
-    this.authService.activateAccount(this.route.snapshot.queryParamMap.get('token')).subscribe({
-      next: () => {
-        this.title.set('Activation success! You will be redirected in a second');
-        setTimeout(() => this.router.navigate(['/', 'account']), 1000);
-        this.uploadFavorites();
-      },
-      error: () => this.title.set('Activation link is wrong or expired')
-    });
+    afterNextRender(() => {
+      this.authService.activateAccount(this.route.snapshot.queryParamMap.get('token')).subscribe({
+        next: () => {
+          this.title.set('Activation success! You will be redirected in a second');
+          setTimeout(() => this.router.navigate(['/', 'account']), 1000);
+          this.uploadFavorites();
+        },
+        error: () => this.title.set('Activation link is wrong or expired')
+      });
+    }, {injector: this.injector});
   }
 
   private uploadFavorites() {
-    afterNextRender(() => {
-      let itemIds = this.localService.favoritesIds;
-      let favoriteItemsAdded$ = itemIds.map(id => this.favoritesService.addItem(id));
-      forkJoin(favoriteItemsAdded$).subscribe();
-    }, {injector: this.injector});
+    let itemIds = this.localService.favoritesIds;
+    let favoriteItemsAdded$ = itemIds.map(id => this.favoritesService.addItem(id));
+    forkJoin(favoriteItemsAdded$).subscribe();
   }
 }
