@@ -21,8 +21,6 @@ export class ReviewsComponent implements OnInit {
   reviews: Observable<ReviewRes[]>;
   editableReview: WritableSignal<ReviewRes> = signal(null);
   hasCompletedOrder: WritableSignal<boolean> = signal(false);
-  //review allowed when order for this item finished
-  // change order status SQL script: update "order" set status 'COMPLETED' where id = '';
   isLoading = signal<boolean>(false);
 
   constructor(
