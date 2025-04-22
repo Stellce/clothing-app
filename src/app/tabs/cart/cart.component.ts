@@ -99,18 +99,20 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   protected onFieldChange(field: string[]) {
-    const text = this.fieldToTextPipe.transform(field[0]);
-
     const prop = this.purchaseService.purchaseData()[field[0] as keyof PurchaseData];
-    const defaultValue = prop.value;
-    const note = prop.placeholder ?? `E.g.: ${prop.placeholder}`;
     const dialogData: DialogData = {
-      title: text,
+      title: this.fieldToTextPipe.transform(field[0]),
       description: 'Please, provide a new value\n',
-      inputs: [{name: field[0], defaultValue}],
       buttonName: 'Set',
-      note
+      note: prop.placeholder && `E.g.: ${prop.placeholder}`
     };
+    const defaultValue = prop.value;
+
+    if (prop.values) {
+      dialogData.selects = [{name: field[0], defaultValue, values: prop.values}];
+    } else {
+      dialogData.inputs = [{name: field[0], defaultValue}];
+    }
 
     const dialogRef: MatDialogRef<DialogComponent, NgForm> = this.dialog.open(DialogComponent, {data: dialogData});
 

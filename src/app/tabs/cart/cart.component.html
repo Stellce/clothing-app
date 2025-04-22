@@ -31,9 +31,7 @@
       @for (field of Object.entries(purchaseService.purchaseData()); track field[0]) {
         <div class="detail">
           <div class="label"><span>{{field[0] | fieldToText}}: </span><span>{{field[1].value || field[1].placeholder}}</span></div>
-          @if (field[1].isEditable) {
-            <div class="edit" (click)="onFieldChange(field)">set</div>
-          }
+          <div class="edit" (click)="onFieldChange(field)">set</div>
         </div>
       }
     </div>
