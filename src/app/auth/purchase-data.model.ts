@@ -7,8 +7,8 @@ export interface PurchaseData {
 }
 
 interface PurchaseProp {
-  placeholder: string;
-  value: string;
-  isEditable: boolean;
   allowEmpty: boolean;
+  value: string;
+  values?: string[];
+  placeholder?: string;
 }
