@@ -34,10 +34,7 @@ export class CheckboxComponent implements ControlValueAccessor {
   }
 
   onModelChange(e: boolean) {
-    // Step 5a: bind the changes to the local value
     this.checked = e;
-
-    // Step 5b: Handle what should happen on the outside, if something changes on the inside
     this.onChange(e);
   }
 

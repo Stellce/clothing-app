@@ -196,7 +196,6 @@ export class ItemEditorComponent implements OnInit, AfterViewChecked {
     const reader = new FileReader();
     reader.onload = () => {
       const image: Image = {id: String(this.images()?.length || 0), url: reader.result as string, isLocal: true};
-      console.log(this.images());
       this.images.update(images => [...images, image]);
       if (!this.selectedImage()) this.selectedImage.set(this.images()[0]);
     }

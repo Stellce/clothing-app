@@ -9,9 +9,9 @@ import {Injectable, Pipe, PipeTransform} from '@angular/core';
 })
 export class FieldToTextPipe implements PipeTransform {
   transform(value: string): string {
-    const result = value.replace(/([a-z])([A-Z])/g, '$1 $2') // Adds a space before uppercase letters.
-      .replace(/_/g, ' ') // Replaces underscores with spaces.
-      .toLowerCase(); // Converts everything to lowercase
-    return result.charAt(0).toUpperCase() + result.slice(1); // Capitalizes the first letter
+    const result = value.replace(/([a-z])([A-Z])/g, '$1 $2')
+      .replace(/_/g, ' ')
+      .toLowerCase();
+    return result.charAt(0).toUpperCase() + result.slice(1);
   }
 }
