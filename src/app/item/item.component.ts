@@ -163,13 +163,11 @@ export class ItemComponent implements OnInit, OnDestroy {
 
     for (const propKey in this.purchaseService.purchaseData()) {
       const prop = this.purchaseService.purchaseData()[propKey as keyof PurchaseData];
-      if (prop.isEditable) {
-        dialogData.inputs.push(
-          {name: propKey, defaultValue: prop.value || prop.placeholder, allowEmpty: prop.allowEmpty}
-        );
+      const ctrl = {name: propKey, defaultValue: prop.value || prop.placeholder, allowEmpty: prop.allowEmpty, values: prop.values};
+      if (!prop?.values) {
+        dialogData.inputs.push(ctrl);
       } else {
-        const str = `${this.fieldToText.transform(propKey)}: ${prop.placeholder}\n`;
-        dialogData.note += str || '';
+        dialogData.selects.push(ctrl);
       }
     }
 

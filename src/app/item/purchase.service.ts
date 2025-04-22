@@ -6,11 +6,11 @@ import {PurchaseData} from "../auth/purchase-data.model";
 })
 export class PurchaseService {
   purchaseData: WritableSignal<PurchaseData> = signal({
-    deliveryAddress: {placeholder: 'st. ExampleStreet, 12/3 45-678, ExampleCity, ExampleVoivodeship', value: '', isEditable: true, allowEmpty: false},
-    deliveryMethod: {placeholder: 'Courier', value: 'Courier', isEditable: false, allowEmpty: false},
-    paymentMethod: {placeholder: 'Card', value: 'Card', isEditable: false, allowEmpty: false},
-    discountCode: {placeholder: '', value: '', isEditable: true, allowEmpty: true},
-    wishes: {placeholder: '', value: '', isEditable: true, allowEmpty: true}
+    deliveryAddress: {placeholder: 'st. ExampleStreet, 12/3 45-678, ExampleCity, ExampleVoivodeship', value: '', allowEmpty: false},
+    deliveryMethod: {value: 'Courier', values: ['Courier', 'Parcel locker'], allowEmpty: false},
+    paymentMethod: {value: 'Card', values: ['Card', 'Google Pay', 'Apple Pay'], allowEmpty: false},
+    discountCode: {value: '', allowEmpty: true},
+    wishes: {value: '', allowEmpty: true}
   });
   isPurchaseDataValid = computed(() => {
     let isValid = true;
