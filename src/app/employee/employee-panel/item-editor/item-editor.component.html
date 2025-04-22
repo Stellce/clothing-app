@@ -8,12 +8,12 @@
     <div class="images">
       @if (images()?.length) {
         <div class="image">
-          <img [src]="selectedImage()?.url"/>
+          <img [src]="selectedImage()?.url" [alt]="selectedImage().url"/>
           <button class="delete-image" mat-mini-fab (click)="onDeleteImage()"><img src="assets/icons/trash.svg" alt="trash"/></button>
         </div>
         <div class="img-carousel">
           @for (image of images(); track image.id) {
-            <img [src]="image?.url" (click)="selectImage(image)"/>
+            <img [src]="image?.url" [alt]="image?.url" (click)="selectImage(image)"/>
           }
           <div class="add-image" (click)="selectFile.click()">
             <span>+</span>
@@ -95,7 +95,7 @@
       <input matInput formControlName="material" [matAutocomplete]="materialsAutocomplete"/>
       <mat-autocomplete #materialsAutocomplete="matAutocomplete">
         @for (material of filteredMaterials(); track material) {
-          <mat-option [value]="material">{{material | fieldToText}}</mat-option>
+          <mat-option [value]="material | fieldToText">{{material | fieldToText}}</mat-option>
         }
       </mat-autocomplete>
     </mat-form-field>

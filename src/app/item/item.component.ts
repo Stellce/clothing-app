@@ -61,13 +61,13 @@ export class ItemComponent implements OnInit, OnDestroy {
   isFromCart: Signal<boolean> = signal(false);
 
   constructor(
-    private itemsService: ItemsService,
     protected route: ActivatedRoute,
+    protected authService: AuthService,
+    private itemsService: ItemsService,
     private cartService: CartService,
     private dialog: MatDialog,
     private dialogService: DialogService,
     private ordersService: OrdersService,
-    protected authService: AuthService,
     private purchaseService: PurchaseService,
     private fieldToText: FieldToTextPipe
   ) {
@@ -80,17 +80,21 @@ export class ItemComponent implements OnInit, OnDestroy {
     this.requestItem();
   }
 
-  selectImageIndex(i: number) {
+  ngOnDestroy() {
+    this.dialogSubscription?.unsubscribe();
+  }
+
+  protected selectImageIndex(i: number) {
     this.selectedImageIndex.set(i);
   }
 
-  setUniqueItem(uniqueItem: UniqueItem) {
+  protected setUniqueItem(uniqueItem: UniqueItem) {
     this.selectedUniqueItem.set(uniqueItem);
     if (this.quantity() > uniqueItem.quantity) this.quantity.set(uniqueItem.quantity);
     this.selectedCartItem.set(this.cartItems().find(item => item.itemSize === this.selectedUniqueItem().size));
   }
 
-  addToCart() {
+  protected addToCart() {
     if (this.quantity() > this.selectedUniqueItem().quantity) return;
 
     if (this.authService.user()) {
@@ -128,7 +132,7 @@ export class ItemComponent implements OnInit, OnDestroy {
     }
   }
 
-  orderNow() {
+  protected orderNow() {
     const loadingDialog = this.dialogService.createLoadingDialog();
 
     let order: OrderReq = {
@@ -181,14 +185,14 @@ export class ItemComponent implements OnInit, OnDestroy {
     });
   }
 
-  sizeString(size: string): string {
+  protected sizeString(size: string): string {
     const split = size.split("X");
     const splitNoEmpty = split.filter(Boolean).toString();
     const numOfXes = split.length - splitNoEmpty.length;
     return size.length > 2 ? numOfXes + "X" + splitNoEmpty : size;
   }
 
-  onSaveCartItem() {
+  protected onSaveCartItem() {
     const success = () => {
       this.checkIsInCart();
       const dialogData: DialogData = {
@@ -217,10 +221,6 @@ export class ItemComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
-    this.dialogSubscription?.unsubscribe();
-  }
-
   protected onItemIdCopy() {
     const data: DialogData = {
       title: 'Copied!',
@@ -234,8 +234,9 @@ export class ItemComponent implements OnInit, OnDestroy {
       if (!items.length) return;
       this.cartItems.set(items.filter(item => item.itemId === this.item()?.id));
       if (!this.cartItems().length) return;
-      this.selectedCartItem.set(this.cartItems().find(item => item.itemSize === this.selectedUniqueItem().size));
-      this.quantity.set(this.selectedCartItem()?.quantity);
+      const selectedItem = this.cartItems().find(item => item.itemSize === this.selectedUniqueItem().size);
+      this.selectedCartItem.set(selectedItem);
+      this.quantity.set(selectedItem?.quantity);
     });
   }
 
