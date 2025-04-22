@@ -10,7 +10,7 @@
             @if (item.images?.length) {
               <img [src]="item.images[0].url"
                    [alt]="item.itemName"
-                   (click)="selectedImage.set(item.images[0].url)"/>
+                   (click)="selectImage(item.images[0].url)"/>
             }
           }
         </div>

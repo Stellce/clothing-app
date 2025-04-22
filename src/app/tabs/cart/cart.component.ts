@@ -9,13 +9,12 @@ import {
   WritableSignal
 } from '@angular/core';
 import {ItemBarComponent} from '../../item/item-bar/item-bar.component';
-import {AsyncPipe, CurrencyPipe, NgStyle} from '@angular/common';
+import {CurrencyPipe} from '@angular/common';
 import {CartService} from './cart.service';
 import {CartItem} from './cart-item.model';
 import {AuthService} from 'src/app/auth/auth.service';
 import {forkJoin, Observable, Subscription} from 'rxjs';
 import {MatCheckbox, MatCheckboxChange} from "@angular/material/checkbox";
-import {MatDivider} from "@angular/material/divider";
 import {MatExpansionPanel, MatExpansionPanelHeader} from "@angular/material/expansion";
 import {MatCardTitle} from "@angular/material/card";
 import {FieldToTextPipe} from "../../shared/pipes/field-to-text";
@@ -28,12 +27,13 @@ import {PurchaseData} from "../../auth/purchase-data.model";
 import {OrdersService} from "../../order-page/orders.service";
 import {OrderReq} from "../../order-page/order-req.model";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {PurchaseService} from "../../item/purchase.service";
 
 @Component({
     selector: 'app-cart',
     templateUrl: './cart.component.html',
     styleUrls: ['./cart.component.scss'],
-    imports: [ItemBarComponent, AsyncPipe, NgStyle, MatCheckbox, MatDivider, MatExpansionPanel, MatCardTitle, MatExpansionPanelHeader, FieldToTextPipe, CurrencyPipe, MatButton, MatProgressSpinner, MatIconButton],
+    imports: [ItemBarComponent, MatCheckbox, MatExpansionPanel, MatCardTitle, MatExpansionPanelHeader, FieldToTextPipe, CurrencyPipe, MatButton, MatProgressSpinner, MatIconButton],
     providers: [FieldToTextPipe],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -49,8 +49,9 @@ export class CartComponent implements OnInit, OnDestroy {
     private cartService: CartService,
     private dialog: MatDialog,
     private fieldToTextPipe: FieldToTextPipe,
-    public authService: AuthService,
-    public ordersService: OrdersService,
+    protected authService: AuthService,
+    protected ordersService: OrdersService,
+    protected purchaseService: PurchaseService
   ) {}
 
   ngOnInit() {
@@ -61,7 +62,7 @@ export class CartComponent implements OnInit, OnDestroy {
     this.cartItemsSub?.unsubscribe();
   }
 
-  onSelectAll(event: MatCheckboxChange) {
+  protected onSelectAll(event: MatCheckboxChange) {
     this.itemCheckboxes().forEach((i: MatCheckbox) => i.writeValue(event.checked));
     this.totalCost.set(0);
     if (event.checked) {
@@ -71,12 +72,12 @@ export class CartComponent implements OnInit, OnDestroy {
     }
   }
 
-  onItemSelect(item: CartItem, isChecked: boolean) {
+  protected onItemSelect(item: CartItem, isChecked: boolean) {
     this.selectedIds[isChecked ? 'add' : 'delete'](item.id);
     this.totalCost.update(totalCost => totalCost + (item.itemPriceAfterDiscount * item.quantity * (isChecked ? 1 : -1)));
   }
 
-  onDeleteItems() {
+  protected onDeleteItems() {
     this.isLoading.set(true);
     const removeEntries$: Observable<Object>[] = [];
     this.selectedIds.forEach(entryId => removeEntries$.push(this.cartService.removeEntry(entryId)));
@@ -97,44 +98,34 @@ export class CartComponent implements OnInit, OnDestroy {
     })
   }
 
-  onFieldChange(field: string[]) {
+  protected onFieldChange(field: string[]) {
     const text = this.fieldToTextPipe.transform(field[0]);
-    let dialogData: DialogData = {
-      title: text,
-      description: 'Please, provide a new value',
-      inputs: [{name: field[0], defaultValue: this.authService.purchaseData()[field[0] as keyof PurchaseData]}],
-      buttonName: 'Set'
-    }
 
-    if (field[0] === 'deliveryMethod') {
-      dialogData = {
-        ...dialogData,
-        inputs: [],
-        selects: [
-          {name: 'Delivery Method', values: ['Parcel locker', 'Courier'], defaultValue: this.authService.purchaseData()[field[0]]}
-        ]
-      }
-    } else if (field[0] === 'paymentMethod') {
-      dialogData = {
-        ...dialogData,
-        inputs: [],
-        selects: [
-          {name: field[0], values: ['Visa', 'MasterCard'], defaultValue: this.authService.purchaseData()[field[0]]}
-        ]
-      }
-    }
+    const prop = this.purchaseService.purchaseData()[field[0] as keyof PurchaseData];
+    const defaultValue = prop.value;
+    const note = prop.placeholder ?? `E.g.: ${prop.placeholder}`;
+    const dialogData: DialogData = {
+      title: text,
+      description: 'Please, provide a new value\n',
+      inputs: [{name: field[0], defaultValue}],
+      buttonName: 'Set',
+      note
+    };
 
     const dialogRef: MatDialogRef<DialogComponent, NgForm> = this.dialog.open(DialogComponent, {data: dialogData});
 
     dialogRef.afterClosed().subscribe((form: NgForm) => {
-      if (form?.value) this.authService.purchaseData.update(purchaseData => {
-        purchaseData[field[0] as keyof typeof purchaseData] = form.value[field[0]];
-        return purchaseData;
-      });
+      if (form?.value) {
+        this.purchaseService.purchaseData.update(purchaseData => {
+          purchaseData = {...purchaseData};
+          purchaseData[field[0] as keyof PurchaseData].value = form.value[field[0]];
+          return purchaseData;
+        });
+      }
     });
   }
 
-  onBuy() {
+  protected onBuy() {
     if (!this.authService.user()) {
       const dialogData: DialogData = {
         title: 'Cannot buy',
@@ -144,7 +135,7 @@ export class CartComponent implements OnInit, OnDestroy {
       this.dialog.open(DialogComponent, {data: dialogData});
       return;
     }
-    let order: OrderReq = {
+    const order: OrderReq = {
       itemEntries: this.cartItems()
         .filter(cItem => this.selectedIds.has(cItem.id))
         .map(cItem => ({
@@ -189,7 +180,7 @@ export class CartComponent implements OnInit, OnDestroy {
         this.dialog.open(DialogComponent, {data});
         this.isLoading.set(false);
       }
-    })
+    });
   }
 
   protected readonly Object = Object;

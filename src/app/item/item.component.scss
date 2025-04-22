@@ -26,17 +26,7 @@
       }
 
       .img-carousel {
-        height: 100px;
-        display: flex;
-        overflow: auto;
-        gap: 0.5rem;
-        margin: 0.5rem;
-
-        img {
-          height: calc(100% - 5px);
-          width: auto;
-          cursor: pointer;
-        }
+        @include variables.img-carousel();
       }
     }
 
@@ -50,6 +40,8 @@
       }
 
       .sizes {
+        display: flex;
+        justify-content: center;
         margin: 0.5rem 0;
         width: 100%;
         overflow: auto;
@@ -106,11 +98,22 @@
             text-align: right;
           }
         }
+
+        .description {
+          text-align: justify;
+        }
       }
 
       .space-between {
         display: flex;
         justify-content: space-between;
+      }
+
+      .id-param {
+        span {
+          display: flex;
+          align-items: center;
+        }
       }
 
       .quantity {

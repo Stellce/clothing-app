@@ -17,7 +17,7 @@
     @for (cartItem of cartItems(); track cartItem.id) {
       <div class="cart-item" (click)="itemCheckbox.change.emit({source: itemCheckbox, checked: !itemCheckbox.checked});itemCheckbox.toggle()">
         <mat-checkbox (change)="onItemSelect(cartItem, $event.checked)" #itemCheckbox (click)="$event.stopPropagation()"></mat-checkbox>
-        <app-item-bar [cartItem]="cartItem"></app-item-bar>
+        <app-item-bar [cartItem]="cartItem"/>
       </div>
     }
   </div>
@@ -28,14 +28,16 @@
       </mat-card-title>
     </mat-expansion-panel-header>
     <div class="purchase-details">
-      @for (field of Object.entries(authService.purchaseData()); track field[0]) {
+      @for (field of Object.entries(purchaseService.purchaseData()); track field[0]) {
         <div class="detail">
-          <div class="label"><span>{{field[0] | fieldToText}}: </span><span>{{field[1]}}</span></div>
-          <div class="edit" (click)="onFieldChange(field)">set</div>
+          <div class="label"><span>{{field[0] | fieldToText}}: </span><span>{{field[1].value || field[1].placeholder}}</span></div>
+          @if (field[1].isEditable) {
+            <div class="edit" (click)="onFieldChange(field)">set</div>
+          }
         </div>
       }
     </div>
-    <button mat-flat-button (click)="onBuy()">Buy</button>
+    <button mat-flat-button (click)="onBuy()" [disabled]="!selectedIds.size || !purchaseService.isPurchaseDataValid()">Buy</button>
   </mat-expansion-panel>
 } @else {
   <div class="center">

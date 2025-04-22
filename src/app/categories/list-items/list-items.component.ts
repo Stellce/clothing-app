@@ -14,7 +14,6 @@ import {ItemsParamsRequest} from "./item-card/req/items-params-request.model";
 import {PaginatorComponent} from './paginator/paginator.component';
 import {CategoriesService} from "../categories.service";
 import {catchError, map} from "rxjs";
-import {AsyncPipe} from "@angular/common";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {Subcategory} from "../subcategory.model";
 
@@ -22,7 +21,7 @@ import {Subcategory} from "../subcategory.model";
     selector: 'app-list-items',
     templateUrl: './list-items.component.html',
     styleUrls: ['./list-items.component.scss'],
-    imports: [MatSidenavModule, FilterComponent, BreadcrumbComponent, MatRippleModule, MatProgressSpinnerModule, MatTabsModule, ItemCardComponent, PaginatorComponent, AsyncPipe],
+    imports: [MatSidenavModule, FilterComponent, BreadcrumbComponent, MatRippleModule, MatProgressSpinnerModule, MatTabsModule, ItemCardComponent, PaginatorComponent],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ListItemsComponent implements OnInit {
@@ -98,8 +97,8 @@ export class ListItemsComponent implements OnInit {
     this.itemsService.requestItems(this.itemsParamsRequest).pipe(
       catchError(
         (err, caught) => {
-        console.error('Error on requesting items', err);
-        return caught;
+          console.error('Error on requesting items', err);
+          return caught;
         }
       )
     ).subscribe();

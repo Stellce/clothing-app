@@ -1,37 +1,39 @@
 import {
+  AfterViewChecked,
   ChangeDetectionStrategy,
   Component,
   computed,
   inject,
   Injector,
-  input, InputSignal,
-  OnInit,
+  input,
+  InputSignal, OnInit,
   Signal,
   signal,
   WritableSignal
 } from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Category} from "../../../categories/category.model";
-import {map, startWith} from "rxjs";
+import {finalize, map, startWith, switchMap} from "rxjs";
 import {CategoriesService} from "../../../categories/categories.service";
 import {EmployeeService} from "../../employee.service";
 import {ItemsService} from "../../../item/items.service";
-import {MatDialog} from "@angular/material/dialog";
 import {MatOption, MatSelect, MatSelectChange} from "@angular/material/select";
 import {MatError, MatFormField, MatLabel} from "@angular/material/form-field";
-import {CreateItem} from "../../../item/item.model";
+import {CreateItem, ItemDetails} from "../../../item/item.model";
 import {UniqueItem} from "../../../categories/list-items/item-card/item-card.model";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatAutocomplete, MatAutocompleteTrigger} from "@angular/material/autocomplete";
 import {MatInput} from "@angular/material/input";
-import {AsyncPipe} from "@angular/common";
 import {CdkTextareaAutosize} from "@angular/cdk/text-field";
 import {FieldToTextPipe} from "../../../shared/pipes/field-to-text";
-import {MatButton} from "@angular/material/button";
-import {DialogComponent} from "../../../shared/dialog/dialog.component";
-import {DialogData} from "../../../shared/dialog/dialog-data.model";
+import {MatButton, MatMiniFabButton} from "@angular/material/button";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {Subcategory} from "../../../categories/subcategory.model";
+import {Image} from "../../../item/image.model";
+import {ItemEditorForm, ItemEditorFormControls, ToFormControls} from "./item-editor-form.model";
+import {DialogData} from "../../../shared/dialog/dialog-data.model";
+import {DialogComponent} from "../../../shared/dialog/dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
     selector: 'app-item-editor',
@@ -44,10 +46,10 @@ import {Subcategory} from "../../../categories/subcategory.model";
         MatAutocomplete,
         MatInput,
         MatAutocompleteTrigger,
-        AsyncPipe,
         CdkTextareaAutosize,
         FieldToTextPipe,
         MatButton,
+        MatMiniFabButton,
         MatError,
         MatLabel
     ],
@@ -55,13 +57,16 @@ import {Subcategory} from "../../../categories/subcategory.model";
     styleUrl: './item-editor.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ItemEditorComponent implements OnInit {
+export class ItemEditorComponent implements OnInit, AfterViewChecked {
   itemId: InputSignal<string> = input<string>();
+
+  images: WritableSignal<Image[]> = signal<Image[]>([]);
+  selectedImage: WritableSignal<Image> = signal<Image>(null);
 
   mode: Signal<'create' | 'update'> = computed(() => this.itemId() ? 'update' : 'create');
   title: Signal<string> = computed(() => this.mode() === 'create' ? 'Add new item' : 'Edit item');
 
-  form: FormGroup;
+  form: FormGroup<ItemEditorFormControls>;
 
   categories: Signal<Category[]> = signal<Category[]>(null);
   categoriesNames: Signal<string[]>;
@@ -91,6 +96,8 @@ export class ItemEditorComponent implements OnInit {
   sizes: string[];
   sizesByCtrlIndex: string[][] = [];
 
+  isFormPatched: boolean = false;
+
   isLoading: WritableSignal<boolean> = signal<boolean>(false);
 
   injector = inject(Injector);
@@ -103,8 +110,8 @@ export class ItemEditorComponent implements OnInit {
     }
     return this._shoesSizes;
   }
-  get uniqueItems() {
-    return this.form.get('uniqueItems') as FormArray;
+  get uniqueItems(): FormArray<FormGroup<ToFormControls<UniqueItem>>> {
+    return this.form.get('uniqueItems') as FormArray<FormGroup<ToFormControls<UniqueItem>>>;
   }
   get categoryNameCtrl() {
     return this.form.get('categoryName');
@@ -117,8 +124,8 @@ export class ItemEditorComponent implements OnInit {
     private categoriesService: CategoriesService,
     private employeeService: EmployeeService,
     private itemsService: ItemsService,
-    private dialog: MatDialog,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private dialog: MatDialog
   ) {
     this.setForm();
     this.setFormListeners();
@@ -136,7 +143,7 @@ export class ItemEditorComponent implements OnInit {
     });
 
     this.subcategories = toSignal(this.categoriesService.subcategoriesList$);
-    this.subcategoriesNames = computed(() => this.subcategories().map(c => c.name));
+    this.subcategoriesNames = computed(() => this.subcategories()?.map(c => c.name));
     this.subcategoryNameValue = toSignal(this.subcategoryNameCtrl.valueChanges);
     this.filteredSubcategoriesNames = computed(() => this._filter(this.subcategoryNameValue() || '', this.subcategoriesNames()));
     computed(() => {
@@ -152,31 +159,71 @@ export class ItemEditorComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.mode() === 'update') this.patchForm();
+    if (this.mode() === 'update') {
+      this.loadImages();
+    }
   }
 
-  onAddSizeAndQuantity() {
+  ngAfterViewChecked() {
+    if (this.mode() === 'update' && !this.isFormPatched) {
+      this.patchForm();
+    }
+  }
+
+  protected onDeleteImage() {
+    const filterSelectedImage = () => {
+      this.images.update(images => images.filter(image => image.id !== this.selectedImage().id));
+      this.selectedImage.set(this.images()[0]);
+    }
+
+    if(this.selectedImage().isLocal) {
+      filterSelectedImage();
+    } else {
+      this.employeeService.deleteItemImages(this.itemId(), this.selectedImage().id).subscribe(() => {
+        filterSelectedImage();
+      });
+    }
+  }
+
+  protected selectImage(image: Image) {
+    this.selectedImage.set(image);
+  }
+
+  protected onImagePicked(event: Event) {
+    const files = Array.from((event.target as HTMLInputElement).files);
+    this.form.patchValue({images: [...this.form.get('images').value, ...files]});
+    this.form.get('images').updateValueAndValidity();
+    const reader = new FileReader();
+    reader.onload = () => {
+      const image: Image = {id: String(this.images()?.length || 0), url: reader.result as string, isLocal: true};
+      this.images.update(images => [...images, image]);
+      if (!this.selectedImage()) this.selectedImage.set(this.images()[0]);
+    }
+    files.forEach(file => reader.readAsDataURL(file));
+  }
+
+  protected onAddSizeAndQuantity() {
     const filterSizesOutOfSelectedOnes = () => {
       return [...this.sizes].filter(size => this.uniqueItems.controls.every(ctrl => {
         return ctrl.value.size !== size;
-      }))
+      }));
     }
 
     this.addUniqueItem();
     this.sizesByCtrlIndex[this.uniqueItems.controls.length - 1] = filterSizesOutOfSelectedOnes();
   }
-  onRemoveUniqueItem(index: number) {
+  protected onRemoveUniqueItem(index: number) {
     this.uniqueItems.removeAt(index);
   }
 
-  onSizeSelected(e: MatSelectChange, invokedCtrlId: number) {
+  protected onSizeSelected(e: MatSelectChange, invokedCtrlId: number) {
     const selectedSize = e.value;
     this.sizesByCtrlIndex = this.sizesByCtrlIndex.map((sizes, index) => {
       return index !== invokedCtrlId ? [...this.sizes].filter(s => s !== selectedSize) : sizes
     });
   }
 
-  onSubmit() {
+  protected onSubmit() {
     if (!this.form.valid) return;
     this.isLoading.set(true);
     const item: CreateItem = {
@@ -192,71 +239,62 @@ export class ItemEditorComponent implements OnInit {
       material: this.form.value.material.toUpperCase(),
       season: this.form.value.season.toUpperCase(),
       itemCode: this.form.value.itemCode,
-      uniqueItems: this.form.value.uniqueItems.map((uniqueItem: UniqueItem) => ({size: uniqueItem.size.toUpperCase(), quantity: uniqueItem.quantity}))
+      uniqueItems: this.form.value.uniqueItems.map(uniqueItem => ({size: uniqueItem.size.toUpperCase(), quantity: uniqueItem.quantity}))
     }
     if (this.mode() === 'create') {
-      this.employeeService.createItem(item).subscribe({
-        next: res => {
-          const data: DialogData = {
-            title: 'Done',
-            description: 'Item have been added'
+      this.employeeService.createItem(item)
+        .pipe(
+          switchMap(
+            itemDetails => this.employeeService.uploadItemImages(itemDetails.id, this.form.get('images').value)
+          ),
+          finalize(() => this.isLoading.set(false))
+        ).subscribe({
+          next: () => {
+            this.form.reset();
+            this.images.set([]);
+          },
+          error: (err) => {
+            let description = ``;
+            if (err['status']) description += `Error ${err['status']} occurred`;
+            if (err['message']) description += err['message'];
+            const data: DialogData = {
+              title: 'Error loading image',
+              description
+            }
+            this.dialog.open(DialogComponent, {data});
           }
-          this.dialog.open(DialogComponent, {data});
-          this.isLoading.set(false);
-          this.form.reset();
-        },
-        error: err => {
-          const data: DialogData = {
-            title: 'Cannot add item',
-            description: `${err['status'] ? `Error ${err['status']} occurred` : ''}`
-          }
-          this.dialog.open(DialogComponent, {data});
-          this.isLoading.set(false);
-        }
-      });
+        });
     } else {
-      this.employeeService.updateItem(this.itemId(), item).subscribe({
-        next: res => {
-          const data: DialogData = {
-            title: 'Item updated'
+      this.employeeService.updateItem(this.itemId(), item)
+        .pipe(finalize(() => this.isLoading.set(false)))
+        .subscribe({
+          next: res => {
+            console.log('res: ', res);
           }
-          this.dialog.open(DialogComponent, {data});
-          this.isLoading.set(false);
-          this.form.reset();
-        },
-        error: err => {
-          const data: DialogData = {
-            title: 'Cannot update item',
-            description: `${err['status'] ? `Error ${err['status']} occurred` : ''}`
-          }
-          this.dialog.open(DialogComponent, {data});
-          this.isLoading.set(false);
-        }
-      })
+        })
     }
   }
 
   private setForm() {
     this.form = this.fb.group({
+      images: [[] as File[], Validators.required],
       gender: ['', Validators.required],
       categoryName: ['', Validators.required],
       subcategoryName: [''],
       name: ['', Validators.required],
       description: ['', Validators.required],
-      price: ['', [Validators.required, Validators.pattern(/^[0-9]*$/)]],
-      discount: ['', [Validators.pattern(/^[0-9]+$/)]],
+      price: [0, [Validators.required, Validators.pattern(/^[0-9.]*$/)]],
+      discount: [0, [Validators.pattern(/^[0-9.]+$/)]],
       color: ['', Validators.required],
       brandName: ['', Validators.required],
       material: ['', Validators.required],
       season: ['', Validators.required],
       itemCode: ['', Validators.required],
-      uniqueItems: this.fb.array([])
+      uniqueItems: this.fb.array([this.fb.group({
+        size: ['', Validators.required],
+        quantity: [0, Validators.required]
+      })])
     });
-
-    this.uniqueItems.push(this.fb.group({
-      size: ['', Validators.required],
-      quantity: ['', Validators.required]
-    }));
   }
   private setFormListeners() {
     this.filteredColors = toSignal(this.form.get("color").valueChanges.pipe(
@@ -289,18 +327,30 @@ export class ItemEditorComponent implements OnInit {
   }
   private patchForm() {
     this.itemsService.requestItemById(this.itemId()).subscribe(item => {
-      item.uniqueItems.forEach((v, i) => i < item.uniqueItems.length ? this.addUniqueItem() : '');
-      this.form.patchValue({...item, brandName: item.brand});
-    })
+      for (let i = this.uniqueItems.length; i < item.uniqueItems.length; i++) {
+        this.addUniqueItem();
+      }
+      const itemWithoutImages: Omit<ItemDetails, 'images'> = item;
+      const patchValue: Omit<ItemEditorForm, 'images' | 'subcategoryName' | 'material' | 'season'> & {uniqueItems: UniqueItem[]} =
+        {...itemWithoutImages, brandName: itemWithoutImages.brand, categoryName: itemWithoutImages.category.name, uniqueItems: itemWithoutImages.uniqueItems};
+      this.form.patchValue(patchValue);
+      this.isFormPatched = true;
+    });
   }
   private _filter(value: string, array: string[]) {
     const filterValue = value.toLowerCase();
     return array?.filter(v => v.toLowerCase().includes(filterValue));
   }
+  private loadImages() {
+    this.itemsService.requestItemImages(this.itemId()).subscribe(images => {
+      this.images.set(images);
+      this.selectedImage.set(images[0]);
+    });
+  }
   private addUniqueItem() {
     const uniqueItem = this.fb.group({
       size: ['', Validators.required],
-      quantity: ['', Validators.required]
+      quantity: [0, Validators.required]
     });
     this.uniqueItems.push(uniqueItem);
   }

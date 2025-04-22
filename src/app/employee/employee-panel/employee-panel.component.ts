@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnInit, Signal, signal, WritableSignal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Signal, signal, WritableSignal} from '@angular/core';
 import {
   MatAccordion,
   MatExpansionPanel,
@@ -7,23 +7,13 @@ import {
 } from "@angular/material/expansion";
 import {OutletComponent} from "../../tabs/landing/outlet/outlet.component";
 import {MatDivider} from "@angular/material/divider";
-import {MatError, MatFormField, MatLabel} from "@angular/material/form-field";
+import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
-import {MatButton, MatMiniFabButton} from "@angular/material/button";
+import {MatButton} from "@angular/material/button";
 import {FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {EmployeeService} from "../employee.service";
-import {DialogData} from "../../shared/dialog/dialog-data.model";
-import {DialogComponent} from "../../shared/dialog/dialog.component";
-import {MatDialog} from "@angular/material/dialog";
-import {MatOption, MatSelect} from "@angular/material/select";
-import {AsyncPipe} from "@angular/common";
-import {MatAutocomplete, MatAutocompleteTrigger} from "@angular/material/autocomplete";
-import {CdkTextareaAutosize} from "@angular/cdk/text-field";
-import {FieldToTextPipe} from "../../shared/pipes/field-to-text";
-import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {ItemEditorComponent} from "./item-editor/item-editor.component";
 import {finalize, tap} from "rxjs";
-import {ItemsTableComponent} from "./items-table/items-table.component";
 import {DialogService} from "../../shared/dialog/dialog.service";
 import {ItemsService} from "../../item/items.service";
 import {toSignal} from "@angular/core/rxjs-interop";
@@ -41,26 +31,15 @@ import {toSignal} from "@angular/core/rxjs-interop";
         MatLabel,
         MatButton,
         FormsModule,
-        MatSelect,
-        MatOption,
-        AsyncPipe,
         ReactiveFormsModule,
-        MatAutocompleteTrigger,
-        MatAutocomplete,
-        CdkTextareaAutosize,
-        FieldToTextPipe,
-        MatError,
-        MatMiniFabButton,
-        MatProgressSpinner,
         ItemEditorComponent,
-        MatAccordion,
-        ItemsTableComponent
+        MatAccordion
     ],
     templateUrl: './employee-panel.component.html',
     styleUrl: './employee-panel.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EmployeePanelComponent implements OnInit {
+export class EmployeePanelComponent {
   addIds: FormControl;
   deleteIds: FormControl;
   editItemId: FormControl;
@@ -70,17 +49,12 @@ export class EmployeePanelComponent implements OnInit {
 
   constructor(
     private employeeService: EmployeeService,
-    private dialog: MatDialog,
     private fb: FormBuilder,
     private dialogService: DialogService,
     private itemsService: ItemsService
   ) {
     this.setForms();
-
     this.editItemIdValue = toSignal(this.editItemId.valueChanges.pipe(tap(() => this.isEditItemIdConfirmed.set(false))));
-  }
-
-  ngOnInit() {
   }
 
   onAddItemsToLandingPage() {
@@ -88,71 +62,19 @@ export class EmployeePanelComponent implements OnInit {
     const loadingDialog = this.dialogService.createLoadingDialog();
     this.employeeService.addToLandingPage(ids)
       .pipe(finalize(() => {
-        loadingDialog.close();
+        loadingDialog?.close();
         this.itemsService.requestLandingPage().subscribe();
-      }))
-      .subscribe({
-        next: () => {
-          const data: DialogData = {
-            title: 'Items added',
-            description: 'Items were successfully added to landing page',
-            buttonName: 'Ok'
-          }
-          this.dialog.open(DialogComponent, {data});
-        },
-        error: err => {
-          const data: DialogData = {
-            title: 'Error',
-            description: `Could not add items. ${err['status'] ? `Error ${err['status']} occurred` : ''}`,
-            buttonName: 'Ok'
-          }
-          this.dialog.open(DialogComponent, {data});
-        }
-      });
+      })).subscribe();
   }
   onRemoveItemsFromLandingPage() {
     const ids = this.deleteIds.value;
-    this.employeeService.deleteFromLandingPage(ids).subscribe({
-      next: () => {
-        const dialogData: DialogData = {
-          title: 'Items added',
-          description: 'Items were successfully deleted to landing page',
-          buttonName: 'Ok'
-        }
-        this.dialog.open(DialogComponent, {data: dialogData});
-      },
-      error: err => {
-        const dialogData: DialogData = {
-          title: 'Error',
-          description: `Could not delete items. ${err['status'] ? `Error ${err['status']} occurred` : ''}`,
-          buttonName: 'Ok'
-        }
-        this.dialog.open(DialogComponent, {data: dialogData});
-      }
-    });
+    this.employeeService.deleteFromLandingPage(ids).subscribe();
   }
   onConfirmEditItemId() {
     this.isEditItemIdConfirmed.set(true);
-    console.log('confirmed, editItemIdValue: ', this.editItemIdValue());
   }
   onDeleteItem() {
-    this.employeeService.deleteItem(this.deleteItemId.value).subscribe({
-      next: res => {
-        console.log('Item deleted', res);
-        const data: DialogData = {
-          title: 'Done',
-          description: 'Item successfully deleted'
-        }
-        this.dialog.open(DialogComponent, {data});
-      },
-      error: err => {
-        const data: DialogData = {
-          title: 'Unable to delete item',
-          description: `${err['status'] ? `Error ${err['status']} occurred` : ''}`
-        }
-        this.dialog.open(DialogComponent, {data});
-      }
-    });
+    this.employeeService.deleteItem(this.deleteItemId.value).subscribe();
   }
 
   private setForms() {

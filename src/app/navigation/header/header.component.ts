@@ -11,13 +11,12 @@ import {NavigationEnd, Router, RouterLink} from '@angular/router';
 import {filter} from 'rxjs';
 import {FieldToTextPipe} from 'src/app/shared/pipes/field-to-text';
 import {NavbarComponent} from '../navbar/navbar.component';
-import {JsonPipe} from "@angular/common";
 
 @Component({
     selector: 'app-header',
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.scss'],
-    imports: [RouterLink, NavbarComponent, FieldToTextPipe, JsonPipe],
+    imports: [RouterLink, NavbarComponent, FieldToTextPipe],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent implements OnInit, OnChanges{
@@ -32,7 +31,6 @@ export class HeaderComponent implements OnInit, OnChanges{
 
   ngOnInit(): void {
     this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe(e => {
-      console.log(e.url);
       this.tabIcon.set(this.tabIcons.find(n => e.url.includes(n.toLowerCase())) || null);
       this.isProductPage.set(e.url.includes('product') || e.url.includes('landing') || e.url === '/');
     });

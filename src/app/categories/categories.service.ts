@@ -53,7 +53,7 @@ export class CategoriesService {
   requestCategoriesImages(gender: string) {
     return this.http.get<{[categoryId: string]: string}>(
       environment.backendUrl + '/catalog/categories/images',
-      {params: new HttpParams().append('gender', gender)}
+      {params: new HttpParams().append('gender', gender.toLowerCase())}
     ).pipe(filter(i => !!i));
   }
 

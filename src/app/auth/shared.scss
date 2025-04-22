@@ -2,6 +2,7 @@
 
 :host {
   @include variables.desktop-side-padding();
+  margin: 2rem;
 }
 
 .header {

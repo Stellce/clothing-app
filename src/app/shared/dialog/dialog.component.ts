@@ -9,10 +9,10 @@ import {
   Validators
 } from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
-import {MAT_DIALOG_DATA, MatDialogModule} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from "@angular/material/dialog";
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
-import {DialogData} from "./dialog-data.model";
+import {Control, DialogData} from "./dialog-data.model";
 import {FieldToTextPipe} from "../pipes/field-to-text";
 import {MatOption, MatSelect} from "@angular/material/select";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
@@ -31,19 +31,22 @@ export class DialogComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    public dialogRef: MatDialogRef<DialogComponent>,
     private fb: FormBuilder
   ) {}
 
   ngOnInit() {
-    let controls: {[k: string]: AbstractControl} = {};
-    let inputsAndSelectors = [];
-    if (this.data.selects) inputsAndSelectors.push(...this.data.selects);
-    if (this.data.inputs) inputsAndSelectors.push(...this.data.inputs);
-    inputsAndSelectors.forEach(input => {
-      controls[input.name] = new FormControl(input.defaultValue, Validators.required);
+    const formControls: {[k: string]: AbstractControl} = {};
+    const controls: Control[] = [];
+    if (this.data.selects) controls.push(...this.data.selects);
+    if (this.data.inputs) controls.push(...this.data.inputs);
+    controls.forEach(input => {
+      const validators = [];
+      if (!input.allowEmpty) validators.push(Validators.required);
+      if (input.name === 'email') validators.push(Validators.email);
+      formControls[input.name] = new FormControl(input.defaultValue, validators);
     });
-    this.form = this.fb.group(controls);
-    if (Object.values(this.form.value).length) console.log('Dialog form values: ', this.form.value);
+    this.form = this.fb.group(formControls);
   }
 
   setInputType(type: string): string {
@@ -61,5 +64,14 @@ export class DialogComponent implements OnInit {
 
   getPasswordIndex(fieldName: string): number {
     return this.shownPasswords().findIndex(pass => pass.fieldName === fieldName);
+  }
+
+  onCloseDialog(): void {
+    if (this.form) {
+      if (this.form.invalid) return;
+      this.dialogRef.close(this.form);
+    } else {
+      this.dialogRef.close();
+    }
   }
 }

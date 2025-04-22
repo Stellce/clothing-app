@@ -13,18 +13,17 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {DialogData} from "../../shared/dialog/dialog-data.model";
 import {DialogComponent} from "../../shared/dialog/dialog.component";
 import {MatDialog} from "@angular/material/dialog";
-import {NgStyle} from "@angular/common";
 import {finalize} from "rxjs";
 
 @Component({
     selector: 'app-register',
     templateUrl: './register.component.html',
     styleUrls: ['../shared.scss'],
-    imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatRadioModule, MatCheckboxModule, MatButtonModule, RouterLink, GoogleLoginButtonComponent, MatProgressSpinner, NgStyle],
+    imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatRadioModule, MatCheckboxModule, MatButtonModule, RouterLink, GoogleLoginButtonComponent, MatProgressSpinner],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RegisterComponent implements OnInit {
-  checkAgreement: WritableSignal<boolean> = signal<boolean>(false);
+  showAgreementError: WritableSignal<boolean> = signal<boolean>(false);
   showEmailResend: WritableSignal<boolean> = signal<boolean>(false);
   emailResendTimeout: WritableSignal<number> = signal<number>(0);
   emailSpinnerValue = computed(() => this.emailResendTimeout() / 150);
@@ -46,26 +45,29 @@ export class RegisterComponent implements OnInit {
   }
 
   onRegister() {
-    this.checkAgreement.set(true);
-    this.passwordErrors.set(this.authService.errorsOnPasswordValidation(this.form.controls['password'].value))
-    if(this.form.invalid || this.passwordErrors().length) return;
+    this.isLoading.set(true);
+    if(this.form.invalid || this.passwordErrors().length) {
+      this.showAgreementError.set(!this.form.controls['isAgreementConsent'].value);
+      this.passwordErrors.set(this.authService.errorsOnPasswordValidation(this.form.controls['password'].value));
+      this.isLoading.set(false);
+      return;
+    }
     let registerUser: RegisterUser = {
       firstName: this.form.value.firstname,
       lastName: this.form.value.lastname,
       email: this.form.value.email,
       password: this.form.value.password
     }
-    console.log('user to register: ', registerUser);
-    this.isLoading.set(true);
     this.authService.register(registerUser).pipe(finalize(() => this.isLoading.set(false))).subscribe({
       next: () => {
         this.showEmailResend.set(true);
       },
       error: err => {
+        console.log(err);
         const status = err['status'];
         const description = status === 409 ? 'Email is already registered' :
           status === 400 ? 'Validation failed' :
-          status === 503 ? 'Service unavailable' : '';
+          status === 503 ? 'Service unavailable' : status;
         const data: DialogData = {
           title: 'Registration failed',
           description
@@ -100,7 +102,7 @@ export class RegisterComponent implements OnInit {
             }
           }, 100);
         },
-        error: err => {
+        error: () => {
           const data: DialogData = {
             title: `Activation resend went wrong`,
             description: `Try again later`
@@ -122,7 +124,7 @@ export class RegisterComponent implements OnInit {
       lastname: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.pattern(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/)]],
-      isAgreementConsent: ['', Validators.required]
+      isAgreementConsent: ['', Validators.requiredTrue]
     })
   }
 

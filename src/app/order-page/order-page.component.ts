@@ -2,7 +2,6 @@ import {ChangeDetectionStrategy, Component, OnInit, signal, WritableSignal} from
 import {OrdersService} from "./orders.service";
 import {ActivatedRoute} from "@angular/router";
 import {OrderRes} from "./order-res.model";
-import {OrderItemBarComponent} from "./order-item-bar/order-item-bar.component";
 import {ItemBarComponent} from "../item/item-bar/item-bar.component";
 import {MatExpansionPanel, MatExpansionPanelHeader} from "@angular/material/expansion";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
@@ -14,7 +13,6 @@ import {CurrencyPipe} from "@angular/common";
     templateUrl: './order-page.component.html',
     styleUrls: ['./order-page.component.scss'],
     imports: [
-        OrderItemBarComponent,
         ItemBarComponent,
         MatExpansionPanel,
         MatExpansionPanelHeader,

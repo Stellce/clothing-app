@@ -1,11 +1,11 @@
-<div class="card" [routerLink]="getLinkToItem()">
+<div class="card" [routerLink]="linkToItem()">
   @if (!item().images) {
     <div class="placeholder"></div>
   } @else {
     <img
-      [src]="item().images[0].url"
+      [src]="item().images[0]?.url"
       [alt]=item().name
-      [routerLink]="getLinkToItem()"/>
+      [routerLink]="linkToItem()"/>
   }
   <div class="red-overlay" [ngStyle]="{'background': Math.floor(item().discount * 100) !== 0 ? 'linear-gradient(225deg, rgb(255, 0, 0)  5%, rgba(125, 125, 125, 0) 30%)' : 'none'}"></div>
   <app-add-to-favorites [item]="item()"/>

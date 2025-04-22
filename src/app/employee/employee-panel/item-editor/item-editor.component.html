@@ -5,6 +5,30 @@
 } @else {
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <h2>{{ title() }}</h2>
+    <div class="images">
+      @if (images()?.length) {
+        <div class="image">
+          <img [src]="selectedImage()?.url" [alt]="selectedImage().url"/>
+          <button class="delete-image" mat-mini-fab (click)="onDeleteImage()"><img src="assets/icons/trash.svg" alt="trash"/></button>
+        </div>
+        <div class="img-carousel">
+          @for (image of images(); track image.id) {
+            <img [src]="image?.url" [alt]="image?.url" (click)="selectImage(image)"/>
+          }
+          <div class="add-image" (click)="selectFile.click()">
+            <span>+</span>
+            <span>Add image</span>
+            <input type="file" #selectFile (change)="onImagePicked($event)"/>
+          </div>
+        </div>
+      } @else {
+        <div class="add-image" (click)="selectFile.click()">
+          <span>+</span>
+          <span>Add image</span>
+          <input type="file" #selectFile (change)="onImagePicked($event)"/>
+        </div>
+      }
+    </div>
     <mat-form-field>
       <mat-label>Gender: </mat-label>
       <mat-select formControlName="gender">
@@ -71,7 +95,7 @@
       <input matInput formControlName="material" [matAutocomplete]="materialsAutocomplete"/>
       <mat-autocomplete #materialsAutocomplete="matAutocomplete">
         @for (material of filteredMaterials(); track material) {
-          <mat-option [value]="material">{{material | fieldToText}}</mat-option>
+          <mat-option [value]="material | fieldToText">{{material | fieldToText}}</mat-option>
         }
       </mat-autocomplete>
     </mat-form-field>
@@ -105,12 +129,12 @@
               <mat-label>Quantity</mat-label>
               <input type="number" matInput formControlName="quantity"/>
             </mat-form-field>
-            <button mat-button (click)="onRemoveUniqueItem(i)">
+            <button mat-mini-fab type="button" (click)="onRemoveUniqueItem(i)">
               <img src="assets/icons/trash.svg" alt="delete"/>
             </button>
           </div>
         }
-        <button mat-button (click)="onAddSizeAndQuantity()">Add unique item</button>
+        <button mat-button type="button" (click)="onAddSizeAndQuantity()">Add unique item</button>
       </div>
     } @else {
       <mat-error>Please, choose category, then you will be able to set sizes and quantities</mat-error>

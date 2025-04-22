@@ -1,11 +1,12 @@
 import {CurrencyPipe, NgStyle, PercentPipe} from '@angular/common';
 import {
+  afterNextRender,
   ChangeDetectionStrategy,
-  Component,
+  Component, computed, inject, Injector,
   input,
   InputSignal,
   OnDestroy,
-  OnInit,
+  OnInit, Signal,
   signal,
   WritableSignal
 } from '@angular/core';
@@ -29,12 +30,20 @@ export class ItemCardComponent implements OnInit, OnDestroy {
   item: WritableSignal<ItemCard> = signal<ItemCard>(null);
   isBreadcrumbResolved: InputSignal<boolean> = input();
   imagesSubscription: Subscription;
+  private injector = inject(Injector);
+  linkToItem: Signal<string[]> = signal([]);
 
   constructor(
     private localService: LocalService,
     private authService: AuthService,
     private itemsService: ItemsService
-  ) {}
+  ) {
+    afterNextRender(() => {
+      this.linkToItem = computed(() =>
+        window.location.href.includes('product') ? [this.item().id] : ['/', 'product', this.item().id]
+      );
+    })
+  }
 
   ngOnInit(): void {
     this.item.set(this.itemWithoutImages());
@@ -46,20 +55,18 @@ export class ItemCardComponent implements OnInit, OnDestroy {
         console.error(err);
       }
     });
-    if (!this.authService.user() && this.isOnLocalWishlist(this.item())) {
-      this.item.update(item => {
-        item.metadata.onWishList = true;
-        return item;
-      });
-    }
+    afterNextRender(() => {
+      if (!this.authService.user() && this.isOnLocalWishlist(this.item())) {
+        this.item.update(item => {
+          item.metadata.onWishList = true;
+          return item;
+        });
+      }
+    }, {injector: this.injector});
   }
 
   ngOnDestroy() {
     this.imagesSubscription?.unsubscribe();
-  }
-
-  getLinkToItem() {
-    return this.isBreadcrumbResolved() ? [this.item().id] : ['/', 'product', this.item().id];
   }
 
   private isOnLocalWishlist(item: ItemCard) {

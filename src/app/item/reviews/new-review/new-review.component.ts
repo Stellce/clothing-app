@@ -1,5 +1,5 @@
 import {TextFieldModule} from '@angular/cdk/text-field';
-import {AsyncPipe, NgClass} from '@angular/common';
+import {NgClass} from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -25,7 +25,7 @@ import {ReviewRes} from "../res/review-res.model";
     selector: 'app-new-review',
     templateUrl: './new-review.component.html',
     styleUrls: ['./new-review.component.scss'],
-    imports: [NgClass, MatFormFieldModule, MatInputModule, TextFieldModule, MatButtonModule, ReactiveFormsModule, AsyncPipe]
+    imports: [NgClass, MatFormFieldModule, MatInputModule, TextFieldModule, MatButtonModule, ReactiveFormsModule]
 })
 export class NewReviewComponent implements OnInit, OnChanges {
   review = input<ReviewRes>();
@@ -42,7 +42,7 @@ export class NewReviewComponent implements OnInit, OnChanges {
   ]
 
   constructor(
-    public authService: AuthService,
+    protected authService: AuthService,
     private reviewsService: ReviewsService,
     private formBuilder: FormBuilder
   ) {}
@@ -57,7 +57,6 @@ export class NewReviewComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['review'].currentValue) {
-      console.log(this.starsRef);
       this.form.patchValue({
         title: this.review().title,
         content: this.review().content,
