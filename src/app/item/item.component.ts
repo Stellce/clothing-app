@@ -68,8 +68,7 @@ export class ItemComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private dialogService: DialogService,
     private ordersService: OrdersService,
-    private purchaseService: PurchaseService,
-    private fieldToText: FieldToTextPipe
+    private purchaseService: PurchaseService
   ) {
     afterNextRender(() => {
       this.isFromCart = computed(() => window.location.href.includes('cart'));
@@ -232,9 +231,10 @@ export class ItemComponent implements OnInit, OnDestroy {
       if (!items.length) return;
       this.cartItems.set(items.filter(item => item.itemId === this.item()?.id));
       if (!this.cartItems().length) return;
-      const selectedItem = this.cartItems().find(item => item.itemSize === this.selectedUniqueItem().size);
-      this.selectedCartItem.set(selectedItem);
-      this.quantity.set(selectedItem?.quantity);
+      const cartItem = this.cartItems().find(item => item.itemSize === this.selectedUniqueItem().size);
+      if (!cartItem) return;
+      this.selectedCartItem.set(cartItem);
+      this.quantity.set(cartItem.quantity);
     });
   }
 
