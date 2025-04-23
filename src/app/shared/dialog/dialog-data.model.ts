@@ -8,15 +8,13 @@ export interface DialogData {
   isLoading?: boolean;
 }
 
-export interface Select extends Control{
-  values: string[];
-}
-
-export interface Input extends Control{
-}
-
 export interface Control {
   name: string;
   defaultValue?: string;
   allowEmpty?: boolean;
 }
+
+export interface Select extends Control{
+  values: string[];
+}
+export interface Input extends Control{}
