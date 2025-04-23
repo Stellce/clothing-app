@@ -145,7 +145,7 @@
   :host {
     @include variables.mobile-side-padding();
   }
-  .product {
+  .item .product {
     flex-direction: column;
 
     .images {
@@ -155,6 +155,11 @@
 
     .description {
       width: 100%;
+
+      .sizes {
+        justify-content: flex-start;
+        align-items: center;
+      }
     }
   }
 }
