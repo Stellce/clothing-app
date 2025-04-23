@@ -29,23 +29,19 @@ export class DialogComponent implements OnInit {
   shownPasswords: WritableSignal<Password[]> = signal<Password[]>([]);
   form: FormGroup;
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    public dialogRef: MatDialogRef<DialogComponent>,
-    private fb: FormBuilder
-  ) {}
+  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData, public dialogRef: MatDialogRef<DialogComponent>,
+    private fb: FormBuilder) {}
 
-  ngOnInit() {
-    const formControls: {[k: string]: AbstractControl} = {};
-    const controls: Control[] = [];
-    if (this.data.selects) controls.push(...this.data.selects);
-    if (this.data.inputs) controls.push(...this.data.inputs);
-    controls.forEach(input => {
-      const validators = [];
-      if (!input.allowEmpty) validators.push(Validators.required);
-      if (input.name === 'email') validators.push(Validators.email);
-      formControls[input.name] = new FormControl(input.defaultValue, validators);
-    });
+  ngOnInit(): void {
+    const controls: Control[] = [...(this.data.selects || []), ...(this.data.inputs || [])];
+    const formControls: {[k: string]: AbstractControl} = Object.fromEntries(
+      controls.map(({name, defaultValue, allowEmpty}) => {
+        const validators = [];
+        if (!allowEmpty) validators.push(Validators.required);
+        if (name === 'email') validators.push(Validators.email);
+        return [name, new FormControl(defaultValue, validators)];
+      })
+    );
     this.form = this.fb.group(formControls);
   }
 

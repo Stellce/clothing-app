@@ -8,6 +8,7 @@ import {OrdersService} from "../../order-page/orders.service";
 import {AsyncPipe} from "@angular/common";
 import {map, Observable, tap} from "rxjs";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {OrderRes} from "../../order-page/order-res.model";
 
 @Component({
     selector: 'app-reviews',
@@ -34,7 +35,8 @@ export class ReviewsComponent implements OnInit {
     if (this.authService.user()) {
       this.ordersService.getOrdersForCustomer().subscribe(ordersPage => {
         const orders = ordersPage.content;
-        this.hasCompletedOrder.set(orders.some(order => order.itemEntries.some(item => item.id === this.itemId()) && order.status === 'COMPLETED'));
+        const hasItem = (order: OrderRes) => order.itemEntries.some(itemEntry => itemEntry.itemId === this.itemId());
+        this.hasCompletedOrder.set(orders.some(order => hasItem(order) && order.status === 'COMPLETED'));
       })
     }
   }
