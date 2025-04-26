@@ -53,19 +53,20 @@
     "cart": {
       "content": [
         {
-          "id": "0",
+          "id": "f72d6693-75a3-470c-b017-628a61fc6f1c",
           "itemEntries": [
-            "id": "0",
-            "itemId": "0",
-            "itemName": "Sweater 21",
-            "itemSize": "S",
-            "quantity": 1,
-            "discount": 0.0,
-            "itemPrice": 27.99,
-            "itemPriceAfterDiscount": 27.99,
-            "totalPrice": 27.99,
-            "totalPriceAfterDiscount": 27.99,
-            "images": Image[]
+            {
+              "id": "0",
+              "itemId": "0",
+              "itemName": "Sweater 21",
+              "itemSize": "S",
+              "quantity": 1,
+              "discount": 0.0,
+              "itemPrice": 27.99,
+              "itemPriceAfterDiscount": 27.99,
+              "totalPrice": 27.99,
+              "totalPriceAfterDiscount": 27.99
+            }
           ],
           "createdAt": "2025-01-01",
           "totalPrice": 356,
