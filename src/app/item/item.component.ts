@@ -21,7 +21,7 @@ import {UniqueItem} from '../categories/list-items/item-card/item-card.model';
 import {CartService} from '../tabs/cart/cart.service';
 import {FieldToTextPipe} from '../shared/pipes/field-to-text';
 import {Image} from "./image.model";
-import {ItemDetails} from "./item.model";
+import {ItemDetails, ItemParams} from "./item.model";
 import {ItemsService} from "./items.service";
 import {ReviewsComponent} from './reviews/reviews.component';
 import {AddToFavoritesComponent} from "./add-to-favorites/add-to-favorites.component";
@@ -247,12 +247,16 @@ export class ItemComponent implements OnInit, OnDestroy {
       if(!item) return;
       this.item.set(item);
       this.selectedUniqueItem.set(item.uniqueItems.find(i => i.quantity > 0));
-      this.item.update(item => ({
-        ...item, params: {
-          color: this.item().color,
-          brand: this.item().brand
+      this.item.update(item => {
+        const params: ItemParams = {
+          color: item.color,
+          brand: item.brand
         }
-      }));
+        if (item.material) params.material = item.material
+        if (item.season) params.season = item.season
+
+        return {...item, params};
+      });
       Object.entries(this.item().params).forEach(([key, value]) => {
         this.params.update(params => [...params, {key, value}])
       });

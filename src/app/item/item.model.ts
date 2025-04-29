@@ -15,6 +15,8 @@ export interface ItemDetails extends ItemCard {
 export interface ItemParams {
   color: string;
   brand: string;
+  material?: string;
+  season?: string;
 }
 
 export interface CreateItem {
