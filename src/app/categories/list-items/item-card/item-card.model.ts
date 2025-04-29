@@ -7,6 +7,8 @@ export interface ItemCard {
   discount: number
   priceAfterDiscount: number
   brand: string
+  material?: string
+  season?: string
   rating: number
   color: string
   uniqueItems: UniqueItem[]
