@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnInit, signal, WritableSignal} from '@angular/core';
+import {afterNextRender, ChangeDetectionStrategy, Component, signal, WritableSignal} from '@angular/core';
 import {CategoriesService} from "../../categories/categories.service";
 import {Category} from "../../categories/category.model";
 import {OutletComponent} from './outlet/outlet.component';
@@ -12,7 +12,7 @@ import {UpperCasePipe} from '@angular/common';
     imports: [RouterLink, OutletComponent, UpperCasePipe],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LandingComponent implements OnInit{
+export class LandingComponent {
   categories: WritableSignal<Category[]> = signal<Category[]>(null);
   randomCategory: WritableSignal<Category> = signal<Category>(null);
   gender: 'MEN' | 'WOMEN';
@@ -21,14 +21,14 @@ export class LandingComponent implements OnInit{
   };
   constructor(
     private categoriesService: CategoriesService
-  ) {}
-
-  ngOnInit() {
-    this.categoriesService.categoriesList$.subscribe(categories => {
-      if(!categories) return;
-      this.randomCategory.set(categories[this.getRandomIntTo(categories.length)]);
-      this.gender = this.getRandomGender();
-      this.setCategoryImage(this.gender, this.randomCategory().id);
+  ) {
+    afterNextRender(() => {
+      this.categoriesService.categoriesList$.subscribe(categories => {
+        if(!categories) return;
+        this.randomCategory.set(categories[this.getRandomIntTo(categories.length)]);
+        this.gender = this.getRandomGender();
+        this.setCategoryImage(this.gender, this.randomCategory().id);
+      });
     });
   }
 

@@ -5,51 +5,73 @@
   background: grey;
   border-radius: .5rem;
 }
-.image {
-  width: 100%;
-  height: 560px;
-  position: relative;
-  overflow: hidden;
-  margin-bottom: 16px;
-  .category-image {
-    width: 100%;
-    height: 560px;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
+.banner {
+  display: flex;
+
+  .image {
+    width: 50%;
+    aspect-ratio: 1;
+    position: relative;
+    overflow: hidden;
+
+    .category-image {
+      width: 100%;
+      aspect-ratio: 1;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+    }
+
+    .dark-bottom-gradient-image::after {
+      content: "";
+      display: block;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      width: 200%;
+      background: linear-gradient(0deg, rgba(20, 19, 19, 1) 0%, rgba(0, 0, 0, 0) 100%);
+    }
+
+    .category-name {
+      position: absolute;
+      left: 0;
+      bottom: 40px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 1;
+      font-size: 16px;
+      cursor: pointer;
+
+      &:first-child {
+        font-size: 21px;
+      }
+
+      span {
+        width: 100%;
+        text-align: center;
+      }
+
+      img {
+        position: initial;
+        height: 25px;
+        display: flex;
+      }
+    }
   }
-  .dark-bottom-gradient-image::after {
-    content: "";
-    display: block;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    width: 200%;
-    background: linear-gradient(0deg, rgba(20, 19, 19, 1) 0%, rgba(0, 0, 0, 0) 100%);
-  }
-  .category-name {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 100%;
+  .text {
+    width: 50%;
+    padding: 2rem;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 1;
-    font-size: 16px;
-    cursor: pointer;
-    &:first-child {
-      font-size: 21px;
+    .title {
+      font-size: 48px;
+      margin-bottom: 0.5rem;
     }
-    span {
-      width: 100%;
-      text-align: center;
-    }
-    img {
-      position: initial;
-      height: 25px;
-      display: flex;
+    .description {
+      font-size: 16px;
     }
   }
 }
@@ -69,7 +91,13 @@
     width: 100vw;
     width: 100dvw;
   }
-  .image {
-    height: 400px;
+  .banner {
+    .image {
+      height: 400px;
+      width: 100%
+    }
+    .text {
+      display: none;
+    }
   }
 }

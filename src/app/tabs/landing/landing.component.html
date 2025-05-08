@@ -1,13 +1,25 @@
 @if (!randomCategory()?.image) {
     <div class="img-placeholder"></div>
 } @else {
-  <div class="image">
-    <div class="dark-bottom-gradient-image">
-      <div class="category-image" [style]="{'background-image': randomCategoryImageBg}"></div>
+  <div class="banner">
+    <div class="image">
+      <div class="dark-bottom-gradient-image">
+        <div class="category-image" [style]="{'background-image': randomCategoryImageBg}"></div>
+      </div>
+      <div class="category-name" [routerLink]="['/', 'products', gender, randomCategory().id]">
+        <span>MORE ON {{randomCategory().name | uppercase}}</span>
+        <img src="assets/icons/arrow_down.svg" alt="more"/>
+      </div>
     </div>
-    <div class="category-name" [routerLink]="['/', 'products', gender, randomCategory().id]">
-      <span>MORE ON {{randomCategory().name | uppercase}}</span>
-      <img src="assets/icons/arrow_down.svg" alt="more"/>
+    <div class="text">
+      <div class="title">
+        {{randomCategory().name | uppercase}}
+      </div>
+      <div class="description">
+        We don’t follow trends — we shape them.<br />
+        Every piece here tells a story: of bold choices, quiet confidence, and that sharp look you didn’t know you needed until now.<br />
+        Whether you’re layering up or stripping down for the season, we’ve got what fits — your style, your mood, your moment.
+      </div>
     </div>
   </div>
 }
