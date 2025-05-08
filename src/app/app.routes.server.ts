@@ -8,6 +8,7 @@ export const serverRoutes: ServerRoute[] = [
   {path: 'products/:gender', renderMode: RenderMode.Server},
   {path: 'products/:gender/:categoryId', renderMode: RenderMode.Server},
   {path: 'products/:gender/:categoryId/:itemId', renderMode: RenderMode.Server},
+  {path: 'account', renderMode: RenderMode.Client},
   {
     path: '**',
     renderMode: RenderMode.Prerender
