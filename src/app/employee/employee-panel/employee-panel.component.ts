@@ -5,7 +5,7 @@ import {
   MatExpansionPanelHeader,
   MatExpansionPanelTitle
 } from "@angular/material/expansion";
-import {OutletComponent} from "../../tabs/landing/outlet/outlet.component";
+import {FeaturedProductsComponent} from "../../tabs/landing/featured-products/featured-products.component";
 import {MatDivider} from "@angular/material/divider";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
@@ -24,7 +24,7 @@ import {toSignal} from "@angular/core/rxjs-interop";
         MatExpansionPanel,
         MatExpansionPanelHeader,
         MatExpansionPanelTitle,
-        OutletComponent,
+        FeaturedProductsComponent,
         MatDivider,
         MatFormField,
         MatInput,

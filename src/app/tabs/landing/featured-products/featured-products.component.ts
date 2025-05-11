@@ -7,13 +7,13 @@ import {finalize, map} from "rxjs";
 import {toSignal} from "@angular/core/rxjs-interop";
 
 @Component({
-    selector: 'app-outlet',
-    templateUrl: './outlet.component.html',
-    styleUrls: ['./outlet.component.scss'],
+    selector: 'app-featured-products',
+    templateUrl: './featured-products.component.html',
+    styleUrls: ['./featured-products.component.scss'],
     imports: [MatProgressSpinnerModule, ItemCardComponent],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class OutletComponent {
+export class FeaturedProductsComponent {
   items: Signal<ItemCard[]>;
   isLoading: WritableSignal<boolean> = signal(true);
 

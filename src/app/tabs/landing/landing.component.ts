@@ -1,7 +1,7 @@
 import {afterNextRender, ChangeDetectionStrategy, Component, signal, WritableSignal} from '@angular/core';
 import {CategoriesService} from "../../categories/categories.service";
 import {Category} from "../../categories/category.model";
-import {OutletComponent} from './outlet/outlet.component';
+import {FeaturedProductsComponent} from './featured-products/featured-products.component';
 import {RouterLink} from '@angular/router';
 import {UpperCasePipe} from '@angular/common';
 
@@ -9,7 +9,7 @@ import {UpperCasePipe} from '@angular/common';
     selector: 'app-landing',
     templateUrl: './landing.component.html',
     styleUrls: ['./landing.component.scss'],
-    imports: [RouterLink, OutletComponent, UpperCasePipe],
+    imports: [RouterLink, FeaturedProductsComponent, UpperCasePipe],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LandingComponent {
