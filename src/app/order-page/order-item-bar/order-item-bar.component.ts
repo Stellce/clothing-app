@@ -35,8 +35,21 @@ export class OrderItemBarComponent implements OnInit{
     });
   }
 
-  getDeliveryColor(orderStatus: string) {
-    return 'cyan';
+  getDeliveryColor(status: string) {
+    switch (status) {
+      case 'ACCEPTED':
+        return '#86EFFF';
+      case 'SHIPPING':
+        return '#FFF986';
+      case 'DELIVERED':
+        return '#86FFD9';
+      case 'COMPLETED':
+        return '#97FF86';
+      case 'CANCELLED':
+        return '#FF8686';
+      default:
+        return '#FFF';
+    }
   }
 
   selectImage(imageUrl: string) {
