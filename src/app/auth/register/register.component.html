@@ -41,7 +41,10 @@
     </mat-form-field>
 
     <mat-checkbox formControlName="isAgreementConsent">
-      I declare that I have read and accept the SpaceFincher Terms & Conditions.
+      I declare that I have read and accept the
+      <a href="/assets/Privacy_Policy_and_User_Agreement.pdf" target="_blank" rel="noopener">
+        SpaceFincher Terms & Conditions
+      </a>.
       <span [style]="{color: 'red'}">*</span>
     </mat-checkbox>
     @if (showAgreementError()) {

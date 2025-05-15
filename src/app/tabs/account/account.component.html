@@ -13,7 +13,7 @@
   <ul>
     <li (click)="accountService.enterPromocode()">Enter Promocode</li>
     <li [routerLink]="['/', 'orders', 'history']">Orders history</li>
-    <li routerLink="policies">Privacy Policy & Agreements</li>
+    <li> <a href="/assets/Privacy_Policy_and_User_Agreement.pdf" target="_blank" rel="noopener">Privacy Policy & Agreements</a></li>
     <li (click)="authService.logout()">Logout</li>
   </ul>
 </div>
