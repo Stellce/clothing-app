@@ -730,7 +730,7 @@
       ":item/images": [
         {
           "id": "49ddc271-dc37-4955-8c6f-ee8290a3b23c",
-          "url": "http://localhost:4200/assets/mock_product.png"
+          "url": "http://localhost:4200/assets/mock_product.jpg"
         }
       ],
       "landing-page": {
