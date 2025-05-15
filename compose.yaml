@@ -1,0 +1,31 @@
+name: spacefincher-frontend
+services:
+  frontend:
+    container_name: frontend_ssr
+    build:
+      context: .
+      network: e-commerce-net
+    image: spacefincher-frontend
+    ports:
+      - "4200:4200"
+    networks:
+      - e-commerce-net
+
+  nginx:
+    image: nginx:stable-alpine
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - frontend
+    networks:
+      - e-commerce-net
+
+networks:
+  e-commerce-net:
+    external: true
+
+
+
