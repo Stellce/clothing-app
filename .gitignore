@@ -56,3 +56,5 @@ firebase.json
 #github
 .github
 
+#mock-server Node
+/json-server/node_modules

@@ -9,7 +9,12 @@
       @if (images()?.length) {
         <div class="image">
           <img [src]="selectedImage()?.url" [alt]="selectedImage().url"/>
-          <button class="delete-image" mat-mini-fab (click)="onDeleteImage()"><img src="assets/icons/trash.svg" alt="trash"/></button>
+          <button 
+            class="delete-image" 
+            mat-mini-fab 
+            type="button"
+            (click)="onDeleteImage()"
+          ><img src="assets/icons/trash.svg" alt="trash"/></button>
         </div>
         <div class="img-carousel">
           @for (image of images(); track image.id) {
@@ -119,8 +124,8 @@
           <div class="add-unique-item" [formGroupName]="i">
             <mat-form-field>
               <mat-label>Size</mat-label>
-              <mat-select formControlName="size" (selectionChange)="onSizeSelected($event, i)">
-                @for (size of sizesByCtrlIndex[i]; track size) {
+              <mat-select formControlName="size">
+                @for (size of sizesByCtrlIndex()[i] ?? []; track size) {
                   <mat-option [value]="size">{{size}}</mat-option>
                 }
               </mat-select>

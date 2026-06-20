@@ -1,4 +1,9 @@
-@if (!authService.user()) {
+@if (isLoading()) {
+  <div class="center">
+    <mat-spinner></mat-spinner>
+    <h2>Loading...</h2>
+  </div>
+} @else if (!authService.user()) {
   <div class="center">
     <h2>You have to <a href="/account/register">register</a> or <a href="/account/login">log in</a> to use cart</h2>
   </div>
@@ -39,13 +44,6 @@
   </mat-expansion-panel>
 } @else {
   <div class="center">
-    @if (isLoading()) {
-      <div class="center">
-        <mat-spinner></mat-spinner>
-        <h2>Loading...</h2>
-      </div>
-    } @else {
-      <h2>There are no items yet</h2>
-    }
+    <h2>There are no items yet</h2>
   </div>
 }

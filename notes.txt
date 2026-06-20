@@ -1,0 +1,6 @@
+//review allowed when order for this item finished
+// change order status SQL script: update "order" set status 'COMPLETED' where id = '';
+
+#  $env:DOCKER_BUILDKIT=0
+#  docker build --network e-commerce-net -t spacefincher-frontend .
+#  docker run spacefincher-frontend

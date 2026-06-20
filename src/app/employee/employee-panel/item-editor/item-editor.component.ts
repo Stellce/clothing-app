@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   inject,
   Injector,
   input,
@@ -57,7 +58,7 @@ import {MatDialog} from "@angular/material/dialog";
     styleUrl: './item-editor.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ItemEditorComponent implements OnInit, AfterViewChecked {
+export class ItemEditorComponent implements OnInit {
   itemId: InputSignal<string> = input<string>();
 
   images: WritableSignal<Image[]> = signal<Image[]>([]);
@@ -66,17 +67,19 @@ export class ItemEditorComponent implements OnInit, AfterViewChecked {
   mode: Signal<'create' | 'update'> = computed(() => this.itemId() ? 'update' : 'create');
   title: Signal<string> = computed(() => this.mode() === 'create' ? 'Add new item' : 'Edit item');
 
-  form: FormGroup<ItemEditorFormControls>;
+  form: FormGroup<ItemEditorFormControls> = this.createForm();
 
-  categories: Signal<Category[]> = signal<Category[]>(null);
-  categoriesNames: Signal<string[]>;
-  categoryNameValue: Signal<string>;
-  filteredCategoriesNames: Signal<string[]> = signal<string[]>(null);
+  categories: Signal<Category[]> = toSignal(this.categoriesService.categoriesList$, { initialValue: [] });
+  categoriesNames: Signal<string[]> = computed(() => this.categories()?.map(c => c.name));
+  categoryNameValue: Signal<string> = toSignal(this.categoryNameCtrl.valueChanges);
+  filteredCategoriesNames: Signal<string[]> = computed(() => 
+    this._filter(this.categoryNameValue() || '', this.categoriesNames()));
 
-  subcategories: Signal<Subcategory[]> = signal<Subcategory[]>(null);
-  subcategoriesNames: Signal<string[]> = signal<string[]>(null);
-  subcategoryNameValue: Signal<string>;
-  filteredSubcategoriesNames: Signal<string[]> = signal<string[]>(null);
+  subcategories: Signal<Subcategory[]> = toSignal(this.categoriesService.subcategoriesList$, { initialValue: [] });
+  subcategoriesNames: Signal<string[]> = computed(() => this.subcategories()?.map(c => c.name));
+  subcategoryNameValue: Signal<string> = toSignal(this.subcategoryNameCtrl.valueChanges);
+  filteredSubcategoriesNames: Signal<string[]> = computed(() => 
+    this._filter(this.subcategoryNameValue() || '', this.subcategoriesNames()));
 
   colors: string[] = ['BLACK', 'WHITE', 'RED', 'YELLOW', 'GREEN', 'BLUE', 'VIOLET', 'GREY', 'MULTI'];
   filteredColors: Signal<string[]> = signal<string[]>(null);
@@ -92,15 +95,45 @@ export class ItemEditorComponent implements OnInit, AfterViewChecked {
   filteredSeasons: Signal<string[]> = signal<string[]>(null);
 
   clothSizes: string[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'XXXXL'];
-  _shoesSizes: string[];
-  sizes: string[];
-  sizesByCtrlIndex: string[][] = [];
+  _shoesSizes: string[] = [];
+  sizes: WritableSignal<string[]> = signal<string[]>([]);
+  sizesByCtrlIndex = computed(() => {
+    const sizes = this.sizes();
+    const uniqueItems = this.uniqueItemsValue();
+
+    return uniqueItems.map((item, currentIndex) => {
+      const currentSize = item.size;
+
+      const selectedOtherControls = new Set(
+        uniqueItems
+          .filter((_, index) => index !== currentIndex)
+          .map(item => item.size)
+          .filter(Boolean)
+      );
+
+      return sizes.filter(size =>
+        size === currentSize || !selectedOtherControls.has(size)
+      );
+    });
+  });
 
   isFormPatched: boolean = false;
-
+  
   isLoading: WritableSignal<boolean> = signal<boolean>(false);
-
+  
   injector = inject(Injector);
+
+  private currentCategoryForSizes: string | null = null;
+
+  private uniqueItemsValue = toSignal(
+    this.uniqueItems.valueChanges.pipe(
+      startWith(this.uniqueItems.getRawValue())
+    ),
+    {
+      initialValue: this.uniqueItems.getRawValue(),
+      injector: this.injector
+    }
+  )
 
   get shoesSizes() {
     if (this._shoesSizes.length !== 17) {
@@ -127,46 +160,16 @@ export class ItemEditorComponent implements OnInit, AfterViewChecked {
     private fb: FormBuilder,
     private dialog: MatDialog
   ) {
-    this.setForm();
     this.setFormListeners();
-
-    this.categories = toSignal(this.categoriesService.categoriesList$);
-    this.categoriesNames = computed(() => this.categories()?.map(c => c.name));
-    this.categoryNameValue = toSignal(this.categoryNameCtrl.valueChanges);
-    this.filteredCategoriesNames = computed(() => {
-      const category = this.categories()?.find(c => c.name === this.categoryNameValue());
-      if (category) {
-        this.setSizesByCategory(category.name);
-        this.categoriesService.requestSubcategories(category.id);
-      }
-      return this._filter(this.categoryNameValue() || '', this.categoriesNames())
-    });
-
-    this.subcategories = toSignal(this.categoriesService.subcategoriesList$);
-    this.subcategoriesNames = computed(() => this.subcategories()?.map(c => c.name));
-    this.subcategoryNameValue = toSignal(this.subcategoryNameCtrl.valueChanges);
-    this.filteredSubcategoriesNames = computed(() => this._filter(this.subcategoryNameValue() || '', this.subcategoriesNames()));
-    computed(() => {
-      if (this.subcategories().length === 0 && this.subcategoryNameCtrl.hasValidator(Validators.required)) {
-        this.subcategoryNameCtrl.removeValidators(Validators.required);
-        this.subcategoryNameCtrl.updateValueAndValidity();
-      }
-      if (this.subcategories().length > 0 && !this.subcategoryNameCtrl.hasValidator(Validators.required)) {
-        this.subcategoryNameCtrl.addValidators(Validators.required);
-        this.subcategoryNameCtrl.updateValueAndValidity();
-      }
-    });
+    
+    effect(() => (this.mode() === 'update' && !this.isFormPatched) ?  this.patchForm() : '');
+    effect(() => this.updateSubcategoriesValidatorsEffect());
+    effect(() => this.updateUniqueItemsAndSubcategoryOnCategoryChangeEffect());
   }
 
   ngOnInit() {
     if (this.mode() === 'update') {
       this.loadImages();
-    }
-  }
-
-  ngAfterViewChecked() {
-    if (this.mode() === 'update' && !this.isFormPatched) {
-      this.patchForm();
     }
   }
 
@@ -191,36 +194,16 @@ export class ItemEditorComponent implements OnInit, AfterViewChecked {
 
   protected onImagePicked(event: Event) {
     const files = Array.from((event.target as HTMLInputElement).files);
-    this.form.patchValue({images: [...this.form.get('images').value, ...files]});
-    this.form.get('images').updateValueAndValidity();
-    const reader = new FileReader();
-    reader.onload = () => {
-      const image: Image = {id: String(this.images()?.length || 0), url: reader.result as string, isLocal: true};
-      this.images.update(images => [...images, image]);
-      if (!this.selectedImage()) this.selectedImage.set(this.images()[0]);
-    }
-    files.forEach(file => reader.readAsDataURL(file));
+    this.employeeService.uploadItemImages(this.itemId(), files).subscribe();
+    this.loadImages();
   }
 
   protected onAddSizeAndQuantity() {
-    const filterSizesOutOfSelectedOnes = () => {
-      return [...this.sizes].filter(size => this.uniqueItems.controls.every(ctrl => {
-        return ctrl.value.size !== size;
-      }));
-    }
-
     this.addUniqueItem();
-    this.sizesByCtrlIndex[this.uniqueItems.controls.length - 1] = filterSizesOutOfSelectedOnes();
   }
+
   protected onRemoveUniqueItem(index: number) {
     this.uniqueItems.removeAt(index);
-  }
-
-  protected onSizeSelected(e: MatSelectChange, invokedCtrlId: number) {
-    const selectedSize = e.value;
-    this.sizesByCtrlIndex = this.sizesByCtrlIndex.map((sizes, index) => {
-      return index !== invokedCtrlId ? [...this.sizes].filter(s => s !== selectedSize) : sizes
-    });
   }
 
   protected onSubmit() {
@@ -244,9 +227,6 @@ export class ItemEditorComponent implements OnInit, AfterViewChecked {
     if (this.mode() === 'create') {
       this.employeeService.createItem(item)
         .pipe(
-          switchMap(
-            itemDetails => this.employeeService.uploadItemImages(itemDetails.id, this.form.get('images').value)
-          ),
           finalize(() => this.isLoading.set(false))
         ).subscribe({
           next: () => {
@@ -266,18 +246,14 @@ export class ItemEditorComponent implements OnInit, AfterViewChecked {
         });
     } else {
       this.employeeService.updateItem(this.itemId(), item)
-        .pipe(finalize(() => this.isLoading.set(false)))
-        .subscribe({
-          next: res => {
-            console.log('res: ', res);
-          }
-        })
+        .pipe(
+          finalize(() => this.isLoading.set(false))
+        ).subscribe()
     }
   }
 
-  private setForm() {
-    this.form = this.fb.group({
-      images: [[] as File[], Validators.required],
+  private createForm() {
+    return this.fb.group({
       gender: ['', Validators.required],
       categoryName: ['', Validators.required],
       subcategoryName: [''],
@@ -296,6 +272,7 @@ export class ItemEditorComponent implements OnInit, AfterViewChecked {
       })])
     });
   }
+
   private setFormListeners() {
     this.filteredColors = toSignal(this.form.get("color").valueChanges.pipe(
       startWith(''),
@@ -318,13 +295,54 @@ export class ItemEditorComponent implements OnInit, AfterViewChecked {
       map((value => this._filter(value || '', this.seasons)))
     ), {injector: this.injector});
   }
-  private setSizesByCategory(categoryName: string) {
-    this.sizes = categoryName === 'SHOES' || categoryName === 'SOCKS' ? this.shoesSizes : this.clothSizes;
-    this.uniqueItems.controls.forEach((ctrl, index) => {
-      ctrl.reset();
-      this.sizesByCtrlIndex[index] = [...this.sizes];
-    });
+
+  private updateSubcategoriesValidatorsEffect() {
+      if (this.subcategories()?.length === 0 && this.subcategoryNameCtrl.hasValidator(Validators.required)) {
+        this.subcategoryNameCtrl.removeValidators(Validators.required);
+        this.subcategoryNameCtrl.updateValueAndValidity();
+      }
+      if (this.subcategories()?.length > 0 && !this.subcategoryNameCtrl.hasValidator(Validators.required)) {
+        this.subcategoryNameCtrl.addValidators(Validators.required);
+        this.subcategoryNameCtrl.updateValueAndValidity();
+      }
   }
+
+  private updateUniqueItemsAndSubcategoryOnCategoryChangeEffect() {
+    const category = this.categories()?.find(c => c.name === this.categoryNameValue());
+
+    if (!category) return;
+
+    const categoryName = category.name.toUpperCase();
+
+    const shouldUpdateUniqueItems =
+      this.currentCategoryForSizes != null &&
+      this.currentCategoryForSizes !== categoryName;
+
+    this.setSizesByCategory(categoryName, shouldUpdateUniqueItems);
+    this.categoriesService.requestSubcategories(category.id);
+  }
+
+  private setSizesByCategory(categoryName: string, resetUniqueItems: boolean) {
+    categoryName = categoryName.toUpperCase();
+
+    const sizes =
+      categoryName === 'SHOES' || categoryName === 'SOCKS'
+        ? this.shoesSizes
+        : this.clothSizes;
+
+    this.sizes.set(sizes);
+
+    if (resetUniqueItems) {
+      this.uniqueItems.controls.forEach(ctrl => {
+        ctrl.reset({ size: '', quantity: 0 });
+      });
+
+      this.subcategoryNameCtrl.reset('');
+    }
+
+    this.currentCategoryForSizes = categoryName;
+  }
+  
   private patchForm() {
     this.itemsService.requestItemById(this.itemId()).subscribe(item => {
       for (let i = this.uniqueItems.length; i < item.uniqueItems.length; i++) {
@@ -337,16 +355,22 @@ export class ItemEditorComponent implements OnInit, AfterViewChecked {
       this.isFormPatched = true;
     });
   }
+
   private _filter(value: string, array: string[]) {
     const filterValue = value.toLowerCase();
     return array?.filter(v => v.toLowerCase().includes(filterValue));
   }
+
   private loadImages() {
+    this.images.set([]);
+    this.isLoading.set(true);
     this.itemsService.requestItemImages(this.itemId()).subscribe(images => {
       this.images.set(images);
       this.selectedImage.set(images[0]);
+      this.isLoading.set(false);
     });
   }
+  
   private addUniqueItem() {
     const uniqueItem = this.fb.group({
       size: ['', Validators.required],

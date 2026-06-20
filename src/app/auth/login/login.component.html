@@ -1,22 +1,28 @@
-<form [formGroup]="form" (ngSubmit)="onLogin()">
-  <div class="title">Login</div>
-  <mat-form-field>
-    <mat-label>Email: </mat-label>
-    <input matInput formControlName="username">
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Password: </mat-label>
-    <input matInput [type]="isPasswordShown() ? 'text' : 'password'" formControlName="password">
-    <button type="button" mat-icon-button matSuffix (click)="turnPasswordShown()">
-      <img [src]="'assets/icons/' + (!isPasswordShown() ? 'visibility' : 'visibility_off') + '.svg'" alt="Show/hide password"/>
-    </button>
-  </mat-form-field>
-  <button mat-raised-button color="primary" type="submit">Login</button>
-</form>
-<div class="additional-actions">
-  <a [routerLink]="['/', 'account', 'register']">Register</a>
-  <a (click)="onPasswordReset()">Forgot password?</a>
-</div>
-<div class="google-auth">
-  <app-google-login-button> Login with Google</app-google-login-button>
-</div>
+@if (isLoading()) {
+  <div class="center" style="height: 100vh">
+    <mat-spinner/>
+  </div>
+} @else {
+  <form [formGroup]="form" (ngSubmit)="onLogin()">
+    <div class="title">Login</div>
+    <mat-form-field>
+      <mat-label>Email: </mat-label>
+      <input matInput formControlName="username">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Password: </mat-label>
+      <input matInput [type]="isPasswordShown() ? 'text' : 'password'" formControlName="password">
+      <button type="button" mat-icon-button matSuffix (click)="turnPasswordShown()">
+        <img [src]="'assets/icons/' + (!isPasswordShown() ? 'visibility' : 'visibility_off') + '.svg'" alt="Show/hide password"/>
+      </button>
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit">Login</button>
+  </form>
+  <div class="additional-actions">
+    <a [routerLink]="['/', 'account', 'register']">Register</a>
+    <a (click)="onPasswordReset()">Forgot password?</a>
+  </div>
+  <div class="google-auth">
+    <app-google-login-button> Login with Google</app-google-login-button>
+  </div>
+}

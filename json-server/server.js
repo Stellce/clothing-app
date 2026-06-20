@@ -1,10 +1,12 @@
-const fs = require('fs')
-const express = require('express')
-const cors = require('cors')
-const app = express()
-const port = 3000
+import { access, readFileSync } from 'fs'
+import express from 'express'
+import cors from 'cors'
+import jwt from 'jsonwebtoken'
 
-const endpointsJSON = JSON.parse(fs.readFileSync('json-server/db.json', 'utf-8'))
+const app = express()
+const port = 8765
+
+const endpointsJSON = JSON.parse(readFileSync('db.json', 'utf-8'))
 
 const corsOptions = {
   origin: ['http://localhost:4200'],
@@ -13,9 +15,12 @@ const corsOptions = {
 }
 
 app.use(cors(corsOptions))
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+
 app.use((err, req, res, next) => {
   console.error(`[ERROR] ${err.message}`);
-  console.error(err.stack); // Logs detailed error trace
+  console.error(err.stack);
 
   res.status(err.status || 500).json({
     error: {
@@ -46,12 +51,43 @@ function resolveEndpoints(prevRoute, json, forced) {
 
 resolveEndpoints('', endpointsJSON)
 
+app.post('/oauth2/login/basic', (req, res) => {
+
+  console.log(`login req: `, req)
+  
+  const { username, password } = req.body
+
+  const access_token = jwt.sign(
+    {
+      sub: "mocksub:testUser",
+      email: 'john.doe@email.com',
+      realm_access: {
+        roles: username === 'john.doe@example.com' ? 'ADMIN' : 'CUSTOMER'
+      },
+      iss: 'mock-server',
+      name: 'User'
+    },
+    'test-key',
+    {
+      expiresIn: '15m'
+    }
+  )
+  const refresh_token = 1;
+
+  res.json({
+    access_token,
+    refresh_token
+  })
+})
+console.log(`\tPOST: /oauth2/login/basic`)
+
 app.get('test', (req, res) => {
   res.send({test: 'ok'});
 })
+console.log(`\tGET: /test`);
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`Mock backend listening on port ${port}`)
 })
 
 function addEndpoint(route, data) {

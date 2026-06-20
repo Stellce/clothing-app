@@ -3,7 +3,6 @@ import {UniqueItem} from "../../../categories/list-items/item-card/item-card.mod
 
 
 export interface ItemEditorForm {
-  images: File[],
   brandName: string,
   gender: string,
   color: string,

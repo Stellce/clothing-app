@@ -84,8 +84,10 @@ a {
   display: flex;
   align-items: center;
   margin: 1rem 0;
-  padding-left: 1rem;
   gap: 0.5rem;
+  @media (min-width: 600px) {
+    padding-left: 1rem;
+  }
 }
 
 mat-form-field .mdc-text-field--filled:not(.mdc-text-field--disabled) {

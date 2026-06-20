@@ -8,8 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "watch-prod": "ng build --watch --configuration production",
     "test": "ng test",
-    "serve:ssr": "node dist/spacefincher-frontend/server/server.mjs",
-    "mock-server": "node json-server/server.js"
+    "serve:ssr": "node dist/spacefincher-frontend/server/server.mjs"
   },
   "private": true,
   "dependencies": {

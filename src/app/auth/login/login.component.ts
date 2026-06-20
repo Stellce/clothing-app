@@ -11,12 +11,13 @@ import {MatDialog} from "@angular/material/dialog";
 import {DialogComponent} from "../../shared/dialog/dialog.component";
 import {DialogData} from "../../shared/dialog/dialog-data.model";
 import {finalize} from "rxjs";
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['../shared.scss'],
-    imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, RouterLink, GoogleLoginButtonComponent],
+    imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatProgressSpinner, RouterLink, GoogleLoginButtonComponent],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent implements OnInit{
