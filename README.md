@@ -1,37 +1,181 @@
-# Clothing E-Commerce Web Application
-Welcome to our clothing e-commerce web application! This platform is designed to provide a seamless shopping experience for customers looking to buy the latest fashion trends. Below you will find key information about the project, its setup, and core features.
+# Space Fincher Frontend
 
-## Overview
-Our e-commerce web application is built using Angular, providing a robust and scalable framework for delivering high-performance and interactive user experiences. The application is designed to showcase a wide range of clothing products, facilitate easy navigation, and provide secure and efficient transaction processing.
+**Space Fincher** is a responsive clothing e-commerce frontend built with Angular. The application covers the main customer flow from browsing products to ordering, and also includes an employee panel for managing landing items and product data.
+
+## Preview
+
+![Landing page](docs/images/landing-desktop.png)
+
+| Catalog                                         | Product page                                  | Checkout                                               |
+| ----------------------------------------------- | --------------------------------------------- | ------------------------------------------------------ |
+| ![Catalog page](docs/images/catalog-mobile.png) | ![Product page](docs/images/product-page.png) | ![Cart checkout](docs/images/cart-checkout-mobile.png) |
 
 ## Features
-- Product Catalog: Browse through a comprehensive catalog of clothing items, including detailed descriptions, pricing, and high-quality images.
-- Search and Filter: Quickly find products using advanced search and filtering options based on categories, sizes, colors, and prices.
-- User Authentication: Secure user registration and login functionality to protect user data and provide personalized experiences.
-- Shopping Cart: Add items to a shopping cart with the ability to adjust quantities, remove items, and proceed to checkout.
-- Order Processing: Streamlined checkout process with support for multiple payment methods and real-time order tracking.
-- Responsive Design: Fully responsive layout that ensures a seamless shopping experience on desktops, tablets, and mobile devices.
+
+- Landing page with featured products and gender/category navigation.
+- Product catalog with category pages, breadcrumbs, filters and pagination.
+- Product details page with image gallery, sizes, quantity selection, reviews, favorites and cart actions.
+- Authentication flow: registration, login, account activation, password recovery and Google login button integration.
+- Favorites, cart, checkout data and order history pages.
+- Employee panel for managing landing items and creating, editing or deleting products.
+- Responsive dark UI optimized for mobile screens while also supporting desktop layout.
+- SSR-ready Angular setup with Docker and Nginx configuration.
+
+## Tech Stack
+
+- Angular 19
+- Angular Material
+- Angular Reactive Forms
+- Angular Signals
+- RxJS
+- TypeScript
+- JWT-based authentication
+- Angular SSR
+- Docker / Nginx
+
+## Screenshots
+
+### Catalog and product flow
+
+| Catalog                                         | Product page                                  | Checkout                                               |
+| ----------------------------------------------- | --------------------------------------------- | ------------------------------------------------------ |
+| ![Catalog page](docs/images/catalog-mobile.png) | ![Product page](docs/images/product-page.png) | ![Cart checkout](docs/images/cart-checkout-mobile.png) |
+
+### Favorites and employee panel
+
+| Favorites                                           | Employee panel                                    |
+| --------------------------------------------------- | ------------------------------------------------- |
+| ![Favorites page](docs/images/favorites-mobile.png) | ![Employee panel](docs/images/employee-panel.png) |
+
+### Item editor
+
+![Item editor](docs/images/item-editor.png)
 
 ## Requirements
-###  Software
+
 - Node.js
-- running backend (https://github.com/bekrenov-r/e-commerce-app)
+- npm
+- One of the following backend options:
 
-### Dependencies installation
-- npm install
+  - real backend: [e-commerce-app](https://github.com/bekrenov-r/e-commerce-app)
+  - local mock backend from the `json-server` folder
 
-## Run application
-### SPA
-Run `npm run start` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Mock Backend
 
-### SSR
-Run `npm run build` to build the project. The build artifacts will be stored in the `dist/` directory.
-Run `npm run serve:ssr` to serve application.
+The project includes a small local mock backend inside the `json-server` folder.
 
-## Code scaffolding
+It is used for frontend development when the real backend is not running.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```text
+json-server
+├── db.json
+├── package.json
+└── server.js
+```
 
-## Further help
+`json-server/server.js` is an Express-based mock server. It reads mock endpoint data from `db.json`, enables CORS for the Angular dev server and runs on port `8765`.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+It also includes a mock login endpoint:
+
+```text
+POST /oauth2/login/basic
+```
+
+The frontend is configured to use the backend URL:
+
+```ts
+backendUrl: 'http://localhost:8765'
+```
+
+To start the mock backend:
+
+```bash
+cd json-server
+npm install
+npm start
+```
+
+Then start the Angular app in another terminal:
+
+```bash
+npm install
+npm run start
+```
+
+The Angular app will be available at:
+
+```text
+http://localhost:4200
+```
+
+The mock backend will be available at:
+
+```text
+http://localhost:8765
+```
+
+For production-like usage, run the real backend instead of the mock server.
+
+## Installation
+
+```bash
+npm install
+```
+
+## Development
+
+```bash
+npm run start
+```
+
+The application will be available at:
+
+```text
+http://localhost:4200
+```
+
+## Production Build
+
+```bash
+npm run build
+```
+
+## SSR
+
+Build the application:
+
+```bash
+npm run build
+```
+
+Run the SSR server:
+
+```bash
+npm run serve:ssr
+```
+
+## Docker
+
+The repository contains a `Dockerfile`, `compose.yaml` and `nginx.conf` for containerized deployment.
+
+```bash
+docker compose up --build
+```
+
+## Project Structure
+
+```text
+src/app
+├── auth              # login, registration, activation and password recovery
+├── categories        # categories, catalog, filters, item cards and pagination
+├── employee          # employee panel and item editor
+├── item              # product details, reviews, cart/favorite actions
+├── navigation        # header and bottom navigation
+├── order-page        # order details
+├── shared            # reusable dialog, pipes and local services
+└── tabs              # landing, search, account, cart and favorites pages
+```
+
+## Notes
+
+This repository contains the frontend part of the e-commerce application. A running backend is required for authentication, products, cart, orders, reviews and employee management APIs.
